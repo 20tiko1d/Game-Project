@@ -36,11 +36,8 @@ public class MapGenerator {
         this.preferredLength = preferredLength;
 
         createMiddle();
-        Gdx.app.log("TAG", "check 0");
         createPath(true);
-        Gdx.app.log("TAG", "check 1");
         createPath(false);
-        Gdx.app.log("TAG", "check 2");
         createGeneratingMap1();
         createRandom();
         createFinalMap();
@@ -119,7 +116,6 @@ public class MapGenerator {
         path1Min = map.length / 2 -1;
 
         while(true) {
-            //Gdx.app.log("TAG", "check 11");
             path = clearPath(path);
             int length = 0;
             if(firstPath) {
@@ -134,9 +130,6 @@ public class MapGenerator {
                         path[i][1], endColumn, path.length - 2 - i);
 
                 if(shortest) {
-                    Gdx.app.log("TAG", "end: " + endRow + ", " + endColumn);
-                    Gdx.app.log("TAG", "current: " + path[i][0] + ", " + path[i][1]);
-                    Gdx.app.log("TAG", "length: " + (path.length - 1 - i));
 
                     if(endRow - path[i][0] < 0) {
                         direction[3] = 0;
@@ -160,7 +153,6 @@ public class MapGenerator {
                     }
                 }
                 while(!pathDead) {
-                    //Gdx.app.log("TAG", "check 10");
                     int random = randomIndex(direction);
                     if(random == -1) {break;}
                     path = makePath(path, path[i][0], path[i][1], i + 1, random);
@@ -170,14 +162,11 @@ public class MapGenerator {
                     } else {
                         break;
                     }
-                    //Gdx.app.log("TAG", "check 12: " + random);
                 }
             }
             int endLength = path.length;
             boolean clearCheck = checkLength(path[endLength - 2][0], path[endLength - 3][0],
                     path[endLength - 2][1], path[endLength - 3][1], 1);
-            //Gdx.app.log("TAG", "same: " + path[endLength - 2][0] + ", and same: " + path[endLength - 3][0]);
-            //Gdx.app.log("TAG", "same2: " + path[endLength - 2][1] + ", and same2: " + path[endLength - 3][1]);
 
             if(pathDead || !clearCheck) {
                 pathDead = false;
@@ -412,24 +401,18 @@ public class MapGenerator {
         generatingMap[middle[3][0]][middle[3][1]][0] = 1;
         generatingMap[middle[3][0]][middle[3][1]][1] = 1;
 
-        Gdx.app.log("TAG", "path1");
         for(int ii = 1; ii < path1.length; ii++) {
             createHole(path1[ii][0], path1[ii][1], path1[ii - 1][0], path1[ii - 1][1]);
         }
-        Gdx.app.log("TAG", "path2");
         for(int i = 1; i < path2.length; i++) {
             createHole(path2[i][0], path2[i][1], path2[i - 1][0], path2[i - 1][1]);
         }
-        Gdx.app.log("TAG", "end");
     }
 
     public void createHole(int row1, int column1, int row2, int column2) {
         boolean isRow = (column1 == column2);
         int first;
         int second;
-        if(column1 == column2 && row1 == row2) {
-            Gdx.app.log("TAG", "shit");
-        }
         if(isRow) {
             if(row1 - row2 < 0) {
                 first = 3;
@@ -447,7 +430,6 @@ public class MapGenerator {
                 second = 2;
             }
         }
-        Gdx.app.log("TAG", "r1: " + row1 + ", c1: " + column1 + ", r2: " + row2 + ", c2: " + column2);
         generatingMap[row1][column1][first] = 1;
         generatingMap[row2][column2][second] = 1;
     }

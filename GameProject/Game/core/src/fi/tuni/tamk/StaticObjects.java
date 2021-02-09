@@ -11,10 +11,15 @@ public class StaticObjects {
     private Rectangle rect;
     private Rectangle singleRect;
 
+    private int labyrinthSize;
+    private int relativeLength;
+
     public StaticObjects(int [][] walls, Rectangle rect) {
         this.walls = walls;
         this.rect = rect;
         singleRect = new Rectangle();
+        labyrinthSize = walls.length;
+        relativeLength = labyrinthSize - 2;
         setTextures();
     }
 
@@ -95,11 +100,9 @@ public class StaticObjects {
     public void render(SpriteBatch batch) {
         for(int row = 0; row < wallsImg.length; row++) {
             for(int column = 0; column < wallsImg[row].length; column++) {
-                batch.draw(wallsImg[row][column], singleRect.x + column * 8 * singleRect.width / 10,
-                        singleRect.y - row * 8 * singleRect.height / 10, singleRect.width,
+                batch.draw(wallsImg[row][column], singleRect.x + column * relativeLength * singleRect.width / labyrinthSize,
+                        singleRect.y - row * relativeLength * singleRect.height / labyrinthSize, singleRect.width,
                         singleRect.height);
-                //Gdx.app.log("TAG", "x: " + singleRect.x + column * 8 * singleRect.width / 10);
-                //Gdx.app.log("TAG", "y: " + singleRect.y + row * 8 * singleRect.height / 10);
             }
         }
     }
@@ -108,7 +111,7 @@ public class StaticObjects {
         this.rect = rect;
         singleRect.x = rect.x;
         singleRect.y = rect.y + rect.height * (walls.length - 1) / walls.length;
-        singleRect.width = rect.width / walls.length;
-        singleRect.height = rect.height / walls.length;
+        singleRect.width = (rect.width * labyrinthSize) / (walls.length * relativeLength);
+        singleRect.height = (rect.height * labyrinthSize) / (walls.length * relativeLength);
     }
 }
