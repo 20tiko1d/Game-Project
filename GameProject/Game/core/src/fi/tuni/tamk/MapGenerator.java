@@ -1,13 +1,12 @@
 package fi.tuni.tamk;
 
-import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.math.MathUtils;
 
-import java.util.LinkedList;
 
 public class MapGenerator {
 
-    private int [][] map;
+    private Texture[][] map;
     private int [][][] generatingMap;
     private int preferredLength;
 
@@ -17,6 +16,8 @@ public class MapGenerator {
     private int[][] randomPath;
     private int randomCounter = 0;
     private boolean pathDone;
+
+    private int size;
 
     private int exitRow;
     private int exitColumn;
@@ -28,9 +29,15 @@ public class MapGenerator {
 
     private boolean firstPath;
 
+    private Main main;
 
-    public int [][] createMap(int size, int preferredLength) {
-        map = new int [size][size];
+    public MapGenerator(Main main) {
+        this.main = main;
+    }
+
+
+    public Texture [][] createMap(int size, int preferredLength) {
+        this.size = size;
         middle = new int[4][2];
         generatingMap = new int [size][size][4];
         this.preferredLength = preferredLength;
@@ -40,14 +47,16 @@ public class MapGenerator {
         createPath(false);
         createGeneratingMap1();
         createRandom();
-        createFinalMap();
+        putTextures();
+        pathDone = false;
+        main.setStart(path1[0][1] * 4 + 27, path1[0][0] * 4 + 51);
         return map;
     }
 
     public void createMiddle() {
-        int x = map.length / 2 - 1;
-        int y = map.length / 2 - 1;
-        if(map.length % 2 != 0) {
+        int x = size / 2 - 1;
+        int y = size / 2 - 1;
+        if(size % 2 != 0) {
             x += MathUtils.random(0, 1);
             y += MathUtils.random(0, 1);
         }
@@ -69,8 +78,8 @@ public class MapGenerator {
         int startColumn;
         int middlePoint;
         if(firstPath) {
-            startRow = map.length - 1;
-            startColumn = MathUtils.random(2, map.length - 3);
+            startRow = size - 1;
+            startColumn = MathUtils.random(2, size - 3);
             middlePoint = MathUtils.random(2, 3);
 
         } else {
@@ -113,7 +122,7 @@ public class MapGenerator {
             path[pathLength - 2][0] = middle[middlePoint][0] + plus;
             path[pathLength - 2][1] = middle[middlePoint][1];
         }
-        path1Min = map.length / 2 -1;
+        path1Min = size / 2 -1;
 
         while(true) {
             path = clearPath(path);
@@ -250,7 +259,7 @@ public class MapGenerator {
                 return false;
             }
         }
-        if(row < 0 || column > map.length - 1 || column < 0 || row > map.length - 1) {
+        if(row < 0 || column > size - 1 || column < 0 || row > size - 1) {
             return false;
         }
         if(firstPath && row <= path1Min) {
@@ -276,26 +285,26 @@ public class MapGenerator {
     }
 
     public void createExit() {
-        int random = MathUtils.random(0, 2 * map.length - 3);
-        if(random <= map.length / 2 - 2) {
-            exitRow = map.length / 2 - 1 - random;
+        int random = MathUtils.random(0, 2 * size - 3);
+        if(random <= size / 2 - 2) {
+            exitRow = size / 2 - 1 - random;
             exitColumn = 0;
             return;
         }
-        random -= map.length / 2 - 1;
-        if(random <= map.length - 1) {
+        random -= size / 2 - 1;
+        if(random <= size - 1) {
             exitRow = 0;
             exitColumn = random;
             return;
         }
-        random -= map.length;
+        random -= size;
         exitRow = random;
-        exitColumn = map.length - 1;
+        exitColumn = size - 1;
     }
 
     public void createRandom() {
-        for(int i = 0; i < map.length; i++) {
-            for(int j = 0; j < map.length; j++) {
+        for(int i = 0; i < size; i++) {
+            for(int j = 0; j < size; j++) {
                 if(generatingMap[i][j][0] == 0 &&  generatingMap[i][j][1] == 0 &&
                         generatingMap[i][j][2] == 0 && generatingMap[i][j][3] == 0) {
                     pathDone = false;
@@ -314,12 +323,12 @@ public class MapGenerator {
 
     public void createRandomOne(int row, int column) {
         while(true) {
-            randomPath = new int[map.length][2];
+            randomPath = new int[size][2];
             randomPath[0][0] = row;
             randomPath[0][1] = column;
             randomCounter = 0;
 
-            for(int i = 1; i < map.length - 1 && !pathDead; i++) {
+            for(int i = 1; i < size - 1 && !pathDead; i++) {
                 int[] direction = {1, 1, 1, 1};
 
                 while(!pathDead) {
@@ -357,7 +366,7 @@ public class MapGenerator {
             default:
                 row++;
         }
-        if(row < 0 || row > map.length - 1 || column < 0 || column > map.length - 1 ||
+        if(row < 0 || row > size - 1 || column < 0 || column > size - 1 ||
                 (row == exitRow && column == exitColumn) || (row == path1[0][0] && column == path1[0][1])) {
             pathClear = false;
             return;
@@ -434,64 +443,40 @@ public class MapGenerator {
         generatingMap[row2][column2][second] = 1;
     }
 
-    public void createFinalMap() {
+    public void putTextures() {
+        Texture imgFloor1 = main.getFloorTexture1();
+        Texture imgFloor2 = main.getFloorTexture2();
+        Texture imgWall = main.getWallTexture();
+
+        map = new Texture[(size + 24) * 4 + 1][(size + 12) * 4 + 1];
+
         for(int row = 0; row < map.length; row++) {
             for(int column = 0; column < map[row].length; column++) {
-                if(generatingMap[row][column][0] == 1 &&  generatingMap[row][column][1] == 1 &&
-                        generatingMap[row][column][2] == 1 && generatingMap[row][column][3] == 0) {
-                    map[row][column] = 1;
+                if(row >= 48 && row <= 48 + size * 4 && column == 24) {
+                    column += size * 4 - 1;
+                } else {
+                    map[row][column] = imgFloor2;
                 }
-                else if(generatingMap[row][column][0] == 0 &&  generatingMap[row][column][1] == 1 &&
-                        generatingMap[row][column][2] == 1 && generatingMap[row][column][3] == 1) {
-                    map[row][column] = 2;
-                }
-                else if(generatingMap[row][column][0] == 1 &&  generatingMap[row][column][1] == 0 &&
-                        generatingMap[row][column][2] == 1 && generatingMap[row][column][3] == 1) {
-                    map[row][column] = 3;
-                }
-                else if(generatingMap[row][column][0] == 1 &&  generatingMap[row][column][1] == 1 &&
-                        generatingMap[row][column][2] == 0 && generatingMap[row][column][3] == 1) {
-                    map[row][column] = 4;
-                }
-                else if(generatingMap[row][column][0] == 0 &&  generatingMap[row][column][1] == 1 &&
-                        generatingMap[row][column][2] == 1 && generatingMap[row][column][3] == 0) {
-                    map[row][column] = 5;
-                }
-                else if(generatingMap[row][column][0] == 1 &&  generatingMap[row][column][1] == 0 &&
-                        generatingMap[row][column][2] == 1 && generatingMap[row][column][3] == 0) {
-                    map[row][column] = 6;
-                }
-                else if(generatingMap[row][column][0] == 1 &&  generatingMap[row][column][1] == 1 &&
-                        generatingMap[row][column][2] == 0 && generatingMap[row][column][3] == 0) {
-                    map[row][column] = 7;
-                }
-                else if(generatingMap[row][column][0] == 0 &&  generatingMap[row][column][1] == 0 &&
-                        generatingMap[row][column][2] == 1 && generatingMap[row][column][3] == 0) {
-                    map[row][column] = 8;
-                }
-                else if(generatingMap[row][column][0] == 0 &&  generatingMap[row][column][1] == 1 &&
-                        generatingMap[row][column][2] == 0 && generatingMap[row][column][3] == 0) {
-                    map[row][column] = 9;
-                }
-                else if(generatingMap[row][column][0] == 0 &&  generatingMap[row][column][1] == 0 &&
-                        generatingMap[row][column][2] == 1 && generatingMap[row][column][3] == 1) {
-                    map[row][column] = 10;
-                }
-                else if(generatingMap[row][column][0] == 1 &&  generatingMap[row][column][1] == 0 &&
-                        generatingMap[row][column][2] == 0 && generatingMap[row][column][3] == 1) {
-                    map[row][column] = 11;
-                }
-                else if(generatingMap[row][column][0] == 0 &&  generatingMap[row][column][1] == 0 &&
-                        generatingMap[row][column][2] == 0 && generatingMap[row][column][3] == 1) {
-                    map[row][column] = 12;
-                }
-                else if(generatingMap[row][column][0] == 0 &&  generatingMap[row][column][1] == 1 &&
-                        generatingMap[row][column][2] == 0 && generatingMap[row][column][3] == 1) {
-                    map[row][column] = 13;
-                }
-                else if(generatingMap[row][column][0] == 1 &&  generatingMap[row][column][1] == 0 &&
-                        generatingMap[row][column][2] == 0 && generatingMap[row][column][3] == 0) {
-                    map[row][column] = 14;
+            }
+        }
+
+        for(int row = 0; row < generatingMap.length; row++) {
+            for(int column = 0; column < generatingMap[row].length; column++) {
+                for(int row2 = row * 4; row2 <= (row + 1) * 4; row2++) {
+                    for(int column2 = column * 4; column2 <= (column + 1) * 4; column2++) {
+                        if((generatingMap[row][column][0] == 0 && column2 == column * 4) ||
+                           (generatingMap[row][column][1] == 0 && row2 == row * 4) ||
+                           (generatingMap[row][column][2] == 0 && column2 == (column + 1) * 4) ||
+                           (generatingMap[row][column][3] == 0 && row2 == (row + 1) * 4) &&
+                           map[row2 + 48][column2 + 24] == null) {
+
+                            map[row2 + 48][column2 + 24] = imgWall;
+                        } else {
+                            if(map[row2 + 48][column2 + 24] == null) {
+                                map[row2 + 48][column2 + 24] = imgFloor1;
+                            }
+                        }
+                    }
                 }
             }
         }
