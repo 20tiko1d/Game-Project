@@ -11,6 +11,13 @@ import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.math.Rectangle;
+import com.badlogic.gdx.math.Vector2;
+import com.badlogic.gdx.physics.box2d.Body;
+import com.badlogic.gdx.physics.box2d.BodyDef;
+import com.badlogic.gdx.physics.box2d.Box2DDebugRenderer;
+import com.badlogic.gdx.physics.box2d.CircleShape;
+import com.badlogic.gdx.physics.box2d.FixtureDef;
+import com.badlogic.gdx.physics.box2d.World;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.InputListener;
 import com.badlogic.gdx.scenes.scene2d.Stage;
@@ -23,11 +30,13 @@ public class Main extends ApplicationAdapter {
 
 	private static final float VIEW_PORT_WIDTH = 12;
 	private static final float VIEW_PORT_HEIGHT = 14.4f;
+	private static final boolean DEBUG_PHYSICS = false;
 
 	private  float col_width = 3;
 	private float row_height = 1;
 
 	private OrthographicCamera camera;
+	private Box2DDebugRenderer debugRenderer;
 
 	SpriteBatch batch;
 	MapGenerator generator;
@@ -44,14 +53,16 @@ public class Main extends ApplicationAdapter {
 
 	private float oneWidth;
 
+	private float mapXStart;
+	private float mapYStart;
+
 	private float mapX;
 	private float mapY;
 
 	private Texture imgWall;
 
 	private Texture [][] map;
-	private int howManyX = 25;
-	//private int howManyY = 40;
+	private int howManyX = 20;
 
 	private float velX;
 	private float velY;
@@ -60,6 +71,17 @@ public class Main extends ApplicationAdapter {
 	private boolean isDown = false;
 	private boolean isLeft = false;
 	private boolean isRight = false;
+
+	private Texture backgroundImg;
+
+	private World world;
+
+	private SpriteBatch player;
+	private Texture playerTexture;
+	private Body playerBody;
+
+	private double accumulator;
+	private final float TIME_STEP = 1 / 60f;
 	
 	@Override
 	public void create () {
@@ -69,9 +91,13 @@ public class Main extends ApplicationAdapter {
 
 		generator = new MapGenerator(this);
 
+		backgroundImg = new Texture("circle2.png");
+
 		stage = new Stage(new ScreenViewport());
 		InputMultiplexer inputMultiplexer = new InputMultiplexer();
 		inputMultiplexer.addProcessor(stage);
+
+		oneWidth = (VIEW_PORT_WIDTH - VIEW_PORT_WIDTH / 10f) / howManyX;
 
 		imgWall = new Texture("walls/wall3.png");
 
@@ -80,19 +106,19 @@ public class Main extends ApplicationAdapter {
 			@Override
 			public boolean keyDown(int keycode) {
 				if(keycode == Input.Keys.UP && !isUp) {
-					velY--;
+					velY++;
 					isUp = true;
 				}
 				if(keycode == Input.Keys.DOWN && !isDown) {
-					velY++;
+					velY--;
 					isDown = true;
 				}
 				if(keycode == Input.Keys.LEFT && !isLeft) {
-					velX++;
+					velX--;
 					isLeft = true;
 				}
 				if(keycode == Input.Keys.RIGHT && !isRight) {
-					velX--;
+					velX++;
 					isRight = true;
 				}
 				return true;
@@ -101,19 +127,19 @@ public class Main extends ApplicationAdapter {
 			@Override
 			public boolean keyUp(int keycode) {
 				if(keycode == Input.Keys.UP) {
-					velY++;
+					velY--;
 					isUp = false;
 				}
 				if(keycode == Input.Keys.DOWN) {
-					velY--;
+					velY++;
 					isDown = false;
 				}
 				if(keycode == Input.Keys.LEFT) {
-					velX--;
+					velX++;
 					isLeft = false;
 				}
 				if(keycode == Input.Keys.RIGHT) {
-					velX++;
+					velX--;
 					isRight = false;
 				}
 				return true;
@@ -147,7 +173,13 @@ public class Main extends ApplicationAdapter {
 		Gdx.gl.glClearColor(1, 1, 1, 1);
 		Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
 
-		move(Gdx.graphics.getDeltaTime());
+		if(created) {
+			move(Gdx.graphics.getDeltaTime());
+		}
+
+		if(DEBUG_PHYSICS && created) {
+			debugRenderer.render(world, camera.combined);
+		}
 
 		stage.draw();
 		batch.begin();
@@ -155,8 +187,14 @@ public class Main extends ApplicationAdapter {
 		stage.act();
 		if(created) {
 			drawMap(batch);
+			batch.draw(backgroundImg, VIEW_PORT_WIDTH / 2 - 8, VIEW_PORT_HEIGHT / 2 - 2 - 8, 16, 16);
+			//batch.draw(playerTexture, VIEW_PORT_WIDTH / 2 - oneWidth / 2, VIEW_PORT_HEIGHT / 2 - 2 - oneWidth / 2, oneWidth, oneWidth);
 		}
 		batch.end();
+		if(created) {
+			doPhysicsStep(Gdx.graphics.getDeltaTime());
+		}
+
 	}
 	
 	@Override
@@ -164,13 +202,25 @@ public class Main extends ApplicationAdapter {
 		batch.dispose();
 	}
 
+	public void doPhysicsStep(float deltaTime) {
+		float frameTime = deltaTime;
+
+		if(deltaTime > 1 / 4f) {
+			frameTime = 1 / 4f;
+		}
+		accumulator += frameTime;
+
+		while(accumulator >= TIME_STEP) {
+			world.step(TIME_STEP, 8, 3);
+			accumulator -= TIME_STEP;
+		}
+		mapX = mapXStart - (playerBody.getPosition().x - VIEW_PORT_WIDTH / 2);
+		mapY = mapYStart - (playerBody.getPosition().y - (VIEW_PORT_HEIGHT / 2 - 2)) / 2;
+	}
+
 	public void move(float time) {
-		if(velX != 0) {
-			mapX += velX * 4 * time;
-		}
-		if(velY != 0) {
-			mapY += velY * 2 * time;
-		}
+		playerBody.setLinearVelocity(velX * 8, velY * 8);
+		Gdx.app.log("", "X: " + playerBody.getPosition().x + ", Y: " + playerBody.getPosition().y);
 	}
 
 	public void createButton() {
@@ -178,7 +228,7 @@ public class Main extends ApplicationAdapter {
 
 		button = new TextButton("Create Game",mySkin,"small");
 		button.setSize(150,50);
-		button.setPosition(425,1000);
+		button.setPosition(425,1100);
 		button.addListener(new InputListener(){
 			@Override
 			public boolean touchDown(InputEvent event, float x, float y, int pointer, int button) {
@@ -195,11 +245,46 @@ public class Main extends ApplicationAdapter {
 	}
 
 	public void createGame() {
-		map = generator.createMap(15, 25);
-		oneWidth = (VIEW_PORT_WIDTH - VIEW_PORT_WIDTH * 2 / 10f) / howManyX;
+		map = null;
+		try {
+			world.dispose();
+			player.dispose();
+			playerBody = null;
+			debugRenderer.dispose();
+		} catch(Exception e) {}
+
+		world = new World(new Vector2(0,0), true);
+		debugRenderer = new Box2DDebugRenderer();
+		map = generator.createMap(15, 23, world, oneWidth, VIEW_PORT_WIDTH, VIEW_PORT_HEIGHT);
+		player = new SpriteBatch();
+		playerTexture = new Texture("player2.png");
+		playerBody = world.createBody(getDefinitionOfBody());
+		playerBody.createFixture(getFixtureDefinition());
 		mapX = VIEW_PORT_WIDTH / 2 - startX * oneWidth - oneWidth / 2;
-		mapY = VIEW_PORT_HEIGHT / 2 + startY * oneWidth / 2 + oneWidth / 4;
+		mapY = VIEW_PORT_HEIGHT / 2 - 2 + startY * oneWidth / 2 + oneWidth / 4;
+		mapXStart = mapX;
+		mapYStart = mapY;
+		Gdx.app.log("", "mapX: " + mapX);
+		Gdx.app.log("", "mapY: " + mapY);
 		created = true;
+	}
+
+	public BodyDef getDefinitionOfBody() {
+		BodyDef myBodyDef = new BodyDef();
+		myBodyDef.type = BodyDef.BodyType.DynamicBody;
+		myBodyDef.position.set(VIEW_PORT_WIDTH / 2, VIEW_PORT_HEIGHT / 2 - 2);
+		return myBodyDef;
+	}
+
+	public FixtureDef getFixtureDefinition() {
+		FixtureDef playerFixtureDef = new FixtureDef();
+		playerFixtureDef.density = 1;
+		playerFixtureDef.restitution = 0;
+		playerFixtureDef.friction = 0.5f;
+		CircleShape circleShape = new CircleShape();
+		circleShape.setRadius(oneWidth / 2);
+		playerFixtureDef.shape = circleShape;
+		return playerFixtureDef;
 	}
 
 	public void setStart(int x, int y) {
@@ -224,19 +309,24 @@ public class Main extends ApplicationAdapter {
 	}
 
 	public void drawMap(SpriteBatch batch) {
-		int minIndexX = (int) ((VIEW_PORT_WIDTH / 2 - mapX) / oneWidth - 1) - howManyX / 2;
-		int minIndexY = (int) ((mapY - VIEW_PORT_HEIGHT / 2) / (oneWidth / 2) - 1) - howManyX;
+		int minIndexX = (int) ((VIEW_PORT_WIDTH / 2 - mapX) / oneWidth) - howManyX / 2;
+		int minIndexY = (int) ((mapY - (VIEW_PORT_HEIGHT / 2 - 2 - oneWidth / 4)) / (oneWidth / 2)) - howManyX;
 		int maxIndexX = minIndexX + howManyX;
-		int maxIndexY = minIndexY + howManyX * 2;
+		int maxIndexY = minIndexY + howManyX * 2 + 5;
+		Gdx.app.log("", "minIndexX: " + (((mapY - (VIEW_PORT_HEIGHT / 2 - 2)) / (oneWidth / 2) - 1) - howManyX));
+		//Gdx.app.log("", "minIndexY: " + minIndexY);
 
+
+		int playerX = (int) ((VIEW_PORT_WIDTH / 2 + oneWidth / 2 - mapX) / oneWidth);
+		//int playerX = minIndexX + howManyX / 2;
+		int playerY = (int) ((mapY - (VIEW_PORT_HEIGHT / 2 - 2 - oneWidth / 4)) / (oneWidth / 2) + 0.70);
+		//int playerY = minIndexY + howManyX;
+		//Gdx.app.log("", "playerIndexX: " + playerX);
+		//Gdx.app.log("", "playerIndexY: " + playerY);
 
 
 		float x = mapX + (minIndexX + 1) * oneWidth;
-		float y = mapY - (minIndexY + 1) * (oneWidth / 2) - 2;
-		Gdx.app.log("", "x: " + minIndexX);
-		Gdx.app.log("", "y: " + minIndexY);
-
-
+		float y = mapY - (minIndexY + 1) * (oneWidth / 2);
 
 		for(int row = minIndexY; row < maxIndexY; row++) {
 			for(int column = minIndexX; column < maxIndexX; column++) {
@@ -244,8 +334,14 @@ public class Main extends ApplicationAdapter {
 				if (map[row][column] == imgWall) {
 					oneHeight = oneWidth * 2.5f;
 				}
+
 				batch.draw(map[row][column], x + (column - minIndexX) * oneWidth,
 						y - (row - minIndexY) * oneWidth / 2, oneWidth, oneHeight );
+
+				if(row == playerY && column == playerX) {
+					batch.draw(playerTexture, VIEW_PORT_WIDTH / 2 - oneWidth / 2, VIEW_PORT_HEIGHT / 2 - 2 - oneWidth / 1.5f, oneWidth, oneWidth * 2);
+				}
+
 			}
 		}
 	}

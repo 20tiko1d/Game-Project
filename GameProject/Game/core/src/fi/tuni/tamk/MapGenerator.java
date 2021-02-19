@@ -1,7 +1,12 @@
 package fi.tuni.tamk;
 
+import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.math.MathUtils;
+import com.badlogic.gdx.physics.box2d.Body;
+import com.badlogic.gdx.physics.box2d.BodyDef;
+import com.badlogic.gdx.physics.box2d.PolygonShape;
+import com.badlogic.gdx.physics.box2d.World;
 
 
 public class MapGenerator {
@@ -30,17 +35,26 @@ public class MapGenerator {
     private boolean firstPath;
 
     private Main main;
+    private World world;
+
+    private float oneWidth;
+    private float windowWidth;
+    private float windowHeight;
 
     public MapGenerator(Main main) {
         this.main = main;
     }
 
 
-    public Texture [][] createMap(int size, int preferredLength) {
+    public Texture [][] createMap(int size, int preferredLength, World world, float oneWidth, float windowWidth, float windowHeight) {
         this.size = size;
         middle = new int[4][2];
         generatingMap = new int [size][size][4];
         this.preferredLength = preferredLength;
+        this.world = world;
+        this.oneWidth = oneWidth;
+        this.windowWidth = windowWidth;
+        this.windowHeight = windowHeight;
 
         createMiddle();
         createPath(true);
@@ -49,8 +63,17 @@ public class MapGenerator {
         createRandom();
         putTextures();
         pathDone = false;
-        main.setStart(path1[0][1] * 4 + 27, path1[0][0] * 4 + 51);
+        main.setStart(path1[0][1] * 4 + 27, path1[0][0] * 4 + 50);
+        disposeAll();
         return map;
+    }
+
+    public void disposeAll() {
+        generatingMap = null;
+        path1 = null;
+        path2 = null;
+        randomPath = null;
+        middle = null;
     }
 
     public void createMiddle() {
@@ -459,6 +482,9 @@ public class MapGenerator {
                 }
             }
         }
+        int [][] collisionArray = new int[(size + 24) * 4 + 1][(size + 12) * 4 + 1];
+        float mapX = windowWidth / 2 - (path1[0][1] * 4 + 26) * oneWidth - oneWidth / 2;
+        float mapY = windowHeight / 2 + (path1[0][0] * 4 + 47) * oneWidth + oneWidth / 2;
 
         for(int row = 0; row < generatingMap.length; row++) {
             for(int column = 0; column < generatingMap[row].length; column++) {
@@ -478,7 +504,44 @@ public class MapGenerator {
                         }
                     }
                 }
+
+                if(generatingMap[row][column][0] == 0 && collisionArray[row * 4 + 50][column * 4 + 24] == 0) {
+                    createGround(mapX + (column * 4 + 24.5f) * oneWidth, mapY - (row * 4 + 50.5f) * oneWidth, oneWidth * 0.5f, oneWidth * 2.5f);
+                    collisionArray[row * 4 + 50][column * 4 + 24] = 1;
+                    Gdx.app.log("", "colX: " + (mapX + (column * 4 + 25.5f) * oneWidth));
+                }
+                if(generatingMap[row][column][1] == 0 && collisionArray[row * 4 + 48][column * 4 + 26] == 0) {
+                    createGround(mapX + (column * 4 + 26.5f) * oneWidth, mapY - (row * 4 + 48.5f) * oneWidth, oneWidth * 2.5f, oneWidth * 0.5f);
+                    collisionArray[row * 4 + 48][column * 4 + 26] = 1;
+                }
+                if(generatingMap[row][column][2] == 0 && collisionArray[row * 4 + 50][column * 4 + 28] == 0) {
+                    createGround(mapX + (column * 4 + 28.5f) * oneWidth, mapY - (row * 4 + 50.5f) * oneWidth, oneWidth * 0.5f, oneWidth * 2.5f);
+                    collisionArray[row * 4 + 50][column * 4 + 28] = 1;
+                }
+                if(generatingMap[row][column][3] == 0 && collisionArray[row * 4 + 52][column * 4 + 26] == 0) {
+                    createGround(mapX + (column * 4 + 26.5f) * oneWidth, mapY - (row * 4 + 52.5f) * oneWidth, oneWidth * 2.5f, oneWidth * 0.5f);
+                    collisionArray[row * 4 + 52][column * 4 + 26] = 1;
+                }
             }
         }
+        collisionArray = null;
+    }
+
+    public void createGround(float x, float y, float width, float height) {
+        Body groundBody = world.createBody(getGroundBodyDef(x, y));
+        groundBody.createFixture(getGroundShape(width, height), 0.0f);
+    }
+
+    public BodyDef getGroundBodyDef(float x, float y) {
+        BodyDef myBodyDef = new BodyDef();
+        myBodyDef.type = BodyDef.BodyType.StaticBody;
+        myBodyDef.position.set(x, y);
+        return myBodyDef;
+    }
+
+    public PolygonShape getGroundShape(float width, float height) {
+        PolygonShape groundBox = new PolygonShape();
+        groundBox.setAsBox(width, height);
+        return groundBox;
     }
 }
