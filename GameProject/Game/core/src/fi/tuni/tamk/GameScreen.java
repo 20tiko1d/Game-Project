@@ -14,12 +14,16 @@ import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.Body;
 import com.badlogic.gdx.physics.box2d.Box2DDebugRenderer;
 import com.badlogic.gdx.physics.box2d.World;
+import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.InputListener;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.Button;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
+import com.badlogic.gdx.scenes.scene2d.ui.Touchpad;
+import com.badlogic.gdx.scenes.scene2d.utils.ChangeListener;
+import com.badlogic.gdx.scenes.scene2d.utils.Drawable;
 import com.badlogic.gdx.utils.viewport.ScreenViewport;
 
 public class GameScreen extends ScreenAdapter {
@@ -180,6 +184,35 @@ public class GameScreen extends ScreenAdapter {
         });
         stage.addActor(buttonExit);
 
+        Drawable touchBackground;
+        Drawable touchKnob;
+
+        Skin touchPadSkin = new Skin();
+        touchPadSkin.add("touchBackground", new Texture("joystickBack.png"));
+        touchPadSkin.add("touchKnob", new Texture("joystickKnob.png"));
+        Touchpad.TouchpadStyle touchPadStyle = new Touchpad.TouchpadStyle();
+        touchBackground = touchPadSkin.getDrawable("touchBackground");
+        touchKnob = touchPadSkin.getDrawable("touchKnob");
+        touchKnob.setMinHeight(Gdx.graphics.getHeight() / 5f);
+        touchKnob.setMinWidth(Gdx.graphics.getHeight() / 5f);
+        touchPadStyle.background = touchBackground;
+        touchPadStyle.knob = touchKnob;
+        Touchpad touchpad = new Touchpad(0.75f, touchPadStyle);
+        touchpad.addListener(new ChangeListener() {
+            @Override
+            public void changed(ChangeEvent event, Actor actor) {
+
+                float deltaY = ((Touchpad) actor).getKnobY();
+                float deltaX = ((Touchpad) actor).getKnobX();
+                velY = (deltaY - 216) / 116;
+                velX = (deltaX - 216) / 116;
+                Gdx.app.log("", "Y: " + deltaY);
+                Gdx.app.log("", "X: " + deltaX);
+            }
+        });
+        stage.addActor(touchpad);
+        touchpad.setBounds(Gdx.graphics.getWidth() - Gdx.graphics.getHeight() / 2.5f, 0,
+                Gdx.graphics.getHeight() / 2.5f, Gdx.graphics.getHeight() / 2.5f);
         Gdx.input.setInputProcessor(inputMultiplexer);
     }
 
