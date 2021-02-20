@@ -14,7 +14,12 @@ import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.Body;
 import com.badlogic.gdx.physics.box2d.Box2DDebugRenderer;
 import com.badlogic.gdx.physics.box2d.World;
+import com.badlogic.gdx.scenes.scene2d.InputEvent;
+import com.badlogic.gdx.scenes.scene2d.InputListener;
 import com.badlogic.gdx.scenes.scene2d.Stage;
+import com.badlogic.gdx.scenes.scene2d.ui.Button;
+import com.badlogic.gdx.scenes.scene2d.ui.Skin;
+import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
 import com.badlogic.gdx.utils.viewport.ScreenViewport;
 
 public class GameScreen extends ScreenAdapter {
@@ -48,6 +53,7 @@ public class GameScreen extends ScreenAdapter {
     private int startY;
     private float mapXStart;
     private float mapYStart;
+    private float portraitCorrection;
 
     // Controls
     private boolean isUp = false;
@@ -80,6 +86,10 @@ public class GameScreen extends ScreenAdapter {
         this.levelScreen = levelScreen;
 
         batch = new SpriteBatch();
+
+        if(Main.isPortrait) {
+            portraitCorrection = Main.viewPortHeight / Main.viewPortWidth;
+        }
 
         camera = new OrthographicCamera();
         camera.setToOrtho(false, Main.viewPortWidth, Main.viewPortHeight);
@@ -150,6 +160,26 @@ public class GameScreen extends ScreenAdapter {
                 return true;
             }
         }));
+        Skin mySkin = new Skin(Gdx.files.internal("skin/glassy-ui.json"));
+
+        Button buttonExit = new TextButton("Exit",mySkin,"default");
+        buttonExit.setSize(Gdx.graphics.getWidth() / 10f,Gdx.graphics.getWidth() / 10f);
+        buttonExit.setPosition(Gdx.graphics.getWidth() * 9 / 10f,Gdx.graphics.getHeight() - Gdx.graphics.getWidth() / 10f);
+        buttonExit.addListener(new InputListener(){
+            @Override
+            public boolean touchDown(InputEvent event, float x, float y, int pointer, int button) {
+                return true;
+            }
+
+            @Override
+            public void touchUp(InputEvent event, float x, float y, int pointer, int button) {
+                created = false;
+                dispose();
+                main.setScreen(new LevelScreen(main));
+            }
+        });
+        stage.addActor(buttonExit);
+
         Gdx.input.setInputProcessor(inputMultiplexer);
     }
 
@@ -170,17 +200,19 @@ public class GameScreen extends ScreenAdapter {
         if(DEBUG_PHYSICS && created) {
             debugRenderer.render(world, camera.combined);
         }
-        stage.draw();
+
         batch.begin();
-        stage.act();
+
         if(created) {
             drawMap(batch);
-            batch.draw(backgroundImg, Main.viewPortWidth / 2 - 7.5f, Main.viewPortHeight / 2 - 7.5f, 15, 15);
+            batch.draw(backgroundImg, Main.viewPortWidth / 2 - 7.5f, Main.viewPortHeight / 2 - 7.5f + portraitCorrection, 15, 15);
         }
         batch.end();
         if(created) {
             doPhysicsStep(Gdx.graphics.getDeltaTime());
         }
+        stage.draw();
+        stage.act();
     }
 
     @Override
@@ -227,10 +259,12 @@ public class GameScreen extends ScreenAdapter {
         }
         mapX = mapXStart - (playerBody.getPosition().x - Main.viewPortWidth / 2);
         mapY = mapYStart - (playerBody.getPosition().y - (Main.viewPortHeight / 2)) / 2;
+
+
     }
 
     public void move(float time) {
-        playerBody.setLinearVelocity(velX * 8, velY * 8);
+        playerBody.setLinearVelocity(velX * 4, velY * 4);
     }
 
     public void drawMap(SpriteBatch batch) {
@@ -259,12 +293,12 @@ public class GameScreen extends ScreenAdapter {
                     oneHeight = currentOneWidth * 2.5f;
                 };
                 batch.draw(map[row][column], x + (column - minIndexX) * currentOneWidth,
-                        y - (row - minIndexY) * currentOneWidth / 2, currentOneWidth, oneHeight);
+                        y - (row - minIndexY) * currentOneWidth / 2 + portraitCorrection, currentOneWidth, oneHeight);
 
                 if(row == playerY && column == playerX) {
                     batch.draw(playerTexture, Main.viewPortWidth / 2 - currentOneWidth / 2,
-                            Main.viewPortHeight / 2 - currentOneWidth / 1.5f, currentOneWidth,
-                            currentOneWidth * 2);
+                                Main.viewPortHeight / 2 - currentOneWidth / 1.5f + portraitCorrection, currentOneWidth,
+                                currentOneWidth * 2);
                 }
             }
         }

@@ -48,6 +48,7 @@ public class MenuScreen extends ScreenAdapter {
 
             @Override
             public void touchUp(InputEvent event, float x, float y, int pointer, int button) {
+                dispose();
                 main.setScreen(new LevelScreen(main));
             }
         });
@@ -102,6 +103,8 @@ public class MenuScreen extends ScreenAdapter {
     @Override
     public void dispose() {
         stage.dispose();
+        camera = null;
+
     }
 
 }

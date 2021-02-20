@@ -53,7 +53,7 @@ public class LevelScreen extends ScreenAdapter {
 
             @Override
             public void touchUp(InputEvent event, float x, float y, int pointer, int button) {
-                //createGame();
+                createGame(10, 15);
             }
         });
         stage.addActor(buttonEasy);
@@ -74,7 +74,7 @@ public class LevelScreen extends ScreenAdapter {
 
             @Override
             public void touchUp(InputEvent event, float x, float y, int pointer, int button) {
-                createGame();
+                createGame(15, 23);
             }
         });
         stage.addActor(buttonMedium);
@@ -94,10 +94,27 @@ public class LevelScreen extends ScreenAdapter {
 
             @Override
             public void touchUp(InputEvent event, float x, float y, int pointer, int button) {
-                //createGame();
+                createGame(20, 31);
             }
         });
         stage.addActor(buttonHard);
+
+        Button buttonMenu = new TextButton("Menu",mySkin,"default");
+        buttonMenu.setSize(Gdx.graphics.getWidth() / 10f,Gdx.graphics.getWidth() / 10f);
+        buttonMenu.setPosition(0,Gdx.graphics.getHeight() - Gdx.graphics.getWidth() / 10f);
+        buttonMenu.addListener(new InputListener(){
+            @Override
+            public boolean touchDown(InputEvent event, float x, float y, int pointer, int button) {
+                return true;
+            }
+
+            @Override
+            public void touchUp(InputEvent event, float x, float y, int pointer, int button) {
+                dispose();
+                main.setScreen(new MenuScreen(main));
+            }
+        });
+        stage.addActor(buttonMenu);
         Gdx.input.setInputProcessor(stage);
     }
 
@@ -115,9 +132,10 @@ public class LevelScreen extends ScreenAdapter {
     @Override
     public void dispose () {
         stage.dispose();
+        rect = null;
     }
 
-    public void createGame() {
+    public void createGame(int size, int pathLength) {
         World world = new World(new Vector2(0,0), true);
         Body playerBody = world.createBody(getDefinitionOfBody());
         playerBody.createFixture(getFixtureDefinition());
@@ -126,7 +144,8 @@ public class LevelScreen extends ScreenAdapter {
         MapGenerator generator= new MapGenerator(main, gameScreen);
 
 
-        map = generator.createMap(15, 23, world, Main.oneWidth, Main.viewPortWidth, Main.viewPortHeight);
+        map = generator.createMap(size, pathLength, world, Main.oneWidth, Main.viewPortWidth, Main.viewPortHeight);
+        dispose();
         main.setScreen(gameScreen);
     }
 
@@ -134,6 +153,7 @@ public class LevelScreen extends ScreenAdapter {
         BodyDef myBodyDef = new BodyDef();
         myBodyDef.type = BodyDef.BodyType.DynamicBody;
         myBodyDef.position.set(Main.viewPortWidth / 2, Main.viewPortHeight / 2 - 2);
+
         return myBodyDef;
     }
 
