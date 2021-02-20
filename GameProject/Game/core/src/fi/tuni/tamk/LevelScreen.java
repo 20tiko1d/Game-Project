@@ -18,6 +18,7 @@ import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.Button;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
+import com.badlogic.gdx.utils.Array;
 import com.badlogic.gdx.utils.viewport.ScreenViewport;
 
 public class LevelScreen extends ScreenAdapter {
@@ -30,6 +31,8 @@ public class LevelScreen extends ScreenAdapter {
     private int marginal;
 
     private Texture [][] map;
+    private int [][] randomPairs;
+    Array<String> array = FileReader.getPairElements();
 
     public LevelScreen(Main main){
         this.main = main;
@@ -53,7 +56,7 @@ public class LevelScreen extends ScreenAdapter {
 
             @Override
             public void touchUp(InputEvent event, float x, float y, int pointer, int button) {
-                createGame(10, 15);
+                createGame(10, 15, 2);
             }
         });
         stage.addActor(buttonEasy);
@@ -74,7 +77,7 @@ public class LevelScreen extends ScreenAdapter {
 
             @Override
             public void touchUp(InputEvent event, float x, float y, int pointer, int button) {
-                createGame(15, 23);
+                createGame(15, 23, 4);
             }
         });
         stage.addActor(buttonMedium);
@@ -94,7 +97,7 @@ public class LevelScreen extends ScreenAdapter {
 
             @Override
             public void touchUp(InputEvent event, float x, float y, int pointer, int button) {
-                createGame(20, 31);
+                createGame(20, 31, 6);
             }
         });
         stage.addActor(buttonHard);
@@ -135,7 +138,7 @@ public class LevelScreen extends ScreenAdapter {
         rect = null;
     }
 
-    public void createGame(int size, int pathLength) {
+    public void createGame(int size, int pathLength, int numOfPairs) {
         World world = new World(new Vector2(0,0), true);
         Body playerBody = world.createBody(getDefinitionOfBody());
         playerBody.createFixture(getFixtureDefinition());
@@ -144,7 +147,7 @@ public class LevelScreen extends ScreenAdapter {
         MapGenerator generator= new MapGenerator(main, gameScreen);
 
 
-        map = generator.createMap(size, pathLength, world, Main.oneWidth, Main.viewPortWidth, Main.viewPortHeight);
+        map = generator.createMap(size, pathLength, world, Main.oneWidth, Main.viewPortWidth, Main.viewPortHeight, array.size, numOfPairs, this);
         dispose();
         main.setScreen(gameScreen);
     }
@@ -206,5 +209,15 @@ public class LevelScreen extends ScreenAdapter {
         rect.width = rect.height;
     }
 
+    public void setRandomPairs(int [][] randomPairs) {
+        this.randomPairs = randomPairs;
+    }
 
+    public int[][] getRandomPairs() {
+        return randomPairs;
+    }
+
+    public Array<String> getArray() {
+        return array;
+    }
 }

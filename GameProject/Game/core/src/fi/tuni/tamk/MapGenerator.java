@@ -42,6 +42,7 @@ public class MapGenerator {
     private float windowHeight;
 
     private GameScreen gameScreen;
+    private LevelScreen levelScreen;
 
     public MapGenerator(Main main, GameScreen gameScreen) {
         this.main = main;
@@ -49,7 +50,9 @@ public class MapGenerator {
     }
 
 
-    public Texture [][] createMap(int size, int preferredLength, World world, float oneWidth, float windowWidth, float windowHeight) {
+    public Texture [][] createMap(int size, int preferredLength, World world, float oneWidth,
+                                  float windowWidth, float windowHeight, int arraySize,
+                                  int numOfPairs, LevelScreen levelScreen) {
         this.size = size;
         middle = new int[4][2];
         generatingMap = new int [size][size][4];
@@ -58,6 +61,7 @@ public class MapGenerator {
         this.oneWidth = oneWidth;
         this.windowWidth = windowWidth;
         this.windowHeight = windowHeight;
+        this.levelScreen = levelScreen;
 
         createMiddle();
         createPath(true);
@@ -67,6 +71,7 @@ public class MapGenerator {
         putTextures();
         pathDone = false;
         gameScreen.setStart(path1[0][1] * 4 + 27, path1[0][0] * 4 + 50);
+        createRandomPairs(numOfPairs, arraySize);
         disposeAll();
         return map;
     }
@@ -511,7 +516,6 @@ public class MapGenerator {
                 if(generatingMap[row][column][0] == 0 && collisionArray[row * 4 + 50][column * 4 + 24] == 0) {
                     createGround(mapX + (column * 4 + 24.5f) * oneWidth, mapY - (row * 4 + 50.5f) * oneWidth, oneWidth * 0.5f, oneWidth * 2.5f);
                     collisionArray[row * 4 + 50][column * 4 + 24] = 1;
-                    Gdx.app.log("", "colX: " + (mapX + (column * 4 + 25.5f) * oneWidth));
                 }
                 if(generatingMap[row][column][1] == 0 && collisionArray[row * 4 + 48][column * 4 + 26] == 0) {
                     createGround(mapX + (column * 4 + 26.5f) * oneWidth, mapY - (row * 4 + 48.5f) * oneWidth, oneWidth * 2.5f, oneWidth * 0.5f);
@@ -546,5 +550,78 @@ public class MapGenerator {
         PolygonShape groundBox = new PolygonShape();
         groundBox.setAsBox(width, height);
         return groundBox;
+    }
+
+    public void createRandomPairs(int numOfPairs, int arraySize) {
+        int [][] pairs = new int[numOfPairs][5];
+        for(int i = 0; i < numOfPairs; i++) {
+
+            boolean clear = true;
+            int random = MathUtils.random(1, arraySize);
+            for(int j = 0; j < numOfPairs; j++) {
+                if(random == pairs[j][0]) {
+                    clear = false;
+                }
+            }
+            if(!clear) {
+                i--;
+            } else {
+                pairs[i][0] = random;
+            }
+        }
+
+        for(int i = 0; i < numOfPairs; i++) {
+            pairs[i][0]--;
+        }
+
+        for(int i = 0; i < numOfPairs; i++) {
+            int randomX1 = MathUtils.random(0, generatingMap.length - 1);
+            int randomY1 = MathUtils.random(0, generatingMap.length - 1);
+            int randomX2 = MathUtils.random(0, generatingMap.length - 1);
+            int randomY2 = MathUtils.random(0, generatingMap.length - 1);
+
+            if(Math.abs(randomX1 - randomX2) + Math.abs(randomY1 - randomY2) <= size / 3 ||
+            !checkPairLocations(randomX1, randomY1, randomX2, randomY2, pairs)) {
+                i--;
+            } else {
+                pairs[i][1] = randomX1;
+                pairs[i][2] = randomY1;
+                pairs[i][3] = randomX2;
+                pairs[i][4] = randomY2;
+            }
+        }
+        for(int i = 0; i < numOfPairs; i++) {
+            pairs[i][1] = pairs[i][1] * 4 + 50;
+            pairs[i][2] = pairs[i][2] * 4 + 26;
+            pairs[i][3] = pairs[i][3] * 4 + 50;
+            pairs[i][4] = pairs[i][4] * 4 + 26;
+        }
+        levelScreen.setRandomPairs(pairs);
+    }
+
+    public boolean checkPairLocations(int x1, int y1, int x2, int y2, int[][] pairs) {
+        for(int i = 0; i < 4; i++) {
+            if(x1 == middle[i][1] && y1 == middle[i][0] || x2 == middle[i][1] && y2 == middle[i][0]) {
+                return false;
+            }
+        }
+        if(x1 == path2[0][1] && y1 == path2[0][0] || x2 == path2[0][1] && y2 == path2[0][0]
+           || x1 == path1[0][1] && y1 == path1[0][0] || x2 == path1[0][1] && y2 == path1[0][0]
+           || x1 == path1[1][1] && y1 == path1[1][0] || x2 == path1[1][1] && y2 == path1[1][0]) {
+            return false;
+        }
+        for(int i = 0; i < pairs.length; i++) {
+            int y3 = pairs[i][1];
+            int x3 = pairs[i][2];
+            int y4 = pairs[i][3];
+            int x4 = pairs[i][4];
+            if(x3 == 0 && y3 == 0 && x4 == 0 && y4 == 0) {
+                continue;
+            }
+            if(x1 == x3 && y1 == y3 || x1 == x4 && y1 == y4 || x2 == x3 && y2 == y3 || x2 == x4 && y2 == y4) {
+                return false;
+            }
+        }
+        return true;
     }
 }

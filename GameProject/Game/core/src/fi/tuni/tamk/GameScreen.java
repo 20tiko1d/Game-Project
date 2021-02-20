@@ -24,6 +24,7 @@ import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
 import com.badlogic.gdx.scenes.scene2d.ui.Touchpad;
 import com.badlogic.gdx.scenes.scene2d.utils.ChangeListener;
 import com.badlogic.gdx.scenes.scene2d.utils.Drawable;
+import com.badlogic.gdx.utils.Array;
 import com.badlogic.gdx.utils.viewport.ScreenViewport;
 
 public class GameScreen extends ScreenAdapter {
@@ -43,11 +44,16 @@ public class GameScreen extends ScreenAdapter {
     private Stage stage;
     private SpriteBatch player;
 
+    // Pairs
+    private Array<String> array;
+    private int[][] randomPairs;
+
     // Textures
     private Texture[][] map;
     private Texture playerTexture;
     private Texture backgroundImg;
     private Texture imgWall;
+    private Texture pairTexture;
 
     // Map rendering
     private boolean created = false;
@@ -89,6 +95,8 @@ public class GameScreen extends ScreenAdapter {
         this.playerBody = playerBody;
         this.levelScreen = levelScreen;
 
+
+
         batch = new SpriteBatch();
 
         if(Main.isPortrait) {
@@ -108,6 +116,8 @@ public class GameScreen extends ScreenAdapter {
     @Override
     public void show() {
         map = levelScreen.getMap();
+        randomPairs = levelScreen.getRandomPairs();
+        array = levelScreen.getArray();
         mapX = (Main.viewPortWidth / 2) - (startX * Main.oneWidth) - (Main.oneWidth / 2);
         mapY = (Main.viewPortHeight / 2) + (startY * Main.oneWidth) / 2 + (Main.oneWidth / 4) - 1.8f * Main.oneWidth;
         mapXStart = mapX;
@@ -187,32 +197,33 @@ public class GameScreen extends ScreenAdapter {
         Drawable touchBackground;
         Drawable touchKnob;
 
+        float size = Gdx.graphics.getHeight() / 5f;
+
         Skin touchPadSkin = new Skin();
         touchPadSkin.add("touchBackground", new Texture("joystickBack.png"));
         touchPadSkin.add("touchKnob", new Texture("joystickKnob.png"));
         Touchpad.TouchpadStyle touchPadStyle = new Touchpad.TouchpadStyle();
         touchBackground = touchPadSkin.getDrawable("touchBackground");
         touchKnob = touchPadSkin.getDrawable("touchKnob");
-        touchKnob.setMinHeight(Gdx.graphics.getHeight() / 5f);
-        touchKnob.setMinWidth(Gdx.graphics.getHeight() / 5f);
+        touchKnob.setMinHeight(size);
+        touchKnob.setMinWidth(size);
         touchPadStyle.background = touchBackground;
         touchPadStyle.knob = touchKnob;
         Touchpad touchpad = new Touchpad(0.75f, touchPadStyle);
+        touchpad.setBounds(Gdx.graphics.getWidth() - Gdx.graphics.getHeight() / 2.5f, 0,
+                Gdx.graphics.getHeight() / 2.5f, Gdx.graphics.getHeight() / 2.5f);
         touchpad.addListener(new ChangeListener() {
             @Override
             public void changed(ChangeEvent event, Actor actor) {
 
                 float deltaY = ((Touchpad) actor).getKnobY();
                 float deltaX = ((Touchpad) actor).getKnobX();
-                velY = (deltaY - 216) / 116;
-                velX = (deltaX - 216) / 116;
-                Gdx.app.log("", "Y: " + deltaY);
-                Gdx.app.log("", "X: " + deltaX);
+                velY = (deltaY - Gdx.graphics.getHeight() / 5f) / (Gdx.graphics.getHeight() / 10f);
+                velX = (deltaX - Gdx.graphics.getHeight() / 5f) / (Gdx.graphics.getHeight() / 10f);
             }
         });
         stage.addActor(touchpad);
-        touchpad.setBounds(Gdx.graphics.getWidth() - Gdx.graphics.getHeight() / 2.5f, 0,
-                Gdx.graphics.getHeight() / 2.5f, Gdx.graphics.getHeight() / 2.5f);
+
         Gdx.input.setInputProcessor(inputMultiplexer);
     }
 
@@ -260,6 +271,9 @@ public class GameScreen extends ScreenAdapter {
         backgroundImg.dispose();
         imgWall.dispose();
         batch.dispose();
+        array = null;
+        randomPairs = null;
+        pairTexture.dispose();
     }
 
     public void setStart(int x, int y) {
@@ -276,6 +290,7 @@ public class GameScreen extends ScreenAdapter {
         backgroundImg = new Texture("circle2.png");
         imgWall = new Texture("walls/wall3.png");
         playerTexture = new Texture("player2.png");
+        pairTexture = new Texture("pairs1.png");
     }
 
     public void doPhysicsStep(float deltaTime) {
@@ -330,8 +345,16 @@ public class GameScreen extends ScreenAdapter {
 
                 if(row == playerY && column == playerX) {
                     batch.draw(playerTexture, Main.viewPortWidth / 2 - currentOneWidth / 2,
-                                Main.viewPortHeight / 2 - currentOneWidth / 1.5f + portraitCorrection, currentOneWidth,
-                                currentOneWidth * 2);
+                            Main.viewPortHeight / 2 - currentOneWidth / 1.5f + portraitCorrection, currentOneWidth,
+                            currentOneWidth * 2);
+                    itemCollision(row, column);
+                }
+                for(int i = 0; i < randomPairs.length; i++) {
+                    if (row == randomPairs[i][1] && column == randomPairs[i][2] ||
+                        row == randomPairs[i][3] && column == randomPairs[i][4]) {
+                        batch.draw(pairTexture, x + (column - minIndexX) * currentOneWidth,
+                                y - (row - minIndexY) * currentOneWidth / 2 + portraitCorrection + oneHeight, currentOneWidth, oneHeight * 3);
+                    }
                 }
             }
         }
@@ -372,5 +395,15 @@ public class GameScreen extends ScreenAdapter {
         }
     }
 
+    public void itemCollision(int row, int column) {
+        for(int i = 0; i < randomPairs.length; i++) {
+            if(Math.abs(row - randomPairs[i][1]) + Math.abs(column - randomPairs[i][2]) <= 2 && randomPairs[i][0] != -1) {
+                Gdx.app.log("", "Text: " + array.get(randomPairs[i][0]));
+            }
+            if(Math.abs(row - randomPairs[i][3]) + Math.abs(column - randomPairs[i][4]) <= 2 && randomPairs[i][0] != -1) {
+                Gdx.app.log("", "Text: " + array.get(randomPairs[i][0]));
+            }
+        }
+    }
 
 }
