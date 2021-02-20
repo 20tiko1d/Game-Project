@@ -41,8 +41,11 @@ public class MapGenerator {
     private float windowWidth;
     private float windowHeight;
 
-    public MapGenerator(Main main) {
+    private GameScreen gameScreen;
+
+    public MapGenerator(Main main, GameScreen gameScreen) {
         this.main = main;
+        this.gameScreen = gameScreen;
     }
 
 
@@ -63,7 +66,7 @@ public class MapGenerator {
         createRandom();
         putTextures();
         pathDone = false;
-        main.setStart(path1[0][1] * 4 + 27, path1[0][0] * 4 + 50);
+        gameScreen.setStart(path1[0][1] * 4 + 27, path1[0][0] * 4 + 50);
         disposeAll();
         return map;
     }
@@ -467,9 +470,9 @@ public class MapGenerator {
     }
 
     public void putTextures() {
-        Texture imgFloor1 = main.getFloorTexture1();
-        Texture imgFloor2 = main.getFloorTexture2();
-        Texture imgWall = main.getWallTexture();
+        Texture imgFloor1 = new Texture("floors/floor1.png");
+        Texture imgFloor2 = new Texture("floors/floor2.png");
+        Texture imgWall = new Texture("walls/wall3.png");
 
         map = new Texture[(size + 24) * 4 + 1][(size + 12) * 4 + 1];
 
