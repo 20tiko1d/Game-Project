@@ -32,15 +32,11 @@ public class Main extends ApplicationAdapter {
 	private static final float VIEW_PORT_HEIGHT = 14.4f;
 	private static final boolean DEBUG_PHYSICS = false;
 
-	private  float col_width = 3;
-	private float row_height = 1;
-
 	private OrthographicCamera camera;
 	private Box2DDebugRenderer debugRenderer;
 
 	SpriteBatch batch;
 	MapGenerator generator;
-	private Rectangle rect;
 
 	private Stage stage;
 	private Button button;
@@ -82,6 +78,15 @@ public class Main extends ApplicationAdapter {
 
 	private double accumulator;
 	private final float TIME_STEP = 1 / 60f;
+
+	private float zoomRatio = 1;
+	private float zoomOut = 0.5f;
+	private boolean zoomInProgress = false;
+	private boolean ifZoomOut = true;
+
+	private float zoomTimeLength = 10;
+	private float zoomTimer;
+	private float transitionTimer;
 	
 	@Override
 	public void create () {
@@ -142,6 +147,11 @@ public class Main extends ApplicationAdapter {
 					velX--;
 					isRight = false;
 				}
+				if(keycode == Input.Keys.SPACE && !zoomInProgress) {
+					Gdx.app.log("", "jotain");
+					transitionTimer = 1;
+					zoomInProgress = true;
+				}
 				return true;
 			}
 			/*
@@ -175,6 +185,9 @@ public class Main extends ApplicationAdapter {
 
 		if(created) {
 			move(Gdx.graphics.getDeltaTime());
+			if(zoomInProgress) {
+				zoomOut(Gdx.graphics.getDeltaTime());
+			}
 		}
 
 		if(DEBUG_PHYSICS && created) {
@@ -188,7 +201,6 @@ public class Main extends ApplicationAdapter {
 		if(created) {
 			drawMap(batch);
 			batch.draw(backgroundImg, VIEW_PORT_WIDTH / 2 - 8, VIEW_PORT_HEIGHT / 2 - 2 - 8, 16, 16);
-			//batch.draw(playerTexture, VIEW_PORT_WIDTH / 2 - oneWidth / 2, VIEW_PORT_HEIGHT / 2 - 2 - oneWidth / 2, oneWidth, oneWidth);
 		}
 		batch.end();
 		if(created) {
@@ -220,7 +232,6 @@ public class Main extends ApplicationAdapter {
 
 	public void move(float time) {
 		playerBody.setLinearVelocity(velX * 8, velY * 8);
-		Gdx.app.log("", "X: " + playerBody.getPosition().x + ", Y: " + playerBody.getPosition().y);
 	}
 
 	public void createButton() {
@@ -264,8 +275,6 @@ public class Main extends ApplicationAdapter {
 		mapY = VIEW_PORT_HEIGHT / 2 - 2 + startY * oneWidth / 2 + oneWidth / 4;
 		mapXStart = mapX;
 		mapYStart = mapY;
-		Gdx.app.log("", "mapX: " + mapX);
-		Gdx.app.log("", "mapY: " + mapY);
 		created = true;
 	}
 
@@ -309,40 +318,83 @@ public class Main extends ApplicationAdapter {
 	}
 
 	public void drawMap(SpriteBatch batch) {
-		int minIndexX = (int) ((VIEW_PORT_WIDTH / 2 - mapX) / oneWidth) - howManyX / 2;
-		int minIndexY = (int) ((mapY - (VIEW_PORT_HEIGHT / 2 - 2 - oneWidth / 4)) / (oneWidth / 2)) - howManyX;
-		int maxIndexX = minIndexX + howManyX;
-		int maxIndexY = minIndexY + howManyX * 2 + 5;
-		Gdx.app.log("", "minIndexX: " + (((mapY - (VIEW_PORT_HEIGHT / 2 - 2)) / (oneWidth / 2) - 1) - howManyX));
-		//Gdx.app.log("", "minIndexY: " + minIndexY);
+		float currentOneWidth = oneWidth;
+		int currentManyX = howManyX;
+		if(zoomInProgress) {
+			currentOneWidth = oneWidth / zoomRatio;
+			currentManyX = (int) (howManyX * (zoomRatio + 0.2));
+		}
 
+		int minIndexX = (int) ((VIEW_PORT_WIDTH / 2 - mapX) / zoomRatio / currentOneWidth) - currentManyX / 2;
+		int minIndexY = (int) ((((mapY - (VIEW_PORT_HEIGHT / 2 - 2)) / zoomRatio - currentOneWidth / 4) / (currentOneWidth / 2)) - currentManyX);
+		int maxIndexX = minIndexX + currentManyX;
+		int maxIndexY = minIndexY + currentManyX * 2 + 5;
 
-		int playerX = (int) ((VIEW_PORT_WIDTH / 2 + oneWidth / 2 - mapX) / oneWidth);
-		//int playerX = minIndexX + howManyX / 2;
-		int playerY = (int) ((mapY - (VIEW_PORT_HEIGHT / 2 - 2 - oneWidth / 4)) / (oneWidth / 2) + 0.70);
-		//int playerY = minIndexY + howManyX;
-		//Gdx.app.log("", "playerIndexX: " + playerX);
-		//Gdx.app.log("", "playerIndexY: " + playerY);
+		float x = VIEW_PORT_WIDTH / 2 - (VIEW_PORT_WIDTH / 2 - mapX) / zoomRatio + (minIndexX + 1) * currentOneWidth;
+		float y = VIEW_PORT_HEIGHT / 2 - 2 - currentOneWidth / 4 + (mapY - (VIEW_PORT_HEIGHT / 2 - 2)) / zoomRatio - (minIndexY + 1) * (currentOneWidth / 2);
 
+		/*
+		int playerX = (int) ((VIEW_PORT_WIDTH / 2 + oneWidth / 2 - mapX) / zoomRatio / currentOneWidth);
+		int playerY = (int) (((mapY - (VIEW_PORT_HEIGHT / 2 - 2) / zoomRatio - currentOneWidth / 4))
+				/ (currentOneWidth / 2));*/
+		int playerX = (int) (minIndexX + (VIEW_PORT_WIDTH / 2 + currentOneWidth / 2 - x) / currentOneWidth);
+		int playerY = (int) (minIndexY + (y - (VIEW_PORT_HEIGHT / 2 - 2)) / (currentOneWidth / 2) + 2.5);
 
-		float x = mapX + (minIndexX + 1) * oneWidth;
-		float y = mapY - (minIndexY + 1) * (oneWidth / 2);
-
+		Gdx.app.log("", "x: " + playerX);
+		Gdx.app.log("", "y: " + playerY);
 		for(int row = minIndexY; row < maxIndexY; row++) {
 			for(int column = minIndexX; column < maxIndexX; column++) {
-				float oneHeight = oneWidth / 2;
+				//Gdx.app.log("", "tapahtuu");
+				float oneHeight = currentOneWidth / 2;
 				if (map[row][column] == imgWall) {
-					oneHeight = oneWidth * 2.5f;
+					oneHeight = currentOneWidth * 2.5f;
 				}
-
-				batch.draw(map[row][column], x + (column - minIndexX) * oneWidth,
-						y - (row - minIndexY) * oneWidth / 2, oneWidth, oneHeight );
+				//Gdx.app.log("", "X: " + (x + (column - minIndexX) + currentOneWidth));
+				batch.draw(map[row][column], x + (column - minIndexX) * currentOneWidth,
+						y - (row - minIndexY) * currentOneWidth / 2, currentOneWidth, oneHeight );
 
 				if(row == playerY && column == playerX) {
-					batch.draw(playerTexture, VIEW_PORT_WIDTH / 2 - oneWidth / 2, VIEW_PORT_HEIGHT / 2 - 2 - oneWidth / 1.5f, oneWidth, oneWidth * 2);
+					batch.draw(playerTexture, VIEW_PORT_WIDTH / 2 - currentOneWidth / 2,
+							VIEW_PORT_HEIGHT / 2 - 2 - currentOneWidth / 1.5f, currentOneWidth,
+							currentOneWidth * 2);
 				}
-
 			}
+		}
+	}
+
+	public void zoomOut(float deltaTime) {
+		if(zoomTimer <= 0) {
+			if(transitionTimer >= 0) {
+				float frameTime = deltaTime;
+				while(transitionTimer >= 0 && frameTime >= 1 / 60f) {
+					changeRatio();
+					frameTime -= 1 / 60f;
+					transitionTimer -= 1 / 100f;
+				}
+				if(transitionTimer <= 0 && ifZoomOut) {
+					zoomTimer = zoomTimeLength;
+					ifZoomOut = false;
+					return;
+				}
+				if(transitionTimer <= 0 && !ifZoomOut) {
+					ifZoomOut = true;
+					zoomInProgress = false;
+					zoomRatio = 1;
+					return;
+				}
+			} else {
+				transitionTimer = 1;
+			}
+		} else {
+			zoomTimer -= deltaTime;
+		}
+	}
+
+	public void changeRatio() {
+		if(ifZoomOut) {
+			zoomRatio += zoomOut / 100f;
+		} else {
+			zoomRatio -= zoomOut / 100f;
 		}
 	}
 }
