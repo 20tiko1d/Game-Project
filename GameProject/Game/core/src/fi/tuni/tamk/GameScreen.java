@@ -74,12 +74,14 @@ public class GameScreen extends ScreenAdapter {
     private float portraitCorrection;
 
     // Controls
+    private boolean boost = false;
     private boolean isUp = false;
     private boolean isDown = false;
     private boolean isLeft = false;
     private boolean isRight = false;
     private float velX;
     private float velY;
+    private float velMultiplier = 1;
 
     private boolean first;
     private boolean currentFirst;
@@ -169,6 +171,9 @@ public class GameScreen extends ScreenAdapter {
                     velX++;
                     isRight = true;
                 }
+                if(keycode == Input.Keys.SHIFT_LEFT && !boost) {
+                    boost = true;
+                }
                 return true;
             }
 
@@ -194,6 +199,9 @@ public class GameScreen extends ScreenAdapter {
                     Gdx.app.log("", "jotain");
                     transitionTimer = 1;
                     zoomInProgress = true;
+                }
+                if(keycode == Input.Keys.SHIFT_LEFT) {
+                    boost = false;
                 }
                 return true;
             }
@@ -262,6 +270,25 @@ public class GameScreen extends ScreenAdapter {
             }
         });
         stage.addActor(buttonSwitch);
+
+        Button buttonBoost = new TextButton("Boost",mySkin,"default");
+        buttonBoost.setSize(Gdx.graphics.getHeight() / 5f,Gdx.graphics.getHeight() / 5f);
+        buttonBoost.setPosition(Gdx.graphics.getWidth() / 15f,Gdx.graphics.getWidth() / 15f);
+        buttonBoost.addListener(new InputListener(){
+            @Override
+            public boolean touchDown(InputEvent event, float x, float y, int pointer, int button) {
+                if(!boost) {
+                    boost = true;
+                }
+                return true;
+            }
+
+            @Override
+            public void touchUp(InputEvent event, float x, float y, int pointer, int button) {
+                boost = false;
+            }
+        });
+        //stage.addActor(buttonBoost);
 
         Drawable touchBackground;
         Drawable touchKnob;
@@ -386,7 +413,7 @@ public class GameScreen extends ScreenAdapter {
     }
 
     public void move(float time) {
-        playerBody.setLinearVelocity(velX * 4, velY * 4);
+        playerBody.setLinearVelocity(velX * 4 * velMultiplier, velY * 4 * velMultiplier);
     }
 
     /**
@@ -455,18 +482,21 @@ public class GameScreen extends ScreenAdapter {
                     frameTime -= 1 / 60f;
                     transitionTimer -= 1 / 100f;
                 }
-                if(transitionTimer <= 0 && ifZoomOut) {
+                if(transitionTimer <= 0 && ifZoomOut && !boost) {
                     zoomTimer = zoomTimeLength;
                     ifZoomOut = false;
                     return;
                 }
-                if(transitionTimer <= 0 && !ifZoomOut) {
+                if(transitionTimer <= 0 && !ifZoomOut && !boost) {
                     ifZoomOut = true;
                     zoomInProgress = false;
                     zoomRatio = 1;
                 }
             } else {
-                transitionTimer = 1;
+                if(!boost) {
+                    transitionTimer = 1;
+                }
+
             }
         } else {
             zoomTimer -= deltaTime;
@@ -518,5 +548,10 @@ public class GameScreen extends ScreenAdapter {
 
     public void createPairLabel(int index) {
         pairLabel.setText(array.get(index));
+    }
+
+    public void handleBoost(float deltaTime) {
+        transitionTimer = 1;
+        zoomInProgress = false;
     }
 }
