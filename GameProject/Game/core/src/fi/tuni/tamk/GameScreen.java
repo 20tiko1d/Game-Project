@@ -81,6 +81,13 @@ public class GameScreen extends ScreenAdapter {
     private float velX;
     private float velY;
 
+    private boolean first;
+    private boolean currentFirst;
+    private int closeIndex;
+    private int currentIndex = -1;
+    private Button buttonTake;
+    private Button buttonSwitch;
+
     // Box2d
     private World world;
     private Body playerBody;
@@ -108,7 +115,7 @@ public class GameScreen extends ScreenAdapter {
         stage = new Stage(new ScreenViewport());
         mySkin = new Skin(Gdx.files.internal("skin/glassy-ui.json"));
         pairLabel = new Label("", mySkin);
-        pairLabel.setBounds(Gdx.graphics.getWidth() / 4f, Gdx.graphics.getHeight() * 3 / 5f,
+        pairLabel.setBounds(Gdx.graphics.getWidth() / 4f, Gdx.graphics.getHeight() * 4.3f / 5f,
                 Gdx.graphics.getWidth() / 2f, Gdx.graphics.getHeight() / 5f);
         stage.addActor(pairLabel);
         pairLabel.setFontScale(4);
@@ -210,6 +217,51 @@ public class GameScreen extends ScreenAdapter {
             }
         });
         stage.addActor(buttonExit);
+        buttonTake = new TextButton("Take",mySkin,"default");
+        buttonTake.setSize(Gdx.graphics.getWidth() / 4f,Gdx.graphics.getWidth() / 10f);
+        buttonTake.setPosition(Gdx.graphics.getWidth() / 4f,Gdx.graphics.getHeight() - Gdx.graphics.getWidth() / 7f);
+        buttonTake.addListener(new InputListener(){
+            @Override
+            public boolean touchDown(InputEvent event, float x, float y, int pointer, int button) {
+                return true;
+            }
+
+            @Override
+            public void touchUp(InputEvent event, float x, float y, int pointer, int button) {
+                if(currentIndex == closeIndex && currentFirst != first) {
+                    for(int i = 0; i < randomPairs.length; i++) {
+                        if(randomPairs[i][0] == closeIndex) {
+                            randomPairs[i][1] = 0;
+                            randomPairs[i][2] = 0;
+                            randomPairs[i][3] = 0;
+                            randomPairs[i][4] = 0;
+                            currentIndex = 0;
+                        }
+                    }
+                } else {
+                    currentIndex = closeIndex;
+                    currentFirst = first;
+                }
+            }
+        });
+        stage.addActor(buttonTake);
+
+        buttonSwitch = new TextButton("Switch",mySkin,"default");
+        buttonSwitch.setSize(Gdx.graphics.getWidth() / 4f,Gdx.graphics.getWidth() / 10f);
+        buttonSwitch.setPosition(Gdx.graphics.getWidth() / 2f,Gdx.graphics.getHeight() - Gdx.graphics.getWidth() / 7f);
+        buttonSwitch.addListener(new InputListener(){
+            @Override
+            public boolean touchDown(InputEvent event, float x, float y, int pointer, int button) {
+                return true;
+            }
+
+            @Override
+            public void touchUp(InputEvent event, float x, float y, int pointer, int button) {
+                currentIndex = closeIndex;
+                currentFirst = first;
+            }
+        });
+        stage.addActor(buttonSwitch);
 
         Drawable touchBackground;
         Drawable touchKnob;
@@ -263,6 +315,10 @@ public class GameScreen extends ScreenAdapter {
         }
         if(!pairClose) {
             pairLabel.setText(null);
+            buttonTake.setVisible(false);
+            buttonTake.setDisabled(true);
+            buttonSwitch.setDisabled(true);
+            buttonSwitch.setVisible(false);
         }
 
         batch.begin();
@@ -436,19 +492,27 @@ public class GameScreen extends ScreenAdapter {
         for(int i = 0; i < randomPairs.length; i++) {
             if(Math.abs(row - randomPairs[i][1]) + Math.abs(column - randomPairs[i][2]) <= 2 && randomPairs[i][0] != -1) {
                 createPairLabel(randomPairs[i][0]);
-                pairLabel.setVisible(true);
+                closeIndex = randomPairs[i][0];
+                first = true;
                 stillClose = true;
-                pairClose = true;
             }
             if(Math.abs(row - randomPairs[i][3]) + Math.abs(column - randomPairs[i][4]) <= 2 && randomPairs[i][0] != -1) {
                 createPairLabel(randomPairs[i][0]);
-                pairLabel.setVisible(true);
+                closeIndex = randomPairs[i][0];
+                first = false;
                 stillClose = true;
-                pairClose = true;
+
             }
         }
         if(!stillClose) {
             pairClose = false;
+        } else {
+            buttonTake.setVisible(true);
+            buttonTake.setDisabled(false);
+            buttonSwitch.setDisabled(false);
+            buttonSwitch.setVisible(true);
+            pairClose = true;
+            pairLabel.setVisible(true);
         }
     }
 
