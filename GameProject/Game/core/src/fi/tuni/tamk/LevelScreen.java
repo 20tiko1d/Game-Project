@@ -21,6 +21,9 @@ import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
 import com.badlogic.gdx.utils.Array;
 import com.badlogic.gdx.utils.viewport.ScreenViewport;
 
+/**
+ * The class contains the level-choosing screen and also game generating functions.
+ */
 public class LevelScreen extends ScreenAdapter {
 
     private Main main;
@@ -138,6 +141,13 @@ public class LevelScreen extends ScreenAdapter {
         rect = null;
     }
 
+    /**
+     * Method starts the creation of the game world.
+     *
+     * @param size: Lengths of the labyrinth sides.
+     * @param pathLength: Length of the path from the start to the center square.
+     * @param numOfPairs: Number of pairs per current game.
+     */
     public void createGame(int size, int pathLength, int numOfPairs) {
         World world = new World(new Vector2(0,0), true);
         Body playerBody = world.createBody(getDefinitionOfBody());
@@ -175,6 +185,9 @@ public class LevelScreen extends ScreenAdapter {
         return map;
     }
 
+    /**
+     * Method gives the locations and sizes of the level panels.
+     */
     public void calculateAreas() {
         int width = Gdx.graphics.getWidth();
         int height = Gdx.graphics.getHeight();

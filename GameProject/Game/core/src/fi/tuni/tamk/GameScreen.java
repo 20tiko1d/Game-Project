@@ -5,6 +5,7 @@ import com.badlogic.gdx.Input;
 import com.badlogic.gdx.InputAdapter;
 import com.badlogic.gdx.InputMultiplexer;
 import com.badlogic.gdx.ScreenAdapter;
+import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Texture;
@@ -18,7 +19,9 @@ import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.InputListener;
 import com.badlogic.gdx.scenes.scene2d.Stage;
+import com.badlogic.gdx.scenes.scene2d.actions.Actions;
 import com.badlogic.gdx.scenes.scene2d.ui.Button;
+import com.badlogic.gdx.scenes.scene2d.ui.Label;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
 import com.badlogic.gdx.scenes.scene2d.ui.Touchpad;
@@ -27,6 +30,9 @@ import com.badlogic.gdx.scenes.scene2d.utils.Drawable;
 import com.badlogic.gdx.utils.Array;
 import com.badlogic.gdx.utils.viewport.ScreenViewport;
 
+/**
+ * The class is responsible for running the actual game play.
+ */
 public class GameScreen extends ScreenAdapter {
 
     private Main main;
@@ -54,6 +60,8 @@ public class GameScreen extends ScreenAdapter {
     private Texture backgroundImg;
     private Texture imgWall;
     private Texture pairTexture;
+
+    private Skin mySkin;
 
     // Map rendering
     private boolean created = false;
@@ -88,15 +96,24 @@ public class GameScreen extends ScreenAdapter {
     private float zoomTimer;
     private float transitionTimer;
 
+    private Label pairLabel;
+    private boolean pairClose = false;
+
 
     public GameScreen(Main main, World world, Body playerBody, LevelScreen levelScreen) {
         this.main = main;
         this.world = world;
         this.playerBody = playerBody;
         this.levelScreen = levelScreen;
-
-
-
+        stage = new Stage(new ScreenViewport());
+        mySkin = new Skin(Gdx.files.internal("skin/glassy-ui.json"));
+        pairLabel = new Label("", mySkin);
+        pairLabel.setBounds(Gdx.graphics.getWidth() / 4f, Gdx.graphics.getHeight() * 3 / 5f,
+                Gdx.graphics.getWidth() / 2f, Gdx.graphics.getHeight() / 5f);
+        stage.addActor(pairLabel);
+        pairLabel.setFontScale(4);
+        pairLabel.setColor(Color.BLACK);
+        stage.addActor(pairLabel);
         batch = new SpriteBatch();
 
         if(Main.isPortrait) {
@@ -124,7 +141,7 @@ public class GameScreen extends ScreenAdapter {
         mapYStart = mapY;
         created = true;
         InputMultiplexer inputMultiplexer = new InputMultiplexer();
-        stage = new Stage(new ScreenViewport());
+
         inputMultiplexer.addProcessor(stage);
         inputMultiplexer.addProcessor(new InputMultiplexer( new InputAdapter() {
             @Override
@@ -174,7 +191,7 @@ public class GameScreen extends ScreenAdapter {
                 return true;
             }
         }));
-        Skin mySkin = new Skin(Gdx.files.internal("skin/glassy-ui.json"));
+
 
         Button buttonExit = new TextButton("Exit",mySkin,"default");
         buttonExit.setSize(Gdx.graphics.getWidth() / 10f,Gdx.graphics.getWidth() / 10f);
@@ -244,6 +261,9 @@ public class GameScreen extends ScreenAdapter {
         if(DEBUG_PHYSICS && created) {
             debugRenderer.render(world, camera.combined);
         }
+        if(!pairClose) {
+            pairLabel.setText(null);
+        }
 
         batch.begin();
 
@@ -307,14 +327,19 @@ public class GameScreen extends ScreenAdapter {
         }
         mapX = mapXStart - (playerBody.getPosition().x - Main.viewPortWidth / 2);
         mapY = mapYStart - (playerBody.getPosition().y - (Main.viewPortHeight / 2)) / 2;
-
-
     }
 
     public void move(float time) {
         playerBody.setLinearVelocity(velX * 4, velY * 4);
     }
 
+    /**
+     * Method draws the labyrinth and all objects on there.
+     *
+     * It also handles that right amount of the map is being rendered.
+     *
+     * @param batch: Used to render objects.
+     */
     public void drawMap(SpriteBatch batch) {
         float currentOneWidth = Main.oneWidth;
         int currentMany = Main.howMany;
@@ -360,6 +385,11 @@ public class GameScreen extends ScreenAdapter {
         }
     }
 
+    /**
+     * Method handles the zoom-feature transitions.
+     *
+     * @param deltaTime: Used to count time.
+     */
     public void zoomOut(float deltaTime) {
         if(zoomTimer <= 0) {
             if(transitionTimer >= 0) {
@@ -395,15 +425,34 @@ public class GameScreen extends ScreenAdapter {
         }
     }
 
+    /**
+     * Method is responsible for the player and pair-object encounters.
+     *
+     * @param row: Row that the player is currently on.
+     * @param column: Column that the player is currently on.
+     */
     public void itemCollision(int row, int column) {
+        boolean stillClose = false;
         for(int i = 0; i < randomPairs.length; i++) {
             if(Math.abs(row - randomPairs[i][1]) + Math.abs(column - randomPairs[i][2]) <= 2 && randomPairs[i][0] != -1) {
-                Gdx.app.log("", "Text: " + array.get(randomPairs[i][0]));
+                createPairLabel(randomPairs[i][0]);
+                pairLabel.setVisible(true);
+                stillClose = true;
+                pairClose = true;
             }
             if(Math.abs(row - randomPairs[i][3]) + Math.abs(column - randomPairs[i][4]) <= 2 && randomPairs[i][0] != -1) {
-                Gdx.app.log("", "Text: " + array.get(randomPairs[i][0]));
+                createPairLabel(randomPairs[i][0]);
+                pairLabel.setVisible(true);
+                stillClose = true;
+                pairClose = true;
             }
+        }
+        if(!stillClose) {
+            pairClose = false;
         }
     }
 
+    public void createPairLabel(int index) {
+        pairLabel.setText(array.get(index));
+    }
 }

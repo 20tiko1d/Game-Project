@@ -4,6 +4,9 @@ import com.badlogic.gdx.Game;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 
+/**
+ * The main class which puts the game running.
+ */
 public class Main extends Game {
 
 	public static float viewPortWidth;

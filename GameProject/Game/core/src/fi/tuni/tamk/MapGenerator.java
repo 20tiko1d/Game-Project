@@ -1,6 +1,5 @@
 package fi.tuni.tamk;
 
-import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.physics.box2d.Body;
@@ -8,7 +7,11 @@ import com.badlogic.gdx.physics.box2d.BodyDef;
 import com.badlogic.gdx.physics.box2d.PolygonShape;
 import com.badlogic.gdx.physics.box2d.World;
 
-
+/**
+ * The class produces a random labyrinth.
+ *
+ * The labyrinth has a small square in the center. There is only one way out of the labyrinth.
+ */
 public class MapGenerator {
 
     private Texture[][] map;
@@ -49,7 +52,20 @@ public class MapGenerator {
         this.gameScreen = gameScreen;
     }
 
-
+    /**
+     * The method controls all of the stages to create a random labyrinth.
+     *
+     * @param size: Length of the labyrinth sides.
+     * @param preferredLength: Length of the route from the start to the center square.
+     * @param world: Contains all of the collision boxes.
+     * @param oneWidth: Width of the one square on the gaming device.
+     * @param windowWidth: Width of the virtual world in meters.
+     * @param windowHeight: Height of the virtual world in meters.
+     * @param arraySize: Number of possible sentences for the pairs.
+     * @param numOfPairs: Number of pairs.
+     * @param levelScreen: LevelScreen object for information transfer.
+     * @return Returns created map in texture-array form.
+     */
     public Texture [][] createMap(int size, int preferredLength, World world, float oneWidth,
                                   float windowWidth, float windowHeight, int arraySize,
                                   int numOfPairs, LevelScreen levelScreen) {
@@ -84,6 +100,9 @@ public class MapGenerator {
         middle = null;
     }
 
+    /**
+     * Method creates the center square.
+     */
     public void createMiddle() {
         int x = size / 2 - 1;
         int y = size / 2 - 1;
@@ -102,6 +121,11 @@ public class MapGenerator {
         }
     }
 
+    /**
+     * Method creates the path from the start to the center and from the center to the exit.
+     *
+     * @param firstPath: Tells which one of the paths have to be made.
+     */
     public void createPath(boolean firstPath) {
         this.firstPath = firstPath;
         int[][] path;
@@ -243,6 +267,17 @@ public class MapGenerator {
         return random[MathUtils.random(0, random.length - 1)];
     }
 
+    /**
+     * Method creates an opening through the walls.
+     *
+     * It removes the wall inside it's own cell and also breaks the wall of the another cell.
+     * @param tempPath: Not finished main path.
+     * @param row: Row of the newest cell under construction.
+     * @param column: Column of the newest cell under construction.
+     * @param index: The next index after this current one.
+     * @param randomIndex: Random direction between 0 - 3, which tells which direction to break.
+     * @return Returns the updated path, if the current move was accepted.
+     */
     public int[][] makePath(int[][] tempPath, int row, int column, int index, int randomIndex) {
         switch (randomIndex) {
             case 0:
@@ -267,6 +302,14 @@ public class MapGenerator {
         return tempPath;
     }
 
+    /**
+     * Method checks if the next move is under bounds.
+     *
+     * @param tempPath: Path in progress.
+     * @param row: Row of the current working cell.
+     * @param column: Column of the current working cell.
+     * @return Returns the info if the move was in bounds.
+     */
     public boolean checkTemp(int[][] tempPath, int row, int column) {
         try {
             for(int i = 0; i < path1.length; i++) {
@@ -299,6 +342,12 @@ public class MapGenerator {
         return true;
     }
 
+    /**
+     * Method clears the scrubbed path, but keeps the main things.
+     *
+     * @param tempPath: Path that failed to make it through.
+     * @return Returns cleared path.
+     */
     public int[][] clearPath(int[][] tempPath) {
         int j = 1;
         if(firstPath) {
@@ -315,6 +364,9 @@ public class MapGenerator {
         return (Math.abs(x2 - x1) + Math.abs(y2 - y1) == length);
     }
 
+    /**
+     * Method creates the hole for the exit.
+     */
     public void createExit() {
         int random = MathUtils.random(0, 2 * size - 3);
         if(random <= size / 2 - 2) {
@@ -333,6 +385,9 @@ public class MapGenerator {
         exitColumn = size - 1;
     }
 
+    /**
+     * Method creates a random path which tries to connect to the main network.
+     */
     public void createRandom() {
         for(int i = 0; i < size; i++) {
             for(int j = 0; j < size; j++) {
@@ -352,6 +407,12 @@ public class MapGenerator {
         }
     }
 
+    /**
+     * Method takes the random path one step forward.
+     *
+     * @param row: Row of the latest cell.
+     * @param column: Column of the latest cell.
+     */
     public void createRandomOne(int row, int column) {
         while(true) {
             randomPath = new int[size][2];
@@ -383,6 +444,14 @@ public class MapGenerator {
         }
     }
 
+    /**
+     * Method merges two cells or networks together.
+     *
+     * @param row: Row of the previous cell.
+     * @param column: Column of the previous cell.
+     * @param index: Index of the current path.
+     * @param random: Random direction (0-3).
+     */
     public void makeRandomPath(int row, int column, int index, int random) {
         switch (random) {
             case 0:
@@ -414,6 +483,12 @@ public class MapGenerator {
         randomPath[index][1] = column;
     }
 
+    /**
+     * Method checks if the random path has found it's way to the main network.
+     *
+     * @param row: Current row.
+     * @param column: Current column.
+     */
     public void checkNetwork(int row, int column) {
         if(!(generatingMap[row][column][0] == 0 &&  generatingMap[row][column][1] == 0 &&
                 generatingMap[row][column][2] == 0 && generatingMap[row][column][3] == 0)) {
@@ -421,6 +496,9 @@ public class MapGenerator {
         }
     }
 
+    /**
+     * Method commits the results of the middle square and the paths.
+     */
     public void createGeneratingMap1() {
         generatingMap[path1[0][0]][path1[0][1]][3] = 1;
         int index1 = 2;
@@ -449,6 +527,14 @@ public class MapGenerator {
         }
     }
 
+    /**
+     * Method creates a pathway between two cells.
+     *
+     * @param row1:
+     * @param column1:
+     * @param row2:
+     * @param column2: (self planetary)
+     */
     public void createHole(int row1, int column1, int row2, int column2) {
         boolean isRow = (column1 == column2);
         int first;
@@ -474,6 +560,9 @@ public class MapGenerator {
         generatingMap[row2][column2][second] = 1;
     }
 
+    /**
+     * Method scales map up, inserts textures and creates collision boxes.
+     */
     public void putTextures() {
         Texture imgFloor1 = new Texture("floors/floor1.png");
         Texture imgFloor2 = new Texture("floors/floor2.png");
@@ -481,6 +570,7 @@ public class MapGenerator {
 
         map = new Texture[(size + 24) * 4 + 1][(size + 12) * 4 + 1];
 
+        // Sets textures to the surroundings of the labyrinth.
         for(int row = 0; row < map.length; row++) {
             for(int column = 0; column < map[row].length; column++) {
                 if(row >= 48 && row <= 48 + size * 4 && column == 24) {
@@ -490,10 +580,12 @@ public class MapGenerator {
                 }
             }
         }
+        // This makes sure that the collision map and visual map will match.
         int [][] collisionArray = new int[(size + 24) * 4 + 1][(size + 12) * 4 + 1];
         float mapX = windowWidth / 2 - (path1[0][1] * 4 + 26) * oneWidth - oneWidth / 2;
         float mapY = windowHeight / 2 + (path1[0][0] * 4 + 47) * oneWidth + oneWidth / 2;
 
+        // Converts the randomly generated map to the larger scale and also inserts textures.
         for(int row = 0; row < generatingMap.length; row++) {
             for(int column = 0; column < generatingMap[row].length; column++) {
                 for(int row2 = row * 4; row2 <= (row + 1) * 4; row2++) {
@@ -513,6 +605,7 @@ public class MapGenerator {
                     }
                 }
 
+                // Creates the collision boxes for the walls.
                 if(generatingMap[row][column][0] == 0 && collisionArray[row * 4 + 50][column * 4 + 24] == 0) {
                     createGround(mapX + (column * 4 + 24.5f) * oneWidth, mapY - (row * 4 + 50.5f) * oneWidth, oneWidth * 0.5f, oneWidth * 2.5f);
                     collisionArray[row * 4 + 50][column * 4 + 24] = 1;
@@ -546,14 +639,23 @@ public class MapGenerator {
         return myBodyDef;
     }
 
+
     public PolygonShape getGroundShape(float width, float height) {
         PolygonShape groundBox = new PolygonShape();
         groundBox.setAsBox(width, height);
         return groundBox;
     }
 
+    /**
+     * Method gives random locations for the pairs.
+     *
+     * @param numOfPairs: Number of pairs in current game.
+     * @param arraySize: Amount of sentences to choose from.
+     */
     public void createRandomPairs(int numOfPairs, int arraySize) {
         int [][] pairs = new int[numOfPairs][5];
+
+        // Selects random index to the sentences array.
         for(int i = 0; i < numOfPairs; i++) {
 
             boolean clear = true;
@@ -574,20 +676,21 @@ public class MapGenerator {
             pairs[i][0]--;
         }
 
+        // Generates random locations for the pairs.
         for(int i = 0; i < numOfPairs; i++) {
-            int randomX1 = MathUtils.random(0, generatingMap.length - 1);
-            int randomY1 = MathUtils.random(0, generatingMap.length - 1);
-            int randomX2 = MathUtils.random(0, generatingMap.length - 1);
-            int randomY2 = MathUtils.random(0, generatingMap.length - 1);
+            int randomRow1 = MathUtils.random(0, generatingMap.length - 1);
+            int randomCol1 = MathUtils.random(0, generatingMap.length - 1);
+            int randomRow2 = MathUtils.random(0, generatingMap.length - 1);
+            int randomCol2 = MathUtils.random(0, generatingMap.length - 1);
 
-            if(Math.abs(randomX1 - randomX2) + Math.abs(randomY1 - randomY2) <= size / 3 ||
-            !checkPairLocations(randomX1, randomY1, randomX2, randomY2, pairs)) {
+            if(Math.abs(randomRow1 - randomRow2) + Math.abs(randomCol1 - randomCol2) <= size / 3 ||
+            !checkPairLocations(randomRow1, randomCol1, randomRow2, randomCol2, pairs)) {
                 i--;
             } else {
-                pairs[i][1] = randomX1;
-                pairs[i][2] = randomY1;
-                pairs[i][3] = randomX2;
-                pairs[i][4] = randomY2;
+                pairs[i][1] = randomRow1;
+                pairs[i][2] = randomCol1;
+                pairs[i][3] = randomRow2;
+                pairs[i][4] = randomCol2;
             }
         }
         for(int i = 0; i < numOfPairs; i++) {
@@ -599,26 +702,39 @@ public class MapGenerator {
         levelScreen.setRandomPairs(pairs);
     }
 
-    public boolean checkPairLocations(int x1, int y1, int x2, int y2, int[][] pairs) {
+    /**
+     * Method checks if the randomly chosen locations are in bounds.
+     *
+     * @param R1: Row of the pair 1.
+     * @param C1: Column of the pair 1.
+     * @param R2: Row of the pair 2.
+     * @param C2: Column of the pair 2.
+     * @param pairs: Coordinates of the chosen pairs.
+     * @return: Returns true, if the given coordinates are ok, and false if not.
+     */
+    public boolean checkPairLocations(int R1, int C1, int R2, int C2, int[][] pairs) {
+        // Check middle.
         for(int i = 0; i < 4; i++) {
-            if(x1 == middle[i][1] && y1 == middle[i][0] || x2 == middle[i][1] && y2 == middle[i][0]) {
+            if((R1 == middle[i][0] && C1 == middle[i][1]) || (R2 == middle[i][0] && C2 == middle[i][1])) {
                 return false;
             }
         }
-        if(x1 == path2[0][1] && y1 == path2[0][0] || x2 == path2[0][1] && y2 == path2[0][0]
-           || x1 == path1[0][1] && y1 == path1[0][0] || x2 == path1[0][1] && y2 == path1[0][0]
-           || x1 == path1[1][1] && y1 == path1[1][0] || x2 == path1[1][1] && y2 == path1[1][0]) {
+        // Check start and exit.
+        if((R1 == path2[0][0] && C1 == path2[0][1]) || (R2 == path2[0][0] && C2 == path2[0][1])
+           || (R1 == path1[0][0] && C1 == path1[0][1]) || (R2 == path1[0][0] && C2 == path1[0][1])
+           || (R1 == path1[1][0] && C1 == path1[1][1]) || (R2 == path1[1][0] && C2 == path1[1][1])) {
             return false;
         }
+        // Check each other.
         for(int i = 0; i < pairs.length; i++) {
-            int y3 = pairs[i][1];
-            int x3 = pairs[i][2];
-            int y4 = pairs[i][3];
-            int x4 = pairs[i][4];
-            if(x3 == 0 && y3 == 0 && x4 == 0 && y4 == 0) {
+            int R3 = pairs[i][1];
+            int C3 = pairs[i][2];
+            int R4 = pairs[i][3];
+            int C4 = pairs[i][4];
+            if(R3 == 0 && C3 == 0 && R4 == 0 && C4 == 0) {
                 continue;
             }
-            if(x1 == x3 && y1 == y3 || x1 == x4 && y1 == y4 || x2 == x3 && y2 == y3 || x2 == x4 && y2 == y4) {
+            if((R1 == R3 && C1 == C3) || (R1 == R4 && C1 == C4) || (R2 == R3 && C2 == C3) || (R2 == R4 && C2 == C4)) {
                 return false;
             }
         }

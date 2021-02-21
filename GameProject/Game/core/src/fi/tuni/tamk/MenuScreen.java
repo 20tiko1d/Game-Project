@@ -12,6 +12,9 @@ import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
 import com.badlogic.gdx.utils.viewport.ScreenViewport;
 
+/**
+ * The class contains and controls the Main menu screen.
+ */
 public class MenuScreen extends ScreenAdapter {
 
     private Main main;

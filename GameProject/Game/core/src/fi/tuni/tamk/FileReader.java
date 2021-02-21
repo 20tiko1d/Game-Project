@@ -13,10 +13,17 @@ import java.io.File;
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
 
+/**
+ * The class is used to read files and also maybe store them in the future.
+ */
 public class FileReader {
 
     //private static final String fileName = "Pairs.xml";
 
+    /**
+     * Method reads the sentences of the pair objects from the XML-file.
+     * @return Returns an array that contains the read sentences.
+     */
     public static Array<String> getPairElements() {
         Array<String> array = new Array<String>();
         try {
