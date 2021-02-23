@@ -19,7 +19,9 @@
     <select />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="63a2aeb9-915b-4758-9841-1ab3c7543cce" name="Default Changelist" comment="Something.">
+    <list default="true" id="b953028a-cfe4-44cf-a102-a14b0793fbf8" name="Default Changelist" comment="">
+      <change afterPath="$PROJECT_DIR$/.idea/.gitignore" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.idea/misc.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
@@ -28,12 +30,6 @@
     <option name="LAST_RESOLUTION" value="IGNORE" />
   </component>
   <component name="Git.Settings">
-    <option name="PUSH_TAGS">
-      <GitPushTagMode>
-        <option name="argument" value="--tags" />
-        <option name="title" value="All" />
-      </GitPushTagMode>
-    </option>
     <option name="RECENT_BRANCH_BY_REPOSITORY">
       <map>
         <entry key="$PROJECT_DIR$" value="main" />
@@ -41,7 +37,7 @@
     </option>
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
   </component>
-  <component name="ProjectId" id="1oh2owwilqPGoMOF7UTvsyX8tNY" />
+  <component name="ProjectId" id="1osJfv2Ms7hVAmaGE6AtCYnGQUO" />
   <component name="ProjectViewState">
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showLibraryContents" value="true" />
@@ -49,29 +45,20 @@
   <component name="PropertiesComponent">
     <property name="RunOnceActivity.OpenProjectViewOnStart" value="true" />
     <property name="RunOnceActivity.ShowReadmeOnStart" value="true" />
-    <property name="android.sdk.path" value="$USER_HOME$/AppData/Local/Android/Sdk" />
     <property name="last_opened_file_path" value="$PROJECT_DIR$/GameProject/Game" />
-    <property name="settings.editor.selected.configurable" value="AndroidSdkUpdater" />
+    <property name="settings.editor.selected.configurable" value="preferences.lookFeel" />
   </component>
   <component name="SvnConfiguration">
     <configuration />
   </component>
   <component name="TaskManager">
     <task active="true" id="Default" summary="Default task">
-      <changelist id="63a2aeb9-915b-4758-9841-1ab3c7543cce" name="Default Changelist" comment="" />
-      <created>1613724679774</created>
+      <changelist id="b953028a-cfe4-44cf-a102-a14b0793fbf8" name="Default Changelist" comment="" />
+      <created>1614069470851</created>
       <option name="number" value="Default" />
       <option name="presentableId" value="Default" />
-      <updated>1613724679774</updated>
+      <updated>1614069470851</updated>
     </task>
-    <task id="LOCAL-00001" summary="Something.">
-      <created>1613724762407</created>
-      <option name="number" value="00001" />
-      <option name="presentableId" value="LOCAL-00001" />
-      <option name="project" value="LOCAL" />
-      <updated>1613724762407</updated>
-    </task>
-    <option name="localTasksCounter" value="2" />
     <servers />
   </component>
   <component name="Vcs.Log.Tabs.Properties">
@@ -86,26 +73,22 @@
     </option>
     <option name="oldMeFiltersMigrated" value="true" />
   </component>
-  <component name="VcsManagerConfiguration">
-    <MESSAGE value="Something." />
-    <option name="LAST_COMMIT_MESSAGE" value="Something." />
-  </component>
   <component name="WindowStateProjectService">
-    <state x="2014" y="358" key="#com.intellij.execution.impl.EditConfigurationsDialog" timestamp="1613724967637">
-      <screen x="0" y="0" width="5120" height="1400" />
+    <state x="414" y="175" key="#com.intellij.execution.impl.EditConfigurationsDialog" timestamp="1614069983113">
+      <screen x="0" y="0" width="1920" height="1040" />
     </state>
-    <state x="2014" y="358" key="#com.intellij.execution.impl.EditConfigurationsDialog/0.0.5120.1400@0.0.5120.1400" timestamp="1613724967637" />
-    <state x="2289" y="493" key="#com.intellij.ide.util.TreeClassChooserDialog" timestamp="1613724966863">
-      <screen x="0" y="0" width="5120" height="1400" />
+    <state x="414" y="175" key="#com.intellij.execution.impl.EditConfigurationsDialog/0.0.1920.1040@0.0.1920.1040" timestamp="1614069983113" />
+    <state x="689" y="310" key="#com.intellij.ide.util.TreeClassChooserDialog" timestamp="1614069980960">
+      <screen x="0" y="0" width="1920" height="1040" />
     </state>
-    <state x="2289" y="493" key="#com.intellij.ide.util.TreeClassChooserDialog/0.0.5120.1400@0.0.5120.1400" timestamp="1613724966863" />
-    <state x="2340" y="458" key="FileChooserDialogImpl" timestamp="1613725000099">
-      <screen x="0" y="0" width="5120" height="1400" />
+    <state x="689" y="310" key="#com.intellij.ide.util.TreeClassChooserDialog/0.0.1920.1040@0.0.1920.1040" timestamp="1614069980960" />
+    <state x="788" y="257" key="FileChooserDialogImpl" timestamp="1614070010270">
+      <screen x="0" y="0" width="1920" height="1040" />
     </state>
-    <state x="2340" y="458" key="FileChooserDialogImpl/0.0.5120.1400@0.0.5120.1400" timestamp="1613725000099" />
-    <state x="2152" y="436" key="Vcs.Push.Dialog.v2" timestamp="1613724772223">
-      <screen x="0" y="0" width="5120" height="1400" />
+    <state x="788" y="257" key="FileChooserDialogImpl/0.0.1920.1040@0.0.1920.1040" timestamp="1614070010270" />
+    <state x="508" y="156" key="SettingsEditor" timestamp="1614069843799">
+      <screen x="0" y="0" width="1920" height="1040" />
     </state>
-    <state x="2152" y="436" key="Vcs.Push.Dialog.v2/0.0.5120.1400@0.0.5120.1400" timestamp="1613724772223" />
+    <state x="508" y="156" key="SettingsEditor/0.0.1920.1040@0.0.1920.1040" timestamp="1614069843799" />
   </component>
 </project>

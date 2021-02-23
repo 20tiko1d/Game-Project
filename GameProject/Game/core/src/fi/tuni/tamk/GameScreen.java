@@ -35,6 +35,7 @@ import com.badlogic.gdx.utils.viewport.ScreenViewport;
  */
 public class GameScreen extends ScreenAdapter {
 
+    // jotain
     private String wallUrl = "walls/wall3.png";
 
     private Main main;
