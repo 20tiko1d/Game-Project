@@ -64,6 +64,7 @@ public class MapGenerator {
      * @param oneWidth: Width of the one square on the gaming device.
      * @param windowWidth: Width of the virtual world in meters.
      * @param windowHeight: Height of the virtual world in meters.
+     * @param arraySize: Number of possible sentences for the pairs.
      * @param numOfPairs: Number of pairs.
      * @param levelScreen: LevelScreen object for information transfer.
      * @return Returns created map in texture-array form.
