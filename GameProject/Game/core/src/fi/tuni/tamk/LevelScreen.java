@@ -33,10 +33,6 @@ public class LevelScreen extends ScreenAdapter {
     private Rectangle rect;
     private int marginal;
 
-    private Texture [][] map;
-    private int [][] randomPairs;
-    Array<String> array = FileReader.getPairElements();
-
     public LevelScreen(Main main){
         this.main = main;
         calculateAreas();
@@ -157,7 +153,7 @@ public class LevelScreen extends ScreenAdapter {
         MapGenerator generator= new MapGenerator(main, gameScreen);
 
 
-        map = generator.createMap(size, pathLength, world, Main.oneWidth, Main.viewPortWidth, Main.viewPortHeight, array.size, numOfPairs, this);
+        generator.createMap(size, pathLength, world, Main.oneWidth, Main.viewPortWidth, Main.viewPortHeight, numOfPairs, this);
         dispose();
         main.setScreen(gameScreen);
     }
@@ -179,10 +175,6 @@ public class LevelScreen extends ScreenAdapter {
         circleShape.setRadius(Main.oneWidth / 2);
         playerFixtureDef.shape = circleShape;
         return playerFixtureDef;
-    }
-
-    public Texture[][] getMap() {
-        return map;
     }
 
     /**
@@ -220,17 +212,5 @@ public class LevelScreen extends ScreenAdapter {
         }
         rect.height = singleSize - 2 * marginal;
         rect.width = rect.height;
-    }
-
-    public void setRandomPairs(int [][] randomPairs) {
-        this.randomPairs = randomPairs;
-    }
-
-    public int[][] getRandomPairs() {
-        return randomPairs;
-    }
-
-    public Array<String> getArray() {
-        return array;
     }
 }

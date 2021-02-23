@@ -7,6 +7,9 @@ import com.badlogic.gdx.physics.box2d.BodyDef;
 import com.badlogic.gdx.physics.box2d.PolygonShape;
 import com.badlogic.gdx.physics.box2d.World;
 
+import java.lang.reflect.Array;
+import java.util.ArrayList;
+
 /**
  * The class produces a random labyrinth.
  *
@@ -66,10 +69,11 @@ public class MapGenerator {
      * @param levelScreen: LevelScreen object for information transfer.
      * @return Returns created map in texture-array form.
      */
-    public Texture [][] createMap(int size, int preferredLength, World world, float oneWidth,
-                                  float windowWidth, float windowHeight, int arraySize,
+    public void createMap(int size, int preferredLength, World world, float oneWidth,
+                                  float windowWidth, float windowHeight,
                                   int numOfPairs, LevelScreen levelScreen) {
         this.size = size;
+        int arraySize = FileReader.getPairElements().size;
         middle = new int[4][2];
         generatingMap = new int [size][size][4];
         this.preferredLength = preferredLength;
@@ -89,7 +93,7 @@ public class MapGenerator {
         gameScreen.setStart(path1[0][1] * 4 + 27, path1[0][0] * 4 + 50);
         createRandomPairs(numOfPairs, arraySize);
         disposeAll();
-        return map;
+        gameScreen.setMap(map);
     }
 
     public void disposeAll() {
@@ -564,9 +568,9 @@ public class MapGenerator {
      * Method scales map up, inserts textures and creates collision boxes.
      */
     public void putTextures() {
-        Texture imgFloor1 = new Texture("floors/floor1.png");
-        Texture imgFloor2 = new Texture("floors/floor2.png");
-        Texture imgWall = new Texture("walls/Brickwall2.png");
+        ArrayList<Texture> floor1Textures= Textures.getFloor1Textures();
+        ArrayList<Texture> floor2Textures= Textures.getFloor2Textures();
+        ArrayList<Texture> wallTextures= Textures.getWallTextures();
 
         map = new Texture[(size + 24) * 4 + 1][(size + 12) * 4 + 1];
 
@@ -576,7 +580,7 @@ public class MapGenerator {
                 if(row >= 48 && row <= 48 + size * 4 && column == 24) {
                     column += size * 4 - 1;
                 } else {
-                    map[row][column] = imgFloor2;
+                    map[row][column] = randomTexture(floor2Textures);
                 }
             }
         }
@@ -596,10 +600,10 @@ public class MapGenerator {
                            (generatingMap[row][column][3] == 0 && row2 == (row + 1) * 4) &&
                            map[row2 + 48][column2 + 24] == null) {
 
-                            map[row2 + 48][column2 + 24] = imgWall;
+                            map[row2 + 48][column2 + 24] = randomTexture(wallTextures);
                         } else {
                             if(map[row2 + 48][column2 + 24] == null) {
-                                map[row2 + 48][column2 + 24] = imgFloor1;
+                                map[row2 + 48][column2 + 24] = randomTexture(floor1Textures);
                             }
                         }
                     }
@@ -625,6 +629,11 @@ public class MapGenerator {
             }
         }
         collisionArray = null;
+    }
+
+    public Texture randomTexture(ArrayList<Texture> textures) {
+        int random = MathUtils.random(0, textures.size() - 1);
+        return textures.get(random);
     }
 
     public void createGround(float x, float y, float width, float height) {
@@ -699,7 +708,7 @@ public class MapGenerator {
             pairs[i][3] = pairs[i][3] * 4 + 50;
             pairs[i][4] = pairs[i][4] * 4 + 26;
         }
-        levelScreen.setRandomPairs(pairs);
+        gameScreen.setRandomPairs(pairs);
     }
 
     /**
