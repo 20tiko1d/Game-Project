@@ -26,4 +26,17 @@ public final class Textures {
         textures.add(new Texture("walls/wall3.png"));
         return textures;
     }
+
+    public static Texture getPlayerTexture() {
+        return new Texture("player2.png");
+    }
+
+    public static Texture getBackgroundTexture() {
+        return new Texture("circle2.png");
+    }
+
+    public static Texture getObjectTexture() {
+        return new Texture("pairs1.png");
+    }
+
 }

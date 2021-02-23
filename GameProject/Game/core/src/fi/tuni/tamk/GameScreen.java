@@ -35,8 +35,6 @@ import com.badlogic.gdx.utils.viewport.ScreenViewport;
  */
 public class GameScreen extends ScreenAdapter {
 
-    // jotain
-    private String wallUrl = "walls/wall3.png";
 
     private Main main;
     private LevelScreen levelScreen;
@@ -62,7 +60,7 @@ public class GameScreen extends ScreenAdapter {
     private Texture playerTexture;
     private Texture backgroundImg;
     private Texture imgWall;
-    private Texture pairTexture;
+    private Texture objectTexture;
 
     private Skin mySkin;
 
@@ -377,7 +375,7 @@ public class GameScreen extends ScreenAdapter {
         batch.dispose();
         array = null;
         randomPairs = null;
-        pairTexture.dispose();
+        objectTexture.dispose();
     }
 
     public void setStart(int x, int y) {
@@ -385,16 +383,10 @@ public class GameScreen extends ScreenAdapter {
         startY = y;
     }
 
-    public void setExit(int x, int y) {
-
-    }
-
-
     public void getTextures() {
-        backgroundImg = new Texture("circle2.png");
-        imgWall = new Texture(wallUrl);
-        playerTexture = new Texture("player2.png");
-        pairTexture = new Texture("pairs1.png");
+        backgroundImg = Textures.getBackgroundTexture();
+        playerTexture = Textures.getPlayerTexture();
+        objectTexture = Textures.getObjectTexture();
     }
 
     public void doPhysicsStep(float deltaTime) {
@@ -445,10 +437,6 @@ public class GameScreen extends ScreenAdapter {
 
         for(int row = minIndexY; row < maxIndexY; row++) {
             for(int column = minIndexX; column < maxIndexX; column++) {
-                float oneHeight = currentOneWidth / 2;
-                if (map[row][column].getHeight() > 40) {
-                    oneHeight = currentOneWidth * 2.5f;
-                };
                 Texture mapTexture = map[row][column];
                 batch.draw(mapTexture, x + (column - minIndexX) * currentOneWidth,
                         y - (row - minIndexY) * currentOneWidth / 2 + portraitCorrection,
@@ -463,9 +451,9 @@ public class GameScreen extends ScreenAdapter {
                 for(int i = 0; i < randomPairs.length; i++) {
                     if (row == randomPairs[i][1] && column == randomPairs[i][2] ||
                         row == randomPairs[i][3] && column == randomPairs[i][4]) {
-                        batch.draw(pairTexture, x + (column - minIndexX) * currentOneWidth,
-                                y - (row - minIndexY) * currentOneWidth / 2 + portraitCorrection + oneHeight,
-                                currentOneWidth, currentOneWidth * ((float) pairTexture.getHeight() / pairTexture.getWidth()));
+                        batch.draw(objectTexture, x + (column - minIndexX) * currentOneWidth,
+                                y - (row - minIndexY) * currentOneWidth / 2 + portraitCorrection + currentOneWidth / 2,
+                                currentOneWidth, currentOneWidth * ((float) objectTexture.getHeight() / objectTexture.getWidth()));
                     }
                 }
             }
