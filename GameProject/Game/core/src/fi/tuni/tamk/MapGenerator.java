@@ -566,7 +566,7 @@ public class MapGenerator {
     public void putTextures() {
         Texture imgFloor1 = new Texture("floors/floor1.png");
         Texture imgFloor2 = new Texture("floors/floor2.png");
-        Texture imgWall = new Texture("walls/wall3.png");
+        Texture imgWall = new Texture("walls/Brickwall2.png");
 
         map = new Texture[(size + 24) * 4 + 1][(size + 12) * 4 + 1];
 
