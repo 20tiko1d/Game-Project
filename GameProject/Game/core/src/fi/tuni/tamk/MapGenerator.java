@@ -61,15 +61,15 @@ public class MapGenerator {
      * @param oneWidth: Width of the one square on the gaming device.
      * @param windowWidth: Width of the virtual world in meters.
      * @param windowHeight: Height of the virtual world in meters.
-     * @param arraySize: Number of possible sentences for the pairs.
      * @param numOfPairs: Number of pairs.
      * @param levelScreen: LevelScreen object for information transfer.
      * @return Returns created map in texture-array form.
      */
-    public Texture [][] createMap(int size, int preferredLength, World world, float oneWidth,
-                                  float windowWidth, float windowHeight, int arraySize,
+    public void createMap(int size, int preferredLength, World world, float oneWidth,
+                                  float windowWidth, float windowHeight,
                                   int numOfPairs, LevelScreen levelScreen) {
         this.size = size;
+        int arraySize = FileReader.getPairElements().size;
         middle = new int[4][2];
         generatingMap = new int [size][size][4];
         this.preferredLength = preferredLength;
@@ -89,7 +89,7 @@ public class MapGenerator {
         gameScreen.setStart(path1[0][1] * 4 + 27, path1[0][0] * 4 + 50);
         createRandomPairs(numOfPairs, arraySize);
         disposeAll();
-        return map;
+        gameScreen.setMap(map);
     }
 
     public void disposeAll() {
@@ -699,7 +699,7 @@ public class MapGenerator {
             pairs[i][3] = pairs[i][3] * 4 + 50;
             pairs[i][4] = pairs[i][4] * 4 + 26;
         }
-        levelScreen.setRandomPairs(pairs);
+        gameScreen.setRandomPairs(pairs);
     }
 
     /**

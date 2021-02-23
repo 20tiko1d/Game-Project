@@ -144,9 +144,7 @@ public class GameScreen extends ScreenAdapter {
 
     @Override
     public void show() {
-        map = levelScreen.getMap();
-        randomPairs = levelScreen.getRandomPairs();
-        array = levelScreen.getArray();
+        array = FileReader.getPairElements();
         mapX = (Main.viewPortWidth / 2) - (startX * Main.oneWidth) - (Main.oneWidth / 2);
         mapY = (Main.viewPortHeight / 2) + (startY * Main.oneWidth) / 2 + (Main.oneWidth / 4) - 1.8f * Main.oneWidth;
         mapXStart = mapX;
@@ -451,20 +449,23 @@ public class GameScreen extends ScreenAdapter {
                 if (map[row][column].getHeight() > 40) {
                     oneHeight = currentOneWidth * 2.5f;
                 };
-                batch.draw(map[row][column], x + (column - minIndexX) * currentOneWidth,
-                        y - (row - minIndexY) * currentOneWidth / 2 + portraitCorrection, currentOneWidth, oneHeight);
+                Texture mapTexture = map[row][column];
+                batch.draw(mapTexture, x + (column - minIndexX) * currentOneWidth,
+                        y - (row - minIndexY) * currentOneWidth / 2 + portraitCorrection,
+                        currentOneWidth, currentOneWidth * ((float) mapTexture.getHeight() / mapTexture.getWidth()));
 
                 if(row == playerY && column == playerX) {
                     batch.draw(playerTexture, Main.viewPortWidth / 2 - currentOneWidth / 2,
                             Main.viewPortHeight / 2 - currentOneWidth / 1.5f + portraitCorrection, currentOneWidth,
-                            currentOneWidth * 2);
+                            currentOneWidth * ((float) playerTexture.getHeight() / playerTexture.getWidth()));
                     itemCollision(row, column);
                 }
                 for(int i = 0; i < randomPairs.length; i++) {
                     if (row == randomPairs[i][1] && column == randomPairs[i][2] ||
                         row == randomPairs[i][3] && column == randomPairs[i][4]) {
                         batch.draw(pairTexture, x + (column - minIndexX) * currentOneWidth,
-                                y - (row - minIndexY) * currentOneWidth / 2 + portraitCorrection + oneHeight, currentOneWidth, oneHeight * 3);
+                                y - (row - minIndexY) * currentOneWidth / 2 + portraitCorrection + oneHeight,
+                                currentOneWidth, currentOneWidth * ((float) pairTexture.getHeight() / pairTexture.getWidth()));
                     }
                 }
             }
@@ -556,5 +557,13 @@ public class GameScreen extends ScreenAdapter {
     public void handleBoost(float deltaTime) {
         transitionTimer = 1;
         zoomInProgress = false;
+    }
+
+    public void setRandomPairs(int [][] randomPairs) {
+        this.randomPairs = randomPairs;
+    }
+
+    public void setMap(Texture [][] map) {
+        this.map = map;
     }
 }
