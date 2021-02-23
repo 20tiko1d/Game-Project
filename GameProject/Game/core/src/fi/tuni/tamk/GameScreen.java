@@ -243,7 +243,7 @@ public class GameScreen extends ScreenAdapter {
                             randomPairs[i][2] = 0;
                             randomPairs[i][3] = 0;
                             randomPairs[i][4] = 0;
-                            currentIndex = 0;
+                            currentIndex = -1;
                         }
                     }
                 } else {
