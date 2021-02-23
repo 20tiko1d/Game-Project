@@ -35,6 +35,8 @@ import com.badlogic.gdx.utils.viewport.ScreenViewport;
  */
 public class GameScreen extends ScreenAdapter {
 
+    private String wallUrl = "walls/wall3.png";
+
     private Main main;
     private LevelScreen levelScreen;
 
@@ -391,7 +393,7 @@ public class GameScreen extends ScreenAdapter {
 
     public void getTextures() {
         backgroundImg = new Texture("circle2.png");
-        imgWall = new Texture("walls/wall3.png");
+        imgWall = new Texture(wallUrl);
         playerTexture = new Texture("player2.png");
         pairTexture = new Texture("pairs1.png");
     }
