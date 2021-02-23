@@ -7,6 +7,9 @@ import com.badlogic.gdx.physics.box2d.BodyDef;
 import com.badlogic.gdx.physics.box2d.PolygonShape;
 import com.badlogic.gdx.physics.box2d.World;
 
+import java.lang.reflect.Array;
+import java.util.ArrayList;
+
 /**
  * The class produces a random labyrinth.
  *
@@ -564,9 +567,9 @@ public class MapGenerator {
      * Method scales map up, inserts textures and creates collision boxes.
      */
     public void putTextures() {
-        Texture imgFloor1 = new Texture("floors/floor1.png");
-        Texture imgFloor2 = new Texture("floors/floor2.png");
-        Texture imgWall = new Texture("walls/wall3.png");
+        ArrayList<Texture> floor1Textures= Textures.getFloor1Textures();
+        ArrayList<Texture> floor2Textures= Textures.getFloor2Textures();
+        ArrayList<Texture> wallTextures= Textures.getWallTextures();
 
         map = new Texture[(size + 24) * 4 + 1][(size + 12) * 4 + 1];
 
@@ -576,7 +579,7 @@ public class MapGenerator {
                 if(row >= 48 && row <= 48 + size * 4 && column == 24) {
                     column += size * 4 - 1;
                 } else {
-                    map[row][column] = imgFloor2;
+                    map[row][column] = randomTexture(floor2Textures);
                 }
             }
         }
@@ -596,10 +599,10 @@ public class MapGenerator {
                            (generatingMap[row][column][3] == 0 && row2 == (row + 1) * 4) &&
                            map[row2 + 48][column2 + 24] == null) {
 
-                            map[row2 + 48][column2 + 24] = imgWall;
+                            map[row2 + 48][column2 + 24] = randomTexture(wallTextures);
                         } else {
                             if(map[row2 + 48][column2 + 24] == null) {
-                                map[row2 + 48][column2 + 24] = imgFloor1;
+                                map[row2 + 48][column2 + 24] = randomTexture(floor1Textures);
                             }
                         }
                     }
@@ -625,6 +628,11 @@ public class MapGenerator {
             }
         }
         collisionArray = null;
+    }
+
+    public Texture randomTexture(ArrayList<Texture> textures) {
+        int random = MathUtils.random(0, textures.size() - 1);
+        return textures.get(random);
     }
 
     public void createGround(float x, float y, float width, float height) {
