@@ -20,7 +20,6 @@ import java.util.ArrayList;
 public class MapGenerator {
 
     private Texture[][] map;
-    private float[][] mapCoordinates;
     private int [][][] generatingMap;
     private int preferredLength;
 
@@ -45,18 +44,13 @@ public class MapGenerator {
 
     private boolean firstPath;
 
-    private Main main;
     private World world;
 
     private float oneWidth;
-    private float windowWidth;
-    private float windowHeight;
 
     private GameScreen gameScreen;
-    private LevelScreen levelScreen;
 
-    public MapGenerator(Main main, GameScreen gameScreen) {
-        this.main = main;
+    public MapGenerator(GameScreen gameScreen) {
         this.gameScreen = gameScreen;
     }
 
@@ -67,11 +61,10 @@ public class MapGenerator {
      * @param preferredLength: Length of the route from the start to the center square.
      * @param world: Contains all of the collision boxes.
      * @param numOfPairs: Number of pairs.
-     * @param levelScreen: LevelScreen object for information transfer.
      * @return Returns created map in texture-array form.
      */
     public void createMap(int size, int preferredLength, World world,
-                                  int numOfPairs, LevelScreen levelScreen) {
+                                  int numOfPairs) {
         this.size = size;
         int arraySize = FileReader.getPairElements().size;
         middle = new int[4][2];
@@ -79,9 +72,6 @@ public class MapGenerator {
         this.preferredLength = preferredLength;
         this.world = world;
         this.oneWidth = Main.oneWidth;
-        this.windowWidth = Main.viewPortWidth;
-        this.windowHeight = Main.viewPortHeight;
-        this.levelScreen = levelScreen;
 
         createMiddle();
         createPath(true);
@@ -590,9 +580,7 @@ public class MapGenerator {
         }
         // This makes sure that the collision map and visual map will match.
         int [][] collisionArray = new int[(size + 24) * 4 + 1][(size + 12) * 4 + 1];
-        //float mapX = (path1[0][1] * 4 + 26) * oneWidth - oneWidth / 2;
-        //float mapY = (path1[0][0] * 4 + 47) * oneWidth + oneWidth / 2;
-        mapY = map.length * oneWidth / 2;
+        mapY = map.length * oneWidth;
 
         // Converts the randomly generated map to the larger scale and also inserts textures.
         for(int row = 0; row < generatingMap.length; row++) {
@@ -641,7 +629,6 @@ public class MapGenerator {
                 }
             }
         }
-        //collisionArray = null;
     }
 
     public Texture randomTexture(ArrayList<Texture> textures) {
@@ -651,7 +638,7 @@ public class MapGenerator {
 
     public void createGround(float x, float y, float width, float height) {
         Body groundBody = world.createBody(getGroundBodyDef(x, y));
-        groundBody.createFixture(getGroundShape(width, height), 0.0f);
+        groundBody.createFixture(getPolygonShape(width, height), 1);
     }
 
     public BodyDef getGroundBodyDef(float x, float y) {
@@ -662,7 +649,7 @@ public class MapGenerator {
     }
 
 
-    public PolygonShape getGroundShape(float width, float height) {
+    public PolygonShape getPolygonShape(float width, float height) {
         PolygonShape groundBox = new PolygonShape();
         groundBox.setAsBox(width, height);
         return groundBox;
@@ -671,8 +658,8 @@ public class MapGenerator {
     public BodyDef getDefinitionOfBody() {
         BodyDef myBodyDef = new BodyDef();
         myBodyDef.type = BodyDef.BodyType.DynamicBody;
-        myBodyDef.position.set((path1[0][1] + 24) * oneWidth + oneWidth / 2,
-                mapY - ((path1[0][0] + 48) * oneWidth / 2 + oneWidth / 4));
+        myBodyDef.position.set((path1[0][1] * 4 + 26.5f) * oneWidth,
+                mapY - ((path1[0][0] * 4 + 50.5f) * oneWidth));
 
         return myBodyDef;
     }
@@ -682,9 +669,7 @@ public class MapGenerator {
         playerFixtureDef.density = 1;
         playerFixtureDef.restitution = 0;
         playerFixtureDef.friction = 0.5f;
-        CircleShape circleShape = new CircleShape();
-        circleShape.setRadius(Main.oneWidth / 2);
-        playerFixtureDef.shape = circleShape;
+        playerFixtureDef.shape = getPolygonShape(oneWidth / 2, oneWidth / 2);
         return playerFixtureDef;
     }
 

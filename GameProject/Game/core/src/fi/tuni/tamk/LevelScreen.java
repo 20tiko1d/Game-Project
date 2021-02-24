@@ -142,10 +142,10 @@ public class LevelScreen extends ScreenAdapter {
 
 
         GameScreen gameScreen= new GameScreen(main, world);
-        MapGenerator generator= new MapGenerator(main, gameScreen);
+        MapGenerator generator= new MapGenerator(gameScreen);
 
 
-        generator.createMap(size, pathLength, world, numOfPairs, this);
+        generator.createMap(size, pathLength, world, numOfPairs);
         dispose();
         main.setScreen(gameScreen);
     }
