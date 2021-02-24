@@ -3,14 +3,8 @@ package fi.tuni.tamk;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.ScreenAdapter;
 import com.badlogic.gdx.graphics.GL20;
-import com.badlogic.gdx.graphics.Texture;
-import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.math.Vector2;
-import com.badlogic.gdx.physics.box2d.Body;
-import com.badlogic.gdx.physics.box2d.BodyDef;
-import com.badlogic.gdx.physics.box2d.CircleShape;
-import com.badlogic.gdx.physics.box2d.FixtureDef;
 import com.badlogic.gdx.physics.box2d.World;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.InputListener;
@@ -18,7 +12,6 @@ import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.Button;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
-import com.badlogic.gdx.utils.Array;
 import com.badlogic.gdx.utils.viewport.ScreenViewport;
 
 /**
@@ -146,35 +139,15 @@ public class LevelScreen extends ScreenAdapter {
      */
     public void createGame(int size, int pathLength, int numOfPairs) {
         World world = new World(new Vector2(0,0), true);
-        Body playerBody = world.createBody(getDefinitionOfBody());
-        playerBody.createFixture(getFixtureDefinition());
 
-        GameScreen gameScreen= new GameScreen(main, world, playerBody, this);
+
+        GameScreen gameScreen= new GameScreen(main, world);
         MapGenerator generator= new MapGenerator(main, gameScreen);
 
 
-        generator.createMap(size, pathLength, world, Main.oneWidth, Main.viewPortWidth, Main.viewPortHeight, numOfPairs, this);
+        generator.createMap(size, pathLength, world, numOfPairs, this);
         dispose();
         main.setScreen(gameScreen);
-    }
-
-    public BodyDef getDefinitionOfBody() {
-        BodyDef myBodyDef = new BodyDef();
-        myBodyDef.type = BodyDef.BodyType.DynamicBody;
-        myBodyDef.position.set(Main.viewPortWidth / 2, Main.viewPortHeight / 2 - 2);
-
-        return myBodyDef;
-    }
-
-    public FixtureDef getFixtureDefinition() {
-        FixtureDef playerFixtureDef = new FixtureDef();
-        playerFixtureDef.density = 1;
-        playerFixtureDef.restitution = 0;
-        playerFixtureDef.friction = 0.5f;
-        CircleShape circleShape = new CircleShape();
-        circleShape.setRadius(Main.oneWidth / 2);
-        playerFixtureDef.shape = circleShape;
-        return playerFixtureDef;
     }
 
     /**

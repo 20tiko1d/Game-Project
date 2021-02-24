@@ -4,6 +4,8 @@ import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.physics.box2d.Body;
 import com.badlogic.gdx.physics.box2d.BodyDef;
+import com.badlogic.gdx.physics.box2d.CircleShape;
+import com.badlogic.gdx.physics.box2d.FixtureDef;
 import com.badlogic.gdx.physics.box2d.PolygonShape;
 import com.badlogic.gdx.physics.box2d.World;
 
@@ -18,6 +20,7 @@ import java.util.ArrayList;
 public class MapGenerator {
 
     private Texture[][] map;
+    private float[][] mapCoordinates;
     private int [][][] generatingMap;
     private int preferredLength;
 
@@ -34,6 +37,8 @@ public class MapGenerator {
     private int exitColumn;
 
     private int path1Min;
+
+    private float mapY;
 
     private boolean pathClear = true;
     private boolean pathDead = false;
@@ -61,16 +66,11 @@ public class MapGenerator {
      * @param size: Length of the labyrinth sides.
      * @param preferredLength: Length of the route from the start to the center square.
      * @param world: Contains all of the collision boxes.
-     * @param oneWidth: Width of the one square on the gaming device.
-     * @param windowWidth: Width of the virtual world in meters.
-     * @param windowHeight: Height of the virtual world in meters.
-     * @param arraySize: Number of possible sentences for the pairs.
      * @param numOfPairs: Number of pairs.
      * @param levelScreen: LevelScreen object for information transfer.
      * @return Returns created map in texture-array form.
      */
-    public void createMap(int size, int preferredLength, World world, float oneWidth,
-                                  float windowWidth, float windowHeight,
+    public void createMap(int size, int preferredLength, World world,
                                   int numOfPairs, LevelScreen levelScreen) {
         this.size = size;
         int arraySize = FileReader.getPairElements().size;
@@ -78,9 +78,9 @@ public class MapGenerator {
         generatingMap = new int [size][size][4];
         this.preferredLength = preferredLength;
         this.world = world;
-        this.oneWidth = oneWidth;
-        this.windowWidth = windowWidth;
-        this.windowHeight = windowHeight;
+        this.oneWidth = Main.oneWidth;
+        this.windowWidth = Main.viewPortWidth;
+        this.windowHeight = Main.viewPortHeight;
         this.levelScreen = levelScreen;
 
         createMiddle();
@@ -89,8 +89,12 @@ public class MapGenerator {
         createGeneratingMap1();
         createRandom();
         putTextures();
+        Body playerBody = world.createBody(getDefinitionOfBody());
+        playerBody.createFixture(getFixtureDefinition());
         pathDone = false;
-        gameScreen.setStart(path1[0][1] * 4 + 27, path1[0][0] * 4 + 50);
+        //gameScreen.setStart(path1[0][1] * 4 + 27, path1[0][0] * 4 + 50);
+        gameScreen.setPlayerBody(playerBody);
+        gameScreen.setPlayerLoc(path1[0][1] + 24, path1[0][0] + 48);
         createRandomPairs(numOfPairs, arraySize);
         disposeAll();
         gameScreen.setMap(map);
@@ -586,8 +590,9 @@ public class MapGenerator {
         }
         // This makes sure that the collision map and visual map will match.
         int [][] collisionArray = new int[(size + 24) * 4 + 1][(size + 12) * 4 + 1];
-        float mapX = windowWidth / 2 - (path1[0][1] * 4 + 26) * oneWidth - oneWidth / 2;
-        float mapY = windowHeight / 2 + (path1[0][0] * 4 + 47) * oneWidth + oneWidth / 2;
+        //float mapX = (path1[0][1] * 4 + 26) * oneWidth - oneWidth / 2;
+        //float mapY = (path1[0][0] * 4 + 47) * oneWidth + oneWidth / 2;
+        mapY = map.length * oneWidth / 2;
 
         // Converts the randomly generated map to the larger scale and also inserts textures.
         for(int row = 0; row < generatingMap.length; row++) {
@@ -611,24 +616,32 @@ public class MapGenerator {
 
                 // Creates the collision boxes for the walls.
                 if(generatingMap[row][column][0] == 0 && collisionArray[row * 4 + 50][column * 4 + 24] == 0) {
-                    createGround(mapX + (column * 4 + 24.5f) * oneWidth, mapY - (row * 4 + 50.5f) * oneWidth, oneWidth * 0.5f, oneWidth * 2.5f);
+                    createGround((column * 4 + 24.5f) * oneWidth,
+                            mapY - (row * 4 + 50.5f) * oneWidth, oneWidth * 0.5f,
+                            oneWidth * 2.5f);
                     collisionArray[row * 4 + 50][column * 4 + 24] = 1;
                 }
                 if(generatingMap[row][column][1] == 0 && collisionArray[row * 4 + 48][column * 4 + 26] == 0) {
-                    createGround(mapX + (column * 4 + 26.5f) * oneWidth, mapY - (row * 4 + 48.5f) * oneWidth, oneWidth * 2.5f, oneWidth * 0.5f);
+                    createGround((column * 4 + 26.5f) * oneWidth,
+                            mapY - (row * 4 + 48.5f) * oneWidth,
+                            oneWidth * 2.5f, oneWidth * 0.5f);
                     collisionArray[row * 4 + 48][column * 4 + 26] = 1;
                 }
                 if(generatingMap[row][column][2] == 0 && collisionArray[row * 4 + 50][column * 4 + 28] == 0) {
-                    createGround(mapX + (column * 4 + 28.5f) * oneWidth, mapY - (row * 4 + 50.5f) * oneWidth, oneWidth * 0.5f, oneWidth * 2.5f);
+                    createGround((column * 4 + 28.5f) * oneWidth,
+                            mapY - (row * 4 + 50.5f) * oneWidth,
+                            oneWidth * 0.5f, oneWidth * 2.5f);
                     collisionArray[row * 4 + 50][column * 4 + 28] = 1;
                 }
                 if(generatingMap[row][column][3] == 0 && collisionArray[row * 4 + 52][column * 4 + 26] == 0) {
-                    createGround(mapX + (column * 4 + 26.5f) * oneWidth, mapY - (row * 4 + 52.5f) * oneWidth, oneWidth * 2.5f, oneWidth * 0.5f);
+                    createGround((column * 4 + 26.5f) * oneWidth,
+                            mapY - (row * 4 + 52.5f) * oneWidth,
+                            oneWidth * 2.5f, oneWidth * 0.5f);
                     collisionArray[row * 4 + 52][column * 4 + 26] = 1;
                 }
             }
         }
-        collisionArray = null;
+        //collisionArray = null;
     }
 
     public Texture randomTexture(ArrayList<Texture> textures) {
@@ -653,6 +666,26 @@ public class MapGenerator {
         PolygonShape groundBox = new PolygonShape();
         groundBox.setAsBox(width, height);
         return groundBox;
+    }
+
+    public BodyDef getDefinitionOfBody() {
+        BodyDef myBodyDef = new BodyDef();
+        myBodyDef.type = BodyDef.BodyType.DynamicBody;
+        myBodyDef.position.set((path1[0][1] + 24) * oneWidth + oneWidth / 2,
+                mapY - ((path1[0][0] + 48) * oneWidth / 2 + oneWidth / 4));
+
+        return myBodyDef;
+    }
+
+    public FixtureDef getFixtureDefinition() {
+        FixtureDef playerFixtureDef = new FixtureDef();
+        playerFixtureDef.density = 1;
+        playerFixtureDef.restitution = 0;
+        playerFixtureDef.friction = 0.5f;
+        CircleShape circleShape = new CircleShape();
+        circleShape.setRadius(Main.oneWidth / 2);
+        playerFixtureDef.shape = circleShape;
+        return playerFixtureDef;
     }
 
     /**

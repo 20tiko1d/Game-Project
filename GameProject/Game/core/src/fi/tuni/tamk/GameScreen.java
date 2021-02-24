@@ -37,11 +37,11 @@ public class GameScreen extends ScreenAdapter {
 
 
     private Main main;
-    private LevelScreen levelScreen;
+    //private LevelScreen levelScreen;
 
     //private static final float VIEW_PORT_WIDTH = 12;
     //private static final float VIEW_PORT_HEIGHT = 14.4f;
-    private static final boolean DEBUG_PHYSICS = false;
+    private static final boolean DEBUG_PHYSICS = true;
 
     private OrthographicCamera camera;
     private Box2DDebugRenderer debugRenderer;
@@ -59,18 +59,19 @@ public class GameScreen extends ScreenAdapter {
     private Texture[][] map;
     private Texture playerTexture;
     private Texture backgroundImg;
-    private Texture imgWall;
     private Texture objectTexture;
 
     private Skin mySkin;
 
     // Map rendering
+    private int playerLocX;
+    private int playerLocY;
     private boolean created = false;
-    private float mapX;
+    //private float mapX;
     private float mapY;
-    private int startX;
-    private int startY;
-    private float mapXStart;
+    //private int startX;
+    //private int startY;
+    //private float mapXStart;
     private float mapYStart;
     private float portraitCorrection;
 
@@ -110,11 +111,9 @@ public class GameScreen extends ScreenAdapter {
     private boolean pairClose = false;
 
 
-    public GameScreen(Main main, World world, Body playerBody, LevelScreen levelScreen) {
+    public GameScreen(Main main, World world) {
         this.main = main;
         this.world = world;
-        this.playerBody = playerBody;
-        this.levelScreen = levelScreen;
         stage = new Stage(new ScreenViewport());
         mySkin = new Skin(Gdx.files.internal("skin/glassy-ui.json"));
         pairLabel = new Label("", mySkin);
@@ -143,10 +142,11 @@ public class GameScreen extends ScreenAdapter {
     @Override
     public void show() {
         array = FileReader.getPairElements();
-        mapX = (Main.viewPortWidth / 2) - (startX * Main.oneWidth) - (Main.oneWidth / 2);
-        mapY = (Main.viewPortHeight / 2) + (startY * Main.oneWidth) / 2 + (Main.oneWidth / 4) - 1.8f * Main.oneWidth;
-        mapXStart = mapX;
-        mapYStart = mapY;
+        //mapX = (Main.viewPortWidth / 2) - (startX * Main.oneWidth) - (Main.oneWidth / 2);
+        //mapY = (Main.viewPortHeight / 2) + (startY * Main.oneWidth) / 2 + (Main.oneWidth / 4) - 1.8f * Main.oneWidth;
+        mapY = map.length * Main.oneWidth / 2;
+        //mapXStart = mapX;
+        //mapYStart = mapY;
         created = true;
         InputMultiplexer inputMultiplexer = new InputMultiplexer();
 
@@ -346,6 +346,8 @@ public class GameScreen extends ScreenAdapter {
             buttonSwitch.setDisabled(true);
             buttonSwitch.setVisible(false);
         }
+        //Gdx.app.log("", "x: " + playerBody.getPosition().x);
+        //Gdx.app.log("", "y: " + playerBody.getPosition().y);
 
         batch.begin();
 
@@ -371,17 +373,17 @@ public class GameScreen extends ScreenAdapter {
         debugRenderer.dispose();
         playerTexture.dispose();
         backgroundImg.dispose();
-        imgWall.dispose();
         batch.dispose();
         array = null;
         randomPairs = null;
         objectTexture.dispose();
     }
 
+    /*
     public void setStart(int x, int y) {
         startX = x;
         startY = y;
-    }
+    }*/
 
     public void getTextures() {
         backgroundImg = Textures.getBackgroundTexture();
@@ -401,12 +403,18 @@ public class GameScreen extends ScreenAdapter {
             world.step(TIME_STEP, 8, 3);
             accumulator -= TIME_STEP;
         }
-        mapX = mapXStart - (playerBody.getPosition().x - Main.viewPortWidth / 2);
-        mapY = mapYStart - (playerBody.getPosition().y - (Main.viewPortHeight / 2)) / 2;
+        //mapX = mapXStart - (playerBody.getPosition().x - Main.viewPortWidth / 2);
+        //mapY = mapYStart - (playerBody.getPosition().y - (Main.viewPortHeight / 2)) / 2;
+        //stage.getViewport().update(playerBody.getPosition().x, playerBody.getPosition().y);
+        camera.position.x = Math.round(playerBody.getPosition().x * 100) / 100f;
+        camera.position.y = Math.round(playerBody.getPosition().y * 100) / 100f;
+        playerLocX = (int) (playerBody.getPosition().x / Main.oneWidth);
+        playerLocY = (int) ((mapY - playerBody.getPosition().y) / (Main.oneWidth / 2));
+        camera.update();
     }
 
     public void move(float time) {
-        playerBody.setLinearVelocity(velX * 4 * velMultiplier, velY * 4 * velMultiplier);
+        playerBody.setLinearVelocity(velX * 1 * velMultiplier, velY * 1 * velMultiplier);
     }
 
     /**
@@ -420,39 +428,42 @@ public class GameScreen extends ScreenAdapter {
         float currentOneWidth = Main.oneWidth;
         int currentMany = Main.howMany;
         if(zoomInProgress) {
-            currentOneWidth = Main.oneWidth / zoomRatio;
+            //currentOneWidth = Main.oneWidth / zoomRatio;
             currentMany = (int) (Main.howMany * (zoomRatio + 0.2));
         }
 
-        int minIndexX = (int) ((Main.viewPortWidth / 2 - mapX) / zoomRatio / currentOneWidth) - currentMany / 2;
-        int minIndexY = (int) ((((mapY - (Main.viewPortHeight / 2)) / zoomRatio - currentOneWidth / 4) / (currentOneWidth / 2)) - currentMany);
+        //int minIndexX = (int) ((Main.viewPortWidth / 2 - mapX) / zoomRatio / currentOneWidth) - currentMany / 2;
+        int minIndexX = playerLocX - currentMany / 2;
+        //int minIndexY = (int) ((((mapY - (Main.viewPortHeight / 2)) / zoomRatio - currentOneWidth / 4) / (currentOneWidth / 2)) - currentMany);
+        int minIndexY = playerLocY - currentMany;
         int maxIndexX = minIndexX + currentMany;
-        int maxIndexY = minIndexY + currentMany * 2 + 5;
+        int maxIndexY = minIndexY + currentMany * 2;
 
-        float x = Main.viewPortWidth / 2 - (Main.viewPortWidth / 2 - mapX) / zoomRatio + (minIndexX + 1) * currentOneWidth;
-        float y = Main.viewPortHeight / 2 - currentOneWidth / 4 + (mapY - (Main.viewPortHeight / 2)) / zoomRatio - (minIndexY + 1) * (currentOneWidth / 2);
+        //float x = Main.viewPortWidth / 2 - (Main.viewPortWidth / 2 - mapX) / zoomRatio + (minIndexX + 1) * currentOneWidth;
+        //float y = Main.viewPortHeight / 2 - currentOneWidth / 4 + (mapY - (Main.viewPortHeight / 2)) / zoomRatio - (minIndexY + 1) * (currentOneWidth / 2);
 
-        int playerX = (int) (minIndexX + (Main.viewPortWidth / 2 + currentOneWidth / 2 - x) / currentOneWidth);
-        int playerY = (int) (minIndexY + (y - (Main.viewPortHeight / 2)) / (currentOneWidth / 2) + 2.5);
-
+        //int playerX = (int) (minIndexX + (Main.viewPortWidth / 2 + currentOneWidth / 2) / currentOneWidth);
+        //int playerY = (int) (minIndexY + ((Main.viewPortHeight / 2)) / (currentOneWidth / 2) + 2.5);
+        //float tileHeight = (currentOneWidth + (float) map[1][1].getHeight() * 4 / map[1][1].getWidth());
+        //Gdx.app.log("", "height: " + tileHeight);
         for(int row = minIndexY; row < maxIndexY; row++) {
             for(int column = minIndexX; column < maxIndexX; column++) {
                 Texture mapTexture = map[row][column];
-                batch.draw(mapTexture, x + (column - minIndexX) * currentOneWidth,
-                        y - (row - minIndexY) * currentOneWidth / 2 + portraitCorrection,
-                        currentOneWidth, currentOneWidth * ((float) mapTexture.getHeight() / mapTexture.getWidth()));
+                float locY = mapY - row * currentOneWidth / 2;
+                batch.draw(mapTexture, column * currentOneWidth,
+                        locY, currentOneWidth, currentOneWidth * ((float) mapTexture.getHeight() / mapTexture.getWidth()));
 
-                if(row == playerY && column == playerX) {
-                    batch.draw(playerTexture, Main.viewPortWidth / 2 - currentOneWidth / 2,
-                            Main.viewPortHeight / 2 - currentOneWidth / 1.5f + portraitCorrection, currentOneWidth,
+                if(row == playerLocY && column == playerLocX) {
+                    batch.draw(playerTexture, playerBody.getPosition().x - currentOneWidth / 2,
+                            playerBody.getPosition().y - currentOneWidth / 4, currentOneWidth,
                             currentOneWidth * ((float) playerTexture.getHeight() / playerTexture.getWidth()));
                     itemCollision(row, column);
                 }
                 for(int i = 0; i < randomPairs.length; i++) {
                     if (row == randomPairs[i][1] && column == randomPairs[i][2] ||
                         row == randomPairs[i][3] && column == randomPairs[i][4]) {
-                        batch.draw(objectTexture, x + (column - minIndexX) * currentOneWidth,
-                                y - (row - minIndexY) * currentOneWidth / 2 + portraitCorrection + currentOneWidth / 2,
+                        batch.draw(objectTexture, (column - minIndexX) * currentOneWidth,
+                                locY + currentOneWidth / 2,
                                 currentOneWidth, currentOneWidth * ((float) objectTexture.getHeight() / objectTexture.getWidth()));
                     }
                 }
@@ -553,5 +564,14 @@ public class GameScreen extends ScreenAdapter {
 
     public void setMap(Texture [][] map) {
         this.map = map;
+    }
+
+    public void setPlayerBody(Body playerBody) {
+        this.playerBody = playerBody;
+    }
+
+    public void setPlayerLoc(int locX, int locY) {
+        this.playerLocX = locX;
+        this.playerLocY = locY;
     }
 }
