@@ -10,6 +10,7 @@ import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.physics.box2d.Body;
 import com.badlogic.gdx.physics.box2d.Box2DDebugRenderer;
 import com.badlogic.gdx.physics.box2d.World;
@@ -51,6 +52,13 @@ public class GameScreen extends ScreenAdapter {
     private Stage stage;
     private SpriteBatch player;
 
+    // Exit
+    private Body exitBody;
+    private Texture exitOpenTexture = Textures.getExitOpenTexture();
+    private boolean exitOpen = false;
+    private int[][] exitLocations;
+    private Rectangle exitRectangle;
+
     // Pairs
     private Array<String> array;
     private int[][] randomPairs;
@@ -64,6 +72,7 @@ public class GameScreen extends ScreenAdapter {
     private Skin mySkin;
 
     // Map rendering
+    private Rectangle playerRect;
     private int playerLocX;
     private int playerLocY;
     private boolean created = false;
@@ -109,6 +118,7 @@ public class GameScreen extends ScreenAdapter {
     // Object pairs
     private Label pairLabel;
     private boolean pairClose = false;
+    private int pairCount = 0;
 
 
     public GameScreen(Main main, World world) {
@@ -242,6 +252,10 @@ public class GameScreen extends ScreenAdapter {
                             randomPairs[i][3] = 0;
                             randomPairs[i][4] = 0;
                             currentIndex = -1;
+                            if(pairCount == 0) {
+                                openExit();
+                            }
+                            pairCount++;
                         }
                     }
                 } else {
@@ -348,6 +362,14 @@ public class GameScreen extends ScreenAdapter {
             buttonSwitch.setVisible(false);
         }
 
+        if(exitOpen) {
+            if(playerRect.overlaps(exitRectangle)) {
+                created = false;
+                dispose();
+                main.setScreen(new LevelScreen(main));
+            }
+        }
+
         batch.begin();
 
         if(created) {
@@ -403,13 +425,17 @@ public class GameScreen extends ScreenAdapter {
         camera.position.x = Math.round(playerBody.getPosition().x * relativeWidth) / relativeWidth;
         camera.position.y = Math.round(playerBody.getPosition().y / 2 * relativeHeight) / relativeHeight;
 
+        if(exitOpen) {
+            playerRect.x = playerBody.getPosition().x - Main.oneWidth;
+            playerRect.y = playerBody.getPosition().y - Main.oneWidth;
+        }
         playerLocX = (int) ((playerBody.getPosition().x + Main.oneWidth / 2) / Main.oneWidth);
         playerLocY = (int) ((mapY * 2 - playerBody.getPosition().y + Main.oneWidth / 2) / Main.oneWidth);
         camera.update();
     }
 
     public void move(float time) {
-        playerBody.setLinearVelocity(velX * 4 * velMultiplier, velY * 4 * velMultiplier);
+        playerBody.setLinearVelocity(velX * 10 * velMultiplier, velY * 10 * velMultiplier);
     }
 
     /**
@@ -534,5 +560,31 @@ public class GameScreen extends ScreenAdapter {
     public void setPlayerLoc(int locX, int locY) {
         this.playerLocX = locX;
         this.playerLocY = locY;
+    }
+
+    public void setExitBody(Body exitBody) {
+        this.exitBody = exitBody;
+    }
+
+    public void setExitLocations(int[][] exitLocations) {
+        this.exitLocations = exitLocations;
+    }
+
+    public void openExit() {
+        for(int i = 0; i < exitLocations.length; i++) {
+            map[exitLocations[i][0]][exitLocations[i][1]] = exitOpenTexture;
+        }
+        Gdx.app.log("", "j: " + exitBody.getFixtureList());
+        world.destroyBody(exitBody);
+        playerRect = new Rectangle();
+        playerRect.x = playerBody.getPosition().x - Main.oneWidth / 2;
+        playerRect.y = playerBody.getPosition().y - Main.oneWidth / 2;
+        playerRect.width = Main.oneWidth;
+        playerRect.height = Main.oneWidth;
+        exitOpen = true;
+    }
+
+    public void setExitRectangle(Rectangle exitRectangle) {
+        this.exitRectangle = exitRectangle;
     }
 }

@@ -2,6 +2,7 @@ package fi.tuni.tamk;
 
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.math.MathUtils;
+import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.physics.box2d.Body;
 import com.badlogic.gdx.physics.box2d.BodyDef;
 import com.badlogic.gdx.physics.box2d.CircleShape;
@@ -498,7 +499,7 @@ public class MapGenerator {
      * Method commits the results of the middle square and the paths.
      */
     public void createGeneratingMap1() {
-        generatingMap[path1[0][0]][path1[0][1]][3] = 1;
+        generatingMap[path1[0][0]][path1[0][1]][3] = 2;
         int index1 = 2;
         if(path2[0][0] == 0) {
             index1 = 1;
@@ -506,7 +507,7 @@ public class MapGenerator {
         else if(path2[0][1] == 0) {
             index1 = 0;
         }
-        generatingMap[path2[0][0]][path2[0][1]][index1] = 1;
+        generatingMap[path2[0][0]][path2[0][1]][index1] = 3;
 
         generatingMap[middle[0][0]][middle[0][1]][2] = 1;
         generatingMap[middle[0][0]][middle[0][1]][3] = 1;
@@ -558,6 +559,8 @@ public class MapGenerator {
         generatingMap[row2][column2][second] = 1;
     }
 
+    boolean isExit = false;
+
     /**
      * Method scales map up, inserts textures and creates collision boxes.
      */
@@ -565,6 +568,9 @@ public class MapGenerator {
         ArrayList<Texture> floor1Textures= Textures.getFloor1Textures();
         ArrayList<Texture> floor2Textures= Textures.getFloor2Textures();
         ArrayList<Texture> wallTextures= Textures.getWallTextures();
+
+        Texture startTexture = Textures.getStartTexture();
+        Texture exitCloseTexture = Textures.getExitCloseTexture();
 
         map = new Texture[(size + 24) * 4 + 1][(size + 12) * 4 + 1];
 
@@ -582,19 +588,36 @@ public class MapGenerator {
         int [][] collisionArray = new int[(size + 24) * 4 + 1][(size + 12) * 4 + 1];
         mapY = map.length * oneWidth;
 
+        int[][] exitLocations = new int[3][2];
+        int exitCounter = 0;
+
         // Converts the randomly generated map to the larger scale and also inserts textures.
         for(int row = 0; row < generatingMap.length; row++) {
             for(int column = 0; column < generatingMap[row].length; column++) {
                 for(int row2 = row * 4; row2 <= (row + 1) * 4; row2++) {
                     for(int column2 = column * 4; column2 <= (column + 1) * 4; column2++) {
                         if((generatingMap[row][column][0] == 0 && column2 == column * 4) ||
-                           (generatingMap[row][column][1] == 0 && row2 == row * 4) ||
-                           (generatingMap[row][column][2] == 0 && column2 == (column + 1) * 4) ||
-                           (generatingMap[row][column][3] == 0 && row2 == (row + 1) * 4) &&
-                           map[row2 + 48][column2 + 24] == null) {
+                            (generatingMap[row][column][1] == 0 && row2 == row * 4) ||
+                            (generatingMap[row][column][2] == 0 && column2 == (column + 1) * 4) ||
+                            (generatingMap[row][column][3] == 0 && row2 == (row + 1) * 4) &&
+                            (map[row2 + 48][column2 + 24] == null)) {
 
                             map[row2 + 48][column2 + 24] = randomTexture(wallTextures);
-                        } else {
+                        }
+                        else if(generatingMap[row][column][3] == 2 && row2 == (row + 1) * 4 &&
+                                (map[row2 + 48][column2 + 24] == null)) {
+                            map[row2 + 48][column2 + 24] = startTexture;
+                        }
+                        else if(((generatingMap[row][column][0] == 3 && column2 == column * 4) ||
+                                (generatingMap[row][column][1] == 3 && row2 == row * 4) ||
+                                (generatingMap[row][column][2] == 3 && column2 == (column + 1) * 4))
+                                && exitCounter < 3 && map[row2 + 48][column2 + 24] == null) {
+                            map[row2 + 48][column2 + 24] = exitCloseTexture;
+                            exitLocations[exitCounter][0] = row2 + 48;
+                            exitLocations[exitCounter][1] = column2 + 24;
+                            exitCounter++;
+                        }
+                        else {
                             if(map[row2 + 48][column2 + 24] == null) {
                                 map[row2 + 48][column2 + 24] = randomTexture(floor1Textures);
                             }
@@ -603,25 +626,35 @@ public class MapGenerator {
                 }
 
                 // Creates the collision boxes for the walls.
-                if(generatingMap[row][column][0] == 0 && collisionArray[row * 4 + 50][column * 4 + 24] == 0) {
+                if(generatingMap[row][column][0] == 0 || generatingMap[row][column][0] == 3 && collisionArray[row * 4 + 50][column * 4 + 24] == 0) {
+                    if(generatingMap[row][column][0] == 3) {
+                        isExit = true;
+                    }
                     createGround((column * 4 + 24.5f) * oneWidth,
                             mapY - (row * 4 + 50.5f) * oneWidth, oneWidth * 0.5f,
                             oneWidth * 2.5f);
                     collisionArray[row * 4 + 50][column * 4 + 24] = 1;
                 }
-                if(generatingMap[row][column][1] == 0 && collisionArray[row * 4 + 48][column * 4 + 26] == 0) {
+                if(generatingMap[row][column][1] == 0 || generatingMap[row][column][1] == 3 && collisionArray[row * 4 + 48][column * 4 + 26] == 0) {
+                    if(generatingMap[row][column][1] == 3) {
+                        isExit = true;
+                    }
                     createGround((column * 4 + 26.5f) * oneWidth,
                             mapY - (row * 4 + 48.5f) * oneWidth,
                             oneWidth * 2.5f, oneWidth * 0.5f);
                     collisionArray[row * 4 + 48][column * 4 + 26] = 1;
                 }
-                if(generatingMap[row][column][2] == 0 && collisionArray[row * 4 + 50][column * 4 + 28] == 0) {
+                if(generatingMap[row][column][2] == 0 || generatingMap[row][column][2] == 3 && collisionArray[row * 4 + 50][column * 4 + 28] == 0) {
+                    if(generatingMap[row][column][2] == 3) {
+                        isExit = true;
+                    }
                     createGround((column * 4 + 28.5f) * oneWidth,
                             mapY - (row * 4 + 50.5f) * oneWidth,
                             oneWidth * 0.5f, oneWidth * 2.5f);
                     collisionArray[row * 4 + 50][column * 4 + 28] = 1;
                 }
-                if(generatingMap[row][column][3] == 0 && collisionArray[row * 4 + 52][column * 4 + 26] == 0) {
+                if(generatingMap[row][column][3] == 0 || generatingMap[row][column][3] == 2 &&
+                        collisionArray[row * 4 + 52][column * 4 + 26] == 0) {
                     createGround((column * 4 + 26.5f) * oneWidth,
                             mapY - (row * 4 + 52.5f) * oneWidth,
                             oneWidth * 2.5f, oneWidth * 0.5f);
@@ -629,6 +662,7 @@ public class MapGenerator {
                 }
             }
         }
+        gameScreen.setExitLocations(exitLocations);
     }
 
     public Texture randomTexture(ArrayList<Texture> textures) {
@@ -637,8 +671,19 @@ public class MapGenerator {
     }
 
     public void createGround(float x, float y, float width, float height) {
+
         Body groundBody = world.createBody(getGroundBodyDef(x, y));
         groundBody.createFixture(getPolygonShape(width, height), 1);
+        if(isExit) {
+            gameScreen.setExitBody(groundBody);
+            isExit = false;
+            Rectangle exitRectangle = new Rectangle();
+            exitRectangle.x = x - width;
+            exitRectangle.y = y - height;
+            exitRectangle.width = width * 2;
+            exitRectangle.height = height * 2;
+            gameScreen.setExitRectangle(exitRectangle);
+        }
     }
 
     public BodyDef getGroundBodyDef(float x, float y) {
