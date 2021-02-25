@@ -120,6 +120,8 @@ public class GameScreen extends ScreenAdapter {
     private boolean pairClose = false;
     private int pairCount = 0;
 
+    private int score = 0;
+
     private int fpsCounter = 0;
     private float second = 1;
 
@@ -136,7 +138,6 @@ public class GameScreen extends ScreenAdapter {
         pairLabel = new Label("", mySkin);
         pairLabel.setBounds(Gdx.graphics.getWidth() / 4f, Gdx.graphics.getHeight() * 4.3f / 5f,
                 Gdx.graphics.getWidth() / 2f, Gdx.graphics.getHeight() / 5f);
-        stage.addActor(pairLabel);
         pairLabel.setFontScale(4);
         pairLabel.setColor(Color.BLACK);
         stage.addActor(pairLabel);
@@ -369,7 +370,7 @@ public class GameScreen extends ScreenAdapter {
             if(playerRect.overlaps(exitRectangle)) {
                 created = false;
                 dispose();
-                main.setScreen(new LevelScreen(main));
+                main.setScreen(new AfterGameScreen(main, score));
             }
         }
 
