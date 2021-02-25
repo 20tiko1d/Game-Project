@@ -38,6 +38,9 @@ public class GameScreen extends ScreenAdapter {
     private float viewPortWidth;
     private float viewPortHeight;
 
+    private float relativeWidth = Gdx.graphics.getWidth() / Main.viewPortWidth;
+    private float relativeHeight = Gdx.graphics.getHeight() / Main.viewPortHeight;
+
     private static final boolean DEBUG_PHYSICS = false;
 
     private OrthographicCamera camera;
@@ -397,8 +400,9 @@ public class GameScreen extends ScreenAdapter {
         }
         camera.setToOrtho(false, viewPortWidth * minZoom / zoomRatio,
                     viewPortHeight * minZoom / zoomRatio);
-        camera.position.x = Math.round(playerBody.getPosition().x * 100) / 100f;
-        camera.position.y = Math.round(playerBody.getPosition().y * 50) / 100f;
+        camera.position.x = Math.round(playerBody.getPosition().x * relativeWidth) / relativeWidth;
+        camera.position.y = Math.round(playerBody.getPosition().y / 2 * relativeHeight) / relativeHeight;
+
         playerLocX = (int) ((playerBody.getPosition().x + Main.oneWidth / 2) / Main.oneWidth);
         playerLocY = (int) ((mapY * 2 - playerBody.getPosition().y + Main.oneWidth / 2) / Main.oneWidth);
         camera.update();
