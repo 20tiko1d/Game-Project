@@ -40,4 +40,15 @@ public final class Textures {
         return new Texture("pairs1.png");
     }
 
+    public static Texture getExitCloseTexture() {
+        return new Texture("walls/wallExitClose.png");
+    }
+
+    public static Texture getExitOpenTexture() {
+        return new Texture("walls/wallExitOpen.png");
+    }
+
+    public static Texture getStartTexture() {
+        return new Texture("walls/wallStart.png");
+    }
 }
