@@ -584,7 +584,6 @@ public class GameScreen extends ScreenAdapter {
         for(int i = 0; i < exitLocations.length; i++) {
             map[exitLocations[i][0]][exitLocations[i][1]] = exitOpenTexture;
         }
-        Gdx.app.log("", "j: " + exitBody.getFixtureList());
         world.destroyBody(exitBody);
         playerRect = new Rectangle();
         playerRect.x = playerBody.getPosition().x - Main.oneWidth / 2;

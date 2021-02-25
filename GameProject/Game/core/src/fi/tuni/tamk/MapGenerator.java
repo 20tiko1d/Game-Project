@@ -603,7 +603,6 @@ public class MapGenerator {
                                 (generatingMap[row][column][1] == 3 && row2 == row * 4) ||
                                 (generatingMap[row][column][2] == 3 && column2 == (column + 1) * 4))
                                 && exitCounter < 3 && map[row2 + 48][column2 + 24] == null) {
-                            Gdx.app.log("", "side? " + column2);
                             map[row2 + 48][column2 + 24] = exitCloseTexture;
                             exitLocations[exitCounter][0] = row2 + 48;
                             exitLocations[exitCounter][1] = column2 + 24;
