@@ -1,7 +1,11 @@
 package fi.tuni.tamk;
 
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.files.FileHandle;
 import com.badlogic.gdx.utils.Array;
+import com.badlogic.gdx.utils.XmlReader;
+import com.sun.org.apache.xerces.internal.xni.parser.XMLPullParserConfiguration;
+
 
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
@@ -15,6 +19,7 @@ import java.io.InputStream;
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
 
+
 /**
  * The class is used to read files and also maybe store them in the future.
  */
@@ -26,14 +31,16 @@ public class FileReader {
      * Method reads the sentences of the pair objects from the XML-file.
      * @return Returns an array that contains the read sentences.
      */
+
     public static Array<String> getPairElements() {
         Array<String> array = new Array<String>();
         try {
 
-            File fxmlFile = new File("android/assets/Pairs.xml");
+            FileHandle fileHandle = Gdx.files.internal("Pairs.xml");
+            InputStream is = fileHandle.read();
             DocumentBuilderFactory dbFactory = DocumentBuilderFactory.newInstance();
             DocumentBuilder dBuilder = dbFactory.newDocumentBuilder();
-            Document doc = dBuilder.parse(fxmlFile);
+            Document doc = dBuilder.parse(is);
 
             doc.getDocumentElement().normalize();
 
