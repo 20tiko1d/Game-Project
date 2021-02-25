@@ -120,6 +120,9 @@ public class GameScreen extends ScreenAdapter {
     private boolean pairClose = false;
     private int pairCount = 0;
 
+    private int fpsCounter = 0;
+    private float second = 1;
+
 
     public GameScreen(Main main, World world) {
         this.main = main;
@@ -409,6 +412,7 @@ public class GameScreen extends ScreenAdapter {
     }
 
     public void doPhysicsStep(float deltaTime) {
+        fpsCounter++;
         float frameTime = deltaTime;
 
         if(deltaTime > 1 / 4f) {
@@ -419,6 +423,12 @@ public class GameScreen extends ScreenAdapter {
         while(accumulator >= TIME_STEP) {
             world.step(TIME_STEP, 8, 3);
             accumulator -= TIME_STEP;
+            second -= TIME_STEP;
+            if(second <= 0) {
+                Gdx.app.log("", "fps: " + fpsCounter);
+                fpsCounter = 0;
+                second = 1;
+            }
         }
         camera.setToOrtho(false, viewPortWidth * minZoom / zoomRatio,
                     viewPortHeight * minZoom / zoomRatio);
