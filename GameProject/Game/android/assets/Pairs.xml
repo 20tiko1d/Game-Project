@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <element>
-    <sentence1>I made a snow angel today.</sentence1>
-    <sentence2>I want to code more.</sentence2>
-    <sentence3>Junk food isn't even that good.</sentence3>
-    <sentence4>Free time is overrated.</sentence4>
-    <sentence5>Work will set you free!</sentence5>
-    <sentence6>Maybe I do need a vacation!</sentence6>
+    <sentence>I made a snow angel today.</sentence>
+    <sentence>I want to code more.</sentence>
+    <sentence>Junk food isn't even that good.</sentence>
+    <sentence>Free time is overrated.</sentence>
+    <sentence>Work will set you free!</sentence>
+    <sentence>Maybe I do need a vacation!</sentence>
 </element>

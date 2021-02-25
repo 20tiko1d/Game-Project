@@ -15,6 +15,9 @@ public class Main extends Game {
 	public static float oneWidth = 10f / howMany;
 	public static boolean isPortrait;
 
+	public float centerX;
+	public float centerY;
+
 	SpriteBatch batch;
 
 	@Override
@@ -49,7 +52,16 @@ public class Main extends Game {
 			viewPortHeight = 10;
 			float density = height / 10f;
 			viewPortWidth = width / density;
+			centerX = viewPortWidth / 2;
+			centerY = viewPortHeight / 2;
 		}
+	}
 
+	public float getCenterX() {
+		return centerX;
+	}
+
+	public float getCenterY() {
+		return centerY;
 	}
 }

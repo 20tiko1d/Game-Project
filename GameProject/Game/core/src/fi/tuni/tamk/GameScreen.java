@@ -35,6 +35,9 @@ public class GameScreen extends ScreenAdapter {
 
     private Main main;
 
+    private float viewPortWidth;
+    private float viewPortHeight;
+
     private static final boolean DEBUG_PHYSICS = false;
 
     private OrthographicCamera camera;
@@ -63,6 +66,8 @@ public class GameScreen extends ScreenAdapter {
     private boolean created = false;
     private float mapY;
     private float portraitCorrection;
+    private float centerX;
+    private float centerY;
 
     // Controls
     private boolean boost = false;
@@ -88,14 +93,17 @@ public class GameScreen extends ScreenAdapter {
     private final float TIME_STEP = 1 / 60f;
 
     // ZoomOut
+
     private float zoomRatio = 1;
-    private float zoomOut = 0.5f;
-    private boolean zoomInProgress = false;
-    private boolean ifZoomOut = true;
+    private float zoomSpeed = 0.5f;
+    private float minZoom = 1;
+    private float maxZoom = 1.5f;
+    private boolean ifMaxZoom = false;
+    private boolean ifZoomIn = true;
     private float zoomTimeLength = 10;
     private float zoomTimer;
-    private float transitionTimer;
 
+    // Object pairs
     private Label pairLabel;
     private boolean pairClose = false;
 
@@ -103,6 +111,10 @@ public class GameScreen extends ScreenAdapter {
     public GameScreen(Main main, World world) {
         this.main = main;
         this.world = world;
+        viewPortWidth = Main.viewPortWidth;
+        viewPortHeight = Main.viewPortHeight;
+        centerX = main.getCenterX();
+        centerY = main.getCenterY();
         stage = new Stage(new ScreenViewport());
         mySkin = new Skin(Gdx.files.internal("skin/glassy-ui.json"));
         pairLabel = new Label("", mySkin);
@@ -115,11 +127,11 @@ public class GameScreen extends ScreenAdapter {
         batch = new SpriteBatch();
 
         if(Main.isPortrait) {
-            portraitCorrection = Main.viewPortHeight / Main.viewPortWidth;
+            portraitCorrection = viewPortHeight / viewPortWidth;
         }
 
         camera = new OrthographicCamera();
-        camera.setToOrtho(false, Main.viewPortWidth, Main.viewPortHeight);
+        camera.setToOrtho(false, viewPortWidth, viewPortHeight);
 
         debugRenderer = new Box2DDebugRenderer();
 
@@ -179,10 +191,9 @@ public class GameScreen extends ScreenAdapter {
                     velX--;
                     isRight = false;
                 }
-                if(keycode == Input.Keys.SPACE && !zoomInProgress) {
+                if(keycode == Input.Keys.SPACE && !ifZoomIn) {
                     Gdx.app.log("", "jotain");
-                    transitionTimer = 1;
-                    zoomInProgress = true;
+                    ifZoomIn = true;
                 }
                 if(keycode == Input.Keys.SHIFT_LEFT) {
                     boost = false;
@@ -261,18 +272,20 @@ public class GameScreen extends ScreenAdapter {
         buttonBoost.addListener(new InputListener(){
             @Override
             public boolean touchDown(InputEvent event, float x, float y, int pointer, int button) {
-                if(!boost) {
-                    boost = true;
-                }
+                ifZoomIn = true;
+                boost = true;
+                velMultiplier = 1.5f;
                 return true;
             }
 
             @Override
             public void touchUp(InputEvent event, float x, float y, int pointer, int button) {
-                boost = false;
+                ifZoomIn = false;
+                ifMaxZoom = false;
+                velMultiplier = 1;
             }
         });
-        //stage.addActor(buttonBoost);
+        stage.addActor(buttonBoost);
 
         Drawable touchBackground;
         Drawable touchKnob;
@@ -317,8 +330,8 @@ public class GameScreen extends ScreenAdapter {
 
         if(created) {
             move(Gdx.graphics.getDeltaTime());
-            if(zoomInProgress) {
-                zoomOut(Gdx.graphics.getDeltaTime());
+            if(boost && !ifMaxZoom) {
+                handleBoost(Gdx.graphics.getDeltaTime());
             }
         }
         if(DEBUG_PHYSICS && created) {
@@ -336,7 +349,9 @@ public class GameScreen extends ScreenAdapter {
 
         if(created) {
             drawMap(batch);
-            batch.draw(backgroundImg, playerBody.getPosition().x - 7.5f, playerBody.getPosition().y / 2 - 7.5f + portraitCorrection, 15, 15);
+            batch.draw(backgroundImg, playerBody.getPosition().x - 7.5f * minZoom / zoomRatio,
+                    playerBody.getPosition().y / 2 - 7.5f * minZoom / zoomRatio + portraitCorrection,
+                    15 * minZoom / zoomRatio, 15 * minZoom / zoomRatio);
         }
         batch.end();
         if(created) {
@@ -380,6 +395,8 @@ public class GameScreen extends ScreenAdapter {
             world.step(TIME_STEP, 8, 3);
             accumulator -= TIME_STEP;
         }
+        camera.setToOrtho(false, viewPortWidth * minZoom / zoomRatio,
+                    viewPortHeight * minZoom / zoomRatio);
         camera.position.x = Math.round(playerBody.getPosition().x * 100) / 100f;
         camera.position.y = Math.round(playerBody.getPosition().y * 50) / 100f;
         playerLocX = (int) ((playerBody.getPosition().x + Main.oneWidth / 2) / Main.oneWidth);
@@ -401,13 +418,13 @@ public class GameScreen extends ScreenAdapter {
     public void drawMap(SpriteBatch batch) {
         float currentOneWidth = Main.oneWidth;
         int currentMany = Main.howMany;
-        if(zoomInProgress) {
-            currentMany = (int) (Main.howMany * (zoomRatio + 0.2));
+        if(boost) {
+            currentMany = (int) (Main.howMany / zoomRatio);
         }
 
-        int minIndexX = playerLocX - currentMany / 2;
+        int minIndexX = playerLocX - currentMany / 2 - 3;
         int minIndexY = playerLocY - currentMany;
-        int maxIndexX = minIndexX + currentMany;
+        int maxIndexX = minIndexX + currentMany + 3;
         int maxIndexY = minIndexY + currentMany * 2 + 5;
 
         for(int row = minIndexY; row < maxIndexY; row++) {
@@ -435,46 +452,27 @@ public class GameScreen extends ScreenAdapter {
         }
     }
 
-    /**
-     * Method handles the zoom-feature transitions.
-     *
-     * @param deltaTime: Used to count time.
-     */
-    public void zoomOut(float deltaTime) {
-        if(zoomTimer <= 0) {
-            if(transitionTimer >= 0) {
-                float frameTime = deltaTime;
-                while(transitionTimer >= 0 && frameTime >= 1 / 60f) {
-                    changeRatio();
-                    frameTime -= 1 / 60f;
-                    transitionTimer -= 1 / 100f;
-                }
-                if(transitionTimer <= 0 && ifZoomOut && !boost) {
-                    zoomTimer = zoomTimeLength;
-                    ifZoomOut = false;
-                    return;
-                }
-                if(transitionTimer <= 0 && !ifZoomOut && !boost) {
-                    ifZoomOut = true;
-                    zoomInProgress = false;
-                    zoomRatio = 1;
-                }
-            } else {
-                if(!boost) {
-                    transitionTimer = 1;
-                }
-
-            }
-        } else {
-            zoomTimer -= deltaTime;
+    public void handleBoost(float deltaTime) {
+        float frameTime = deltaTime;
+        while(frameTime >= 1 / 60f) {
+            changeRatio();
+            frameTime -= 1 / 60f;
         }
     }
 
     public void changeRatio() {
-        if(ifZoomOut) {
-            zoomRatio += zoomOut / 100f;
+        if(ifZoomIn) {
+            zoomRatio += zoomSpeed * 2 / 100f;
+            if(zoomRatio >= maxZoom) {
+                zoomRatio = maxZoom;
+                ifMaxZoom = true;
+            }
         } else {
-            zoomRatio -= zoomOut / 100f;
+            zoomRatio -= zoomSpeed / 100f;
+            if(zoomRatio <= minZoom) {
+                zoomRatio = minZoom;
+                boost = false;
+            }
         }
     }
 
@@ -515,11 +513,6 @@ public class GameScreen extends ScreenAdapter {
 
     public void createPairLabel(int index) {
         pairLabel.setText(array.get(index));
-    }
-
-    public void handleBoost(float deltaTime) {
-        transitionTimer = 1;
-        zoomInProgress = false;
     }
 
     public void setRandomPairs(int [][] randomPairs) {

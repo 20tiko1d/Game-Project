@@ -52,12 +52,15 @@ public class FileReader {
                 if(nNode.getNodeType() == Node.ELEMENT_NODE) {
                     Element eElement = (Element) nNode;
 
-                    array.add(eElement.getElementsByTagName("sentence1").item(0).getTextContent());
-                    array.add(eElement.getElementsByTagName("sentence2").item(0).getTextContent());
-                    array.add(eElement.getElementsByTagName("sentence3").item(0).getTextContent());
-                    array.add(eElement.getElementsByTagName("sentence4").item(0).getTextContent());
-                    array.add(eElement.getElementsByTagName("sentence5").item(0).getTextContent());
-                    array.add(eElement.getElementsByTagName("sentence6").item(0).getTextContent());
+                    NodeList nList2 = eElement.getElementsByTagName("sentence");
+                    for(int i = 0; i < nList2.getLength(); i++) {
+                        Node node = nList2.item(i);
+
+                        if(node.getNodeType() == Node.ELEMENT_NODE) {
+                            Element element = (Element) node;
+                            array.add(element.getTextContent());
+                        }
+                    }
                 }
             }
 
