@@ -9,6 +9,7 @@ import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.InputListener;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.Button;
+import com.badlogic.gdx.scenes.scene2d.ui.Dialog;
 import com.badlogic.gdx.scenes.scene2d.ui.Label;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.badlogic.gdx.scenes.scene2d.ui.TextArea;
@@ -57,21 +58,21 @@ public class AfterGameScreen extends ScreenAdapter {
         });
         stage.addActor(buttonMenu);
 
-        Label scoreLabel = new Label("Score: " + score, mySkin);
+        Label scoreLabel = new Label("Score: " + score, mySkin, "big");
         float scoreLabelWidth = Gdx.graphics.getWidth() / 2f;
         float scoreLabelHeight = Gdx.graphics.getHeight() / 4f;
 
 
         scoreLabel.setBounds(scoreLabelWidth / 2, scoreLabelHeight * 3,
                 scoreLabelWidth, scoreLabelHeight);
-        scoreLabel.setFontScale(6);
+        scoreLabel.setFontScale(3);
         scoreLabel.setColor(Color.BLACK);
-        //stage.addActor(scoreLabel);
+        stage.addActor(scoreLabel);
 
         TextArea scoreArea = new TextArea("Score: ", mySkin);
         scoreArea.setBounds(scoreLabelWidth / 2, scoreLabelHeight * 3,
                 scoreLabelWidth, scoreLabelHeight);
-        stage.addActor(scoreArea);
+        //stage.addActor(scoreArea);
 
         //Text scoreText = new Text("Score: " + score, mySkin);
 

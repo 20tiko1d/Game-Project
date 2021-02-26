@@ -120,7 +120,8 @@ public class GameScreen extends ScreenAdapter {
     private boolean pairClose = false;
     private int pairCount = 0;
 
-    private int score = 0;
+    private float score = 0;
+    private int objectScore;
 
     private int fpsCounter = 0;
     private float second = 1;
@@ -129,6 +130,8 @@ public class GameScreen extends ScreenAdapter {
     public GameScreen(Main main, World world) {
         this.main = main;
         this.world = world;
+        score = GameConfiguration.getStartScore();
+        objectScore = GameConfiguration.getObjectScore();
         viewPortWidth = Main.viewPortWidth;
         viewPortHeight = Main.viewPortHeight;
         centerX = main.getCenterX();
@@ -260,6 +263,7 @@ public class GameScreen extends ScreenAdapter {
                                 openExit();
                             }
                             pairCount++;
+                            score += objectScore;
                         }
                     }
                 } else {
@@ -290,6 +294,8 @@ public class GameScreen extends ScreenAdapter {
         Button buttonBoost = new TextButton("Boost",mySkin,"default");
         buttonBoost.setSize(Gdx.graphics.getHeight() / 5f,Gdx.graphics.getHeight() / 5f);
         buttonBoost.setPosition(Gdx.graphics.getWidth() / 15f,Gdx.graphics.getWidth() / 15f);
+        //buttonBoost.setColor(Color.RED);
+        buttonBoost.setColor(1, 0, 0, 1);
         buttonBoost.addListener(new InputListener(){
             @Override
             public boolean touchDown(InputEvent event, float x, float y, int pointer, int button) {
@@ -366,11 +372,13 @@ public class GameScreen extends ScreenAdapter {
             buttonSwitch.setVisible(false);
         }
 
+        score -= deltaTime;
+
         if(exitOpen) {
             if(playerRect.overlaps(exitRectangle)) {
                 created = false;
                 dispose();
-                main.setScreen(new AfterGameScreen(main, score));
+                main.setScreen(new AfterGameScreen(main, (int) score));
             }
         }
 

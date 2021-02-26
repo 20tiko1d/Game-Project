@@ -35,6 +35,8 @@ public class LevelScreen extends ScreenAdapter {
     public void show() {
         stage = new Stage(new ScreenViewport());
 
+        Gdx.app.log("", "level: " + GameConfiguration.gameLevel);
+
         Skin mySkin = new Skin(Gdx.files.internal("skin/glassy-ui.json"));
 
         Button buttonEasy = new TextButton("Easy",mySkin,"default");
@@ -48,6 +50,7 @@ public class LevelScreen extends ScreenAdapter {
 
             @Override
             public void touchUp(InputEvent event, float x, float y, int pointer, int button) {
+                GameConfiguration.gameLevel = 1;
                 createGame(10, 15, 2);
             }
         });
@@ -69,6 +72,7 @@ public class LevelScreen extends ScreenAdapter {
 
             @Override
             public void touchUp(InputEvent event, float x, float y, int pointer, int button) {
+                GameConfiguration.gameLevel = 2;
                 createGame(15, 23, 4);
             }
         });
@@ -89,6 +93,7 @@ public class LevelScreen extends ScreenAdapter {
 
             @Override
             public void touchUp(InputEvent event, float x, float y, int pointer, int button) {
+                GameConfiguration.gameLevel = 3;
                 createGame(20, 31, 6);
             }
         });
