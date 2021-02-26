@@ -23,6 +23,8 @@ public final class GameConfiguration {
     public static int lvl3PathLength = 31;
     public static int lvl3ObjectPairs = 6;
 
+    public static final float PLAYER_SPEED = 4;
+
 
     private GameConfiguration() {}
 
