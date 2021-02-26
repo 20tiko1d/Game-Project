@@ -122,6 +122,7 @@ public class GameScreen extends ScreenAdapter {
 
     private float score = 0;
     private int objectScore;
+    private Label scoreLabel;
 
     private int fpsCounter = 0;
     private float second = 1;
@@ -144,6 +145,13 @@ public class GameScreen extends ScreenAdapter {
         pairLabel.setFontScale(4);
         pairLabel.setColor(Color.BLACK);
         stage.addActor(pairLabel);
+
+        scoreLabel = new Label("Score: " + score, mySkin, "black");
+        scoreLabel.setBounds(Gdx.graphics.getWidth() / 10f, Gdx.graphics.getHeight() * 4 / 5f,
+                Gdx.graphics.getWidth() / 5f, Gdx.graphics.getHeight() / 5f);
+        scoreLabel.setFontScale(4);
+        stage.addActor(scoreLabel);
+
         batch = new SpriteBatch();
 
         if(Main.isPortrait) {
@@ -264,6 +272,9 @@ public class GameScreen extends ScreenAdapter {
                             }
                             pairCount++;
                             score += objectScore;
+                            if(pairCount >= randomPairs.length) {
+                                score += objectScore;
+                            }
                         }
                     }
                 } else {
@@ -373,6 +384,7 @@ public class GameScreen extends ScreenAdapter {
         }
 
         score -= deltaTime;
+        scoreLabel.setText("Score: " + (int) score);
 
         if(exitOpen) {
             if(playerRect.overlaps(exitRectangle)) {

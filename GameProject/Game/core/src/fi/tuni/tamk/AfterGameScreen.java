@@ -16,6 +16,8 @@ import com.badlogic.gdx.scenes.scene2d.ui.TextArea;
 import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
 import com.badlogic.gdx.utils.viewport.ScreenViewport;
 
+import java.util.logging.Level;
+
 import javax.xml.soap.Text;
 
 public class AfterGameScreen extends ScreenAdapter {
@@ -57,6 +59,39 @@ public class AfterGameScreen extends ScreenAdapter {
             }
         });
         stage.addActor(buttonMenu);
+
+        Button buttonPlayAgain = new TextButton("Play again",mySkin,"default");
+        buttonPlayAgain.setSize(Gdx.graphics.getWidth() / 5f,Gdx.graphics.getWidth() / 8f);
+        buttonPlayAgain.setPosition(Gdx.graphics.getWidth() / 2f + 30,Gdx.graphics.getHeight() / 3f);
+        buttonPlayAgain.addListener(new InputListener(){
+            @Override
+            public boolean touchDown(InputEvent event, float x, float y, int pointer, int button) {
+                return true;
+            }
+
+            @Override
+            public void touchUp(InputEvent event, float x, float y, int pointer, int button) {
+                GameScreen gameScreen = GameConfiguration.createGame(main);
+                main.setScreen(gameScreen);
+            }
+        });
+        stage.addActor(buttonPlayAgain);
+
+        Button buttonLevelScreen = new TextButton("Levels",mySkin,"default");
+        buttonLevelScreen.setSize(Gdx.graphics.getWidth() / 5f,Gdx.graphics.getWidth() / 8f);
+        buttonLevelScreen.setPosition(Gdx.graphics.getWidth() / 2f - buttonLevelScreen.getWidth() - 30,Gdx.graphics.getHeight() / 3f);
+        buttonLevelScreen.addListener(new InputListener(){
+            @Override
+            public boolean touchDown(InputEvent event, float x, float y, int pointer, int button) {
+                return true;
+            }
+
+            @Override
+            public void touchUp(InputEvent event, float x, float y, int pointer, int button) {
+                main.setScreen(new LevelScreen(main));
+            }
+        });
+        stage.addActor(buttonLevelScreen);
 
         Label scoreLabel = new Label("Score: " + score, mySkin, "big");
         float scoreLabelWidth = Gdx.graphics.getWidth() / 2f;
