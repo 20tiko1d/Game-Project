@@ -120,10 +120,19 @@ public class GameScreen extends ScreenAdapter {
     private boolean pairClose = false;
     private int pairCount = 0;
 
+    private float score = 0;
+    private int objectScore;
+    private Label scoreLabel;
+
+    private int fpsCounter = 0;
+    private float second = 1;
+
 
     public GameScreen(Main main, World world) {
         this.main = main;
         this.world = world;
+        score = GameConfiguration.getStartScore();
+        objectScore = GameConfiguration.getObjectScore();
         viewPortWidth = Main.viewPortWidth;
         viewPortHeight = Main.viewPortHeight;
         centerX = main.getCenterX();
@@ -133,10 +142,16 @@ public class GameScreen extends ScreenAdapter {
         pairLabel = new Label("", mySkin);
         pairLabel.setBounds(Gdx.graphics.getWidth() / 4f, Gdx.graphics.getHeight() * 4.3f / 5f,
                 Gdx.graphics.getWidth() / 2f, Gdx.graphics.getHeight() / 5f);
-        stage.addActor(pairLabel);
         pairLabel.setFontScale(4);
         pairLabel.setColor(Color.BLACK);
         stage.addActor(pairLabel);
+
+        scoreLabel = new Label("Score: " + score, mySkin, "black");
+        scoreLabel.setBounds(Gdx.graphics.getWidth() / 10f, Gdx.graphics.getHeight() * 4 / 5f,
+                Gdx.graphics.getWidth() / 5f, Gdx.graphics.getHeight() / 5f);
+        scoreLabel.setFontScale(4);
+        stage.addActor(scoreLabel);
+
         batch = new SpriteBatch();
 
         if(Main.isPortrait) {
@@ -256,6 +271,10 @@ public class GameScreen extends ScreenAdapter {
                                 openExit();
                             }
                             pairCount++;
+                            score += objectScore;
+                            if(pairCount >= randomPairs.length) {
+                                score += objectScore;
+                            }
                         }
                     }
                 } else {
@@ -286,6 +305,8 @@ public class GameScreen extends ScreenAdapter {
         Button buttonBoost = new TextButton("Boost",mySkin,"default");
         buttonBoost.setSize(Gdx.graphics.getHeight() / 5f,Gdx.graphics.getHeight() / 5f);
         buttonBoost.setPosition(Gdx.graphics.getWidth() / 15f,Gdx.graphics.getWidth() / 15f);
+        //buttonBoost.setColor(Color.RED);
+        buttonBoost.setColor(1, 0, 0, 1);
         buttonBoost.addListener(new InputListener(){
             @Override
             public boolean touchDown(InputEvent event, float x, float y, int pointer, int button) {
@@ -362,11 +383,14 @@ public class GameScreen extends ScreenAdapter {
             buttonSwitch.setVisible(false);
         }
 
+        score -= deltaTime;
+        scoreLabel.setText("Score: " + (int) score);
+
         if(exitOpen) {
             if(playerRect.overlaps(exitRectangle)) {
                 created = false;
                 dispose();
-                main.setScreen(new LevelScreen(main));
+                main.setScreen(new AfterGameScreen(main, (int) score));
             }
         }
 
@@ -409,6 +433,7 @@ public class GameScreen extends ScreenAdapter {
     }
 
     public void doPhysicsStep(float deltaTime) {
+        fpsCounter++;
         float frameTime = deltaTime;
 
         if(deltaTime > 1 / 4f) {
@@ -419,6 +444,12 @@ public class GameScreen extends ScreenAdapter {
         while(accumulator >= TIME_STEP) {
             world.step(TIME_STEP, 8, 3);
             accumulator -= TIME_STEP;
+            second -= TIME_STEP;
+            if(second <= 0) {
+                Gdx.app.log("", "fps: " + fpsCounter);
+                fpsCounter = 0;
+                second = 1;
+            }
         }
         camera.setToOrtho(false, viewPortWidth * minZoom / zoomRatio,
                     viewPortHeight * minZoom / zoomRatio);
@@ -574,7 +605,6 @@ public class GameScreen extends ScreenAdapter {
         for(int i = 0; i < exitLocations.length; i++) {
             map[exitLocations[i][0]][exitLocations[i][1]] = exitOpenTexture;
         }
-        Gdx.app.log("", "j: " + exitBody.getFixtureList());
         world.destroyBody(exitBody);
         playerRect = new Rectangle();
         playerRect.x = playerBody.getPosition().x - Main.oneWidth / 2;

@@ -1,5 +1,6 @@
 package fi.tuni.tamk;
 
+import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.math.Rectangle;
@@ -574,16 +575,6 @@ public class MapGenerator {
 
         map = new Texture[(size + 24) * 4 + 1][(size + 12) * 4 + 1];
 
-        // Sets textures to the surroundings of the labyrinth.
-        for(int row = 0; row < map.length; row++) {
-            for(int column = 0; column < map[row].length; column++) {
-                if(row >= 48 && row <= 48 + size * 4 && column == 24) {
-                    column += size * 4 - 1;
-                } else {
-                    map[row][column] = randomTexture(floor2Textures);
-                }
-            }
-        }
         // This makes sure that the collision map and visual map will match.
         int [][] collisionArray = new int[(size + 24) * 4 + 1][(size + 12) * 4 + 1];
         mapY = map.length * oneWidth;
@@ -663,6 +654,19 @@ public class MapGenerator {
             }
         }
         gameScreen.setExitLocations(exitLocations);
+
+        // Sets textures to the surroundings of the labyrinth.
+        for(int row = 0; row < map.length; row++) {
+            for(int column = 0; column < map[row].length; column++) {
+                if(row >= 48 && row <= 48 + size * 4 && column == 24) {
+                    column += size * 4 - 1;
+                } else {
+                    if(map[row][column] == null) {
+                        map[row][column] = randomTexture(floor2Textures);
+                    }
+                }
+            }
+        }
     }
 
     public Texture randomTexture(ArrayList<Texture> textures) {

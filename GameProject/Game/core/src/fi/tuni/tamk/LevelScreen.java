@@ -1,5 +1,6 @@
 package fi.tuni.tamk;
 
+import com.badlogic.gdx.Game;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.ScreenAdapter;
 import com.badlogic.gdx.graphics.GL20;
@@ -35,6 +36,8 @@ public class LevelScreen extends ScreenAdapter {
     public void show() {
         stage = new Stage(new ScreenViewport());
 
+        Gdx.app.log("", "level: " + GameConfiguration.gameLevel);
+
         Skin mySkin = new Skin(Gdx.files.internal("skin/glassy-ui.json"));
 
         Button buttonEasy = new TextButton("Easy",mySkin,"default");
@@ -48,7 +51,8 @@ public class LevelScreen extends ScreenAdapter {
 
             @Override
             public void touchUp(InputEvent event, float x, float y, int pointer, int button) {
-                createGame(10, 15, 2);
+                GameConfiguration.gameLevel = 1;
+                createGame();
             }
         });
         stage.addActor(buttonEasy);
@@ -69,7 +73,8 @@ public class LevelScreen extends ScreenAdapter {
 
             @Override
             public void touchUp(InputEvent event, float x, float y, int pointer, int button) {
-                createGame(15, 23, 4);
+                GameConfiguration.gameLevel = 2;
+                createGame();
             }
         });
         stage.addActor(buttonMedium);
@@ -89,7 +94,8 @@ public class LevelScreen extends ScreenAdapter {
 
             @Override
             public void touchUp(InputEvent event, float x, float y, int pointer, int button) {
-                createGame(20, 31, 6);
+                GameConfiguration.gameLevel = 3;
+                createGame();
             }
         });
         stage.addActor(buttonHard);
@@ -119,7 +125,6 @@ public class LevelScreen extends ScreenAdapter {
         Gdx.gl.glClearColor(1, 1, 1, 1);
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
 
-
         stage.draw();
         stage.act();
     }
@@ -132,20 +137,9 @@ public class LevelScreen extends ScreenAdapter {
 
     /**
      * Method starts the creation of the game world.
-     *
-     * @param size: Lengths of the labyrinth sides.
-     * @param pathLength: Length of the path from the start to the center square.
-     * @param numOfPairs: Number of pairs per current game.
      */
-    public void createGame(int size, int pathLength, int numOfPairs) {
-        World world = new World(new Vector2(0,0), true);
-
-
-        GameScreen gameScreen= new GameScreen(main, world);
-        MapGenerator generator= new MapGenerator(gameScreen);
-
-
-        generator.createMap(size, pathLength, world, numOfPairs);
+    public void createGame() {
+        GameScreen gameScreen = GameConfiguration.createGame(main);
         dispose();
         main.setScreen(gameScreen);
     }
