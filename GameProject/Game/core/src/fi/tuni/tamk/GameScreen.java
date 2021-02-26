@@ -90,6 +90,7 @@ public class GameScreen extends ScreenAdapter {
     private float velX;
     private float velY;
     private float velMultiplier = 1;
+    private float playerSpeed;
 
     private boolean first;
     private boolean currentFirst;
@@ -133,6 +134,7 @@ public class GameScreen extends ScreenAdapter {
         this.world = world;
         score = GameConfiguration.getStartScore();
         objectScore = GameConfiguration.getObjectScore();
+        playerSpeed = GameConfiguration.PLAYER_SPEED;
         viewPortWidth = Main.viewPortWidth;
         viewPortHeight = Main.viewPortHeight;
         centerX = main.getCenterX();
@@ -466,7 +468,7 @@ public class GameScreen extends ScreenAdapter {
     }
 
     public void move(float time) {
-        playerBody.setLinearVelocity(velX * 10 * velMultiplier, velY * 10 * velMultiplier);
+        playerBody.setLinearVelocity(velX * playerSpeed * velMultiplier, velY * playerSpeed * velMultiplier);
     }
 
     /**
