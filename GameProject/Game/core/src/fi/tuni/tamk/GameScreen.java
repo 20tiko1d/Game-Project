@@ -385,7 +385,9 @@ public class GameScreen extends ScreenAdapter {
             buttonSwitch.setVisible(false);
         }
 
-        score -= deltaTime;
+        if(score - deltaTime >= 0) {
+            score -= deltaTime;
+        }
         scoreLabel.setText("Score: " + (int) score);
 
         if(exitOpen) {
