@@ -142,14 +142,15 @@ public class GameScreen extends ScreenAdapter {
         stage = new Stage(new ScreenViewport());
         mySkin = new Skin(Gdx.files.internal("skin/glassy-ui.json"));
         pairLabel = new Label("", mySkin);
-        pairLabel.setBounds(Gdx.graphics.getWidth() / 4f, Gdx.graphics.getHeight() * 4.3f / 5f,
+        pairLabel.setBounds(Gdx.graphics.getWidth() / 4f, Gdx.graphics.getHeight() * 4f / 5f,
                 Gdx.graphics.getWidth() / 2f, Gdx.graphics.getHeight() / 5f);
         pairLabel.setFontScale(4);
         pairLabel.setColor(Color.BLACK);
+        pairLabel.setWrap(true);
         stage.addActor(pairLabel);
 
         scoreLabel = new Label("Score: " + score, mySkin, "black");
-        scoreLabel.setBounds(Gdx.graphics.getWidth() / 10f, Gdx.graphics.getHeight() * 4 / 5f,
+        scoreLabel.setBounds(Gdx.graphics.getWidth() / 15f, Gdx.graphics.getHeight() * 4 / 5f,
                 Gdx.graphics.getWidth() / 5f, Gdx.graphics.getHeight() / 5f);
         scoreLabel.setFontScale(4);
         stage.addActor(scoreLabel);
@@ -252,7 +253,7 @@ public class GameScreen extends ScreenAdapter {
         stage.addActor(buttonExit);
         buttonTake = new TextButton("Take",mySkin,"default");
         buttonTake.setSize(Gdx.graphics.getWidth() / 4f,Gdx.graphics.getWidth() / 10f);
-        buttonTake.setPosition(Gdx.graphics.getWidth() / 4f,Gdx.graphics.getHeight() - Gdx.graphics.getWidth() / 7f);
+        buttonTake.setPosition(Gdx.graphics.getWidth() / 4f,0);
         buttonTake.addListener(new InputListener(){
             @Override
             public boolean touchDown(InputEvent event, float x, float y, int pointer, int button) {
@@ -289,7 +290,7 @@ public class GameScreen extends ScreenAdapter {
 
         buttonSwitch = new TextButton("Switch",mySkin,"default");
         buttonSwitch.setSize(Gdx.graphics.getWidth() / 4f,Gdx.graphics.getWidth() / 10f);
-        buttonSwitch.setPosition(Gdx.graphics.getWidth() / 2f,Gdx.graphics.getHeight() - Gdx.graphics.getWidth() / 7f);
+        buttonSwitch.setPosition(Gdx.graphics.getWidth() / 2f,0);
         buttonSwitch.addListener(new InputListener(){
             @Override
             public boolean touchDown(InputEvent event, float x, float y, int pointer, int button) {
@@ -385,7 +386,9 @@ public class GameScreen extends ScreenAdapter {
             buttonSwitch.setVisible(false);
         }
 
-        score -= deltaTime;
+        if(score - deltaTime >= 0) {
+            score -= deltaTime;
+        }
         scoreLabel.setText("Score: " + (int) score);
 
         if(exitOpen) {
