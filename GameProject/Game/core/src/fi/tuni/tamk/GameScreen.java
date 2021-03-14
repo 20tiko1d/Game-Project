@@ -525,7 +525,7 @@ public class GameScreen extends ScreenAdapter {
 
         int minIndexX = playerLocX - currentMany / 2 - 3;
         int minIndexY = playerLocY - currentMany;
-        int maxIndexX = minIndexX + currentMany + 3;
+        int maxIndexX = minIndexX + currentMany + 4;
         int maxIndexY = minIndexY + currentMany * 2 + 5;
 
         for(int row = minIndexY; row < maxIndexY; row++) {
