@@ -19,6 +19,8 @@ import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.InputListener;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.Button;
+import com.badlogic.gdx.scenes.scene2d.ui.Container;
+import com.badlogic.gdx.scenes.scene2d.ui.Image;
 import com.badlogic.gdx.scenes.scene2d.ui.Label;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
@@ -66,7 +68,6 @@ public class GameScreen extends ScreenAdapter {
     // Textures
     private Texture[][] map;
     private Texture playerTexture;
-    private Texture backgroundImg;
     private Texture objectTexture;
 
     private Skin mySkin;
@@ -87,6 +88,7 @@ public class GameScreen extends ScreenAdapter {
     private boolean isDown = false;
     private boolean isLeft = false;
     private boolean isRight = false;
+    private boolean isSpace = false;
     private float velX;
     private float velY;
     private float velMultiplier = 1;
@@ -141,6 +143,24 @@ public class GameScreen extends ScreenAdapter {
         centerY = main.getCenterY();
         stage = new Stage(new ScreenViewport());
         mySkin = new Skin(Gdx.files.internal("skin/glassy-ui.json"));
+
+        Image image = new Image(Textures.getBackgroundTexture());
+        image.setBounds(Gdx.graphics.getWidth() / 4f,
+                0,
+                Gdx.graphics.getWidth() / 2f, Gdx.graphics.getHeight());
+
+        stage.addActor(image);
+
+        Image side1Image = new Image(Textures.getSideTexture());
+        side1Image.setBounds(0, 0, image.getX(), Gdx.graphics.getHeight());
+        stage.addActor(side1Image);
+
+        Image side2Image = new Image(Textures.getSideTexture());
+        side2Image.setBounds(image.getX() + image.getWidth(), 0,
+                Gdx.graphics.getWidth() - image.getX() - image.getWidth(),
+                Gdx.graphics.getHeight());
+        stage.addActor(side2Image);
+
         pairLabel = new Label("", mySkin);
         pairLabel.setBounds(Gdx.graphics.getWidth() / 4f, Gdx.graphics.getHeight() * 4f / 5f,
                 Gdx.graphics.getWidth() / 2f, Gdx.graphics.getHeight() / 5f);
@@ -201,6 +221,12 @@ public class GameScreen extends ScreenAdapter {
                 if(keycode == Input.Keys.SHIFT_LEFT && !boost) {
                     boost = true;
                 }
+                if(keycode == Input.Keys.SPACE && !isSpace) {
+                    ifZoomIn = true;
+                    boost = true;
+                    velMultiplier = 1.5f;
+                    isSpace = true;
+                }
                 return true;
             }
 
@@ -228,6 +254,12 @@ public class GameScreen extends ScreenAdapter {
                 }
                 if(keycode == Input.Keys.SHIFT_LEFT) {
                     boost = false;
+                }
+                if(keycode == Input.Keys.SPACE) {
+                    ifZoomIn = false;
+                    ifMaxZoom = false;
+                    velMultiplier = 1;
+                    isSpace = false;
                 }
                 return true;
             }
@@ -403,9 +435,9 @@ public class GameScreen extends ScreenAdapter {
 
         if(created) {
             drawMap(batch);
-            batch.draw(backgroundImg, playerBody.getPosition().x - 7.5f * minZoom / zoomRatio,
-                    playerBody.getPosition().y / 2 - 7.5f * minZoom / zoomRatio + portraitCorrection,
-                    15 * minZoom / zoomRatio, 15 * minZoom / zoomRatio);
+            //batch.draw(backgroundImg, playerBody.getPosition().x - 7.5f * minZoom / zoomRatio,
+                    //playerBody.getPosition().y / 2 - 7.5f * minZoom / zoomRatio + portraitCorrection,
+                  //  15 * minZoom / zoomRatio, 15 * minZoom / zoomRatio);
         }
         batch.end();
         if(created) {
@@ -424,7 +456,6 @@ public class GameScreen extends ScreenAdapter {
         player.dispose();
         debugRenderer.dispose();
         playerTexture.dispose();
-        backgroundImg.dispose();
         batch.dispose();
         array = null;
         randomPairs = null;
@@ -432,7 +463,6 @@ public class GameScreen extends ScreenAdapter {
     }
 
     public void getTextures() {
-        backgroundImg = Textures.getBackgroundTexture();
         playerTexture = Textures.getPlayerTexture();
         objectTexture = Textures.getObjectTexture();
     }
