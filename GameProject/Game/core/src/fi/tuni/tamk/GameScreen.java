@@ -161,18 +161,19 @@ public class GameScreen extends ScreenAdapter {
                 Gdx.graphics.getHeight());
         stage.addActor(side2Image);
 
-        pairLabel = new Label("", mySkin);
+        pairLabel = new Label("", mySkin, "big");
         pairLabel.setBounds(Gdx.graphics.getWidth() / 4f, Gdx.graphics.getHeight() * 4f / 5f,
                 Gdx.graphics.getWidth() / 2f, Gdx.graphics.getHeight() / 5f);
-        pairLabel.setFontScale(4);
-        pairLabel.setColor(Color.BLACK);
+        //pairLabel.setFontScale(4);
+        //pairLabel.setColor(Color.BLACK);
+        pairLabel.getStyle().background = side1Image.getDrawable();
         pairLabel.setWrap(true);
         stage.addActor(pairLabel);
 
-        scoreLabel = new Label("Score: " + score, mySkin, "black");
-        scoreLabel.setBounds(Gdx.graphics.getWidth() / 15f, Gdx.graphics.getHeight() * 4 / 5f,
-                Gdx.graphics.getWidth() / 5f, Gdx.graphics.getHeight() / 5f);
-        scoreLabel.setFontScale(4);
+        scoreLabel = new Label("Score: " + score, mySkin, "big");
+        scoreLabel.setBounds(side1Image.getWidth() / 10f, Gdx.graphics.getHeight() * 4 / 5f,
+                side1Image.getWidth() * 8 / 10f, Gdx.graphics.getHeight() / 5f);
+        //scoreLabel.setFontScale(4);
         stage.addActor(scoreLabel);
 
         batch = new SpriteBatch();
@@ -411,7 +412,7 @@ public class GameScreen extends ScreenAdapter {
             debugRenderer.render(world, camera.combined);
         }
         if(!pairClose) {
-            pairLabel.setText(null);
+            pairLabel.setVisible(false);
             buttonTake.setVisible(false);
             buttonTake.setDisabled(true);
             buttonSwitch.setDisabled(true);
