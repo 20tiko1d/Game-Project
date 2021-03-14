@@ -69,6 +69,7 @@ public class GameScreen extends ScreenAdapter {
     private Texture[][] map;
     private Texture playerTexture;
     private Texture objectTexture;
+    private Image pairLabelBackground;
 
     private Skin mySkin;
 
@@ -144,37 +145,39 @@ public class GameScreen extends ScreenAdapter {
         stage = new Stage(new ScreenViewport());
         mySkin = new Skin(Gdx.files.internal("skin/glassy-ui.json"));
 
-        Image image = new Image(Textures.getBackgroundTexture());
-        image.setBounds(Gdx.graphics.getWidth() / 4f,
+        Image roundImage = new Image(Textures.getBackgroundTexture());
+        roundImage.setBounds(Gdx.graphics.getWidth() / 4f,
                 0,
                 Gdx.graphics.getWidth() / 2f, Gdx.graphics.getHeight());
 
-        stage.addActor(image);
-
         Image side1Image = new Image(Textures.getSideTexture());
-        side1Image.setBounds(0, 0, image.getX(), Gdx.graphics.getHeight());
-        stage.addActor(side1Image);
+        side1Image.setBounds(0, 0, roundImage.getX(), Gdx.graphics.getHeight());
 
         Image side2Image = new Image(Textures.getSideTexture());
-        side2Image.setBounds(image.getX() + image.getWidth(), 0,
-                Gdx.graphics.getWidth() - image.getX() - image.getWidth(),
+        side2Image.setBounds(roundImage.getX() + roundImage.getWidth(), 0,
+                Gdx.graphics.getWidth() - roundImage.getX() - roundImage.getWidth(),
                 Gdx.graphics.getHeight());
-        stage.addActor(side2Image);
 
         pairLabel = new Label("", mySkin, "big");
-        pairLabel.setBounds(Gdx.graphics.getWidth() / 4f, Gdx.graphics.getHeight() * 4f / 5f,
-                Gdx.graphics.getWidth() / 2f, Gdx.graphics.getHeight() / 5f);
-        //pairLabel.setFontScale(4);
-        //pairLabel.setColor(Color.BLACK);
-        pairLabel.getStyle().background = side1Image.getDrawable();
+        pairLabel.setBounds(Gdx.graphics.getWidth() * 1.1f / 4f, Gdx.graphics.getHeight() * 4f / 5f,
+                Gdx.graphics.getWidth() / 2.2f, Gdx.graphics.getHeight() / 5f);
         pairLabel.setWrap(true);
-        stage.addActor(pairLabel);
+
+        pairLabelBackground = new Image(Textures.getPairLabelBackground());
+        pairLabelBackground.setBounds(Gdx.graphics.getWidth() / 4f, pairLabel.getY(),
+                Gdx.graphics.getWidth() / 2f, pairLabel.getHeight());
 
         scoreLabel = new Label("Score: " + score, mySkin, "big");
         scoreLabel.setBounds(side1Image.getWidth() / 10f, Gdx.graphics.getHeight() * 4 / 5f,
                 side1Image.getWidth() * 8 / 10f, Gdx.graphics.getHeight() / 5f);
-        //scoreLabel.setFontScale(4);
+
+        stage.addActor(roundImage);
+        stage.addActor(side2Image);
+        stage.addActor(side1Image);
         stage.addActor(scoreLabel);
+        stage.addActor(pairLabelBackground);
+        stage.addActor(pairLabel);
+
 
         batch = new SpriteBatch();
 
@@ -413,6 +416,7 @@ public class GameScreen extends ScreenAdapter {
         }
         if(!pairClose) {
             pairLabel.setVisible(false);
+            pairLabelBackground.setVisible(false);
             buttonTake.setVisible(false);
             buttonTake.setDisabled(true);
             buttonSwitch.setDisabled(true);
@@ -605,6 +609,7 @@ public class GameScreen extends ScreenAdapter {
             buttonSwitch.setVisible(true);
             pairClose = true;
             pairLabel.setVisible(true);
+            pairLabelBackground.setVisible(true);
         }
     }
 

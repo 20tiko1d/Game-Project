@@ -53,4 +53,6 @@ public final class Textures {
     }
 
     public static Texture getSideTexture() { return new Texture("sides.png");}
+
+    public static Texture getPairLabelBackground() { return new Texture("pairLabelBackground.png");}
 }
