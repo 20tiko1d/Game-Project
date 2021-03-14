@@ -33,7 +33,7 @@ public final class Textures {
     }
 
     public static Texture getBackgroundTexture() {
-        return new Texture("circle2.png");
+        return new Texture("circle3.png");
     }
 
     public static Texture getObjectTexture() {
@@ -51,4 +51,8 @@ public final class Textures {
     public static Texture getStartTexture() {
         return new Texture("walls/wallStart.png");
     }
+
+    public static Texture getSideTexture() { return new Texture("sides.png");}
+
+    public static Texture getPairLabelBackground() { return new Texture("pairLabelBackground.png");}
 }
