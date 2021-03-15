@@ -37,7 +37,7 @@ public final class Textures {
     }
 
     public static Texture getObjectTexture() {
-        return new Texture("pairs1.png");
+        return new Texture("object.png");
     }
 
     public static Texture getExitCloseTexture() {

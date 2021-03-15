@@ -65,6 +65,7 @@ public class GameScreen extends ScreenAdapter {
     // Pairs
     private Array<String> array;
     private int[][] randomPairs;
+    private float objectHeight;
 
     // Textures
     private Texture[][] map;
@@ -148,6 +149,7 @@ public class GameScreen extends ScreenAdapter {
         tileWidth = Main.oneWidth;
         tileHeight = tileWidth * GameConfiguration.RELATIVE_TILE_HEIGHT;
         wallHeight = GameConfiguration.WALL_HEIGHT;
+        objectHeight = tileHeight * GameConfiguration.OBJECT_HEIGHT;
         stage = new Stage(new ScreenViewport());
         mySkin = new Skin(Gdx.files.internal("skin/glassy-ui.json"));
 
@@ -554,8 +556,8 @@ public class GameScreen extends ScreenAdapter {
                     if (row == randomPairs[i][1] && column == randomPairs[i][2] ||
                         row == randomPairs[i][3] && column == randomPairs[i][4]) {
                         batch.draw(objectTexture, column * tileWidth,
-                                locY + tileHeight,
-                                tileWidth, tileWidth * ((float) objectTexture.getHeight() / objectTexture.getWidth()));
+                                locY,
+                                tileWidth, objectHeight);
                     }
                 }
             }
@@ -595,18 +597,21 @@ public class GameScreen extends ScreenAdapter {
     public void itemCollision(int row, int column) {
         boolean stillClose = false;
         for(int i = 0; i < randomPairs.length; i++) {
-            if(Math.abs(row - randomPairs[i][1]) + Math.abs(column - randomPairs[i][2]) <= 2 && randomPairs[i][0] != -1) {
+            /*if(Math.abs(row - randomPairs[i][1]) + Math.abs(column - randomPairs[i][2]) <= 2 && randomPairs[i][0] != -1) {
                 createPairLabel(randomPairs[i][0]);
                 closeIndex = randomPairs[i][0];
                 first = true;
                 stillClose = true;
-            }
-            if(Math.abs(row - randomPairs[i][3]) + Math.abs(column - randomPairs[i][4]) <= 2 && randomPairs[i][0] != -1) {
-                createPairLabel(randomPairs[i][0]);
-                closeIndex = randomPairs[i][0];
-                first = false;
-                stillClose = true;
-
+            }*/
+            for(int j=0; j<2; j++) {
+                int a = 1 + j * 2;
+                int b = 2 + j * 2;
+                if(Math.sqrt(Math.pow(playerBody.getPosition().y - (tileWidth * map.length - randomPairs[i][a] * tileWidth - tileWidth / 2), 2) + Math.pow(playerBody.getPosition().x - (randomPairs[i][b] * tileWidth + tileWidth / 2), 2)) <= 1 && randomPairs[i][0] != -1) {
+                    createPairLabel(randomPairs[i][0]);
+                    closeIndex = randomPairs[i][0];
+                    first = true;
+                    stillClose = true;
+                }
             }
         }
         if(!stillClose) {

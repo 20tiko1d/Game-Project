@@ -28,6 +28,8 @@ public final class GameConfiguration {
     public static final float RELATIVE_TILE_HEIGHT = 2 / 3f;
     public static final float WALL_HEIGHT = 2.1f;
 
+    public static final float OBJECT_HEIGHT = 2;
+
     private GameConfiguration() {}
 
     public static int getStartScore() {
