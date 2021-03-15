@@ -26,6 +26,7 @@ public final class GameConfiguration {
     public static final float PLAYER_SPEED = 4;
 
     public static final float RELATIVE_TILE_HEIGHT = 2 / 3f;
+    public static final float WALL_HEIGHT = 2.1f;
 
     private GameConfiguration() {}
 

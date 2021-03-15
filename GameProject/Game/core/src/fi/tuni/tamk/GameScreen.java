@@ -1,5 +1,6 @@
 package fi.tuni.tamk;
 
+import com.badlogic.gdx.Game;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
 import com.badlogic.gdx.InputAdapter;
@@ -84,6 +85,7 @@ public class GameScreen extends ScreenAdapter {
     private float centerY;
     private float tileWidth;
     private float tileHeight;
+    private float wallHeight;
 
     // Controls
     private boolean boost = false;
@@ -145,6 +147,7 @@ public class GameScreen extends ScreenAdapter {
         centerY = main.getCenterY();
         tileWidth = Main.oneWidth;
         tileHeight = tileWidth * GameConfiguration.RELATIVE_TILE_HEIGHT;
+        wallHeight = GameConfiguration.WALL_HEIGHT;
         stage = new Stage(new ScreenViewport());
         mySkin = new Skin(Gdx.files.internal("skin/glassy-ui.json"));
 
@@ -410,7 +413,7 @@ public class GameScreen extends ScreenAdapter {
 
         if(created) {
             move(Gdx.graphics.getDeltaTime());
-            if(boost && !ifMaxZoom) {
+            if(boost && !ifMaxZoom && !pairClose) {
                 handleBoost(Gdx.graphics.getDeltaTime());
             }
         }
@@ -426,7 +429,7 @@ public class GameScreen extends ScreenAdapter {
             buttonSwitch.setVisible(false);
         }
 
-        if(score - deltaTime >= 0) {
+        if(score - deltaTime >= 0 && !pairClose) {
             score -= deltaTime;
         }
         scoreLabel.setText("Score: " + (int) score);
@@ -536,7 +539,7 @@ public class GameScreen extends ScreenAdapter {
                 float locY = mapY - row * tileHeight;
                 float currentTileHeight = tileHeight;
                 if(mapTexture.getHeight() / relativeHeight > currentTileHeight) {
-                    currentTileHeight = tileHeight * 3;
+                    currentTileHeight = tileHeight * (1 + wallHeight);
                 }
                 batch.draw(mapTexture, column * tileWidth,
                         locY, tileWidth, currentTileHeight);
