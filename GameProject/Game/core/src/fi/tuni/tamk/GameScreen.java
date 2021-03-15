@@ -609,7 +609,11 @@ public class GameScreen extends ScreenAdapter {
                 if(Math.sqrt(Math.pow(playerBody.getPosition().y - (tileWidth * map.length - randomPairs[i][a] * tileWidth - tileWidth / 2), 2) + Math.pow(playerBody.getPosition().x - (randomPairs[i][b] * tileWidth + tileWidth / 2), 2)) <= 1 && randomPairs[i][0] != -1) {
                     createPairLabel(randomPairs[i][0]);
                     closeIndex = randomPairs[i][0];
-                    first = true;
+                    if(j == 0) {
+                        first = true;
+                    } else {
+                        first = false;
+                    }
                     stillClose = true;
                 }
             }
