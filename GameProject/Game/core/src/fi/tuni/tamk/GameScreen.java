@@ -388,16 +388,18 @@ public class GameScreen extends ScreenAdapter {
         touchPadStyle.background = touchBackground;
         touchPadStyle.knob = touchKnob;
         Touchpad touchpad = new Touchpad(0.75f, touchPadStyle);
-        touchpad.setBounds(Gdx.graphics.getWidth() - Gdx.graphics.getHeight() / 2.5f, 0,
-                Gdx.graphics.getHeight() / 2.5f, Gdx.graphics.getHeight() / 2.5f);
+        touchpad.setBounds(GameConfiguration.joystickX, GameConfiguration.joystickY,
+                GameConfiguration.joystickLength, GameConfiguration.joystickLength);
         touchpad.addListener(new ChangeListener() {
             @Override
             public void changed(ChangeEvent event, Actor actor) {
 
                 float deltaY = ((Touchpad) actor).getKnobY();
+                Gdx.app.log("", "deltaY: " + deltaY);
                 float deltaX = ((Touchpad) actor).getKnobX();
-                velY = (deltaY - Gdx.graphics.getHeight() / 5f) / (Gdx.graphics.getHeight() / 10f);
-                velX = (deltaX - Gdx.graphics.getHeight() / 5f) / (Gdx.graphics.getHeight() / 10f);
+                Gdx.app.log("", "deltaX: " + deltaX);
+                velY = ((deltaY - GameConfiguration.joystickLength / 2f) / (GameConfiguration.joystickLength / 4f));
+                velX = ((deltaX - GameConfiguration.joystickLength / 2f) / (GameConfiguration.joystickLength / 4f));
             }
         });
         stage.addActor(touchpad);

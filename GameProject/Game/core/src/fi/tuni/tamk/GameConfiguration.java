@@ -1,5 +1,6 @@
 package fi.tuni.tamk;
 
+import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.World;
 
@@ -29,6 +30,13 @@ public final class GameConfiguration {
     public static final float WALL_HEIGHT = 2.1f;
 
     public static final float OBJECT_HEIGHT = 2;
+
+    public static float joystickXOffset = Gdx.graphics.getWidth() / 32f;
+    public static float joystickX = Gdx.graphics.getWidth() * 3 / 4f + joystickXOffset;
+    public static float joystickY = Gdx.graphics.getWidth() / 32f;
+    public static float joystickLength = Gdx.graphics.getWidth() * 3 / 16f;
+    public static float joystickCenterX = joystickX + joystickLength / 2f;
+    public static float joystickRightX = joystickX + joystickLength;
 
     private GameConfiguration() {}
 
