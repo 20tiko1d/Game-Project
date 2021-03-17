@@ -456,9 +456,6 @@ public class GameScreen extends ScreenAdapter {
 
         if(created) {
             drawMap(batch);
-            //batch.draw(backgroundImg, playerBody.getPosition().x - 7.5f * minZoom / zoomRatio,
-                    //playerBody.getPosition().y / 2 - 7.5f * minZoom / zoomRatio + portraitCorrection,
-                  //  15 * minZoom / zoomRatio, 15 * minZoom / zoomRatio);
         }
         batch.end();
         if(created) {
@@ -510,6 +507,7 @@ public class GameScreen extends ScreenAdapter {
         camera.setToOrtho(false, viewPortWidth * minZoom / zoomRatio,
                     viewPortHeight * minZoom / zoomRatio);
         camera.position.x = Math.round(playerBody.getPosition().x * relativeWidth) / relativeWidth;
+        //camera.position.y = playerBody.getPosition().y;
         camera.position.y = Math.round(playerBody.getPosition().y / (tileWidth / tileHeight) * relativeHeight) / relativeHeight;
 
         if(exitOpen) {

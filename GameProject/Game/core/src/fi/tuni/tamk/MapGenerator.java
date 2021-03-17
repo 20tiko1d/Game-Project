@@ -677,7 +677,7 @@ public class MapGenerator {
     public void createGround(float x, float y, float width, float height) {
 
         Body groundBody = world.createBody(getGroundBodyDef(x, y));
-        groundBody.createFixture(getPolygonShape(width, height), 1);
+        groundBody.createFixture(getPolygonShape(width, height), 0);
         if(isExit) {
             gameScreen.setExitBody(groundBody);
             isExit = false;
@@ -715,10 +715,13 @@ public class MapGenerator {
 
     public FixtureDef getFixtureDefinition() {
         FixtureDef playerFixtureDef = new FixtureDef();
-        playerFixtureDef.density = 1;
+        playerFixtureDef.density = 0;
         playerFixtureDef.restitution = 0;
-        playerFixtureDef.friction = 0.5f;
+        playerFixtureDef.friction = 0;
         playerFixtureDef.shape = getPolygonShape(oneWidth / 2, oneWidth / 2);
+        CircleShape circleShape = new CircleShape();
+        circleShape.setRadius((float) Math.sqrt(((oneWidth / 2) * (oneWidth / 2) * 2)));
+        playerFixtureDef.shape = circleShape;
         return playerFixtureDef;
     }
 
