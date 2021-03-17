@@ -63,7 +63,6 @@ public class MapGenerator {
      * @param preferredLength: Length of the route from the start to the center square.
      * @param world: Contains all of the collision boxes.
      * @param numOfPairs: Number of pairs.
-     * @return Returns created map in texture-array form.
      */
     public void createMap(int size, int preferredLength, World world,
                                   int numOfPairs) {
@@ -789,7 +788,7 @@ public class MapGenerator {
      * @param R2: Row of the pair 2.
      * @param C2: Column of the pair 2.
      * @param pairs: Coordinates of the chosen pairs.
-     * @return: Returns true, if the given coordinates are ok, and false if not.
+     * @return Returns true, if the given coordinates are ok, and false if not.
      */
     public boolean checkPairLocations(int R1, int C1, int R2, int C2, int[][] pairs) {
         // Check middle.

@@ -127,6 +127,7 @@ public class GameScreen extends ScreenAdapter {
     private Label pairLabel;
     private boolean pairClose = false;
     private int pairCount = 0;
+    private int objectIndex;
 
     private float score = 0;
     private int objectScore;
@@ -400,9 +401,7 @@ public class GameScreen extends ScreenAdapter {
             public void changed(ChangeEvent event, Actor actor) {
 
                 float deltaY = ((Touchpad) actor).getKnobY();
-                Gdx.app.log("", "deltaY: " + deltaY);
                 float deltaX = ((Touchpad) actor).getKnobX();
-                Gdx.app.log("", "deltaX: " + deltaX);
                 velY = ((deltaY - GameConfiguration.joystickLength / 2f) / (GameConfiguration.joystickLength / 4f));
                 velX = ((deltaX - GameConfiguration.joystickLength / 2f) / (GameConfiguration.joystickLength / 4f));
             }
@@ -520,7 +519,8 @@ public class GameScreen extends ScreenAdapter {
     }
 
     public void move(float time) {
-        playerBody.setLinearVelocity(velX * playerSpeed * velMultiplier, velY * playerSpeed * velMultiplier);
+        playerBody.setLinearVelocity(velX * playerSpeed * velMultiplier * time,
+                                     velY * playerSpeed * velMultiplier * time);
     }
 
     /**
@@ -541,6 +541,11 @@ public class GameScreen extends ScreenAdapter {
         int maxIndexX = playerLocX + currentMany / 2 + 3;
         int maxIndexY = playerLocY + currentMany / 2 + 7;
 
+        float objectX = 0;
+        float objectY = 0;
+        boolean playerDrawn = false;
+        boolean isObject = false;
+
         for(int row = minIndexY; row < maxIndexY; row++) {
             for(int column = minIndexX; column < maxIndexX; column++) {
                 Texture mapTexture = map[row][column];
@@ -553,21 +558,45 @@ public class GameScreen extends ScreenAdapter {
                         locY, tileWidth, currentTileHeight);
 
                 if(row == playerLocY && column == playerLocX) {
-                    batch.draw(playerTexture, playerBody.getPosition().x - tileWidth / 2,
-                            playerBody.getPosition().y / (tileWidth / tileHeight) + tileHeight / 2, tileWidth,
-                            tileWidth * ((float) playerTexture.getHeight() / playerTexture.getWidth()));
-                    itemCollision(row, column);
+                    float playerY = playerBody.getPosition().y / (tileWidth / tileHeight) + tileHeight / 2;
+                    if(isObject) {
+                        if(playerY > objectY) {
+                            drawPlayer(batch, playerY);
+                            drawObject(batch, objectX, objectY);
+                        } else {
+                            drawObject(batch, objectX, objectY);
+                            drawPlayer(batch, playerY);
+                        }
+                        isObject = false;
+                    } else {
+                        drawPlayer(batch, playerY);
+                    }
+                    playerDrawn = true;
+                    objectIndex = itemCollision();
                 }
                 for(int i = 0; i < randomPairs.length; i++) {
                     if (row == randomPairs[i][1] && column == randomPairs[i][2] ||
                         row == randomPairs[i][3] && column == randomPairs[i][4]) {
-                        batch.draw(objectTexture, column * tileWidth,
-                                locY,
-                                tileWidth, objectHeight);
+                        if(objectIndex == i && !playerDrawn) {
+                            isObject = true;
+                            objectX = column * tileWidth;
+                            objectY = locY;
+                        } else {
+                            drawObject(batch, column * tileWidth, locY);
+                        }
                     }
                 }
             }
         }
+    }
+
+    public void drawPlayer(SpriteBatch batch, float playerY) {
+        batch.draw(playerTexture, playerBody.getPosition().x - tileWidth / 2, playerY,
+                tileWidth, tileWidth * ((float) playerTexture.getHeight() / playerTexture.getWidth()));
+    }
+
+    public void drawObject(SpriteBatch batch, float locX, float locY) {
+        batch.draw(objectTexture, locX, locY, tileWidth, objectHeight);
     }
 
     public void handleBoost(float deltaTime) {
@@ -596,25 +625,23 @@ public class GameScreen extends ScreenAdapter {
 
     /**
      * Method is responsible for the player and pair-object encounters.
-     *
-     * @param row: Row that the player is currently on.
-     * @param column: Column that the player is currently on.
      */
-    public void itemCollision(int row, int column) {
+    public int itemCollision() {
         boolean stillClose = false;
+        int index = -1;
         for(int i = 0; i < randomPairs.length; i++) {
-            /*if(Math.abs(row - randomPairs[i][1]) + Math.abs(column - randomPairs[i][2]) <= 2 && randomPairs[i][0] != -1) {
-                createPairLabel(randomPairs[i][0]);
-                closeIndex = randomPairs[i][0];
-                first = true;
-                stillClose = true;
-            }*/
             for(int j=0; j<2; j++) {
                 int a = 1 + j * 2;
                 int b = 2 + j * 2;
-                if(Math.sqrt(Math.pow(playerBody.getPosition().y - (tileWidth * map.length - randomPairs[i][a] * tileWidth - tileWidth / 2), 2) + Math.pow(playerBody.getPosition().x - (randomPairs[i][b] * tileWidth + tileWidth / 2), 2)) <= 1 && randomPairs[i][0] != -1) {
+                if(Math.sqrt(Math.pow(playerBody.getPosition().y -
+                        (tileWidth * map.length - randomPairs[i][a] * tileWidth - tileWidth / 2), 2)
+                        + Math.pow(playerBody.getPosition().x -
+                        (randomPairs[i][b] * tileWidth + tileWidth / 2), 2)) <= 1
+                        && randomPairs[i][0] != -1) {
+
                     createPairLabel(randomPairs[i][0]);
                     closeIndex = randomPairs[i][0];
+                    index = i;
                     if(j == 0) {
                         first = true;
                     } else {
@@ -635,6 +662,8 @@ public class GameScreen extends ScreenAdapter {
             pairLabel.setVisible(true);
             pairLabelBackground.setVisible(true);
         }
+
+        return index;
     }
 
     public void createPairLabel(int index) {
