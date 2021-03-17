@@ -1,34 +1,47 @@
 package fi.tuni.tamk;
 
+import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.World;
 
 public final class GameConfiguration {
 
+    // Current game level
     public static int gameLevel;
 
+    // Score settings
     private static final int SCORE = 100;
-
     private static final int OBJECT_SCORE = 20;
 
+    // Easy level settings
     public static int lvl1Size = 10;
     public static int lvl1PathLength = 15;
     public static int lvl1ObjectPairs = 2;
 
+    // Normal level settings
     public static int lvl2Size = 15;
     public static int lvl2PathLength = 23;
     public static int lvl2ObjectPairs = 4;
 
+    // Hard level settings
     public static int lvl3Size = 20;
     public static int lvl3PathLength = 31;
     public static int lvl3ObjectPairs = 6;
 
     public static final float PLAYER_SPEED = 4;
 
+    // Wall height settings
     public static final float RELATIVE_TILE_HEIGHT = 2 / 3f;
     public static final float WALL_HEIGHT = 2.1f;
 
+    // Object height settings
     public static final float OBJECT_HEIGHT = 2;
+
+    // Joystick settings
+    public static float joystickXOffset = Gdx.graphics.getWidth() / 32f;
+    public static float joystickX = Gdx.graphics.getWidth() * 3 / 4f + joystickXOffset;
+    public static float joystickY = Gdx.graphics.getWidth() / 32f;
+    public static float joystickLength = Gdx.graphics.getWidth() * 3 / 16f;
 
     private GameConfiguration() {}
 
@@ -40,6 +53,12 @@ public final class GameConfiguration {
         return OBJECT_SCORE * gameLevel;
     }
 
+    /**
+     * Creates the game based on the selected game level.
+     *
+     * @param main Main object to pass along.
+     * @return Game screen.
+     */
     public static GameScreen createGame(Main main) {
         World world = new World(new Vector2(0,0), true);
 

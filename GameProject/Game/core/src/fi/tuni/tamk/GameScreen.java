@@ -131,6 +131,7 @@ public class GameScreen extends ScreenAdapter {
     private float score = 0;
     private int objectScore;
     private Label scoreLabel;
+    private Label objectLabel;
 
     private int fpsCounter = 0;
     private float second = 1;
@@ -178,11 +179,15 @@ public class GameScreen extends ScreenAdapter {
         scoreLabel = new Label("Score: " + score, mySkin, "big");
         scoreLabel.setBounds(side1Image.getWidth() / 10f, Gdx.graphics.getHeight() * 4 / 5f,
                 side1Image.getWidth() * 8 / 10f, Gdx.graphics.getHeight() / 5f);
+        objectLabel = new Label("", mySkin, "big");
+        objectLabel.setBounds(scoreLabel.getX(), Gdx.graphics.getHeight() * 3 / 5f,
+                scoreLabel.getWidth(), scoreLabel.getHeight());
 
         stage.addActor(roundImage);
         stage.addActor(side2Image);
         stage.addActor(side1Image);
         stage.addActor(scoreLabel);
+        stage.addActor(objectLabel);
         stage.addActor(pairLabelBackground);
         stage.addActor(pairLabel);
 
@@ -388,16 +393,18 @@ public class GameScreen extends ScreenAdapter {
         touchPadStyle.background = touchBackground;
         touchPadStyle.knob = touchKnob;
         Touchpad touchpad = new Touchpad(0.75f, touchPadStyle);
-        touchpad.setBounds(Gdx.graphics.getWidth() - Gdx.graphics.getHeight() / 2.5f, 0,
-                Gdx.graphics.getHeight() / 2.5f, Gdx.graphics.getHeight() / 2.5f);
+        touchpad.setBounds(GameConfiguration.joystickX, GameConfiguration.joystickY,
+                GameConfiguration.joystickLength, GameConfiguration.joystickLength);
         touchpad.addListener(new ChangeListener() {
             @Override
             public void changed(ChangeEvent event, Actor actor) {
 
                 float deltaY = ((Touchpad) actor).getKnobY();
+                Gdx.app.log("", "deltaY: " + deltaY);
                 float deltaX = ((Touchpad) actor).getKnobX();
-                velY = (deltaY - Gdx.graphics.getHeight() / 5f) / (Gdx.graphics.getHeight() / 10f);
-                velX = (deltaX - Gdx.graphics.getHeight() / 5f) / (Gdx.graphics.getHeight() / 10f);
+                Gdx.app.log("", "deltaX: " + deltaX);
+                velY = ((deltaY - GameConfiguration.joystickLength / 2f) / (GameConfiguration.joystickLength / 4f));
+                velX = ((deltaX - GameConfiguration.joystickLength / 2f) / (GameConfiguration.joystickLength / 4f));
             }
         });
         stage.addActor(touchpad);
@@ -435,6 +442,7 @@ public class GameScreen extends ScreenAdapter {
             score -= deltaTime;
         }
         scoreLabel.setText("Score: " + (int) score);
+        objectLabel.setText("Pairs found: " + pairCount + "/" + randomPairs.length);
 
         if(exitOpen) {
             if(playerRect.overlaps(exitRectangle)) {
