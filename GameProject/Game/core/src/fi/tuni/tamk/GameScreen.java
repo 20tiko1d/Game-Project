@@ -378,8 +378,8 @@ public class GameScreen extends ScreenAdapter {
         float size = Gdx.graphics.getHeight() / 5f;
 
         Skin touchPadSkin = new Skin();
-        touchPadSkin.add("touchBackground", new Texture("joystickBack.png"));
-        touchPadSkin.add("touchKnob", new Texture("joystickKnob.png"));
+        touchPadSkin.add("touchBackground", Textures.getJoystickBack());
+        touchPadSkin.add("touchKnob", Textures.getJoystickKnob());
         Touchpad.TouchpadStyle touchPadStyle = new Touchpad.TouchpadStyle();
         touchBackground = touchPadSkin.getDrawable("touchBackground");
         touchKnob = touchPadSkin.getDrawable("touchKnob");

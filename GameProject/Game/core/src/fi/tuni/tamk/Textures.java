@@ -18,7 +18,12 @@ public final class Textures {
 
     public static ArrayList<Texture> getFloor2Textures() {
         ArrayList<Texture> textures = new ArrayList<Texture>();
-        textures.add(new Texture("floors/floor2.png"));
+        textures.add(new Texture("floors/grass1.png"));
+        textures.add(new Texture("floors/grass2.png"));
+        textures.add(new Texture("floors/grass3.png"));
+        textures.add(new Texture("floors/grass4.png"));
+        textures.add(new Texture("floors/grass5.png"));
+        textures.add(new Texture("floors/plant1.png"));
         return textures;
     }
 
@@ -55,4 +60,8 @@ public final class Textures {
     public static Texture getSideTexture() { return new Texture("sides.png");}
 
     public static Texture getPairLabelBackground() { return new Texture("pairLabelBackground.png");}
+
+    public static Texture getJoystickBack() { return new Texture("joystickBack2.png");}
+
+    public static Texture getJoystickKnob() { return new Texture("joystickKnob2.png");}
 }
