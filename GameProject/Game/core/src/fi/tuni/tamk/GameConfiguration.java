@@ -28,7 +28,7 @@ public final class GameConfiguration {
     public static int lvl3PathLength = 31;
     public static int lvl3ObjectPairs = 6;
 
-    public static final float PLAYER_SPEED = 4;
+    public static final float PLAYER_SPEED = 200;
 
     // Wall height settings
     public static final float RELATIVE_TILE_HEIGHT = 2 / 3f;
