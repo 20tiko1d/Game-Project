@@ -22,6 +22,10 @@ public class MenuScreen extends ScreenAdapter {
     private Stage stage;
     private OrthographicCamera camera;
 
+    private TextButton buttonPlay;
+    private TextButton buttonSettings;
+    private TextButton buttonPersonal;
+
     public MenuScreen(Main main) {
         this.main = main;
         camera = new OrthographicCamera();
@@ -39,7 +43,7 @@ public class MenuScreen extends ScreenAdapter {
 
         Skin mySkin = new Skin(Gdx.files.internal("skin/glassy-ui.json"));
 
-        Button buttonPlay = new TextButton("PLAY",mySkin,"default");
+        buttonPlay = new TextButton(GameConfiguration.getText("playButton"),mySkin,"default");
         buttonPlay.setSize(Gdx.graphics.getWidth() * multiplier / 3f,(Gdx.graphics.getHeight() / 7f) / multiplier);
         buttonPlay.setPosition(Gdx.graphics.getWidth() / 2f - buttonPlay.getWidth() / 2,
                 Gdx.graphics.getHeight() / 2f);
@@ -57,7 +61,7 @@ public class MenuScreen extends ScreenAdapter {
         });
         stage.addActor(buttonPlay);
 
-        Button buttonSettings = new TextButton("Settings",mySkin,"default");
+        buttonSettings = new TextButton(GameConfiguration.getText("settingsButton"),mySkin,"default");
         buttonSettings.setSize(Gdx.graphics.getWidth() / 4f,Gdx.graphics.getHeight() / (8f * multiplier));
         buttonSettings.setPosition(Gdx.graphics.getWidth() / 2f - buttonSettings.getWidth() / 2f,
                 buttonPlay.getY() - buttonSettings.getHeight() - Gdx.graphics.getHeight() / 20f);
@@ -69,12 +73,12 @@ public class MenuScreen extends ScreenAdapter {
 
             @Override
             public void touchUp(InputEvent event, float x, float y, int pointer, int button) {
-                // settings.
+                // Settings
             }
         });
         stage.addActor(buttonSettings);
 
-        Button buttonPersonal = new TextButton("Profile",mySkin,"default");
+        buttonPersonal = new TextButton(GameConfiguration.getText("personalButton"),mySkin,"default");
         buttonPersonal.setSize(Gdx.graphics.getWidth() / 4f,Gdx.graphics.getHeight() / (8f * multiplier));
         buttonPersonal.setPosition(Gdx.graphics.getWidth() / 2f - buttonPersonal.getWidth() / 2f,
                 buttonSettings.getY() - buttonPersonal.getHeight() - Gdx.graphics.getHeight() / 20f);
@@ -86,10 +90,32 @@ public class MenuScreen extends ScreenAdapter {
 
             @Override
             public void touchUp(InputEvent event, float x, float y, int pointer, int button) {
-                // Profile.
+                // Player profile?
             }
         });
         stage.addActor(buttonPersonal);
+
+        Button buttonLanguage = new TextButton("Language",mySkin,"default");
+        buttonLanguage.setSize(Gdx.graphics.getWidth() / 6f,Gdx.graphics.getHeight() / (8f * multiplier));
+        buttonLanguage.setPosition(Gdx.graphics.getWidth() - buttonLanguage.getWidth() - 10,
+                Gdx.graphics.getHeight() - buttonLanguage.getHeight() - 10);
+        buttonLanguage.addListener(new InputListener(){
+            @Override
+            public boolean touchDown(InputEvent event, float x, float y, int pointer, int button) {
+                return true;
+            }
+
+            @Override
+            public void touchUp(InputEvent event, float x, float y, int pointer, int button) {
+                if(GameConfiguration.open("language").equals("fi_FI")) {
+                    GameConfiguration.save("language", "en_GB");
+                } else {
+                    GameConfiguration.save("language", "fi_FI");
+                }
+                updateLanguage();
+            }
+        });
+        stage.addActor(buttonLanguage);
         Gdx.input.setInputProcessor(stage);
     }
 
@@ -108,6 +134,13 @@ public class MenuScreen extends ScreenAdapter {
         stage.dispose();
         camera = null;
 
+    }
+
+
+    public void updateLanguage() {
+        buttonPlay.setText(GameConfiguration.getText("playButton"));
+        buttonSettings.setText(GameConfiguration.getText("settingsButton"));
+        buttonPersonal.setText(GameConfiguration.getText("personalButton"));
     }
 
 }

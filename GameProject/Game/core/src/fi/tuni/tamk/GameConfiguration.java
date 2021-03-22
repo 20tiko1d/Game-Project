@@ -1,8 +1,12 @@
 package fi.tuni.tamk;
 
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.Preferences;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.World;
+import com.badlogic.gdx.utils.I18NBundle;
+
+import java.util.Locale;
 
 public final class GameConfiguration {
 
@@ -43,6 +47,9 @@ public final class GameConfiguration {
     public static float joystickY = Gdx.graphics.getWidth() / 32f;
     public static float joystickLength = Gdx.graphics.getWidth() * 3 / 16f;
 
+    // Saving stuff
+    public static String noValue = "No value stored";
+
     private GameConfiguration() {}
 
     public static int getStartScore() {
@@ -79,5 +86,36 @@ public final class GameConfiguration {
         }
         generator.createMap(size, pathLength, world, objectPairs);
         return gameScreen;
+    }
+
+    public static String getText(String key) {
+        I18NBundle myBundle;
+        if(!open("language").equals(noValue)) {
+            if(open("language").equals("fi_FI")) {
+                Locale locale = new Locale("fi_FI");
+                myBundle = I18NBundle.createBundle(Gdx.files.internal("MyBundle"), locale);
+            } else {
+                myBundle = I18NBundle.createBundle(Gdx.files.internal("MyBundle"));
+            }
+        } else {
+            Locale locale = Locale.getDefault();
+            myBundle = I18NBundle.createBundle(Gdx.files.internal("MyBundle"), locale);
+        }
+        return myBundle.get(key);
+    }
+
+    public static void save(String key, String value) {
+        Preferences prefs = Gdx.app.getPreferences("MyPreferences");
+
+        prefs.putString(key, value);
+        prefs.flush();
+    }
+
+    public static String open(String key) {
+        Preferences prefs = Gdx.app.getPreferences("MyPreferences");
+
+        String value = prefs.getString(key, noValue);
+
+        return value;
     }
 }
