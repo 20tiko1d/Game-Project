@@ -38,7 +38,7 @@ public class Store extends ScreenAdapter {
 
         Skin mySkin = new Skin(Gdx.files.internal("skin/glassy-ui.json"));
 
-        Button buttonMenu = new TextButton("Menu",mySkin,"default");
+        Button buttonMenu = new TextButton(GameConfiguration.getText("menu"),mySkin,"default");
         buttonMenu.setSize(Gdx.graphics.getWidth() / 10f,Gdx.graphics.getWidth() / 10f);
         buttonMenu.setPosition(0,Gdx.graphics.getHeight() - Gdx.graphics.getWidth() / 10f);
         buttonMenu.addListener(new InputListener(){
@@ -55,7 +55,7 @@ public class Store extends ScreenAdapter {
         });
         stage.addActor(buttonMenu);
 
-        Button buttonLevels = new TextButton("Levels",mySkin,"default");
+        Button buttonLevels = new TextButton(GameConfiguration.getText("levels"),mySkin,"default");
         buttonLevels.setSize(Gdx.graphics.getWidth() / 10f,Gdx.graphics.getWidth() / 10f);
         buttonLevels.setPosition(Gdx.graphics.getWidth() - buttonLevels.getWidth(),
                 Gdx.graphics.getHeight() - Gdx.graphics.getWidth() / 10f);

@@ -36,11 +36,9 @@ public class LevelScreen extends ScreenAdapter {
     public void show() {
         stage = new Stage(new ScreenViewport());
 
-        Gdx.app.log("", "level: " + GameConfiguration.gameLevel);
-
         Skin mySkin = new Skin(Gdx.files.internal("skin/glassy-ui.json"));
 
-        Button buttonEasy = new TextButton("Easy",mySkin,"default");
+        Button buttonEasy = new TextButton(GameConfiguration.getText("easyLevel"),mySkin,"default");
         buttonEasy.setSize(rect.width,rect.height);
         buttonEasy.setPosition(rect.x,rect.y);
         buttonEasy.addListener(new InputListener(){
@@ -57,7 +55,7 @@ public class LevelScreen extends ScreenAdapter {
         });
         stage.addActor(buttonEasy);
 
-        Button buttonMedium = new TextButton("Medium",mySkin,"default");
+        Button buttonMedium = new TextButton(GameConfiguration.getText("mediumLevel"),mySkin,"default");
         buttonMedium.setSize(rect.width,rect.height);
         if(Main.isPortrait) {
             buttonMedium.setPosition(rect.x,rect.y - 2 * marginal - rect.height);
@@ -79,7 +77,7 @@ public class LevelScreen extends ScreenAdapter {
         });
         stage.addActor(buttonMedium);
 
-        Button buttonHard = new TextButton("Hard",mySkin,"default");
+        Button buttonHard = new TextButton(GameConfiguration.getText("hardLevel"),mySkin,"default");
         buttonHard.setSize(rect.width,rect.height);
         if(Main.isPortrait) {
             buttonHard.setPosition(rect.x,rect.y - (2 * marginal + rect.height) * 2);
@@ -100,7 +98,7 @@ public class LevelScreen extends ScreenAdapter {
         });
         stage.addActor(buttonHard);
 
-        Button buttonMenu = new TextButton("Menu",mySkin,"default");
+        Button buttonMenu = new TextButton(GameConfiguration.getText("menu"),mySkin,"default");
         buttonMenu.setSize(Gdx.graphics.getWidth() / 10f,Gdx.graphics.getWidth() / 10f);
         buttonMenu.setPosition(0,Gdx.graphics.getHeight() - Gdx.graphics.getWidth() / 10f);
         buttonMenu.addListener(new InputListener(){
@@ -117,7 +115,7 @@ public class LevelScreen extends ScreenAdapter {
         });
         stage.addActor(buttonMenu);
 
-        Button buttonStore = new TextButton("Store",mySkin,"default");
+        Button buttonStore = new TextButton(GameConfiguration.getText("store"),mySkin,"default");
         buttonStore.setSize(Gdx.graphics.getWidth() / 5f,Gdx.graphics.getWidth() / 15f);
         buttonStore.setPosition(Gdx.graphics.getWidth() / 2f - buttonStore.getWidth() / 2f,
                 Gdx.graphics.getHeight() - buttonStore.getHeight());

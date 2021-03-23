@@ -31,6 +31,8 @@ import com.badlogic.gdx.scenes.scene2d.utils.Drawable;
 import com.badlogic.gdx.utils.Array;
 import com.badlogic.gdx.utils.viewport.ScreenViewport;
 
+import java.lang.reflect.GenericArrayType;
+
 /**
  * The class is responsible for running the actual game play.
  */
@@ -137,10 +139,13 @@ public class GameScreen extends ScreenAdapter {
     private int fpsCounter = 0;
     private float second = 1;
 
+    private String scoreString;
+
 
     public GameScreen(Main main, World world) {
         this.main = main;
         this.world = world;
+        scoreString = GameConfiguration.getText("score");
         score = GameConfiguration.getStartScore();
         objectScore = GameConfiguration.getObjectScore();
         playerSpeed = GameConfiguration.PLAYER_SPEED;
@@ -177,7 +182,8 @@ public class GameScreen extends ScreenAdapter {
         pairLabelBackground.setBounds(Gdx.graphics.getWidth() / 4f, pairLabel.getY(),
                 Gdx.graphics.getWidth() / 2f, pairLabel.getHeight());
 
-        scoreLabel = new Label("Score: " + score, mySkin, "big");
+        scoreLabel = new Label(scoreString + ": " + score,
+                mySkin, "big");
         scoreLabel.setBounds(side1Image.getWidth() / 10f, Gdx.graphics.getHeight() * 4 / 5f,
                 side1Image.getWidth() * 8 / 10f, Gdx.graphics.getHeight() / 5f);
         objectLabel = new Label("", mySkin, "big");
@@ -267,7 +273,6 @@ public class GameScreen extends ScreenAdapter {
                     isRight = false;
                 }
                 if(keycode == Input.Keys.SPACE && !ifZoomIn) {
-                    Gdx.app.log("", "jotain");
                     ifZoomIn = true;
                 }
                 if(keycode == Input.Keys.SHIFT_LEFT) {
@@ -284,7 +289,7 @@ public class GameScreen extends ScreenAdapter {
         }));
 
 
-        Button buttonExit = new TextButton("Exit",mySkin,"default");
+        Button buttonExit = new TextButton(GameConfiguration.getText("exit"),mySkin,"default");
         buttonExit.setSize(Gdx.graphics.getWidth() / 10f,Gdx.graphics.getWidth() / 10f);
         buttonExit.setPosition(Gdx.graphics.getWidth() * 9 / 10f,Gdx.graphics.getHeight() - Gdx.graphics.getWidth() / 10f);
         buttonExit.addListener(new InputListener(){
@@ -301,7 +306,7 @@ public class GameScreen extends ScreenAdapter {
             }
         });
         stage.addActor(buttonExit);
-        buttonTake = new TextButton("Take",mySkin,"default");
+        buttonTake = new TextButton(GameConfiguration.getText("takeButton"),mySkin,"default");
         buttonTake.setSize(Gdx.graphics.getWidth() / 4f,Gdx.graphics.getWidth() / 10f);
         buttonTake.setPosition(Gdx.graphics.getWidth() / 4f,0);
         buttonTake.addListener(new InputListener(){
@@ -338,7 +343,7 @@ public class GameScreen extends ScreenAdapter {
         });
         stage.addActor(buttonTake);
 
-        buttonSwitch = new TextButton("Switch",mySkin,"default");
+        buttonSwitch = new TextButton(GameConfiguration.getText("switchButton"),mySkin,"default");
         buttonSwitch.setSize(Gdx.graphics.getWidth() / 4f,Gdx.graphics.getWidth() / 10f);
         buttonSwitch.setPosition(Gdx.graphics.getWidth() / 2f,0);
         buttonSwitch.addListener(new InputListener(){
@@ -355,10 +360,10 @@ public class GameScreen extends ScreenAdapter {
         });
         stage.addActor(buttonSwitch);
 
-        Button buttonBoost = new TextButton("Boost",mySkin,"default");
-        buttonBoost.setSize(Gdx.graphics.getHeight() / 5f,Gdx.graphics.getHeight() / 5f);
-        buttonBoost.setPosition(Gdx.graphics.getWidth() / 15f,Gdx.graphics.getWidth() / 15f);
-        //buttonBoost.setColor(Color.RED);
+        Button buttonBoost = new TextButton(GameConfiguration.getText("boostButton"),mySkin,"default");
+        buttonBoost.setSize(Gdx.graphics.getHeight() / 4f,Gdx.graphics.getHeight() / 4f);
+        buttonBoost.setPosition(Gdx.graphics.getWidth() / 8f - buttonBoost.getWidth() / 2f,
+                Gdx.graphics.getHeight() / 4f - buttonBoost.getHeight() / 2f);
         buttonBoost.setColor(1, 0, 0, 1);
         buttonBoost.addListener(new InputListener(){
             @Override
@@ -440,8 +445,8 @@ public class GameScreen extends ScreenAdapter {
         if(score - deltaTime >= 0 && !pairClose) {
             score -= deltaTime;
         }
-        scoreLabel.setText("Score: " + (int) score);
-        objectLabel.setText("Pairs found: " + pairCount + "/" + randomPairs.length);
+        scoreLabel.setText(scoreString + ": " + (int) score);
+        objectLabel.setText(GameConfiguration.getText("pairsFound") + ": " + pairCount + "/" + randomPairs.length);
 
         if(exitOpen) {
             if(playerRect.overlaps(exitRectangle)) {

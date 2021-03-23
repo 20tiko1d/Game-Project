@@ -36,7 +36,7 @@ public class FileReader {
         Array<String> array = new Array<String>();
         try {
 
-            FileHandle fileHandle = Gdx.files.internal("Pairs.xml");
+            FileHandle fileHandle = Gdx.files.internal(getFileName());
             InputStream is = fileHandle.read();
             DocumentBuilderFactory dbFactory = DocumentBuilderFactory.newInstance();
             DocumentBuilder dBuilder = dbFactory.newDocumentBuilder();
@@ -69,6 +69,14 @@ public class FileReader {
             e.printStackTrace();
         }
         return array;
+    }
+
+    public static String getFileName() {
+        if(GameConfiguration.open("language").equals("fi_FI")) {
+            return "Parit.xml";
+        } else {
+            return "Pairs.xml";
+        }
     }
 
     /*
