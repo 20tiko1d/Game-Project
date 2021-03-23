@@ -49,6 +49,10 @@ public final class GameConfiguration {
 
     // Saving stuff
     public static String noValue = "No value stored";
+    public static String creditsString = "credits";
+
+    // Personal info
+    public static int credits;
 
     private GameConfiguration() {}
 
@@ -117,5 +121,12 @@ public final class GameConfiguration {
         String value = prefs.getString(key, noValue);
 
         return value;
+    }
+
+    public static void checkFirstTime() {
+        if(open(creditsString).equals(noValue)) {
+            save(creditsString, "0");
+        }
+        credits = Integer.parseInt(open(creditsString));
     }
 }

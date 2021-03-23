@@ -133,7 +133,6 @@ public class MenuScreen extends ScreenAdapter {
     public void dispose() {
         stage.dispose();
         camera = null;
-
     }
 
 

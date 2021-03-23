@@ -32,6 +32,7 @@ public class AfterGameScreen extends ScreenAdapter {
     public AfterGameScreen(Main main, int score) {
         this.main = main;
         this.score = score;
+        addCredits();
 
         camera = new OrthographicCamera();
         camera.setToOrtho(false, Main.viewPortWidth, Main.viewPortHeight);
@@ -128,5 +129,15 @@ public class AfterGameScreen extends ScreenAdapter {
     public void dispose() {
         stage.dispose();
         camera = null;
+    }
+
+    public void addCredits() {
+        int newCredits = score / 50 + 1;
+        int oldCredits = GameConfiguration.credits;
+        int sum = newCredits + oldCredits;
+        GameConfiguration.credits = sum;
+        String newCreditString = "" + sum;
+        GameConfiguration.save(GameConfiguration.creditsString, newCreditString);
+        Gdx.app.log("", newCreditString);
     }
 }

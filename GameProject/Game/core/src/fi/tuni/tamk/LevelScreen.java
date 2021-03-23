@@ -116,6 +116,25 @@ public class LevelScreen extends ScreenAdapter {
             }
         });
         stage.addActor(buttonMenu);
+
+        Button buttonStore = new TextButton("Store",mySkin,"default");
+        buttonStore.setSize(Gdx.graphics.getWidth() / 5f,Gdx.graphics.getWidth() / 15f);
+        buttonStore.setPosition(Gdx.graphics.getWidth() / 2f - buttonStore.getWidth() / 2f,
+                Gdx.graphics.getHeight() - buttonStore.getHeight());
+        buttonStore.addListener(new InputListener(){
+            @Override
+            public boolean touchDown(InputEvent event, float x, float y, int pointer, int button) {
+                return true;
+            }
+
+            @Override
+            public void touchUp(InputEvent event, float x, float y, int pointer, int button) {
+                dispose();
+                main.setScreen(new Store(main));
+            }
+        });
+        stage.addActor(buttonStore);
+
         Gdx.input.setInputProcessor(stage);
     }
 
