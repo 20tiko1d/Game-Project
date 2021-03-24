@@ -97,7 +97,7 @@ public final class GameConfiguration {
         if(!open("language").equals(noValue)) {
             if(open("language").equals("fi_FI")) {
                 Locale locale = new Locale("fi_FI");
-                myBundle = I18NBundle.createBundle(Gdx.files.internal("MyBundle"), locale);
+                myBundle = I18NBundle.createBundle(Gdx.files.internal("MyBundle_fi_FI"), locale);
             } else {
                 myBundle = I18NBundle.createBundle(Gdx.files.internal("MyBundle"));
             }
