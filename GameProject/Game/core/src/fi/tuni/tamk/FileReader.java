@@ -3,8 +3,6 @@ package fi.tuni.tamk;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.files.FileHandle;
 import com.badlogic.gdx.utils.Array;
-import com.badlogic.gdx.utils.XmlReader;
-import com.sun.org.apache.xerces.internal.xni.parser.XMLPullParserConfiguration;
 
 
 import org.w3c.dom.Document;
@@ -12,8 +10,6 @@ import org.w3c.dom.Element;
 import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
 
-import java.io.File;
-import java.io.IOException;
 import java.io.InputStream;
 
 import javax.xml.parsers.DocumentBuilder;
@@ -24,8 +20,6 @@ import javax.xml.parsers.DocumentBuilderFactory;
  * The class is used to read files and also maybe store them in the future.
  */
 public class FileReader {
-
-    //private static final String fileName = "Pairs.xml";
 
     /**
      * Method reads the sentences of the pair objects from the XML-file.
@@ -78,17 +72,4 @@ public class FileReader {
             return "Pairs.xml";
         }
     }
-
-    /*
-    public Array<String> parse(InputStream in) throws XmlPullParserException, IOException {
-        try {
-            XmlPullParser parser = Xml.newPullParser();
-            parser.setFeature(XmlPullParser.FEATURE_PROCESS_NAMESPACES, false);
-            parser.setInput(in, null);
-            parser.nextTag();
-            return readFeed(parser);
-        } finally {
-            in.close();
-        }
-    }*/
 }

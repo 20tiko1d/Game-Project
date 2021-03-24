@@ -140,12 +140,14 @@ public class GameScreen extends ScreenAdapter {
     private float second = 1;
 
     private String scoreString;
+    private String objectsFoundString;
 
 
     public GameScreen(Main main, World world) {
         this.main = main;
         this.world = world;
         scoreString = GameConfiguration.getText("score");
+        objectsFoundString = GameConfiguration.getText("pairsFound");
         score = GameConfiguration.getStartScore();
         objectScore = GameConfiguration.getObjectScore();
         playerSpeed = GameConfiguration.PLAYER_SPEED;
@@ -158,7 +160,7 @@ public class GameScreen extends ScreenAdapter {
         wallHeight = GameConfiguration.WALL_HEIGHT;
         objectHeight = tileHeight * GameConfiguration.OBJECT_HEIGHT;
         stage = new Stage(new ScreenViewport());
-        mySkin = new Skin(Gdx.files.internal("skin/glassy-ui.json"));
+        mySkin = new Skin(Gdx.files.internal("skin/testi/testi3.json"));
 
         Image roundImage = new Image(Textures.getBackgroundTexture());
         roundImage.setBounds(Gdx.graphics.getWidth() / 4f,
@@ -173,7 +175,7 @@ public class GameScreen extends ScreenAdapter {
                 Gdx.graphics.getWidth() - roundImage.getX() - roundImage.getWidth(),
                 Gdx.graphics.getHeight());
 
-        pairLabel = new Label("", mySkin, "big");
+        pairLabel = new Label("", mySkin);
         pairLabel.setBounds(Gdx.graphics.getWidth() * 1.1f / 4f, Gdx.graphics.getHeight() * 4f / 5f,
                 Gdx.graphics.getWidth() / 2.2f, Gdx.graphics.getHeight() / 5f);
         pairLabel.setWrap(true);
@@ -183,10 +185,10 @@ public class GameScreen extends ScreenAdapter {
                 Gdx.graphics.getWidth() / 2f, pairLabel.getHeight());
 
         scoreLabel = new Label(scoreString + ": " + score,
-                mySkin, "big");
+                mySkin);
         scoreLabel.setBounds(side1Image.getWidth() / 10f, Gdx.graphics.getHeight() * 4 / 5f,
                 side1Image.getWidth() * 8 / 10f, Gdx.graphics.getHeight() / 5f);
-        objectLabel = new Label("", mySkin, "big");
+        objectLabel = new Label("", mySkin);
         objectLabel.setBounds(scoreLabel.getX(), Gdx.graphics.getHeight() * 3 / 5f,
                 scoreLabel.getWidth(), scoreLabel.getHeight());
 
@@ -446,7 +448,7 @@ public class GameScreen extends ScreenAdapter {
             score -= deltaTime;
         }
         scoreLabel.setText(scoreString + ": " + (int) score);
-        objectLabel.setText(GameConfiguration.getText("pairsFound") + ": " + pairCount + "/" + randomPairs.length);
+        objectLabel.setText(objectsFoundString + ": " + pairCount + "/" + randomPairs.length);
 
         if(exitOpen) {
             if(playerRect.overlaps(exitRectangle)) {
