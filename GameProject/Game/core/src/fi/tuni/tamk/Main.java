@@ -23,6 +23,7 @@ public class Main extends Game {
 	@Override
 	public void create () {
 		checkDevice();
+		GameConfiguration.checkFirstTime();
 		batch = new SpriteBatch();
 		setScreen(new MenuScreen(this));
 	}
@@ -64,4 +65,5 @@ public class Main extends Game {
 	public float getCenterY() {
 		return centerY;
 	}
+
 }
