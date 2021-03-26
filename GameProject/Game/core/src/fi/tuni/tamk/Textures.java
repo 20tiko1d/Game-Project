@@ -11,51 +11,51 @@ public final class Textures {
 
     public static ArrayList<Texture> getFloor1Textures() {
         ArrayList<Texture> textures = new ArrayList<Texture>();
-        textures.add(new Texture("floors/Lattia1.png"));
+        textures.add(new Texture("textures/floorsInside/random/Lattia1.png"));
         return textures;
     }
 
     public static ArrayList<Texture> getFloor2Textures() {
         ArrayList<Texture> textures = new ArrayList<Texture>();
-        textures.add(new Texture("floors/Rockfloor2.png"));
+        textures.add(new Texture("textures/floorsInside/random/Rockfloor2.png"));
         return textures;
     }
 
     public static ArrayList<Texture> getWallTextures() {
         ArrayList<Texture> textures = new ArrayList<Texture>();
-        textures.add(new Texture("walls/Puskaseina6.png"));
+        textures.add(new Texture("textures/walls/random/Puskaseina6.png"));
         return textures;
     }
 
     public static Texture getPlayerTexture() {
-        return new Texture("Ukkeli1.png");
+        return new Texture("textures/player/random/Ukkeli1.png");
     }
 
     public static Texture getBackgroundTexture() {
-        return new Texture("circle3.png");
+        return new Texture("textures/random/circle3.png");
     }
 
     public static Texture getObjectTexture() {
-        return new Texture("pairs1.png");
+        return new Texture("textures/object/pairs1.png");
     }
 
     public static Texture getExitCloseTexture() {
-        return new Texture("walls/wallExitClose0.66.png");
+        return new Texture("textures/walls/random/wallExitClose0.66.png");
     }
 
     public static Texture getExitOpenTexture() {
-        return new Texture("walls/wallExitOpen0.66.png");
+        return new Texture("textures/walls/random/wallExitOpen0.66.png");
     }
 
     public static Texture getStartTexture() {
-        return new Texture("walls/wallStart0.66.png");
+        return new Texture("textures/walls/random/wallStart0.66.png");
     }
 
-    public static Texture getSideTexture() { return new Texture("sides.png");}
+    public static Texture getSideTexture() { return new Texture("textures/random/sides.png");}
 
-    public static Texture getPairLabelBackground() { return new Texture("pairLabelBackground.png");}
+    public static Texture getPairLabelBackground() { return new Texture("textures/random/pairLabelBackground.png");}
 
-    public static Texture getJoystickBack() { return new Texture("joystickBack2.png");}
+    public static Texture getJoystickBack() { return new Texture("textures/joystick/random/joystickBack2.png");}
 
-    public static Texture getJoystickKnob() { return new Texture("joystickKnob2.png");}
+    public static Texture getJoystickKnob() { return new Texture("textures/joystick/random/joystickKnob2.png");}
 }
