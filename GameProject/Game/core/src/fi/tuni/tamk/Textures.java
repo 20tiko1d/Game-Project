@@ -11,8 +11,8 @@ public final class Textures {
 
     public static ArrayList<Texture> getFloor1Textures() {
         ArrayList<Texture> textures = new ArrayList<Texture>();
-        textures.add(new Texture("floors/Rockfloor2.png"));
-        textures.add(new Texture("floors/Rockfloor.png"));
+        textures.add(new Texture("floors/flowers.png"));
+        textures.add(new Texture("floors/grassfloor2.png"));
         return textures;
     }
 
@@ -29,7 +29,7 @@ public final class Textures {
 
     public static ArrayList<Texture> getWallTextures() {
         ArrayList<Texture> textures = new ArrayList<Texture>();
-        textures.add(new Texture("walls/wall3.0.66.png"));
+        textures.add(new Texture("walls/Testiseina.png"));
         return textures;
     }
 
