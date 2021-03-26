@@ -11,8 +11,7 @@ public final class Textures {
 
     public static ArrayList<Texture> getFloor1Textures() {
         ArrayList<Texture> textures = new ArrayList<Texture>();
-        textures.add(new Texture("floors/sandstonefloor1.png"));
-        textures.add(new Texture("floors/sandstonefloor1.png"));
+        textures.add(new Texture("floors/Lattia1.png"));
         return textures;
     }
 
@@ -24,12 +23,12 @@ public final class Textures {
 
     public static ArrayList<Texture> getWallTextures() {
         ArrayList<Texture> textures = new ArrayList<Texture>();
-        textures.add(new Texture("walls/bushWall.png"));
+        textures.add(new Texture("walls/Puskaseina6.png"));
         return textures;
     }
 
     public static Texture getPlayerTexture() {
-        return new Texture("player0.66.png");
+        return new Texture("Ukkeli1.png");
     }
 
     public static Texture getBackgroundTexture() {
