@@ -11,7 +11,9 @@ public final class Textures {
 
     public static ArrayList<Texture> getFloor1Textures() {
         ArrayList<Texture> textures = new ArrayList<Texture>();
-        textures.add(new Texture("textures/floorsInside/random/Lattia1.png"));
+        textures.add(new Texture("textures/floorsInside/Sand/sandstonefloor1.png"));
+        textures.add(new Texture("textures/floorsInside/Sand/sandstonefloor2.png"));
+        textures.add(new Texture("textures/floorsInside/Sand/sandstonefloor3.png"));
         return textures;
     }
 
