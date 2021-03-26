@@ -23,7 +23,7 @@ public final class Textures {
 
     public static ArrayList<Texture> getWallTextures() {
         ArrayList<Texture> textures = new ArrayList<Texture>();
-        textures.add(new Texture("textures/walls/random/Puskaseina6.png"));
+        textures.add(new Texture("textures/walls/random/Untitled-1.png"));
         return textures;
     }
 
