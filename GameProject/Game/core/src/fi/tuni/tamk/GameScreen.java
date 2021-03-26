@@ -46,6 +46,7 @@ public class GameScreen extends ScreenAdapter {
 
     private float relativeWidth = Gdx.graphics.getWidth() / Main.viewPortWidth;
     private float relativeHeight = Gdx.graphics.getHeight() / Main.viewPortHeight;
+    private float relativeTileHeight;
 
     private static final boolean DEBUG_PHYSICS = false;
 
@@ -153,6 +154,7 @@ public class GameScreen extends ScreenAdapter {
         playerSpeed = GameConfiguration.PLAYER_SPEED;
         viewPortWidth = Main.viewPortWidth;
         viewPortHeight = Main.viewPortHeight;
+        relativeTileHeight = GameConfiguration.RELATIVE_TILE_HEIGHT;
         centerX = main.getCenterX();
         centerY = main.getCenterY();
         tileWidth = Main.oneWidth;
@@ -558,7 +560,7 @@ public class GameScreen extends ScreenAdapter {
                 Texture mapTexture = map[row][column];
                 float locY = mapY - row * tileHeight;
                 float currentTileHeight = tileHeight;
-                if(mapTexture.getHeight() / relativeHeight > currentTileHeight) {
+                if((float) mapTexture.getHeight() / mapTexture.getWidth() > relativeTileHeight) {
                     currentTileHeight = tileHeight * (1 + wallHeight);
                 }
                 batch.draw(mapTexture, column * tileWidth,
