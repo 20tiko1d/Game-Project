@@ -8,6 +8,7 @@ import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.InputListener;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.Button;
+import com.badlogic.gdx.scenes.scene2d.ui.Label;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
 import com.badlogic.gdx.utils.viewport.ScreenViewport;
@@ -41,13 +42,17 @@ public class PauseScreen extends ScreenAdapter {
 
         float width = Gdx.graphics.getWidth() / 3f;
         float height = Gdx.graphics.getHeight() / (6f * multiplier);
-        float centerX = Gdx.graphics.getWidth() / 2f - width / 2f;
+        float locX = Gdx.graphics.getWidth() / 2f - width / 2f;
         float startY = Gdx.graphics.getHeight() * 4 / 6f;
         float buttonsGap = height / 6f;
 
+        Label pauseLabel = new Label(GameConfiguration.getText("gamePaused"), mySkin);
+        pauseLabel.setBounds(locX, startY + height + buttonsGap, width, height);
+        pauseLabel.setFontScale(3);
+
         TextButton buttonReturnToGame = new TextButton(GameConfiguration.getText("continueGame"),mySkin,"default");
         buttonReturnToGame.setSize(width,height);
-        buttonReturnToGame.setPosition(centerX, startY);
+        buttonReturnToGame.setPosition(locX, startY);
         buttonReturnToGame.addListener(new InputListener(){
             @Override
             public boolean touchDown(InputEvent event, float x, float y, int pointer, int button) {
@@ -63,7 +68,7 @@ public class PauseScreen extends ScreenAdapter {
 
         TextButton buttonSettings = new TextButton(GameConfiguration.getText("settingsButton"),mySkin,"default");
         buttonSettings.setSize(width,height);
-        buttonSettings.setPosition(centerX, startY - height - buttonsGap);
+        buttonSettings.setPosition(locX, startY - height - buttonsGap);
         buttonSettings.addListener(new InputListener(){
             @Override
             public boolean touchDown(InputEvent event, float x, float y, int pointer, int button) {
@@ -78,7 +83,7 @@ public class PauseScreen extends ScreenAdapter {
 
         TextButton buttonLevels = new TextButton(GameConfiguration.getText("levels"),mySkin,"default");
         buttonLevels.setSize(width,height);
-        buttonLevels.setPosition(centerX, startY - 2 * height - 2 * buttonsGap);
+        buttonLevels.setPosition(locX, startY - 2 * height - 2 * buttonsGap);
         buttonLevels.addListener(new InputListener(){
             @Override
             public boolean touchDown(InputEvent event, float x, float y, int pointer, int button) {
@@ -95,7 +100,7 @@ public class PauseScreen extends ScreenAdapter {
 
         TextButton buttonPlayAgain = new TextButton(GameConfiguration.getText("restart"),mySkin,"default");
         buttonPlayAgain.setSize(width,height);
-        buttonPlayAgain.setPosition(centerX, startY - 3 * height - 3 * buttonsGap);
+        buttonPlayAgain.setPosition(locX, startY - 3 * height - 3 * buttonsGap);
         buttonPlayAgain.addListener(new InputListener(){
             @Override
             public boolean touchDown(InputEvent event, float x, float y, int pointer, int button) {
@@ -126,6 +131,7 @@ public class PauseScreen extends ScreenAdapter {
             }
         });
 
+        stage.addActor(pauseLabel);
         stage.addActor(buttonLevels);
         stage.addActor(buttonMenu);
         stage.addActor(buttonPlayAgain);
