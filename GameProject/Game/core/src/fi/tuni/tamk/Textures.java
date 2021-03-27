@@ -19,7 +19,7 @@ public final class Textures {
 
     public static ArrayList<Texture> getFloor2Textures() {
         ArrayList<Texture> textures = new ArrayList<Texture>();
-        textures.add(new Texture("textures/floorsInside/random/Rockfloor2.png"));
+        textures.add(new Texture("textures/floorsInside/random/sandfloor3.png"));
         return textures;
     }
 

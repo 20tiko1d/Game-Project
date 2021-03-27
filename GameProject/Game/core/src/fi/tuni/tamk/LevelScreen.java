@@ -36,7 +36,7 @@ public class LevelScreen extends ScreenAdapter {
     public void show() {
         stage = new Stage(new ScreenViewport());
 
-        Skin mySkin = new Skin(Gdx.files.internal("skin/glassy-ui.json"));
+        Skin mySkin = new Skin(Gdx.files.internal("skin/testi/testi3.json"));
 
         Button buttonEasy = new TextButton(GameConfiguration.getText("easyLevel"), mySkin,"default");
         buttonEasy.setSize(rect.width,rect.height);

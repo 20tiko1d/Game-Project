@@ -37,7 +37,7 @@ public class PauseScreen extends ScreenAdapter {
             multiplier = 1.4f;
         }
 
-        Skin mySkin = new Skin(Gdx.files.internal("skin/glassy-ui.json"));
+        Skin mySkin = new Skin(Gdx.files.internal("skin/testi/testi3.json"));
 
         TextButton buttonReturnToGame = new TextButton(GameConfiguration.getText("continueGame"),mySkin,"default");
         buttonReturnToGame.setSize(Gdx.graphics.getWidth() / 4f,Gdx.graphics.getHeight() / (8f * multiplier));

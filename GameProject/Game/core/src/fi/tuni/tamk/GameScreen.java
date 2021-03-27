@@ -443,7 +443,6 @@ public class GameScreen extends ScreenAdapter {
 
         if(exitOpen) {
             if(playerRect.overlaps(exitRectangle)) {
-                created = false;
                 dispose();
                 main.setScreen(new AfterGameScreen(main, (int) score));
             }
@@ -505,7 +504,6 @@ public class GameScreen extends ScreenAdapter {
         camera.setToOrtho(false, viewPortWidth * minZoom / zoomRatio,
                     viewPortHeight * minZoom / zoomRatio);
         camera.position.x = Math.round(playerBody.getPosition().x * relativeWidth) / relativeWidth;
-        //camera.position.y = playerBody.getPosition().y;
         camera.position.y = Math.round(playerBody.getPosition().y / (tileWidth / tileHeight) * relativeHeight) / relativeHeight;
 
         if(exitOpen) {
@@ -536,7 +534,7 @@ public class GameScreen extends ScreenAdapter {
         }
 
         int minIndexX = playerLocX - currentMany / 2 - 3;
-        int minIndexY = playerLocY - currentMany / 2 - 3;
+        int minIndexY = playerLocY - currentMany / 2 - 5;
         int maxIndexX = playerLocX + currentMany / 2 + 3;
         int maxIndexY = playerLocY + currentMany / 2 + 7;
 

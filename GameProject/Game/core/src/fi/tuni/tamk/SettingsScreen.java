@@ -42,7 +42,7 @@ public class SettingsScreen extends ScreenAdapter {
     public void show() {
         stage = new Stage(new ScreenViewport());
 
-        Skin mySkin = new Skin(Gdx.files.internal("skin/glassy-ui.json"));
+        Skin mySkin = new Skin(Gdx.files.internal("skin/testi/testi3.json"));
 
         Button buttonMenu = new TextButton(GameConfiguration.getText("menu"),mySkin,"default");
         buttonMenu.setSize(Gdx.graphics.getWidth() / 10f,Gdx.graphics.getWidth() / 10f);
@@ -65,7 +65,7 @@ public class SettingsScreen extends ScreenAdapter {
         });
 
         if(pauseScreen != null) {
-            Button returnToGame = new TextButton(GameConfiguration.getText("levels"),mySkin,"default");
+            Button returnToGame = new TextButton(GameConfiguration.getText("back"),mySkin,"default");
             returnToGame.setSize(Gdx.graphics.getWidth() / 10f,Gdx.graphics.getWidth() / 10f);
             returnToGame.setPosition(Gdx.graphics.getWidth() - returnToGame.getWidth(),
                     Gdx.graphics.getHeight() - Gdx.graphics.getWidth() / 10f);
