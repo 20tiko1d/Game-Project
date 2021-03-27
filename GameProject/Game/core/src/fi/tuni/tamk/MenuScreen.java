@@ -41,12 +41,13 @@ public class MenuScreen extends ScreenAdapter {
             multiplier = 1.4f;
         }
 
-        Skin mySkin = new Skin(Gdx.files.internal("skin/glassy-ui.json"));
+        Skin mySkin = new Skin(Gdx.files.internal("skin/testi/testi3.json"));
 
         buttonPlay = new TextButton(GameConfiguration.getText("playButton"),mySkin,"default");
         buttonPlay.setSize(Gdx.graphics.getWidth() * multiplier / 3f,(Gdx.graphics.getHeight() / 7f) / multiplier);
         buttonPlay.setPosition(Gdx.graphics.getWidth() / 2f - buttonPlay.getWidth() / 2,
                 Gdx.graphics.getHeight() / 2f);
+        buttonPlay.getLabel().setFontScale(3);
         buttonPlay.addListener(new InputListener(){
             @Override
             public boolean touchDown(InputEvent event, float x, float y, int pointer, int button) {
@@ -73,7 +74,8 @@ public class MenuScreen extends ScreenAdapter {
 
             @Override
             public void touchUp(InputEvent event, float x, float y, int pointer, int button) {
-                // Settings
+                dispose();
+                main.setScreen(new SettingsScreen(main));
             }
         });
         stage.addActor(buttonSettings);

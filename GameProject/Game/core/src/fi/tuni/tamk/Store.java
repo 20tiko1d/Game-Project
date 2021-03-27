@@ -36,7 +36,7 @@ public class Store extends ScreenAdapter {
     public void show() {
         stage = new Stage(new ScreenViewport());
 
-        Skin mySkin = new Skin(Gdx.files.internal("skin/glassy-ui.json"));
+        Skin mySkin = new Skin(Gdx.files.internal("skin/testi/testi3.json"));
 
         Button buttonMenu = new TextButton(GameConfiguration.getText("menu"),mySkin,"default");
         buttonMenu.setSize(Gdx.graphics.getWidth() / 10f,Gdx.graphics.getWidth() / 10f);
