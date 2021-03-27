@@ -12,22 +12,18 @@ import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
 import com.badlogic.gdx.utils.viewport.ScreenViewport;
 
-/**
- * The class contains and controls the Main menu screen.
- */
-public class MenuScreen extends ScreenAdapter {
-
+public class PauseScreen extends ScreenAdapter {
     private Main main;
+    private GameScreen gameScreen;
+    private PauseScreen pauseScreen;
 
     private Stage stage;
     private OrthographicCamera camera;
 
-    private TextButton buttonPlay;
-    private TextButton buttonSettings;
-    private TextButton buttonPersonal;
-
-    public MenuScreen(Main main) {
+    public PauseScreen(Main main, GameScreen gameScreen) {
         this.main = main;
+        this.gameScreen = gameScreen;
+        this.pauseScreen = this;
         camera = new OrthographicCamera();
         camera.setToOrtho(false, Main.viewPortWidth, Main.viewPortHeight);
     }
@@ -43,11 +39,11 @@ public class MenuScreen extends ScreenAdapter {
 
         Skin mySkin = new Skin(Gdx.files.internal("skin/glassy-ui.json"));
 
-        buttonPlay = new TextButton(GameConfiguration.getText("playButton"),mySkin,"default");
-        buttonPlay.setSize(Gdx.graphics.getWidth() * multiplier / 3f,(Gdx.graphics.getHeight() / 7f) / multiplier);
-        buttonPlay.setPosition(Gdx.graphics.getWidth() / 2f - buttonPlay.getWidth() / 2,
+        TextButton buttonReturnToGame = new TextButton(GameConfiguration.getText("continueGame"),mySkin,"default");
+        buttonReturnToGame.setSize(Gdx.graphics.getWidth() / 4f,Gdx.graphics.getHeight() / (8f * multiplier));
+        buttonReturnToGame.setPosition(Gdx.graphics.getWidth() / 2f - buttonReturnToGame.getWidth() / 2,
                 Gdx.graphics.getHeight() / 2f);
-        buttonPlay.addListener(new InputListener(){
+        buttonReturnToGame.addListener(new InputListener(){
             @Override
             public boolean touchDown(InputEvent event, float x, float y, int pointer, int button) {
                 return true;
@@ -56,15 +52,14 @@ public class MenuScreen extends ScreenAdapter {
             @Override
             public void touchUp(InputEvent event, float x, float y, int pointer, int button) {
                 dispose();
-                main.setScreen(new LevelScreen(main));
+                main.setScreen(gameScreen);
             }
         });
-        stage.addActor(buttonPlay);
 
-        buttonSettings = new TextButton(GameConfiguration.getText("settingsButton"),mySkin,"default");
+        TextButton buttonSettings = new TextButton(GameConfiguration.getText("settingsButton"),mySkin,"default");
         buttonSettings.setSize(Gdx.graphics.getWidth() / 4f,Gdx.graphics.getHeight() / (8f * multiplier));
         buttonSettings.setPosition(Gdx.graphics.getWidth() / 2f - buttonSettings.getWidth() / 2f,
-                buttonPlay.getY() - buttonSettings.getHeight() - Gdx.graphics.getHeight() / 20f);
+                buttonReturnToGame.getY() - buttonSettings.getHeight() - Gdx.graphics.getHeight() / 20f);
         buttonSettings.addListener(new InputListener(){
             @Override
             public boolean touchDown(InputEvent event, float x, float y, int pointer, int button) {
@@ -73,50 +68,49 @@ public class MenuScreen extends ScreenAdapter {
 
             @Override
             public void touchUp(InputEvent event, float x, float y, int pointer, int button) {
-                dispose();
-                main.setScreen(new SettingsScreen(main));
+                main.setScreen(new SettingsScreen(main, pauseScreen, gameScreen));
             }
         });
+
+        TextButton buttonPlayAgain = new TextButton(GameConfiguration.getText("restart"),mySkin,"default");
+        buttonPlayAgain.setSize(Gdx.graphics.getWidth() / 4f,Gdx.graphics.getHeight() / (8f * multiplier));
+        buttonPlayAgain.setPosition(Gdx.graphics.getWidth() / 2f - buttonPlayAgain.getWidth() / 2f,
+                buttonSettings.getY() - buttonPlayAgain.getHeight() - Gdx.graphics.getHeight() / 20f);
+        buttonPlayAgain.addListener(new InputListener(){
+            @Override
+            public boolean touchDown(InputEvent event, float x, float y, int pointer, int button) {
+                return true;
+            }
+
+            @Override
+            public void touchUp(InputEvent event, float x, float y, int pointer, int button) {
+                GameScreen gameScreen = GameConfiguration.createGame(main);
+                main.setScreen(gameScreen);
+            }
+        });
+
+        Button buttonMenu = new TextButton(GameConfiguration.getText("menu"),mySkin,"default");
+        buttonMenu.setSize(Gdx.graphics.getWidth() / 10f,Gdx.graphics.getWidth() / 10f);
+        buttonMenu.setPosition(0,Gdx.graphics.getHeight() - Gdx.graphics.getWidth() / 10f);
+        buttonMenu.addListener(new InputListener(){
+            @Override
+            public boolean touchDown(InputEvent event, float x, float y, int pointer, int button) {
+                return true;
+            }
+
+            @Override
+            public void touchUp(InputEvent event, float x, float y, int pointer, int button) {
+                gameScreen.dispose();
+                dispose();
+                main.setScreen(new MenuScreen(main));
+            }
+        });
+
+        stage.addActor(buttonMenu);
+        stage.addActor(buttonPlayAgain);
+        stage.addActor(buttonReturnToGame);
         stage.addActor(buttonSettings);
 
-        buttonPersonal = new TextButton(GameConfiguration.getText("personalButton"),mySkin,"default");
-        buttonPersonal.setSize(Gdx.graphics.getWidth() / 4f,Gdx.graphics.getHeight() / (8f * multiplier));
-        buttonPersonal.setPosition(Gdx.graphics.getWidth() / 2f - buttonPersonal.getWidth() / 2f,
-                buttonSettings.getY() - buttonPersonal.getHeight() - Gdx.graphics.getHeight() / 20f);
-        buttonPersonal.addListener(new InputListener(){
-            @Override
-            public boolean touchDown(InputEvent event, float x, float y, int pointer, int button) {
-                return true;
-            }
-
-            @Override
-            public void touchUp(InputEvent event, float x, float y, int pointer, int button) {
-                // Player profile?
-            }
-        });
-        stage.addActor(buttonPersonal);
-
-        Button buttonLanguage = new TextButton("Language",mySkin,"default");
-        buttonLanguage.setSize(Gdx.graphics.getWidth() / 6f,Gdx.graphics.getHeight() / (8f * multiplier));
-        buttonLanguage.setPosition(Gdx.graphics.getWidth() - buttonLanguage.getWidth() - 10,
-                Gdx.graphics.getHeight() - buttonLanguage.getHeight() - 10);
-        buttonLanguage.addListener(new InputListener(){
-            @Override
-            public boolean touchDown(InputEvent event, float x, float y, int pointer, int button) {
-                return true;
-            }
-
-            @Override
-            public void touchUp(InputEvent event, float x, float y, int pointer, int button) {
-                if(GameConfiguration.open("language").equals("fi_FI")) {
-                    GameConfiguration.save("language", "en_GB");
-                } else {
-                    GameConfiguration.save("language", "fi_FI");
-                }
-                updateLanguage();
-            }
-        });
-        stage.addActor(buttonLanguage);
         Gdx.input.setInputProcessor(stage);
     }
 
@@ -134,13 +128,6 @@ public class MenuScreen extends ScreenAdapter {
     public void dispose() {
         stage.dispose();
         camera = null;
-    }
-
-
-    public void updateLanguage() {
-        buttonPlay.setText(GameConfiguration.getText("playButton"));
-        buttonSettings.setText(GameConfiguration.getText("settingsButton"));
-        buttonPersonal.setText(GameConfiguration.getText("personalButton"));
     }
 
 }

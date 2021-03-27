@@ -40,6 +40,7 @@ public class GameScreen extends ScreenAdapter {
 
 
     private Main main;
+    private GameScreen gameScreen;
 
     private float viewPortWidth;
     private float viewPortHeight;
@@ -84,9 +85,6 @@ public class GameScreen extends ScreenAdapter {
     private int playerLocY;
     private boolean created = false;
     private float mapY;
-    private float portraitCorrection;
-    private float centerX;
-    private float centerY;
     private float tileWidth;
     private float tileHeight;
     private float wallHeight;
@@ -123,8 +121,6 @@ public class GameScreen extends ScreenAdapter {
     private float maxZoom = 1.5f;
     private boolean ifMaxZoom = false;
     private boolean ifZoomIn = true;
-    private float zoomTimeLength = 10;
-    private float zoomTimer;
 
     // Object pairs
     private Label pairLabel;
@@ -147,6 +143,7 @@ public class GameScreen extends ScreenAdapter {
     public GameScreen(Main main, World world) {
         this.main = main;
         this.world = world;
+        this.gameScreen = this;
         scoreString = GameConfiguration.getText("score");
         objectsFoundString = GameConfiguration.getText("pairsFound");
         score = GameConfiguration.getStartScore();
@@ -155,8 +152,6 @@ public class GameScreen extends ScreenAdapter {
         viewPortWidth = Main.viewPortWidth;
         viewPortHeight = Main.viewPortHeight;
         relativeTileHeight = GameConfiguration.RELATIVE_TILE_HEIGHT;
-        centerX = main.getCenterX();
-        centerY = main.getCenterY();
         tileWidth = Main.oneWidth;
         tileHeight = tileWidth * GameConfiguration.RELATIVE_TILE_HEIGHT;
         wallHeight = GameConfiguration.WALL_HEIGHT;
@@ -204,10 +199,6 @@ public class GameScreen extends ScreenAdapter {
 
 
         batch = new SpriteBatch();
-
-        if(Main.isPortrait) {
-            portraitCorrection = viewPortHeight / viewPortWidth;
-        }
 
         camera = new OrthographicCamera();
         camera.setToOrtho(false, viewPortWidth, viewPortHeight);
@@ -293,7 +284,7 @@ public class GameScreen extends ScreenAdapter {
         }));
 
 
-        Button buttonExit = new TextButton(GameConfiguration.getText("exit"),mySkin,"default");
+        Button buttonExit = new TextButton(GameConfiguration.getText("pause"),mySkin,"default");
         buttonExit.setSize(Gdx.graphics.getWidth() / 10f,Gdx.graphics.getWidth() / 10f);
         buttonExit.setPosition(Gdx.graphics.getWidth() * 9 / 10f,Gdx.graphics.getHeight() - Gdx.graphics.getWidth() / 10f);
         buttonExit.addListener(new InputListener(){
@@ -304,9 +295,7 @@ public class GameScreen extends ScreenAdapter {
 
             @Override
             public void touchUp(InputEvent event, float x, float y, int pointer, int button) {
-                created = false;
-                dispose();
-                main.setScreen(new LevelScreen(main));
+                main.setScreen(new PauseScreen(main, gameScreen));
             }
         });
         stage.addActor(buttonExit);
@@ -475,6 +464,7 @@ public class GameScreen extends ScreenAdapter {
 
     @Override
     public void dispose () {
+        created = false;
         world.dispose();
         playerBody = null;
         map = null;
