@@ -73,7 +73,7 @@ public class Store extends ScreenAdapter {
         });
         stage.addActor(buttonLevels);
 
-        creditLabel = new Label( creditsString + ": " + GameConfiguration.credits, mySkin, "big");
+        creditLabel = new Label( creditsString + ": " + GameConfiguration.credits, mySkin, "default");
         creditLabel.setBounds(Gdx.graphics.getWidth() / 2f - Gdx.graphics.getWidth() / 10f, Gdx.graphics.getHeight() * 4 / 5f,
                 Gdx.graphics.getWidth() / 5f, Gdx.graphics.getHeight() / 10f);
 
