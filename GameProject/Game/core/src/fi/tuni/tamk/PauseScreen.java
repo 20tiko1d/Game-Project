@@ -39,10 +39,15 @@ public class PauseScreen extends ScreenAdapter {
 
         Skin mySkin = new Skin(Gdx.files.internal("skin/testi/testi3.json"));
 
+        float width = Gdx.graphics.getWidth() / 3f;
+        float height = Gdx.graphics.getHeight() / (6f * multiplier);
+        float centerX = Gdx.graphics.getWidth() / 2f - width / 2f;
+        float startY = Gdx.graphics.getHeight() * 4 / 6f;
+        float buttonsGap = height / 6f;
+
         TextButton buttonReturnToGame = new TextButton(GameConfiguration.getText("continueGame"),mySkin,"default");
-        buttonReturnToGame.setSize(Gdx.graphics.getWidth() / 4f,Gdx.graphics.getHeight() / (8f * multiplier));
-        buttonReturnToGame.setPosition(Gdx.graphics.getWidth() / 2f - buttonReturnToGame.getWidth() / 2,
-                Gdx.graphics.getHeight() / 2f);
+        buttonReturnToGame.setSize(width,height);
+        buttonReturnToGame.setPosition(centerX, startY);
         buttonReturnToGame.addListener(new InputListener(){
             @Override
             public boolean touchDown(InputEvent event, float x, float y, int pointer, int button) {
@@ -57,9 +62,8 @@ public class PauseScreen extends ScreenAdapter {
         });
 
         TextButton buttonSettings = new TextButton(GameConfiguration.getText("settingsButton"),mySkin,"default");
-        buttonSettings.setSize(Gdx.graphics.getWidth() / 4f,Gdx.graphics.getHeight() / (8f * multiplier));
-        buttonSettings.setPosition(Gdx.graphics.getWidth() / 2f - buttonSettings.getWidth() / 2f,
-                buttonReturnToGame.getY() - buttonSettings.getHeight() - Gdx.graphics.getHeight() / 20f);
+        buttonSettings.setSize(width,height);
+        buttonSettings.setPosition(centerX, startY - height - buttonsGap);
         buttonSettings.addListener(new InputListener(){
             @Override
             public boolean touchDown(InputEvent event, float x, float y, int pointer, int button) {
@@ -72,10 +76,26 @@ public class PauseScreen extends ScreenAdapter {
             }
         });
 
+        TextButton buttonLevels = new TextButton(GameConfiguration.getText("levels"),mySkin,"default");
+        buttonLevels.setSize(width,height);
+        buttonLevels.setPosition(centerX, startY - 2 * height - 2 * buttonsGap);
+        buttonLevels.addListener(new InputListener(){
+            @Override
+            public boolean touchDown(InputEvent event, float x, float y, int pointer, int button) {
+                return true;
+            }
+
+            @Override
+            public void touchUp(InputEvent event, float x, float y, int pointer, int button) {
+                gameScreen.dispose();
+                dispose();
+                main.setScreen(new LevelScreen(main));
+            }
+        });
+
         TextButton buttonPlayAgain = new TextButton(GameConfiguration.getText("restart"),mySkin,"default");
-        buttonPlayAgain.setSize(Gdx.graphics.getWidth() / 4f,Gdx.graphics.getHeight() / (8f * multiplier));
-        buttonPlayAgain.setPosition(Gdx.graphics.getWidth() / 2f - buttonPlayAgain.getWidth() / 2f,
-                buttonSettings.getY() - buttonPlayAgain.getHeight() - Gdx.graphics.getHeight() / 20f);
+        buttonPlayAgain.setSize(width,height);
+        buttonPlayAgain.setPosition(centerX, startY - 3 * height - 3 * buttonsGap);
         buttonPlayAgain.addListener(new InputListener(){
             @Override
             public boolean touchDown(InputEvent event, float x, float y, int pointer, int button) {
@@ -106,6 +126,7 @@ public class PauseScreen extends ScreenAdapter {
             }
         });
 
+        stage.addActor(buttonLevels);
         stage.addActor(buttonMenu);
         stage.addActor(buttonPlayAgain);
         stage.addActor(buttonReturnToGame);
