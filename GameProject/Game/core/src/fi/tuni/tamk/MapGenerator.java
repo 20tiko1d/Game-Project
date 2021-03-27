@@ -559,6 +559,7 @@ public class MapGenerator {
     }
 
     boolean isExit = false;
+    int exitLocation = 0;
 
     /**
      * Method scales map up, inserts textures and creates collision boxes.
@@ -627,6 +628,7 @@ public class MapGenerator {
                 if(generatingMap[row][column][1] == 0 || generatingMap[row][column][1] == 3 && collisionArray[row * 4 + 48][column * 4 + 26] == 0) {
                     if(generatingMap[row][column][1] == 3) {
                         isExit = true;
+                        exitLocation = 1;
                     }
                     createGround((column * 4 + 26.5f) * oneWidth,
                             mapY - (row * 4 + 48.5f) * oneWidth,
@@ -677,13 +679,19 @@ public class MapGenerator {
         Body groundBody = world.createBody(getGroundBodyDef(x, y));
         groundBody.createFixture(getPolygonShape(width, height), 0);
         if(isExit) {
+            float width2 = width;
+            float height2 = height * 1.5f / 2.5f;
+            if(exitLocation == 1) {
+                width2 = width * 1.5f / 2.5f;
+                height2 = height;
+            }
             gameScreen.setExitBody(groundBody);
             isExit = false;
             Rectangle exitRectangle = new Rectangle();
-            exitRectangle.x = x - width;
-            exitRectangle.y = y - height;
-            exitRectangle.width = width * 2;
-            exitRectangle.height = height * 2;
+            exitRectangle.x = x - width2;
+            exitRectangle.y = y - height2;
+            exitRectangle.width = width2 * 2;
+            exitRectangle.height = height2 * 2;
             gameScreen.setExitRectangle(exitRectangle);
         }
     }
