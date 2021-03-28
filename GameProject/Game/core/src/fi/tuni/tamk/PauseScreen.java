@@ -109,6 +109,7 @@ public class PauseScreen extends ScreenAdapter {
 
             @Override
             public void touchUp(InputEvent event, float x, float y, int pointer, int button) {
+                gameScreen.dispose();
                 GameScreen gameScreen = GameConfiguration.createGame(main);
                 main.setScreen(gameScreen);
             }

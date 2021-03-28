@@ -82,10 +82,24 @@ public class MapGenerator {
         Body playerBody = world.createBody(getDefinitionOfBody());
         playerBody.createFixture(getFixtureDefinition());
         pathDone = false;
-        //gameScreen.setStart(path1[0][1] * 4 + 27, path1[0][0] * 4 + 50);
         gameScreen.setPlayerBody(playerBody);
         gameScreen.setPlayerLoc(path1[0][1] + 24, path1[0][0] + 48);
         createRandomPairs(numOfPairs, arraySize);
+        disposeAll();
+        gameScreen.setMap(map);
+    }
+
+    public void createTutorialMap(World world) {
+        generatingMap = FileReader.getTutorialMap();
+        this.size = 10;
+        this.world = world;
+        this.oneWidth = Main.oneWidth;
+        putTextures();
+        Body playerBody = world.createBody(getDefinitionOfBody());
+        playerBody.createFixture(getFixtureDefinition());
+        gameScreen.setPlayerBody(playerBody);
+        gameScreen.setPlayerLoc(29, 57);
+        gameScreen.setRandomPairs(new int[][]{{0, 78, 46, -1, -1}, {1, 58, 42, 54, 54}});
         disposeAll();
         gameScreen.setMap(map);
     }
@@ -607,16 +621,15 @@ public class MapGenerator {
                             exitLocations[exitCounter][1] = column2 + 24;
                             exitCounter++;
                         }
-                        else {
-                            if(map[row2 + 48][column2 + 24] == null) {
-                                map[row2 + 48][column2 + 24] = randomTexture(floor1Textures);
-                            }
+                        else if(map[row2 + 48][column2 + 24] == null) {
+                            map[row2 + 48][column2 + 24] = randomTexture(floor1Textures);
                         }
                     }
                 }
 
                 // Creates the collision boxes for the walls.
-                if(generatingMap[row][column][0] == 0 || generatingMap[row][column][0] == 3 && collisionArray[row * 4 + 50][column * 4 + 24] == 0) {
+                if(generatingMap[row][column][0] == 0 || generatingMap[row][column][0] == 3 &&
+                        collisionArray[row * 4 + 50][column * 4 + 24] == 0) {
                     if(generatingMap[row][column][0] == 3) {
                         isExit = true;
                     }
@@ -625,7 +638,8 @@ public class MapGenerator {
                             oneWidth * 2.5f);
                     collisionArray[row * 4 + 50][column * 4 + 24] = 1;
                 }
-                if(generatingMap[row][column][1] == 0 || generatingMap[row][column][1] == 3 && collisionArray[row * 4 + 48][column * 4 + 26] == 0) {
+                if(generatingMap[row][column][1] == 0 || generatingMap[row][column][1] == 3 &&
+                        collisionArray[row * 4 + 48][column * 4 + 26] == 0) {
                     if(generatingMap[row][column][1] == 3) {
                         isExit = true;
                         exitLocation = 1;
@@ -635,7 +649,8 @@ public class MapGenerator {
                             oneWidth * 2.5f, oneWidth * 0.5f);
                     collisionArray[row * 4 + 48][column * 4 + 26] = 1;
                 }
-                if(generatingMap[row][column][2] == 0 || generatingMap[row][column][2] == 3 && collisionArray[row * 4 + 50][column * 4 + 28] == 0) {
+                if(generatingMap[row][column][2] == 0 || generatingMap[row][column][2] == 3 &&
+                        collisionArray[row * 4 + 50][column * 4 + 28] == 0) {
                     if(generatingMap[row][column][2] == 3) {
                         isExit = true;
                     }
@@ -713,9 +728,12 @@ public class MapGenerator {
     public BodyDef getDefinitionOfBody() {
         BodyDef myBodyDef = new BodyDef();
         myBodyDef.type = BodyDef.BodyType.DynamicBody;
-        myBodyDef.position.set((path1[0][1] * 4 + 26.5f) * oneWidth,
-                mapY - ((path1[0][0] * 4 + 50.5f) * oneWidth));
-
+        if(!GameConfiguration.tutorialOn) {
+            myBodyDef.position.set((path1[0][1] * 4 + 26.5f) * oneWidth,
+                    mapY - ((path1[0][0] * 4 + 50.5f) * oneWidth));
+        } else {
+            myBodyDef.position.set(46.5f * oneWidth, mapY - 86.5f * oneWidth);
+        }
         return myBodyDef;
     }
 

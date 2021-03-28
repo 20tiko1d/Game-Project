@@ -98,6 +98,24 @@ public class LevelScreen extends ScreenAdapter {
         });
         stage.addActor(buttonHard);
 
+        Button buttonTutorial = new TextButton(GameConfiguration.getText("tutorial"),mySkin,"default");
+        buttonTutorial.setSize(Gdx.graphics.getWidth() / 10f,Gdx.graphics.getWidth() / 10f);
+        buttonTutorial.setPosition(0, 0);
+        buttonTutorial.addListener(new InputListener(){
+            @Override
+            public boolean touchDown(InputEvent event, float x, float y, int pointer, int button) {
+                return true;
+            }
+
+            @Override
+            public void touchUp(InputEvent event, float x, float y, int pointer, int button) {
+                GameConfiguration.tutorialOn = true;
+                GameConfiguration.gameLevel = 1;
+                createGame();
+            }
+        });
+        stage.addActor(buttonTutorial);
+
         Button buttonMenu = new TextButton(GameConfiguration.getText("menu"),mySkin,"default");
         buttonMenu.setSize(Gdx.graphics.getWidth() / 10f,Gdx.graphics.getWidth() / 10f);
         buttonMenu.setPosition(0,Gdx.graphics.getHeight() - Gdx.graphics.getWidth() / 10f);

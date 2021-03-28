@@ -72,4 +72,28 @@ public class FileReader {
             return "Pairs.xml";
         }
     }
+
+    public static int[][][] getTutorialMap() {
+        int[][][] map = new int[10][10][4];
+        FileHandle file = Gdx.files.internal("tutorialMap.txt");
+        String mapString = file.readString();
+        Gdx.app.log("", ": " + mapString);
+        int randomCounter = 0;
+        for(int row = 0; row < 10; row++) {
+            for(int column = 0; column < 10; column++) {
+                int side = 0;
+                while(side < 4) {
+                    char chr = mapString.charAt(row * 40 + column * 4 + side + randomCounter);
+                    if(chr == '0' || chr == '1' || chr == '2' || chr == '3') {
+                        int num = Integer.parseInt("" + chr);
+                        map[row][column][side] = num;
+                        side++;
+                    } else {
+                        randomCounter++;
+                    }
+                }
+            }
+        }
+        return map;
+    }
 }
