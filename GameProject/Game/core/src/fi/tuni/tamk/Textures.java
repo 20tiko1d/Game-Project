@@ -25,7 +25,7 @@ public final class Textures {
 
     public static ArrayList<Texture> getWallTextures() {
         ArrayList<Texture> textures = new ArrayList<Texture>();
-        textures.add(new Texture("textures/walls/random/Untitled-1.png"));
+        textures.add(new Texture("textures/walls/random/Old-brickwall.png"));
         return textures;
     }
 
@@ -38,7 +38,7 @@ public final class Textures {
     }
 
     public static Texture getObjectTexture() {
-        return new Texture("textures/object/pairs1.png");
+        return new Texture("textures/object/mushroom1.png");
     }
 
     public static Texture getExitCloseTexture() {
