@@ -12,6 +12,7 @@ public final class GameConfiguration {
 
     // Current game level
     public static int gameLevel;
+    public static String theme;
 
     // Score settings
     private static final int SCORE = 100;
@@ -134,12 +135,14 @@ public final class GameConfiguration {
     public static void checkFirstTime() {
         if(open(creditsString).equals(noValue)) {
             save(creditsString, "0");
+            save("theme", "sand");
         }
         if(open("firstTime").equals(noValue)) {
             firstTime = true;
         } else {
             firstTime = false;
         }
+        theme = open("theme");
         credits = Integer.parseInt(open(creditsString));
     }
 }
