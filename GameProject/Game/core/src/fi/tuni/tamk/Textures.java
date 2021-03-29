@@ -11,30 +11,30 @@ public final class Textures {
 
     public static ArrayList<Texture> getFloor1Textures() {
         ArrayList<Texture> textures = new ArrayList<Texture>();
-        textures.add(new Texture("textures/floorsInside/Sand/sandstonefloor1.png"));
-        textures.add(new Texture("textures/floorsInside/Sand/sandstonefloor2.png"));
-        textures.add(new Texture("textures/floorsInside/Sand/sandstonefloor3.png"));
+        textures.add(new Texture("textures/floorsInside/random/Rockfloor1.png"));
         return textures;
     }
 
     public static ArrayList<Texture> getFloor2Textures() {
         ArrayList<Texture> textures = new ArrayList<Texture>();
-        textures.add(new Texture("textures/floorsInside/random/sandfloor3.png"));
+        textures.add(new Texture("textures/floorsOutside/random/plant1.1.png"));
+        textures.add(new Texture("textures/floorsOutside/random/grass4.png"));
+        textures.add(new Texture("textures/floorsOutside/random/grass5.png"));
         return textures;
     }
 
     public static ArrayList<Texture> getWallTextures() {
         ArrayList<Texture> textures = new ArrayList<Texture>();
-        textures.add(new Texture("textures/walls/random/Untitled-1.png"));
+        textures.add(new Texture("textures/walls/random/Puskaseina1.2.png"));
         return textures;
     }
 
     public static Texture getPlayerTexture() {
-        return new Texture("textures/player/random/Ukkeli1.png");
+        return new Texture("textures/player/random/Ukkeli.png");
     }
 
     public static Texture getBackgroundTexture() {
-        return new Texture("textures/random/circle3.png");
+        return new Texture("textures/random/Sumu.png");
     }
 
     public static Texture getObjectTexture() {
