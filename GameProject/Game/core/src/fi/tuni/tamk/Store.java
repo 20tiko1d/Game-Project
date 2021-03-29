@@ -29,6 +29,12 @@ public class Store extends ScreenAdapter {
 
     private String creditsString;
 
+    private TextButton buttonSand;
+    private TextButton buttonBush;
+
+    private String buttonBushString;
+    private String buttonSandString;
+
     public Store(Main main) {
         this.main = main;
         camera = new OrthographicCamera();
@@ -39,6 +45,9 @@ public class Store extends ScreenAdapter {
     @Override
     public void show() {
         stage = new Stage(new ScreenViewport());
+
+        buttonSandString = GameConfiguration.getText("sand");
+        buttonBushString = GameConfiguration.getText("bush");
 
         Skin mySkin = new Skin(Gdx.files.internal("skin/testi/testi3.json"));
 
@@ -88,7 +97,11 @@ public class Store extends ScreenAdapter {
         float themeButtonY = Gdx.graphics.getHeight() / 2f;
         float themeButtonGapY = themeButtonHeight / 10f;
 
-        Button buttonSand = new TextButton(GameConfiguration.getText("sand"),mySkin,"default");
+        String sandString = buttonSandString;
+        if(GameConfiguration.theme.equals("sand")) {
+            sandString = getMarkedText(buttonSandString);
+        }
+        buttonSand = new TextButton(sandString,mySkin,"default");
         buttonSand.setSize(themeButtonWidth, themeButtonHeight);
         buttonSand.setPosition(themeButtonX, themeButtonY);
         buttonSand.addListener(new InputListener(){
@@ -101,10 +114,16 @@ public class Store extends ScreenAdapter {
             public void touchUp(InputEvent event, float x, float y, int pointer, int button) {
                 GameConfiguration.save("theme", "sand");
                 GameConfiguration.theme = "sand";
+                buttonSand.setText(getMarkedText(buttonSandString));
+                buttonBush.setText(buttonBushString);
             }
         });
 
-        Button buttonBush = new TextButton(GameConfiguration.getText("bush"),mySkin,"default");
+        String bushString = buttonBushString;
+        if(GameConfiguration.theme.equals("bush")) {
+            bushString = getMarkedText(buttonBushString);
+        }
+        buttonBush = new TextButton(bushString,mySkin,"default");
         buttonBush.setSize(themeButtonWidth, themeButtonHeight);
         buttonBush.setPosition(themeButtonX, themeButtonY - themeButtonGapY - themeButtonHeight);
         buttonBush.addListener(new InputListener(){
@@ -117,9 +136,10 @@ public class Store extends ScreenAdapter {
             public void touchUp(InputEvent event, float x, float y, int pointer, int button) {
                 GameConfiguration.save("theme", "bush");
                 GameConfiguration.theme = "bush";
+                buttonSand.setText(buttonSandString);
+                buttonBush.setText(getMarkedText(buttonBushString));
             }
         });
-
 
         stage.addActor(buttonBush);
         stage.addActor(buttonSand);
@@ -142,5 +162,9 @@ public class Store extends ScreenAdapter {
     public void dispose() {
         stage.dispose();
         camera = null;
+    }
+
+    public String getMarkedText(String str) {
+        return "X    " + str + "      ";
     }
 }

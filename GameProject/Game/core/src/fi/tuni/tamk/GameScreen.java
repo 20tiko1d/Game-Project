@@ -131,7 +131,10 @@ public class GameScreen extends ScreenAdapter {
     private float score = 0;
     private int objectScore;
     private Label scoreLabel;
+    private Label scoreChangeLabel;
     private Label objectLabel;
+    private float scoreAddTime = 0;
+    private int scoreAdd;
 
     private int fpsCounter = 0;
     private float second = 1;
@@ -184,7 +187,10 @@ public class GameScreen extends ScreenAdapter {
         scoreLabel = new Label(scoreString + ": " + score,
                 mySkin);
         scoreLabel.setBounds(side1Image.getWidth() / 10f, Gdx.graphics.getHeight() * 4 / 5f,
-                side1Image.getWidth() * 8 / 10f, Gdx.graphics.getHeight() / 5f);
+                side1Image.getWidth() * 4 / 10f, Gdx.graphics.getHeight() / 5f);
+        scoreChangeLabel = new Label("", mySkin, "default");
+        scoreChangeLabel.setBounds(scoreLabel.getX() + scoreLabel.getWidth(), scoreLabel.getY(),
+                scoreLabel.getWidth(), scoreLabel.getHeight());
         objectLabel = new Label("", mySkin);
         objectLabel.setBounds(scoreLabel.getX(), Gdx.graphics.getHeight() * 3 / 5f,
                 scoreLabel.getWidth(), scoreLabel.getHeight());
@@ -193,6 +199,7 @@ public class GameScreen extends ScreenAdapter {
         stage.addActor(side2Image);
         stage.addActor(side1Image);
         stage.addActor(scoreLabel);
+        stage.addActor(scoreChangeLabel);
         stage.addActor(objectLabel);
         stage.addActor(pairLabelBackground);
         stage.addActor(pairLabel);
@@ -323,12 +330,24 @@ public class GameScreen extends ScreenAdapter {
                             }
                             pairCount++;
                             score += objectScore;
+                            scoreAdd = objectScore;
+                            scoreAddTime = 2;
                             if(pairCount >= randomPairs.length - 1) {
                                 score += objectScore;
+                                scoreAdd += objectScore;
                             }
                         }
                     }
                 } else {
+                    if(currentIndex != -1 && currentIndex != closeIndex) {
+                        score -= objectScore / 2f;
+                        if(score < 0) {
+                            score = 0;
+                        }
+                        scoreAdd = -objectScore / 2;
+                        scoreAddTime = 2;
+                    }
+
                     currentIndex = closeIndex;
                     currentFirst = first;
                 }
@@ -435,10 +454,8 @@ public class GameScreen extends ScreenAdapter {
             buttonSwitch.setVisible(false);
         }
 
-        if(score - deltaTime >= 0 && !pairClose) {
-            score -= deltaTime;
-        }
-        scoreLabel.setText(scoreString + ": " + (int) score);
+        updateScore(deltaTime);
+
         objectLabel.setText(objectsFoundString + ": " + pairCount + "/" + (randomPairs.length - 1));
 
         if(exitOpen) {
@@ -711,5 +728,25 @@ public class GameScreen extends ScreenAdapter {
 
     public void setExitRectangle(Rectangle exitRectangle) {
         this.exitRectangle = exitRectangle;
+    }
+
+    public void updateScore(float deltaTime) {
+        if(score - deltaTime >= 0 && !pairClose) {
+            score -= deltaTime;
+        }
+        if(scoreAddTime > 0) {
+            Color changeColor = Color.RED;
+            char indicator = ' ';
+            if(scoreAdd > 0) {
+                indicator = '+';
+                changeColor = Color.GREEN;
+            }
+            scoreChangeLabel.setText(indicator + " " + scoreAdd);
+            scoreChangeLabel.setColor(changeColor);
+            scoreAddTime -= deltaTime;
+        } else {
+            scoreChangeLabel.setText("");
+        }
+        scoreLabel.setText(scoreString + ": " + (int) score);
     }
 }
