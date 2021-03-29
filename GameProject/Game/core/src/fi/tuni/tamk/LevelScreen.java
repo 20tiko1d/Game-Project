@@ -3,6 +3,7 @@ package fi.tuni.tamk;
 import com.badlogic.gdx.Game;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.ScreenAdapter;
+import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.math.Vector2;
@@ -11,6 +12,7 @@ import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.InputListener;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.Button;
+import com.badlogic.gdx.scenes.scene2d.ui.Label;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
 import com.badlogic.gdx.utils.viewport.ScreenViewport;
@@ -53,7 +55,6 @@ public class LevelScreen extends ScreenAdapter {
                 createGame();
             }
         });
-        stage.addActor(buttonEasy);
 
         Button buttonMedium = new TextButton(GameConfiguration.getText("mediumLevel"),mySkin,"default");
         buttonMedium.setSize(rect.width,rect.height);
@@ -75,7 +76,6 @@ public class LevelScreen extends ScreenAdapter {
                 createGame();
             }
         });
-        stage.addActor(buttonMedium);
 
         Button buttonHard = new TextButton(GameConfiguration.getText("hardLevel"),mySkin,"default");
         buttonHard.setSize(rect.width,rect.height);
@@ -96,7 +96,6 @@ public class LevelScreen extends ScreenAdapter {
                 createGame();
             }
         });
-        stage.addActor(buttonHard);
 
         Button buttonTutorial = new TextButton(GameConfiguration.getText("tutorial"),mySkin,"default");
         buttonTutorial.setSize(Gdx.graphics.getWidth() / 10f,Gdx.graphics.getWidth() / 10f);
@@ -114,7 +113,6 @@ public class LevelScreen extends ScreenAdapter {
                 createGame();
             }
         });
-        stage.addActor(buttonTutorial);
 
         Button buttonMenu = new TextButton(GameConfiguration.getText("menu"),mySkin,"default");
         buttonMenu.setSize(Gdx.graphics.getWidth() / 10f,Gdx.graphics.getWidth() / 10f);
@@ -131,7 +129,6 @@ public class LevelScreen extends ScreenAdapter {
                 main.setScreen(new MenuScreen(main));
             }
         });
-        stage.addActor(buttonMenu);
 
         Button buttonStore = new TextButton(GameConfiguration.getText("store"),mySkin,"default");
         buttonStore.setSize(Gdx.graphics.getWidth() / 5f,Gdx.graphics.getWidth() / 15f);
@@ -149,6 +146,20 @@ public class LevelScreen extends ScreenAdapter {
                 main.setScreen(new Store(main));
             }
         });
+
+        String themeString = GameConfiguration.getText("themeLabel") + ": " + GameConfiguration.theme.toUpperCase();
+        Label themeLabel = new Label(themeString , mySkin, "default");
+        themeLabel.setBounds(Gdx.graphics.getWidth() * 5 / 7f, Gdx.graphics.getHeight() * 9 / 10f,
+                Gdx.graphics.getWidth() / 5f, Gdx.graphics.getHeight() / 10f);
+        themeLabel.setColor(Color.BLACK);
+        themeLabel.setFontScale(1.3f);
+
+        stage.addActor(themeLabel);
+        stage.addActor(buttonEasy);
+        stage.addActor(buttonMedium);
+        stage.addActor(buttonHard);
+        stage.addActor(buttonTutorial);
+        stage.addActor(buttonMenu);
         stage.addActor(buttonStore);
 
         Gdx.input.setInputProcessor(stage);
