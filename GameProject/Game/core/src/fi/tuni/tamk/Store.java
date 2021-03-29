@@ -8,11 +8,15 @@ import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.InputListener;
 import com.badlogic.gdx.scenes.scene2d.Stage;
+import com.badlogic.gdx.scenes.scene2d.Touchable;
 import com.badlogic.gdx.scenes.scene2d.ui.Button;
+import com.badlogic.gdx.scenes.scene2d.ui.ButtonGroup;
 import com.badlogic.gdx.scenes.scene2d.ui.Label;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
 import com.badlogic.gdx.utils.viewport.ScreenViewport;
+
+import javax.swing.JRadioButton;
 
 public class Store extends ScreenAdapter {
 
@@ -71,12 +75,55 @@ public class Store extends ScreenAdapter {
                 main.setScreen(new LevelScreen(main));
             }
         });
-        stage.addActor(buttonLevels);
+
 
         creditLabel = new Label( creditsString + ": " + GameConfiguration.credits, mySkin, "default");
         creditLabel.setBounds(Gdx.graphics.getWidth() / 2f - Gdx.graphics.getWidth() / 10f, Gdx.graphics.getHeight() * 4 / 5f,
                 Gdx.graphics.getWidth() / 5f, Gdx.graphics.getHeight() / 10f);
 
+
+        float themeButtonWidth = Gdx.graphics.getWidth() / 5f;
+        float themeButtonHeight = Gdx.graphics.getHeight() / 10f;
+        float themeButtonX = Gdx.graphics.getWidth() / 2f - themeButtonWidth / 2f;
+        float themeButtonY = Gdx.graphics.getHeight() / 2f;
+        float themeButtonGapY = themeButtonHeight / 10f;
+
+        Button buttonSand = new TextButton(GameConfiguration.getText("sand"),mySkin,"default");
+        buttonSand.setSize(themeButtonWidth, themeButtonHeight);
+        buttonSand.setPosition(themeButtonX, themeButtonY);
+        buttonSand.addListener(new InputListener(){
+            @Override
+            public boolean touchDown(InputEvent event, float x, float y, int pointer, int button) {
+                return true;
+            }
+
+            @Override
+            public void touchUp(InputEvent event, float x, float y, int pointer, int button) {
+                GameConfiguration.save("theme", "sand");
+                GameConfiguration.theme = "sand";
+            }
+        });
+
+        Button buttonBush = new TextButton(GameConfiguration.getText("bush"),mySkin,"default");
+        buttonBush.setSize(themeButtonWidth, themeButtonHeight);
+        buttonBush.setPosition(themeButtonX, themeButtonY - themeButtonGapY - themeButtonHeight);
+        buttonBush.addListener(new InputListener(){
+            @Override
+            public boolean touchDown(InputEvent event, float x, float y, int pointer, int button) {
+                return true;
+            }
+
+            @Override
+            public void touchUp(InputEvent event, float x, float y, int pointer, int button) {
+                GameConfiguration.save("theme", "bush");
+                GameConfiguration.theme = "bush";
+            }
+        });
+
+
+        stage.addActor(buttonBush);
+        stage.addActor(buttonSand);
+        stage.addActor(buttonLevels);
         stage.addActor(creditLabel);
         Gdx.input.setInputProcessor(stage);
     }

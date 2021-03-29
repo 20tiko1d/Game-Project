@@ -11,21 +11,33 @@ public final class Textures {
 
     public static ArrayList<Texture> getFloor1Textures() {
         ArrayList<Texture> textures = new ArrayList<Texture>();
-        textures.add(new Texture("textures/floorsInside/Sand/sandstonefloor1.png"));
-        textures.add(new Texture("textures/floorsInside/Sand/sandstonefloor2.png"));
-        textures.add(new Texture("textures/floorsInside/Sand/sandstonefloor3.png"));
+        if(GameConfiguration.theme.equals("sand")) {
+            textures.add(new Texture("textures/floorsInside/sand/sandstonefloor1.png"));
+            textures.add(new Texture("textures/floorsInside/Sand/sandstonefloor2.png"));
+            textures.add(new Texture("textures/floorsInside/Sand/sandstonefloor3.png"));
+        }
+        else if(GameConfiguration.theme.equals("bush")) {
+        }
+
         return textures;
     }
 
     public static ArrayList<Texture> getFloor2Textures() {
         ArrayList<Texture> textures = new ArrayList<Texture>();
-        textures.add(new Texture("textures/floorsOutside/Sand/sandfloor3.png"));
+
+        if(GameConfiguration.theme.equals("sand")) {
+            textures.add(new Texture("textures/floorsInside/random/sandfloor3.png"));
+        }
         return textures;
     }
 
     public static ArrayList<Texture> getWallTextures() {
         ArrayList<Texture> textures = new ArrayList<Texture>();
-        textures.add(new Texture("textures/walls/Sand/Old-brickwall.png"));
+      
+        if(GameConfiguration.theme.equals("sand")) {
+            textures.add(new Texture("textures/walls/random/Untitled-1.png"));
+        }
+
         return textures;
     }
 
