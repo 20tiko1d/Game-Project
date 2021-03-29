@@ -32,6 +32,8 @@ public final class GameConfiguration {
     public static int lvl3PathLength = 31;
     public static int lvl3ObjectPairs = 6;
 
+    public static boolean tutorialOn = false;
+
     public static final float PLAYER_SPEED = 200;
 
     // Wall height settings
@@ -54,6 +56,8 @@ public final class GameConfiguration {
     // Personal info
     public static int credits;
 
+    public static boolean firstTime;
+
     private GameConfiguration() {}
 
     public static int getStartScore() {
@@ -75,20 +79,24 @@ public final class GameConfiguration {
 
         GameScreen gameScreen= new GameScreen(main, world);
         MapGenerator generator= new MapGenerator(gameScreen);
-        int size = lvl1Size;
-        int pathLength = lvl1PathLength;
-        int objectPairs = lvl1ObjectPairs;
-        if(gameLevel == 2) {
-            size = lvl2Size;
-            pathLength = lvl2PathLength;
-            objectPairs = lvl2ObjectPairs;
+        if(tutorialOn) {
+            generator.createTutorialMap(world);
+        } else {
+            int size = lvl1Size;
+            int pathLength = lvl1PathLength;
+            int objectPairs = lvl1ObjectPairs;
+            if(gameLevel == 2) {
+                size = lvl2Size;
+                pathLength = lvl2PathLength;
+                objectPairs = lvl2ObjectPairs;
+            }
+            else if(gameLevel == 3) {
+                size = lvl3Size;
+                pathLength = lvl3PathLength;
+                objectPairs = lvl3ObjectPairs;
+            }
+            generator.createMap(size, pathLength, world, objectPairs);
         }
-        else if(gameLevel == 3) {
-            size = lvl3Size;
-            pathLength = lvl3PathLength;
-            objectPairs = lvl3ObjectPairs;
-        }
-        generator.createMap(size, pathLength, world, objectPairs);
         return gameScreen;
     }
 
@@ -126,6 +134,11 @@ public final class GameConfiguration {
     public static void checkFirstTime() {
         if(open(creditsString).equals(noValue)) {
             save(creditsString, "0");
+        }
+        if(open("firstTime").equals(noValue)) {
+            firstTime = true;
+        } else {
+            firstTime = false;
         }
         credits = Integer.parseInt(open(creditsString));
     }

@@ -323,7 +323,7 @@ public class GameScreen extends ScreenAdapter {
                             }
                             pairCount++;
                             score += objectScore;
-                            if(pairCount >= randomPairs.length) {
+                            if(pairCount >= randomPairs.length - 1) {
                                 score += objectScore;
                             }
                         }
@@ -439,12 +439,16 @@ public class GameScreen extends ScreenAdapter {
             score -= deltaTime;
         }
         scoreLabel.setText(scoreString + ": " + (int) score);
-        objectLabel.setText(objectsFoundString + ": " + pairCount + "/" + randomPairs.length);
+        objectLabel.setText(objectsFoundString + ": " + pairCount + "/" + (randomPairs.length - 1));
 
         if(exitOpen) {
             if(playerRect.overlaps(exitRectangle)) {
                 dispose();
-                main.setScreen(new AfterGameScreen(main, (int) score));
+                if(GameConfiguration.tutorialOn) {
+                    main.setScreen(new AfterTutorialScreen(main));
+                } else {
+                    main.setScreen(new AfterGameScreen(main, (int) score));
+                }
             }
         }
 

@@ -56,8 +56,16 @@ public class MenuScreen extends ScreenAdapter {
 
             @Override
             public void touchUp(InputEvent event, float x, float y, int pointer, int button) {
-                dispose();
-                main.setScreen(new LevelScreen(main));
+                if(GameConfiguration.firstTime) {
+                    GameConfiguration.tutorialOn = true;
+                    GameConfiguration.gameLevel = 1;
+                    GameScreen gameScreen = GameConfiguration.createGame(main);
+                    dispose();
+                    main.setScreen(gameScreen);
+                } else {
+                    dispose();
+                    main.setScreen(new LevelScreen(main));
+                }
             }
         });
         stage.addActor(buttonPlay);
