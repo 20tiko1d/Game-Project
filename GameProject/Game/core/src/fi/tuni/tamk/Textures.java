@@ -24,6 +24,7 @@ public final class Textures {
 
     public static ArrayList<Texture> getFloor2Textures() {
         ArrayList<Texture> textures = new ArrayList<Texture>();
+
         if(GameConfiguration.theme.equals("sand")) {
             textures.add(new Texture("textures/floorsInside/random/sandfloor3.png"));
         }
@@ -32,22 +33,24 @@ public final class Textures {
 
     public static ArrayList<Texture> getWallTextures() {
         ArrayList<Texture> textures = new ArrayList<Texture>();
+      
         if(GameConfiguration.theme.equals("sand")) {
             textures.add(new Texture("textures/walls/random/Untitled-1.png"));
         }
+
         return textures;
     }
 
     public static Texture getPlayerTexture() {
-        return new Texture("textures/player/random/Ukkeli1.png");
+        return new Texture("textures/player/random/Ukkeli.png");
     }
 
     public static Texture getBackgroundTexture() {
-        return new Texture("textures/random/circle3.png");
+        return new Texture("textures/random/Sumu.png");
     }
 
     public static Texture getObjectTexture() {
-        return new Texture("textures/object/pairs1.png");
+        return new Texture("textures/object/mushroom1.png");
     }
 
     public static Texture getExitCloseTexture() {

@@ -42,7 +42,7 @@ public final class GameConfiguration {
     public static final float WALL_HEIGHT = 2.1f;
 
     // Object height settings
-    public static final float OBJECT_HEIGHT = 2;
+    public static final float OBJECT_HEIGHT = 3;
 
     // Joystick settings
     public static float joystickXOffset = Gdx.graphics.getWidth() / 32f;
