@@ -756,14 +756,14 @@ public class MapGenerator {
      * @param arraySize: Amount of sentences to choose from.
      */
     public void createRandomPairs(int numOfPairs, int arraySize) {
-        int [][] pairs = new int[numOfPairs][5];
+        int [][] pairs = new int[numOfPairs + 1][5];
 
         // Selects random index to the sentences array.
-        for(int i = 0; i < numOfPairs; i++) {
+        for(int i = 0; i < pairs.length; i++) {
 
             boolean clear = true;
             int random = MathUtils.random(1, arraySize);
-            for(int j = 0; j < numOfPairs; j++) {
+            for(int j = 0; j < pairs.length; j++) {
                 if(random == pairs[j][0]) {
                     clear = false;
                 }
@@ -775,12 +775,12 @@ public class MapGenerator {
             }
         }
 
-        for(int i = 0; i < numOfPairs; i++) {
+        for(int i = 0; i < pairs.length; i++) {
             pairs[i][0]--;
         }
 
         // Generates random locations for the pairs.
-        for(int i = 0; i < numOfPairs; i++) {
+        for(int i = 0; i < pairs.length; i++) {
             int randomRow1 = MathUtils.random(0, generatingMap.length - 1);
             int randomCol1 = MathUtils.random(0, generatingMap.length - 1);
             int randomRow2 = MathUtils.random(0, generatingMap.length - 1);
@@ -796,12 +796,14 @@ public class MapGenerator {
                 pairs[i][4] = randomCol2;
             }
         }
-        for(int i = 0; i < numOfPairs; i++) {
+        for(int i = 0; i < pairs.length; i++) {
             pairs[i][1] = pairs[i][1] * 4 + 50;
             pairs[i][2] = pairs[i][2] * 4 + 26;
             pairs[i][3] = pairs[i][3] * 4 + 50;
             pairs[i][4] = pairs[i][4] * 4 + 26;
         }
+        pairs[0][3] = -1;
+        pairs[0][4] = -1;
         gameScreen.setRandomPairs(pairs);
     }
 

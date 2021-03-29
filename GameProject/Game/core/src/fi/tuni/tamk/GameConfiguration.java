@@ -56,6 +56,8 @@ public final class GameConfiguration {
     // Personal info
     public static int credits;
 
+    public static boolean firstTime;
+
     private GameConfiguration() {}
 
     public static int getStartScore() {
@@ -79,7 +81,6 @@ public final class GameConfiguration {
         MapGenerator generator= new MapGenerator(gameScreen);
         if(tutorialOn) {
             generator.createTutorialMap(world);
-            tutorialOn = false;
         } else {
             int size = lvl1Size;
             int pathLength = lvl1PathLength;
@@ -133,6 +134,11 @@ public final class GameConfiguration {
     public static void checkFirstTime() {
         if(open(creditsString).equals(noValue)) {
             save(creditsString, "0");
+        }
+        if(open("firstTime").equals(noValue)) {
+            firstTime = true;
+        } else {
+            firstTime = false;
         }
         credits = Integer.parseInt(open(creditsString));
     }

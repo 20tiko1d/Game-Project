@@ -21,12 +21,18 @@ public class PauseScreen extends ScreenAdapter {
     private Stage stage;
     private OrthographicCamera camera;
 
+    private boolean tutorial = false;
+
     public PauseScreen(Main main, GameScreen gameScreen) {
         this.main = main;
         this.gameScreen = gameScreen;
         this.pauseScreen = this;
         camera = new OrthographicCamera();
         camera.setToOrtho(false, Main.viewPortWidth, Main.viewPortHeight);
+        if(GameConfiguration.tutorialOn) {
+            tutorial = true;
+            GameConfiguration.tutorialOn = false;
+        }
     }
 
     @Override
@@ -62,6 +68,9 @@ public class PauseScreen extends ScreenAdapter {
             @Override
             public void touchUp(InputEvent event, float x, float y, int pointer, int button) {
                 dispose();
+                if(tutorial) {
+                    GameConfiguration.tutorialOn = true;
+                }
                 main.setScreen(gameScreen);
             }
         });
@@ -92,9 +101,11 @@ public class PauseScreen extends ScreenAdapter {
 
             @Override
             public void touchUp(InputEvent event, float x, float y, int pointer, int button) {
-                gameScreen.dispose();
-                dispose();
-                main.setScreen(new LevelScreen(main));
+                if(!GameConfiguration.firstTime) {
+                    gameScreen.dispose();
+                    dispose();
+                    main.setScreen(new LevelScreen(main));
+                }
             }
         });
 
@@ -109,6 +120,9 @@ public class PauseScreen extends ScreenAdapter {
 
             @Override
             public void touchUp(InputEvent event, float x, float y, int pointer, int button) {
+                if(tutorial) {
+                    GameConfiguration.tutorialOn = true;
+                }
                 gameScreen.dispose();
                 GameScreen gameScreen = GameConfiguration.createGame(main);
                 main.setScreen(gameScreen);
