@@ -59,7 +59,6 @@ public class AfterGameScreen extends ScreenAdapter {
                 main.setScreen(new MenuScreen(main));
             }
         });
-        stage.addActor(buttonMenu);
 
         Button buttonPlayAgain = new TextButton(GameConfiguration.getText("playAgain"), mySkin,"default");
         buttonPlayAgain.setSize(Gdx.graphics.getWidth() / 5f,Gdx.graphics.getWidth() / 8f);
@@ -76,7 +75,6 @@ public class AfterGameScreen extends ScreenAdapter {
                 main.setScreen(gameScreen);
             }
         });
-        stage.addActor(buttonPlayAgain);
 
         Button buttonLevelScreen = new TextButton(GameConfiguration.getText("levels"), mySkin,"default");
         buttonLevelScreen.setSize(Gdx.graphics.getWidth() / 5f,Gdx.graphics.getWidth() / 8f);
@@ -92,7 +90,23 @@ public class AfterGameScreen extends ScreenAdapter {
                 main.setScreen(new LevelScreen(main));
             }
         });
-        stage.addActor(buttonLevelScreen);
+
+        Button storeButton = new TextButton(GameConfiguration.getText("store"),mySkin,"default");
+        storeButton.setSize(Gdx.graphics.getWidth() / 10f,Gdx.graphics.getWidth() / 10f);
+        storeButton.setPosition(Gdx.graphics.getWidth() - storeButton.getWidth(),
+                Gdx.graphics.getHeight() - Gdx.graphics.getWidth() / 10f);
+        storeButton.addListener(new InputListener(){
+            @Override
+            public boolean touchDown(InputEvent event, float x, float y, int pointer, int button) {
+                return true;
+            }
+
+            @Override
+            public void touchUp(InputEvent event, float x, float y, int pointer, int button) {
+                dispose();
+                main.setScreen(new Store(main));
+            }
+        });
 
         Label scoreLabel = new Label( GameConfiguration.getText("score") + ": " + score, mySkin, "default");
         float scoreLabelWidth = Gdx.graphics.getWidth() / 2f;
@@ -103,6 +117,11 @@ public class AfterGameScreen extends ScreenAdapter {
                 scoreLabelWidth, scoreLabelHeight);
         scoreLabel.setFontScale(3);
         scoreLabel.setColor(Color.BLACK);
+
+        stage.addActor(buttonMenu);
+        stage.addActor(buttonPlayAgain);
+        stage.addActor(buttonLevelScreen);
+        stage.addActor(storeButton);
         stage.addActor(scoreLabel);
 
         Gdx.input.setInputProcessor(stage);
