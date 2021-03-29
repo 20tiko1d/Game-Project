@@ -19,22 +19,22 @@ public final class Textures {
 
     public static ArrayList<Texture> getFloor2Textures() {
         ArrayList<Texture> textures = new ArrayList<Texture>();
-        textures.add(new Texture("textures/floorsInside/random/sandfloor3.png"));
+        textures.add(new Texture("textures/floorsOutside/Sand/sandfloor3.png"));
         return textures;
     }
 
     public static ArrayList<Texture> getWallTextures() {
         ArrayList<Texture> textures = new ArrayList<Texture>();
-        textures.add(new Texture("textures/walls/random/Old-brickwall.png"));
+        textures.add(new Texture("textures/walls/Sand/Old-brickwall.png"));
         return textures;
     }
 
     public static Texture getPlayerTexture() {
-        return new Texture("textures/player/random/Ukkeli1.png");
+        return new Texture("textures/player/random/Ukkeli.png");
     }
 
     public static Texture getBackgroundTexture() {
-        return new Texture("textures/random/circle3.png");
+        return new Texture("textures/random/Sumu.png");
     }
 
     public static Texture getObjectTexture() {
