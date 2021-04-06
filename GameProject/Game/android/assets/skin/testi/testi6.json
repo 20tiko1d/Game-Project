@@ -64,12 +64,16 @@ com.badlogic.gdx.scenes.scene2d.ui.Skin$TintedDrawable: {
 }
 com.badlogic.gdx.scenes.scene2d.ui.Button$ButtonStyle: {
 	default: {
-		up: buttonTest
+		up: button
 		down: button-down
 	}
 	small: {
 		up: button-small
 		down: button-small-down
+	}
+	test: {
+		up: buttonTest
+		down: button-down
 	}
 }
 com.badlogic.gdx.scenes.scene2d.ui.ImageButton$ImageButtonStyle: {
@@ -146,7 +150,7 @@ com.badlogic.gdx.scenes.scene2d.ui.TextButton$TextButtonStyle: {
 	default: {
 		parent: default
 		font: arial-test
-		up: buttonTest
+		up: button
 		down: button-down
 	}
 	big: {
@@ -157,6 +161,16 @@ com.badlogic.gdx.scenes.scene2d.ui.TextButton$TextButtonStyle: {
 	reallyBig: {
 		font: largeFont4
 		up: buttonTest
+		down: button-down
+	}
+	test: {
+		font: arial-test
+		up: buttonTest
+		down: button-down
+	}
+	defaultBig: {
+		font: largeFont4
+		up: button
 		down: button-down
 	}
 }

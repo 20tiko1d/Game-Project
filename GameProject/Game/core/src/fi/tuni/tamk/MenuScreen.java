@@ -43,7 +43,7 @@ public class MenuScreen extends ScreenAdapter {
 
         Skin mySkin = new Skin(Gdx.files.internal("skin/testi/testi6.json"));
 
-        buttonPlay = new TextButton(GameConfiguration.getText("playButton"),mySkin,"reallyBig");
+        buttonPlay = new TextButton(GameConfiguration.getText("playButton"),mySkin,"defaultBig");
         buttonPlay.setSize(Gdx.graphics.getWidth() * multiplier / 3f,(Gdx.graphics.getHeight() / 7f) / multiplier);
         buttonPlay.setPosition(Gdx.graphics.getWidth() / 2f - buttonPlay.getWidth() / 2,
                 Gdx.graphics.getHeight() / 2f);
@@ -69,7 +69,7 @@ public class MenuScreen extends ScreenAdapter {
         });
         stage.addActor(buttonPlay);
 
-        buttonSettings = new TextButton(GameConfiguration.getText("settingsButton"),mySkin,"big");
+        buttonSettings = new TextButton(GameConfiguration.getText("settingsButton"),mySkin,"default");
         buttonSettings.setSize(Gdx.graphics.getWidth() / 4f,Gdx.graphics.getHeight() / (8f * multiplier));
         buttonSettings.setPosition(Gdx.graphics.getWidth() / 2f - buttonSettings.getWidth() / 2f,
                 buttonPlay.getY() - buttonSettings.getHeight() - Gdx.graphics.getHeight() / 20f);
@@ -87,7 +87,7 @@ public class MenuScreen extends ScreenAdapter {
         });
         stage.addActor(buttonSettings);
 
-        buttonPersonal = new TextButton(GameConfiguration.getText("personalButton"),mySkin,"big");
+        buttonPersonal = new TextButton(GameConfiguration.getText("personalButton"),mySkin,"default");
         buttonPersonal.setSize(Gdx.graphics.getWidth() / 4f,Gdx.graphics.getHeight() / (8f * multiplier));
         buttonPersonal.setPosition(Gdx.graphics.getWidth() / 2f - buttonPersonal.getWidth() / 2f,
                 buttonSettings.getY() - buttonPersonal.getHeight() - Gdx.graphics.getHeight() / 20f);
@@ -104,7 +104,7 @@ public class MenuScreen extends ScreenAdapter {
         });
         stage.addActor(buttonPersonal);
 
-        Button buttonLanguage = new TextButton("Language",mySkin,"big");
+        Button buttonLanguage = new TextButton("Language",mySkin,"default");
         buttonLanguage.setSize(Gdx.graphics.getWidth() / 6f,Gdx.graphics.getHeight() / (8f * multiplier));
         buttonLanguage.setPosition(Gdx.graphics.getWidth() - buttonLanguage.getWidth() - 10,
                 Gdx.graphics.getHeight() - buttonLanguage.getHeight() - 10);
