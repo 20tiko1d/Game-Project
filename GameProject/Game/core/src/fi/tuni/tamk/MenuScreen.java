@@ -41,13 +41,12 @@ public class MenuScreen extends ScreenAdapter {
             multiplier = 1.4f;
         }
 
-        Skin mySkin = new Skin(Gdx.files.internal("skin/testi/testi3.json"));
+        Skin mySkin = new Skin(Gdx.files.internal("skin/testi/testi6.json"));
 
-        buttonPlay = new TextButton(GameConfiguration.getText("playButton"),mySkin,"default");
+        buttonPlay = new TextButton(GameConfiguration.getText("playButton"),mySkin,"reallyBig");
         buttonPlay.setSize(Gdx.graphics.getWidth() * multiplier / 3f,(Gdx.graphics.getHeight() / 7f) / multiplier);
         buttonPlay.setPosition(Gdx.graphics.getWidth() / 2f - buttonPlay.getWidth() / 2,
                 Gdx.graphics.getHeight() / 2f);
-        buttonPlay.getLabel().setFontScale(3);
         buttonPlay.addListener(new InputListener(){
             @Override
             public boolean touchDown(InputEvent event, float x, float y, int pointer, int button) {
@@ -70,7 +69,7 @@ public class MenuScreen extends ScreenAdapter {
         });
         stage.addActor(buttonPlay);
 
-        buttonSettings = new TextButton(GameConfiguration.getText("settingsButton"),mySkin,"default");
+        buttonSettings = new TextButton(GameConfiguration.getText("settingsButton"),mySkin,"big");
         buttonSettings.setSize(Gdx.graphics.getWidth() / 4f,Gdx.graphics.getHeight() / (8f * multiplier));
         buttonSettings.setPosition(Gdx.graphics.getWidth() / 2f - buttonSettings.getWidth() / 2f,
                 buttonPlay.getY() - buttonSettings.getHeight() - Gdx.graphics.getHeight() / 20f);
@@ -88,7 +87,7 @@ public class MenuScreen extends ScreenAdapter {
         });
         stage.addActor(buttonSettings);
 
-        buttonPersonal = new TextButton(GameConfiguration.getText("personalButton"),mySkin,"default");
+        buttonPersonal = new TextButton(GameConfiguration.getText("personalButton"),mySkin,"big");
         buttonPersonal.setSize(Gdx.graphics.getWidth() / 4f,Gdx.graphics.getHeight() / (8f * multiplier));
         buttonPersonal.setPosition(Gdx.graphics.getWidth() / 2f - buttonPersonal.getWidth() / 2f,
                 buttonSettings.getY() - buttonPersonal.getHeight() - Gdx.graphics.getHeight() / 20f);
@@ -105,7 +104,7 @@ public class MenuScreen extends ScreenAdapter {
         });
         stage.addActor(buttonPersonal);
 
-        Button buttonLanguage = new TextButton("Language",mySkin,"default");
+        Button buttonLanguage = new TextButton("Language",mySkin,"big");
         buttonLanguage.setSize(Gdx.graphics.getWidth() / 6f,Gdx.graphics.getHeight() / (8f * multiplier));
         buttonLanguage.setPosition(Gdx.graphics.getWidth() - buttonLanguage.getWidth() - 10,
                 Gdx.graphics.getHeight() - buttonLanguage.getHeight() - 10);
