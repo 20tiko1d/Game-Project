@@ -1,6 +1,5 @@
 package fi.tuni.tamk;
 
-import com.badlogic.gdx.Game;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
 import com.badlogic.gdx.InputAdapter;
@@ -10,6 +9,7 @@ import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Texture;
+import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.physics.box2d.Body;
@@ -20,7 +20,6 @@ import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.InputListener;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.Button;
-import com.badlogic.gdx.scenes.scene2d.ui.Container;
 import com.badlogic.gdx.scenes.scene2d.ui.Image;
 import com.badlogic.gdx.scenes.scene2d.ui.Label;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
@@ -28,10 +27,9 @@ import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
 import com.badlogic.gdx.scenes.scene2d.ui.Touchpad;
 import com.badlogic.gdx.scenes.scene2d.utils.ChangeListener;
 import com.badlogic.gdx.scenes.scene2d.utils.Drawable;
+import com.badlogic.gdx.utils.Align;
 import com.badlogic.gdx.utils.Array;
 import com.badlogic.gdx.utils.viewport.ScreenViewport;
-
-import java.lang.reflect.GenericArrayType;
 
 /**
  * The class is responsible for running the actual game play.
@@ -104,9 +102,10 @@ public class GameScreen extends ScreenAdapter {
     private boolean first;
     private boolean currentFirst;
     private int closeIndex;
-    private int currentIndex = -1;
-    private Button buttonTake;
+    private int currentIndex = -2;
+    private Button buttonValidate;
     private Button buttonSwitch;
+    private Button buttonActivate;
 
     // Box2d
     private World world;
@@ -127,12 +126,14 @@ public class GameScreen extends ScreenAdapter {
     private boolean pairClose = false;
     private int pairCount = 0;
     private int objectIndex;
+    private boolean objectActivated = false;
 
     private float score = 0;
     private int objectScore;
     private Label scoreLabel;
     private Label scoreChangeLabel;
     private Label objectLabel;
+    private Label activatedLabel;
     private float scoreAddTime = 0;
     private int scoreAdd;
 
@@ -160,7 +161,7 @@ public class GameScreen extends ScreenAdapter {
         wallHeight = GameConfiguration.WALL_HEIGHT;
         objectHeight = tileHeight * GameConfiguration.OBJECT_HEIGHT;
         stage = new Stage(new ScreenViewport());
-        mySkin = new Skin(Gdx.files.internal("skin/testi/testi3.json"));
+        mySkin = new Skin(Gdx.files.internal("skin/testi/testi6.json"));
 
         Image roundImage = new Image(Textures.getBackgroundTexture());
         roundImage.setBounds(Gdx.graphics.getWidth() / 4f,
@@ -179,6 +180,7 @@ public class GameScreen extends ScreenAdapter {
         pairLabel.setBounds(Gdx.graphics.getWidth() * 1.1f / 4f, Gdx.graphics.getHeight() * 4f / 5f,
                 Gdx.graphics.getWidth() / 2.2f, Gdx.graphics.getHeight() / 5f);
         pairLabel.setWrap(true);
+        pairLabel.setAlignment(Align.center);
 
         pairLabelBackground = new Image(Textures.getPairLabelBackground());
         pairLabelBackground.setBounds(Gdx.graphics.getWidth() / 4f, pairLabel.getY(),
@@ -194,6 +196,10 @@ public class GameScreen extends ScreenAdapter {
         objectLabel = new Label("", mySkin);
         objectLabel.setBounds(scoreLabel.getX(), Gdx.graphics.getHeight() * 3 / 5f,
                 scoreLabel.getWidth(), scoreLabel.getHeight());
+        activatedLabel = new Label(GameConfiguration.getText("activated"), mySkin, "big");
+        activatedLabel.setBounds(pairLabel.getX(), 0, pairLabel.getWidth(), pairLabel.getHeight());
+        activatedLabel.setColor(Color.GREEN);
+        activatedLabel.setAlignment(Align.center);
 
         stage.addActor(roundImage);
         stage.addActor(side2Image);
@@ -203,7 +209,7 @@ public class GameScreen extends ScreenAdapter {
         stage.addActor(objectLabel);
         stage.addActor(pairLabelBackground);
         stage.addActor(pairLabel);
-
+        stage.addActor(activatedLabel);
 
         batch = new SpriteBatch();
 
@@ -291,10 +297,10 @@ public class GameScreen extends ScreenAdapter {
         }));
 
 
-        Button buttonExit = new TextButton(GameConfiguration.getText("pause"),mySkin,"default");
-        buttonExit.setSize(Gdx.graphics.getWidth() / 10f,Gdx.graphics.getWidth() / 10f);
-        buttonExit.setPosition(Gdx.graphics.getWidth() * 9 / 10f,Gdx.graphics.getHeight() - Gdx.graphics.getWidth() / 10f);
-        buttonExit.addListener(new InputListener(){
+        Button buttonPause = new TextButton(GameConfiguration.getText("pause"),mySkin,"default");
+        buttonPause.setSize(Gdx.graphics.getWidth() / 10f,Gdx.graphics.getWidth() / 10f);
+        buttonPause.setPosition(Gdx.graphics.getWidth() * 9 / 10f,Gdx.graphics.getHeight() - Gdx.graphics.getWidth() / 10f);
+        buttonPause.addListener(new InputListener(){
             @Override
             public boolean touchDown(InputEvent event, float x, float y, int pointer, int button) {
                 return true;
@@ -305,11 +311,28 @@ public class GameScreen extends ScreenAdapter {
                 main.setScreen(new PauseScreen(main, gameScreen));
             }
         });
-        stage.addActor(buttonExit);
-        buttonTake = new TextButton(GameConfiguration.getText("takeButton"),mySkin,"default");
-        buttonTake.setSize(Gdx.graphics.getWidth() / 4f,Gdx.graphics.getWidth() / 10f);
-        buttonTake.setPosition(Gdx.graphics.getWidth() / 4f,0);
-        buttonTake.addListener(new InputListener(){
+
+        buttonActivate = new TextButton(GameConfiguration.getText("activate"), mySkin, "default");
+        buttonActivate.setSize(Gdx.graphics.getWidth() / 2f, Gdx.graphics.getWidth() / 10f);
+        buttonActivate.setPosition(Gdx.graphics.getWidth() / 4f, 0);
+        buttonActivate.addListener(new InputListener() {
+            @Override
+            public boolean touchDown(InputEvent event, float x, float y, int pointer, int button) {
+                return true;
+            }
+
+            @Override
+            public void touchUp(InputEvent event, float x, float y, int pointer, int button) {
+                currentIndex = closeIndex;
+                currentFirst = first;
+                objectActivated = true;
+            }
+        });
+
+        buttonValidate = new TextButton(GameConfiguration.getText("validate"),mySkin,"default");
+        buttonValidate.setSize(Gdx.graphics.getWidth() / 4f,Gdx.graphics.getWidth() / 10f);
+        buttonValidate.setPosition(Gdx.graphics.getWidth() / 4f,0);
+        buttonValidate.addListener(new InputListener() {
             @Override
             public boolean touchDown(InputEvent event, float x, float y, int pointer, int button) {
                 return true;
@@ -324,7 +347,7 @@ public class GameScreen extends ScreenAdapter {
                             randomPairs[i][2] = 0;
                             randomPairs[i][3] = 0;
                             randomPairs[i][4] = 0;
-                            currentIndex = -1;
+                            currentIndex = -2;
                             if(pairCount == 0) {
                                 openExit();
                             }
@@ -336,6 +359,7 @@ public class GameScreen extends ScreenAdapter {
                                 score += objectScore;
                                 scoreAdd += objectScore;
                             }
+                            objectActivated = false;
                         }
                     }
                 } else {
@@ -351,9 +375,9 @@ public class GameScreen extends ScreenAdapter {
                     currentIndex = closeIndex;
                     currentFirst = first;
                 }
+                activateObject();
             }
         });
-        stage.addActor(buttonTake);
 
         buttonSwitch = new TextButton(GameConfiguration.getText("switchButton"),mySkin,"default");
         buttonSwitch.setSize(Gdx.graphics.getWidth() / 4f,Gdx.graphics.getWidth() / 10f);
@@ -368,9 +392,9 @@ public class GameScreen extends ScreenAdapter {
             public void touchUp(InputEvent event, float x, float y, int pointer, int button) {
                 currentIndex = closeIndex;
                 currentFirst = first;
+                activateObject();
             }
         });
-        stage.addActor(buttonSwitch);
 
         Button buttonBoost = new TextButton(GameConfiguration.getText("boostButton"),mySkin,"default");
         buttonBoost.setSize(Gdx.graphics.getHeight() / 4f,Gdx.graphics.getHeight() / 4f);
@@ -393,7 +417,6 @@ public class GameScreen extends ScreenAdapter {
                 velMultiplier = 1;
             }
         });
-        stage.addActor(buttonBoost);
 
         Drawable touchBackground;
         Drawable touchKnob;
@@ -423,6 +446,12 @@ public class GameScreen extends ScreenAdapter {
                 velX = ((deltaX - GameConfiguration.joystickLength / 2f) / (GameConfiguration.joystickLength / 4f));
             }
         });
+
+        stage.addActor(buttonPause);
+        stage.addActor(buttonActivate);
+        stage.addActor(buttonValidate);
+        stage.addActor(buttonSwitch);
+        stage.addActor(buttonBoost);
         stage.addActor(touchpad);
 
         Gdx.input.setInputProcessor(inputMultiplexer);
@@ -448,12 +477,14 @@ public class GameScreen extends ScreenAdapter {
         if(!pairClose) {
             pairLabel.setVisible(false);
             pairLabelBackground.setVisible(false);
-            buttonTake.setVisible(false);
-            buttonTake.setDisabled(true);
+            buttonValidate.setVisible(false);
+            buttonValidate.setDisabled(true);
             buttonSwitch.setDisabled(true);
             buttonSwitch.setVisible(false);
+            buttonActivate.setVisible(false);
+            buttonActivate.setDisabled(true);
+            activatedLabel.setVisible(false);
         }
-
         updateScore(deltaTime);
 
         objectLabel.setText(objectsFoundString + ": " + pairCount + "/" + (randomPairs.length - 1));
@@ -672,13 +703,22 @@ public class GameScreen extends ScreenAdapter {
         if(!stillClose) {
             pairClose = false;
         } else {
-            buttonTake.setVisible(true);
-            buttonTake.setDisabled(false);
-            buttonSwitch.setDisabled(false);
-            buttonSwitch.setVisible(true);
             pairClose = true;
             pairLabel.setVisible(true);
             pairLabelBackground.setVisible(true);
+            if(first == currentFirst && currentIndex == closeIndex) {
+                activateObject();
+            } else {
+                if(objectActivated) {
+                    buttonValidate.setVisible(true);
+                    buttonValidate.setDisabled(false);
+                    buttonSwitch.setDisabled(false);
+                    buttonSwitch.setVisible(true);
+                } else {
+                    buttonActivate.setVisible(true);
+                    buttonActivate.setDisabled(false);
+                }
+            }
         }
 
         return index;
@@ -748,5 +788,15 @@ public class GameScreen extends ScreenAdapter {
             scoreChangeLabel.setText("");
         }
         scoreLabel.setText(scoreString + ": " + (int) score);
+    }
+
+    public void activateObject() {
+        buttonActivate.setVisible(false);
+        buttonActivate.setDisabled(true);
+        buttonSwitch.setVisible(false);
+        buttonSwitch.setDisabled(true);
+        buttonValidate.setVisible(false);
+        buttonValidate.setDisabled(true);
+        activatedLabel.setVisible(true);
     }
 }
