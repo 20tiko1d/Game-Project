@@ -41,13 +41,12 @@ public class MenuScreen extends ScreenAdapter {
             multiplier = 1.4f;
         }
 
-        Skin mySkin = new Skin(Gdx.files.internal("skin/testi/testi3.json"));
+        Skin mySkin = new Skin(Gdx.files.internal("skin/testi/testi6.json"));
 
-        buttonPlay = new TextButton(GameConfiguration.getText("playButton"),mySkin,"default");
+        buttonPlay = new TextButton(GameConfiguration.getText("playButton"),mySkin,"defaultBig");
         buttonPlay.setSize(Gdx.graphics.getWidth() * multiplier / 3f,(Gdx.graphics.getHeight() / 7f) / multiplier);
         buttonPlay.setPosition(Gdx.graphics.getWidth() / 2f - buttonPlay.getWidth() / 2,
                 Gdx.graphics.getHeight() / 2f);
-        buttonPlay.getLabel().setFontScale(3);
         buttonPlay.addListener(new InputListener(){
             @Override
             public boolean touchDown(InputEvent event, float x, float y, int pointer, int button) {
