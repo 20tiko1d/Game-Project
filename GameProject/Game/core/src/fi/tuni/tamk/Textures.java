@@ -80,4 +80,8 @@ public final class Textures {
     public static Texture getJoystickBack() { return new Texture("textures/joystick/random/joystickBack2.png");}
 
     public static Texture getJoystickKnob() { return new Texture("textures/joystick/random/joystickKnob2.png");}
+
+    public static Texture getTutorialTextBackground() {
+        return new Texture("textures/random/tutorialTextBackground.png");
+    }
 }

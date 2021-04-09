@@ -1,5 +1,6 @@
 package fi.tuni.tamk;
 
+import com.badlogic.gdx.Game;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
 import com.badlogic.gdx.InputAdapter;
@@ -8,6 +9,7 @@ import com.badlogic.gdx.ScreenAdapter;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
+import com.badlogic.gdx.graphics.Pixmap;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
@@ -19,6 +21,7 @@ import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.InputListener;
 import com.badlogic.gdx.scenes.scene2d.Stage;
+import com.badlogic.gdx.scenes.scene2d.Touchable;
 import com.badlogic.gdx.scenes.scene2d.ui.Button;
 import com.badlogic.gdx.scenes.scene2d.ui.Image;
 import com.badlogic.gdx.scenes.scene2d.ui.Label;
@@ -47,6 +50,9 @@ public class GameScreen extends ScreenAdapter {
     private float relativeHeight = Gdx.graphics.getHeight() / Main.viewPortHeight;
     private float relativeTileHeight;
 
+    private float screenWidth;
+    private float screenHeight;
+
     private static final boolean DEBUG_PHYSICS = false;
 
     private OrthographicCamera camera;
@@ -56,6 +62,7 @@ public class GameScreen extends ScreenAdapter {
 
     private Stage stage;
     private SpriteBatch player;
+    private InputMultiplexer inputMultiplexer;
 
     // Exit
     private Body exitBody;
@@ -98,14 +105,7 @@ public class GameScreen extends ScreenAdapter {
     private float velY;
     private float velMultiplier = 1;
     private float playerSpeed;
-
-    private boolean first;
-    private boolean currentFirst;
-    private int closeIndex;
-    private int currentIndex = -2;
-    private Button buttonValidate;
-    private Button buttonSwitch;
-    private Button buttonActivate;
+    private Touchpad touchpad;
 
     // Box2d
     private World world;
@@ -120,14 +120,24 @@ public class GameScreen extends ScreenAdapter {
     private float maxZoom = 1.5f;
     private boolean ifMaxZoom = false;
     private boolean ifZoomIn = true;
+    private Button buttonBoost;
 
-    // Object pairs
+    // Objects
     private Label pairLabel;
     private boolean pairClose = false;
     private int pairCount = 0;
     private int objectIndex;
     private boolean objectActivated = false;
+    private boolean first;
+    private boolean currentFirst;
+    private int closeIndex;
+    private int currentIndex = -2;
+    private Button buttonValidate;
+    private Button buttonSwitch;
+    private Button buttonActivate;
+    private String objectsFoundString;
 
+    // Score
     private float score = 0;
     private int objectScore;
     private Label scoreLabel;
@@ -136,15 +146,25 @@ public class GameScreen extends ScreenAdapter {
     private Label activatedLabel;
     private float scoreAddTime = 0;
     private int scoreAdd;
+    private String scoreString;
 
+    // Fps counter
     private int fpsCounter = 0;
     private float second = 1;
 
-    private String scoreString;
-    private String objectsFoundString;
+    // Tutorial
+    private boolean tutorialOn;
+    private boolean pauseGame = false;
+    private int tutorialPhase;
+    private Image tutorialTextBackground;
+    private Button buttonTutorial;
+    private Label tutorialLabel;
+    private Image objectiveBackground;
+    private Label objectiveText;
 
 
     public GameScreen(Main main, World world) {
+        Gdx.app.log("", "mitä??");
         this.main = main;
         this.world = world;
         this.gameScreen = this;
@@ -155,46 +175,50 @@ public class GameScreen extends ScreenAdapter {
         playerSpeed = GameConfiguration.PLAYER_SPEED;
         viewPortWidth = Main.viewPortWidth;
         viewPortHeight = Main.viewPortHeight;
+        screenWidth = Gdx.graphics.getWidth();
+        screenHeight = Gdx.graphics.getHeight();
         relativeTileHeight = GameConfiguration.RELATIVE_TILE_HEIGHT;
         tileWidth = Main.oneWidth;
         tileHeight = tileWidth * GameConfiguration.RELATIVE_TILE_HEIGHT;
         wallHeight = GameConfiguration.WALL_HEIGHT;
         objectHeight = tileHeight * GameConfiguration.OBJECT_HEIGHT;
         stage = new Stage(new ScreenViewport());
+        tutorialOn = GameConfiguration.tutorialOn;
         mySkin = new Skin(Gdx.files.internal("skin/testi/testi6.json"));
 
         Image roundImage = new Image(Textures.getBackgroundTexture());
-        roundImage.setBounds(Gdx.graphics.getWidth() / 4f,
+        roundImage.setBounds(screenWidth / 4f,
                 0,
-                Gdx.graphics.getWidth() / 2f, Gdx.graphics.getHeight());
+                screenWidth / 2f, screenHeight);
 
         Image side1Image = new Image(Textures.getSideTexture());
-        side1Image.setBounds(0, 0, roundImage.getX(), Gdx.graphics.getHeight());
+        side1Image.setBounds(0, 0, roundImage.getX(), screenHeight);
 
         Image side2Image = new Image(Textures.getSideTexture());
         side2Image.setBounds(roundImage.getX() + roundImage.getWidth(), 0,
-                Gdx.graphics.getWidth() - roundImage.getX() - roundImage.getWidth(),
-                Gdx.graphics.getHeight());
+                screenWidth - roundImage.getX() - roundImage.getWidth(),
+                screenHeight);
 
         pairLabel = new Label("", mySkin);
-        pairLabel.setBounds(Gdx.graphics.getWidth() * 1.1f / 4f, Gdx.graphics.getHeight() * 4f / 5f,
-                Gdx.graphics.getWidth() / 2.2f, Gdx.graphics.getHeight() / 5f);
+        pairLabel.setBounds(screenWidth * 1.1f / 4f, screenHeight * 4f / 5f,
+                screenWidth / 2.2f, screenHeight / 5f);
         pairLabel.setWrap(true);
         pairLabel.setAlignment(Align.center);
 
         pairLabelBackground = new Image(Textures.getPairLabelBackground());
-        pairLabelBackground.setBounds(Gdx.graphics.getWidth() / 4f, pairLabel.getY(),
-                Gdx.graphics.getWidth() / 2f, pairLabel.getHeight());
+        pairLabelBackground.setBounds(screenWidth / 4f, pairLabel.getY(),
+                screenWidth / 2f, pairLabel.getHeight());
 
         scoreLabel = new Label(scoreString + ": " + score,
                 mySkin);
-        scoreLabel.setBounds(side1Image.getWidth() / 10f, Gdx.graphics.getHeight() * 4 / 5f,
-                side1Image.getWidth() * 4 / 10f, Gdx.graphics.getHeight() / 5f);
+        scoreLabel.setSize(side1Image.getWidth() * 4 / 10f, screenHeight / 10f);
+        scoreLabel.setPosition(screenWidth / 100f, screenHeight - scoreLabel.getHeight());
+
         scoreChangeLabel = new Label("", mySkin, "default");
         scoreChangeLabel.setBounds(scoreLabel.getX() + scoreLabel.getWidth(), scoreLabel.getY(),
                 scoreLabel.getWidth(), scoreLabel.getHeight());
         objectLabel = new Label("", mySkin);
-        objectLabel.setBounds(scoreLabel.getX(), Gdx.graphics.getHeight() * 3 / 5f,
+        objectLabel.setBounds(scoreLabel.getX(), scoreLabel.getY() - scoreLabel.getHeight(),
                 scoreLabel.getWidth(), scoreLabel.getHeight());
         activatedLabel = new Label(GameConfiguration.getText("activated"), mySkin, "big");
         activatedLabel.setBounds(pairLabel.getX(), 0, pairLabel.getWidth(), pairLabel.getHeight());
@@ -220,240 +244,264 @@ public class GameScreen extends ScreenAdapter {
 
         player = new SpriteBatch();
 
+        inputMultiplexer = new InputMultiplexer();
+
         getTextures();
     }
 
     @Override
     public void show() {
-        array = FileReader.getPairElements();
-        mapY = map.length * tileHeight;
-        created = true;
-        InputMultiplexer inputMultiplexer = new InputMultiplexer();
+        if(!created) {
+            array = FileReader.getPairElements();
+            mapY = map.length * tileHeight;
 
-        inputMultiplexer.addProcessor(stage);
-        inputMultiplexer.addProcessor(new InputMultiplexer( new InputAdapter() {
-            @Override
-            public boolean keyDown(int keycode) {
-                if(keycode == Input.Keys.UP && !isUp) {
-                    velY++;
-                    isUp = true;
+
+
+            inputMultiplexer.addProcessor(stage);
+            inputMultiplexer.addProcessor(new InputMultiplexer( new InputAdapter() {
+                @Override
+                public boolean keyDown(int keycode) {
+                    if(keycode == Input.Keys.UP && !isUp) {
+                        velY++;
+                        isUp = true;
+                    }
+                    if(keycode == Input.Keys.DOWN && !isDown) {
+                        velY--;
+                        isDown = true;
+                    }
+                    if(keycode == Input.Keys.LEFT && !isLeft) {
+                        velX--;
+                        isLeft = true;
+                    }
+                    if(keycode == Input.Keys.RIGHT && !isRight) {
+                        velX++;
+                        isRight = true;
+                    }
+                    if(keycode == Input.Keys.SHIFT_LEFT && !boost) {
+                        boost = true;
+                    }
+                    if(keycode == Input.Keys.SPACE && !isSpace) {
+                        ifZoomIn = true;
+                        boost = true;
+                        velMultiplier = 1.5f;
+                        isSpace = true;
+                    }
+                    return true;
                 }
-                if(keycode == Input.Keys.DOWN && !isDown) {
-                    velY--;
-                    isDown = true;
+
+                @Override
+                public boolean keyUp(int keycode) {
+                    if(keycode == Input.Keys.UP) {
+                        velY--;
+                        isUp = false;
+                    }
+                    if(keycode == Input.Keys.DOWN) {
+                        velY++;
+                        isDown = false;
+                    }
+                    if(keycode == Input.Keys.LEFT) {
+                        velX++;
+                        isLeft = false;
+                    }
+                    if(keycode == Input.Keys.RIGHT) {
+                        velX--;
+                        isRight = false;
+                    }
+                    if(keycode == Input.Keys.SPACE && !ifZoomIn) {
+                        ifZoomIn = true;
+                    }
+                    if(keycode == Input.Keys.SHIFT_LEFT) {
+                        boost = false;
+                    }
+                    if(keycode == Input.Keys.SPACE) {
+                        ifZoomIn = false;
+                        ifMaxZoom = false;
+                        velMultiplier = 1;
+                        isSpace = false;
+                    }
+                    return true;
                 }
-                if(keycode == Input.Keys.LEFT && !isLeft) {
-                    velX--;
-                    isLeft = true;
+            }));
+
+
+            Button buttonPause = new TextButton(GameConfiguration.getText("pause"),mySkin,"default");
+            buttonPause.setSize(screenWidth / 10f,screenWidth / 10f);
+            buttonPause.setPosition(screenWidth * 9 / 10f,screenHeight - screenWidth / 10f);
+            buttonPause.addListener(new InputListener(){
+                @Override
+                public boolean touchDown(InputEvent event, float x, float y, int pointer, int button) {
+                    return true;
                 }
-                if(keycode == Input.Keys.RIGHT && !isRight) {
-                    velX++;
-                    isRight = true;
+
+                @Override
+                public void touchUp(InputEvent event, float x, float y, int pointer, int button) {
+                    main.setScreen(new PauseScreen(main, gameScreen));
                 }
-                if(keycode == Input.Keys.SHIFT_LEFT && !boost) {
-                    boost = true;
+            });
+
+            buttonActivate = new TextButton(GameConfiguration.getText("activate"), mySkin, "default");
+            buttonActivate.setSize(screenWidth / 2f, screenWidth / 10f);
+            buttonActivate.setPosition(screenWidth / 4f, 0);
+            buttonActivate.addListener(new InputListener() {
+                @Override
+                public boolean touchDown(InputEvent event, float x, float y, int pointer, int button) {
+                    return true;
                 }
-                if(keycode == Input.Keys.SPACE && !isSpace) {
+
+                @Override
+                public void touchUp(InputEvent event, float x, float y, int pointer, int button) {
+                    currentIndex = closeIndex;
+                    currentFirst = first;
+                    objectActivated = true;
+                    if(tutorialOn && tutorialPhase == 3) {
+                        pauseGame = false;
+                    }
+                }
+            });
+            buttonActivate.setVisible(false);
+            buttonActivate.setDisabled(true);
+
+            buttonValidate = new TextButton(GameConfiguration.getText("validate"),mySkin,"default");
+            buttonValidate.setSize(screenWidth / 4f,screenWidth / 10f);
+            buttonValidate.setPosition(screenWidth / 4f,0);
+            buttonValidate.addListener(new InputListener() {
+                @Override
+                public boolean touchDown(InputEvent event, float x, float y, int pointer, int button) {
+                    return true;
+                }
+
+                @Override
+                public void touchUp(InputEvent event, float x, float y, int pointer, int button) {
+                    if(currentIndex == closeIndex && currentFirst != first) {
+                        for(int i = 0; i < randomPairs.length; i++) {
+                            if(randomPairs[i][0] == closeIndex) {
+                                randomPairs[i][1] = 0;
+                                randomPairs[i][2] = 0;
+                                randomPairs[i][3] = 0;
+                                randomPairs[i][4] = 0;
+                                currentIndex = -2;
+                                if(pairCount == 0) {
+                                    openExit();
+                                }
+                                pairCount++;
+                                score += objectScore;
+                                scoreAdd = objectScore;
+                                scoreAddTime = 2;
+                                if(pairCount >= randomPairs.length - 1) {
+                                    score += objectScore;
+                                    scoreAdd += objectScore;
+                                }
+                                objectActivated = false;
+                            }
+                        }
+                    } else {
+                        if(currentIndex != -1 && currentIndex != closeIndex) {
+                            score -= objectScore / 2f;
+                            if(score < 0) {
+                                score = 0;
+                            }
+                            scoreAdd = -objectScore / 2;
+                            scoreAddTime = 2;
+                        }
+
+                        currentIndex = closeIndex;
+                        currentFirst = first;
+                    }
+                    activateObject();
+                    if(tutorialOn) {
+                        tutorialAct();
+                    }
+                }
+            });
+            buttonValidate.setVisible(false);
+            buttonValidate.setDisabled(true);
+
+            buttonSwitch = new TextButton(GameConfiguration.getText("switchButton"),mySkin,"default");
+            buttonSwitch.setSize(screenWidth / 4f,screenWidth / 10f);
+            buttonSwitch.setPosition(screenWidth / 2f,0);
+            buttonSwitch.addListener(new InputListener(){
+                @Override
+                public boolean touchDown(InputEvent event, float x, float y, int pointer, int button) {
+                    return true;
+                }
+
+                @Override
+                public void touchUp(InputEvent event, float x, float y, int pointer, int button) {
+                    currentIndex = closeIndex;
+                    currentFirst = first;
+                    activateObject();
+                    if(tutorialOn && tutorialPhase == 8) {
+                        pauseGame = false;
+                        tutorialAct();
+                    }
+                }
+            });
+            buttonSwitch.setVisible(false);
+            buttonSwitch.setDisabled(true);
+
+            buttonBoost = new TextButton(GameConfiguration.getText("boostButton"),mySkin,"default");
+            buttonBoost.setSize(screenHeight / 4f,screenHeight / 4f);
+            buttonBoost.setPosition(screenWidth / 8f - buttonBoost.getWidth() / 2f,
+                    screenHeight / 4f - buttonBoost.getHeight() / 2f);
+            buttonBoost.setColor(1, 0, 0, 1);
+            buttonBoost.addListener(new InputListener(){
+                @Override
+                public boolean touchDown(InputEvent event, float x, float y, int pointer, int button) {
                     ifZoomIn = true;
                     boost = true;
                     velMultiplier = 1.5f;
-                    isSpace = true;
+                    return true;
                 }
-                return true;
-            }
 
-            @Override
-            public boolean keyUp(int keycode) {
-                if(keycode == Input.Keys.UP) {
-                    velY--;
-                    isUp = false;
-                }
-                if(keycode == Input.Keys.DOWN) {
-                    velY++;
-                    isDown = false;
-                }
-                if(keycode == Input.Keys.LEFT) {
-                    velX++;
-                    isLeft = false;
-                }
-                if(keycode == Input.Keys.RIGHT) {
-                    velX--;
-                    isRight = false;
-                }
-                if(keycode == Input.Keys.SPACE && !ifZoomIn) {
-                    ifZoomIn = true;
-                }
-                if(keycode == Input.Keys.SHIFT_LEFT) {
-                    boost = false;
-                }
-                if(keycode == Input.Keys.SPACE) {
+                @Override
+                public void touchUp(InputEvent event, float x, float y, int pointer, int button) {
                     ifZoomIn = false;
                     ifMaxZoom = false;
                     velMultiplier = 1;
-                    isSpace = false;
                 }
-                return true;
-            }
-        }));
+            });
 
+            Drawable touchBackground;
+            Drawable touchKnob;
 
-        Button buttonPause = new TextButton(GameConfiguration.getText("pause"),mySkin,"default");
-        buttonPause.setSize(Gdx.graphics.getWidth() / 10f,Gdx.graphics.getWidth() / 10f);
-        buttonPause.setPosition(Gdx.graphics.getWidth() * 9 / 10f,Gdx.graphics.getHeight() - Gdx.graphics.getWidth() / 10f);
-        buttonPause.addListener(new InputListener(){
-            @Override
-            public boolean touchDown(InputEvent event, float x, float y, int pointer, int button) {
-                return true;
-            }
+            float size = screenHeight / 5f;
 
-            @Override
-            public void touchUp(InputEvent event, float x, float y, int pointer, int button) {
-                main.setScreen(new PauseScreen(main, gameScreen));
-            }
-        });
+            Skin touchPadSkin = new Skin();
+            touchPadSkin.add("touchBackground", Textures.getJoystickBack());
+            touchPadSkin.add("touchKnob", Textures.getJoystickKnob());
+            Touchpad.TouchpadStyle touchPadStyle = new Touchpad.TouchpadStyle();
+            touchBackground = touchPadSkin.getDrawable("touchBackground");
+            touchKnob = touchPadSkin.getDrawable("touchKnob");
+            touchKnob.setMinHeight(size);
+            touchKnob.setMinWidth(size);
+            touchPadStyle.background = touchBackground;
+            touchPadStyle.knob = touchKnob;
+            touchpad = new Touchpad(0.75f, touchPadStyle);
+            touchpad.setBounds(GameConfiguration.joystickX, GameConfiguration.joystickY,
+                    GameConfiguration.joystickLength, GameConfiguration.joystickLength);
+            touchpad.addListener(new ChangeListener() {
+                @Override
+                public void changed(ChangeEvent event, Actor actor) {
 
-        buttonActivate = new TextButton(GameConfiguration.getText("activate"), mySkin, "default");
-        buttonActivate.setSize(Gdx.graphics.getWidth() / 2f, Gdx.graphics.getWidth() / 10f);
-        buttonActivate.setPosition(Gdx.graphics.getWidth() / 4f, 0);
-        buttonActivate.addListener(new InputListener() {
-            @Override
-            public boolean touchDown(InputEvent event, float x, float y, int pointer, int button) {
-                return true;
-            }
-
-            @Override
-            public void touchUp(InputEvent event, float x, float y, int pointer, int button) {
-                currentIndex = closeIndex;
-                currentFirst = first;
-                objectActivated = true;
-            }
-        });
-
-        buttonValidate = new TextButton(GameConfiguration.getText("validate"),mySkin,"default");
-        buttonValidate.setSize(Gdx.graphics.getWidth() / 4f,Gdx.graphics.getWidth() / 10f);
-        buttonValidate.setPosition(Gdx.graphics.getWidth() / 4f,0);
-        buttonValidate.addListener(new InputListener() {
-            @Override
-            public boolean touchDown(InputEvent event, float x, float y, int pointer, int button) {
-                return true;
-            }
-
-            @Override
-            public void touchUp(InputEvent event, float x, float y, int pointer, int button) {
-                if(currentIndex == closeIndex && currentFirst != first) {
-                    for(int i = 0; i < randomPairs.length; i++) {
-                        if(randomPairs[i][0] == closeIndex) {
-                            randomPairs[i][1] = 0;
-                            randomPairs[i][2] = 0;
-                            randomPairs[i][3] = 0;
-                            randomPairs[i][4] = 0;
-                            currentIndex = -2;
-                            if(pairCount == 0) {
-                                openExit();
-                            }
-                            pairCount++;
-                            score += objectScore;
-                            scoreAdd = objectScore;
-                            scoreAddTime = 2;
-                            if(pairCount >= randomPairs.length - 1) {
-                                score += objectScore;
-                                scoreAdd += objectScore;
-                            }
-                            objectActivated = false;
-                        }
-                    }
-                } else {
-                    if(currentIndex != -1 && currentIndex != closeIndex) {
-                        score -= objectScore / 2f;
-                        if(score < 0) {
-                            score = 0;
-                        }
-                        scoreAdd = -objectScore / 2;
-                        scoreAddTime = 2;
-                    }
-
-                    currentIndex = closeIndex;
-                    currentFirst = first;
+                    float deltaY = ((Touchpad) actor).getKnobY();
+                    float deltaX = ((Touchpad) actor).getKnobX();
+                    velY = ((deltaY - GameConfiguration.joystickLength / 2f) / (GameConfiguration.joystickLength / 4f));
+                    velX = ((deltaX - GameConfiguration.joystickLength / 2f) / (GameConfiguration.joystickLength / 4f));
                 }
-                activateObject();
+            });
+
+            stage.addActor(buttonPause);
+            stage.addActor(buttonActivate);
+            stage.addActor(buttonValidate);
+            stage.addActor(buttonSwitch);
+            stage.addActor(buttonBoost);
+            stage.addActor(touchpad);
+
+            if(tutorialOn) {
+                configTutorial();
             }
-        });
-
-        buttonSwitch = new TextButton(GameConfiguration.getText("switchButton"),mySkin,"default");
-        buttonSwitch.setSize(Gdx.graphics.getWidth() / 4f,Gdx.graphics.getWidth() / 10f);
-        buttonSwitch.setPosition(Gdx.graphics.getWidth() / 2f,0);
-        buttonSwitch.addListener(new InputListener(){
-            @Override
-            public boolean touchDown(InputEvent event, float x, float y, int pointer, int button) {
-                return true;
-            }
-
-            @Override
-            public void touchUp(InputEvent event, float x, float y, int pointer, int button) {
-                currentIndex = closeIndex;
-                currentFirst = first;
-                activateObject();
-            }
-        });
-
-        Button buttonBoost = new TextButton(GameConfiguration.getText("boostButton"),mySkin,"default");
-        buttonBoost.setSize(Gdx.graphics.getHeight() / 4f,Gdx.graphics.getHeight() / 4f);
-        buttonBoost.setPosition(Gdx.graphics.getWidth() / 8f - buttonBoost.getWidth() / 2f,
-                Gdx.graphics.getHeight() / 4f - buttonBoost.getHeight() / 2f);
-        buttonBoost.setColor(1, 0, 0, 1);
-        buttonBoost.addListener(new InputListener(){
-            @Override
-            public boolean touchDown(InputEvent event, float x, float y, int pointer, int button) {
-                ifZoomIn = true;
-                boost = true;
-                velMultiplier = 1.5f;
-                return true;
-            }
-
-            @Override
-            public void touchUp(InputEvent event, float x, float y, int pointer, int button) {
-                ifZoomIn = false;
-                ifMaxZoom = false;
-                velMultiplier = 1;
-            }
-        });
-
-        Drawable touchBackground;
-        Drawable touchKnob;
-
-        float size = Gdx.graphics.getHeight() / 5f;
-
-        Skin touchPadSkin = new Skin();
-        touchPadSkin.add("touchBackground", Textures.getJoystickBack());
-        touchPadSkin.add("touchKnob", Textures.getJoystickKnob());
-        Touchpad.TouchpadStyle touchPadStyle = new Touchpad.TouchpadStyle();
-        touchBackground = touchPadSkin.getDrawable("touchBackground");
-        touchKnob = touchPadSkin.getDrawable("touchKnob");
-        touchKnob.setMinHeight(size);
-        touchKnob.setMinWidth(size);
-        touchPadStyle.background = touchBackground;
-        touchPadStyle.knob = touchKnob;
-        Touchpad touchpad = new Touchpad(0.75f, touchPadStyle);
-        touchpad.setBounds(GameConfiguration.joystickX, GameConfiguration.joystickY,
-                GameConfiguration.joystickLength, GameConfiguration.joystickLength);
-        touchpad.addListener(new ChangeListener() {
-            @Override
-            public void changed(ChangeEvent event, Actor actor) {
-
-                float deltaY = ((Touchpad) actor).getKnobY();
-                float deltaX = ((Touchpad) actor).getKnobX();
-                velY = ((deltaY - GameConfiguration.joystickLength / 2f) / (GameConfiguration.joystickLength / 4f));
-                velX = ((deltaX - GameConfiguration.joystickLength / 2f) / (GameConfiguration.joystickLength / 4f));
-            }
-        });
-
-        stage.addActor(buttonPause);
-        stage.addActor(buttonActivate);
-        stage.addActor(buttonValidate);
-        stage.addActor(buttonSwitch);
-        stage.addActor(buttonBoost);
-        stage.addActor(touchpad);
-
+            created = true;
+        }
         Gdx.input.setInputProcessor(inputMultiplexer);
     }
 
@@ -464,10 +512,15 @@ public class GameScreen extends ScreenAdapter {
 
         Gdx.gl.glClearColor(1, 1, 1, 1);
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
+        if(tutorialOn) {
+            checkTutorial();
+        }
 
         if(created) {
-            move(Gdx.graphics.getDeltaTime());
-            if(boost && !ifMaxZoom && !pairClose) {
+            if(!pauseGame) {
+                move(Gdx.graphics.getDeltaTime());
+            }
+            if(boost && !ifMaxZoom && !pairClose ) {
                 handleBoost(Gdx.graphics.getDeltaTime());
             }
         }
@@ -478,14 +531,16 @@ public class GameScreen extends ScreenAdapter {
             pairLabel.setVisible(false);
             pairLabelBackground.setVisible(false);
             buttonValidate.setVisible(false);
-            buttonValidate.setDisabled(true);
+            //buttonValidate.setDisabled(true);
             buttonSwitch.setDisabled(true);
             buttonSwitch.setVisible(false);
             buttonActivate.setVisible(false);
             buttonActivate.setDisabled(true);
             activatedLabel.setVisible(false);
         }
-        updateScore(deltaTime);
+        if(!pauseGame) {
+            updateScore(deltaTime);
+        }
 
         objectLabel.setText(objectsFoundString + ": " + pairCount + "/" + (randomPairs.length - 1));
 
@@ -534,7 +589,7 @@ public class GameScreen extends ScreenAdapter {
         objectTexture = Textures.getObjectTexture();
     }
 
-    public void doPhysicsStep(float deltaTime) {
+    public void doPhysicsStep(float deltaTime)  {
         fpsCounter++;
         float frameTime = deltaTime;
 
@@ -543,16 +598,22 @@ public class GameScreen extends ScreenAdapter {
         }
         accumulator += frameTime;
 
-        while(accumulator >= TIME_STEP) {
+        // Fps counter
+        while(accumulator >= TIME_STEP && !pauseGame) {
             world.step(TIME_STEP, 8, 3);
             accumulator -= TIME_STEP;
             second -= TIME_STEP;
             if(second <= 0) {
-                Gdx.app.log("", "fps: " + fpsCounter);
+                //Gdx.app.log("", "fps: " + fpsCounter);
+
                 fpsCounter = 0;
                 second = 1;
             }
         }
+        //Gdx.app.log("", "Y: " + playerLocY + ", X: " + playerLocX);
+        //Gdx.app.log("", ": " + tutorialPhase + "score: " + score);
+
+        // Moves the camera
         camera.setToOrtho(false, viewPortWidth * minZoom / zoomRatio,
                     viewPortHeight * minZoom / zoomRatio);
         camera.position.x = Math.round(playerBody.getPosition().x * relativeWidth) / relativeWidth;
@@ -709,14 +770,15 @@ public class GameScreen extends ScreenAdapter {
             if(first == currentFirst && currentIndex == closeIndex) {
                 activateObject();
             } else {
-                if(objectActivated) {
+                if(objectActivated && !tutorialOn) {
                     buttonValidate.setVisible(true);
-                    buttonValidate.setDisabled(false);
                     buttonSwitch.setDisabled(false);
                     buttonSwitch.setVisible(true);
                 } else {
-                    buttonActivate.setVisible(true);
-                    buttonActivate.setDisabled(false);
+                    if(!tutorialOn) {
+                        buttonActivate.setVisible(true);
+                        buttonActivate.setDisabled(false);
+                    }
                 }
             }
         }
@@ -798,5 +860,179 @@ public class GameScreen extends ScreenAdapter {
         buttonValidate.setVisible(false);
         buttonValidate.setDisabled(true);
         activatedLabel.setVisible(true);
+    }
+
+    public void configTutorial() {
+        Gdx.app.log("j", "tutorial??");
+        tutorialPhase = 1;
+        buttonBoost.setVisible(false);
+        buttonBoost.setDisabled(true);
+        buttonActivate.setVisible(false);
+        buttonActivate.setDisabled(true);
+        touchpad.setVisible(false);
+
+        tutorialTextBackground = new Image(new Texture("textures/random/tutorialTextBackground.png"));
+        tutorialTextBackground.setSize(screenWidth / 2f, screenHeight / 2f);
+        tutorialTextBackground.setPosition(screenWidth / 2f - tutorialTextBackground.getWidth() / 2f,
+                screenHeight * 4 / 5 - tutorialTextBackground.getHeight());
+
+        buttonTutorial = new TextButton("Ok", mySkin, "default");
+        buttonTutorial.setSize(tutorialTextBackground.getWidth() / 2, tutorialTextBackground.getHeight() / 4 );
+        buttonTutorial.setPosition(screenWidth / 2f - buttonTutorial.getWidth() / 2f,
+                tutorialTextBackground.getY());
+        buttonTutorial.addListener(new InputListener() {
+            @Override
+            public boolean touchDown(InputEvent event, float x, float y, int pointer, int button) {
+                return true;
+            }
+
+            @Override
+            public void touchUp(InputEvent event, float x, float y, int pointer, int button) {
+                buttonTutorial.setVisible(false);
+                buttonTutorial.setDisabled(true);
+                tutorialTextBackground.setVisible(false);
+                tutorialLabel.setVisible(false);
+                objectiveBackground.setVisible(true);
+                objectiveText.setVisible(true);
+                tutorialAct();
+            }
+        });
+
+        tutorialLabel = new Label("", mySkin, "default");
+        tutorialLabel.setSize(tutorialTextBackground.getWidth() * 8 / 10, tutorialTextBackground.getHeight());
+        tutorialLabel.setPosition(tutorialTextBackground.getX() + tutorialTextBackground.getWidth() / 10,
+                tutorialTextBackground.getY() + buttonTutorial.getHeight());
+        tutorialLabel.setWrap(true);
+
+        objectiveBackground = new Image(new Texture("textures/random/tutorialTextBackground.png"));
+        objectiveBackground.setSize(screenWidth / 4, screenHeight / 4);
+        objectiveBackground.setPosition(0, screenHeight / 2);
+        objectiveBackground.setVisible(false);
+
+        objectiveText = new Label("", mySkin, "default");
+        objectiveText.setSize(objectiveBackground.getWidth() * 8 / 10, objectiveBackground.getHeight());
+        objectiveText.setPosition(objectiveBackground.getX() + objectiveText.getWidth() / 10f, objectiveBackground.getY());
+        objectiveText.setWrap(true);
+        objectiveText.setVisible(false);
+
+        stage.addActor(tutorialTextBackground);
+        stage.addActor(tutorialLabel);
+        stage.addActor(buttonTutorial);
+        stage.addActor(objectiveBackground);
+        stage.addActor(objectiveText);
+        }
+
+    public void checkTutorial() {
+        switch (tutorialPhase) {
+            case 1:
+                objectiveText.setText(GameConfiguration.getText("objective1"));
+                tutorialLabel.setText(GameConfiguration.getText("tutorial1"));
+                showTutorial();
+                break;
+            case 2:
+                if(pairClose) {
+                    objectiveText.setText(GameConfiguration.getText("objective2"));
+                    tutorialLabel.setText(GameConfiguration.getText("tutorial2"));
+                    showTutorial();
+                }
+                break;
+            case 3:
+                if(objectActivated) {
+                    objectiveText.setText(GameConfiguration.getText("objective3"));
+                    tutorialAct();
+                }
+                break;
+            case 4:
+                if(playerLocY <= 70) {
+                    tutorialLabel.setText(GameConfiguration.getText("tutorial3"));
+                    showTutorial();
+                }
+                break;
+            case 5:
+                if(playerLocY < 70 && pairClose) {
+                    tutorialLabel.setText(GameConfiguration.getText("tutorial4"));
+                    showTutorial();
+                }
+                break;
+            case 6:
+                if(playerLocY < 57 && playerLocX >= 45) {
+                    tutorialLabel.setText(GameConfiguration.getText("tutorial5"));
+                    showTutorial();
+                }
+                break;
+            case 7:
+                if(playerLocX > 50 && pairClose) {
+                    tutorialLabel.setText(GameConfiguration.getText("tutorial6"));
+                    showTutorial();
+                }
+                break;
+            case 9:
+                if(playerLocX < 50) {
+                    tutorialLabel.setText(GameConfiguration.getText("tutorial7"));
+                    showTutorial();
+                }
+                break;
+            case 10:
+                if(playerLocX < 50 && pairClose) {
+                    tutorialLabel.setText(GameConfiguration.getText("tutorial8"));
+                    showTutorial();
+                }
+                break;
+            default:
+        }
+    }
+
+    public void showTutorial() {
+        pauseGame = true;
+        tutorialTextBackground.setVisible(true);
+        tutorialLabel.setVisible(true);
+        buttonTutorial.setVisible(true);
+        buttonTutorial.setDisabled(false);
+        objectiveText.setVisible(false);
+        objectiveBackground.setVisible(false);
+    }
+
+    public void tutorialAct() {
+        switch (tutorialPhase) {
+            case 1:
+                pauseGame = false;
+                touchpad.setVisible(true);
+                break;
+            case 2:
+                buttonActivate.setVisible(true);
+                buttonActivate.setDisabled(false);
+                break;
+            case 3:
+                break;
+            case 7:
+                objectiveText.setText(GameConfiguration.getText("objective4"));
+                buttonSwitch.setVisible(true);
+                buttonValidate.setVisible(true);
+                buttonValidate.setTouchable(Touchable.disabled);
+                break;
+            case 8:
+                objectiveText.setText(GameConfiguration.getText("objective5"));
+                break;
+            case 9:
+                buttonBoost.setVisible(true);
+                pauseGame = false;
+                break;
+            case 10:
+                buttonValidate.setTouchable(Touchable.enabled);
+                objectiveText.setText(GameConfiguration.getText("objective6"));
+                buttonValidate.setVisible(true);
+                buttonSwitch.setVisible(true);
+                buttonSwitch.setTouchable(Touchable.disabled);
+                break;
+            case 11:
+                buttonSwitch.setTouchable(Touchable.enabled);
+                objectiveText.setText(GameConfiguration.getText("objective7"));
+                pauseGame = false;
+                break;
+            default:
+                pauseGame = false;
+        }
+        tutorialPhase++;
+        Gdx.app.log("", "phase: " + tutorialPhase);
     }
 }
