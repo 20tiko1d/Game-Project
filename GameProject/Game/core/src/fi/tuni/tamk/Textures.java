@@ -10,6 +10,10 @@ public final class Textures {
     public static Texture finFlag = new Texture("textures/random/suomiperkele.png");
     public static Texture engFlag = new Texture("textures/random/londonflag.png");
 
+    // Menu screen button background
+    public static Texture menuButtonBackground = new Texture("textures/random/menuButtonBackground.png");
+
+
     private Textures() {}
 
     public static ArrayList<Texture> getFloor1Textures() {
