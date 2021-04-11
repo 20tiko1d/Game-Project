@@ -84,4 +84,8 @@ public final class Textures {
     public static Texture getTutorialTextBackground() {
         return new Texture("textures/random/tutorialTextBackground.png");
     }
+
+    public static Texture getMenuBackground() {
+        return new Texture("textures/random/menuBackground3.png");
+    }
 }

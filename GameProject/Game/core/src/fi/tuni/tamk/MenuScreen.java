@@ -4,6 +4,8 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.ScreenAdapter;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
+import com.badlogic.gdx.graphics.Texture;
+import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.InputListener;
 import com.badlogic.gdx.scenes.scene2d.Stage;
@@ -21,25 +23,30 @@ public class MenuScreen extends ScreenAdapter {
 
     private Stage stage;
     private OrthographicCamera camera;
+    private SpriteBatch batch;
 
     private TextButton buttonPlay;
     private TextButton buttonSettings;
     private TextButton buttonPersonal;
 
+    private Texture backgroundImage;
+
     public MenuScreen(Main main) {
         this.main = main;
         camera = new OrthographicCamera();
         camera.setToOrtho(false, Main.viewPortWidth, Main.viewPortHeight);
+        batch = new SpriteBatch();
     }
 
     @Override
     public void show() {
         stage = new Stage(new ScreenViewport());
-
         float multiplier = 1;
         if(Main.isPortrait) {
             multiplier = 1.4f;
         }
+
+        backgroundImage = Textures.getMenuBackground();
 
         Skin mySkin = new Skin(Gdx.files.internal("skin/testi/testi6.json"));
 
@@ -132,8 +139,11 @@ public class MenuScreen extends ScreenAdapter {
     @Override
     public void render(float deltaTime) {
         main.batch.setProjectionMatrix(camera.combined);
-        Gdx.gl.glClearColor(0, 255, 234, 1);
+        //Gdx.gl.glClearColor(0, 255, 234, 1);
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
+        batch.begin();
+        batch.draw(backgroundImage, 0, 0, Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
+        batch.end();
         stage.draw();
         stage.act();
     }
