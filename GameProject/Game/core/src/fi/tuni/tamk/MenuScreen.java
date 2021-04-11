@@ -6,12 +6,16 @@ import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.InputListener;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.Button;
+import com.badlogic.gdx.scenes.scene2d.ui.ImageButton;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
+import com.badlogic.gdx.scenes.scene2d.utils.Drawable;
+import com.badlogic.gdx.scenes.scene2d.utils.TextureRegionDrawable;
 import com.badlogic.gdx.utils.viewport.ScreenViewport;
 
 /**
@@ -45,6 +49,34 @@ public class MenuScreen extends ScreenAdapter {
         if(Main.isPortrait) {
             multiplier = 1.4f;
         }
+        Texture flagTexture = Textures.engFlag;
+        if(GameConfiguration.open("language").equals("en_GB")) {
+            flagTexture = Textures.finFlag;
+        }
+        final Drawable drawable = new TextureRegionDrawable(new TextureRegion(flagTexture));
+        final Button flagButton = new Button(drawable);
+        flagButton.setSize(Gdx.graphics.getWidth() / 8f, Gdx.graphics.getWidth() / 16f);
+        flagButton.setPosition(Gdx.graphics.getWidth() - flagButton.getWidth() - 50,
+                Gdx.graphics.getHeight() - flagButton.getHeight() - 50);
+        flagButton.addListener(new InputListener(){
+            @Override
+            public boolean touchDown(InputEvent event, float x, float y, int pointer, int button) {
+                return true;
+            }
+
+            @Override
+            public void touchUp(InputEvent event, float x, float y, int pointer, int button) {
+                if(GameConfiguration.open("language").equals("fi_FI")) {
+                    flagButton.getStyle().up = new TextureRegionDrawable(new TextureRegion(Textures.finFlag));
+                    GameConfiguration.save("language", "en_GB");
+                } else {
+                    flagButton.getStyle().up = new TextureRegionDrawable(new TextureRegion(Textures.engFlag));
+                    GameConfiguration.save("language", "fi_FI");
+                }
+                updateLanguage();
+            }
+        });
+        stage.addActor(flagButton);
 
         backgroundImage = Textures.getMenuBackground();
 
@@ -110,28 +142,6 @@ public class MenuScreen extends ScreenAdapter {
             }
         });
         stage.addActor(buttonPersonal);
-
-        Button buttonLanguage = new TextButton("Language",mySkin,"default");
-        buttonLanguage.setSize(Gdx.graphics.getWidth() / 6f,Gdx.graphics.getHeight() / (8f * multiplier));
-        buttonLanguage.setPosition(Gdx.graphics.getWidth() - buttonLanguage.getWidth() - 10,
-                Gdx.graphics.getHeight() - buttonLanguage.getHeight() - 10);
-        buttonLanguage.addListener(new InputListener(){
-            @Override
-            public boolean touchDown(InputEvent event, float x, float y, int pointer, int button) {
-                return true;
-            }
-
-            @Override
-            public void touchUp(InputEvent event, float x, float y, int pointer, int button) {
-                if(GameConfiguration.open("language").equals("fi_FI")) {
-                    GameConfiguration.save("language", "en_GB");
-                } else {
-                    GameConfiguration.save("language", "fi_FI");
-                }
-                updateLanguage();
-            }
-        });
-        stage.addActor(buttonLanguage);
         Gdx.input.setInputProcessor(stage);
     }
 

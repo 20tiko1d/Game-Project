@@ -78,6 +78,7 @@ public class GameScreen extends ScreenAdapter {
 
     // Textures
     private Texture[][] map;
+    private Texture[] playerTextures;
     private Texture playerTexture;
     private Texture objectTexture;
     private Image pairLabelBackground;
@@ -577,7 +578,7 @@ public class GameScreen extends ScreenAdapter {
         stage.dispose();
         player.dispose();
         debugRenderer.dispose();
-        playerTexture.dispose();
+        playerTextures = null;
         batch.dispose();
         array = null;
         randomPairs = null;
@@ -585,7 +586,7 @@ public class GameScreen extends ScreenAdapter {
     }
 
     public void getTextures() {
-        playerTexture = Textures.getPlayerTexture();
+        playerTextures = Textures.getPlayerTexture();
         objectTexture = Textures.getObjectTexture();
     }
 
@@ -701,6 +702,37 @@ public class GameScreen extends ScreenAdapter {
     }
 
     public void drawPlayer(SpriteBatch batch, float playerY) {
+        float playerVelX = playerBody.getLinearVelocity().x;
+        float playerVelY = playerBody.getLinearVelocity().y;
+        //Gdx.app.log("", "x: " + playerVelX + ", Y: " + playerVelY);
+        if(!(playerTexture != null && playerVelX == 0 && playerVelY == 0)) {
+            boolean playerFront = true;
+            boolean playerRight = true;
+            boolean yIsBigger = true;
+            if(playerVelY > 0) {
+                playerFront = false;
+            }
+            if(playerVelX < 0) {
+                playerRight = false;
+            }
+            if(Math.abs(playerVelX) > Math.abs(playerVelY)) {
+                yIsBigger = false;
+            }
+            if(!yIsBigger) {
+                if(playerRight) {
+                    playerTexture = playerTextures[3];
+                } else {
+                    playerTexture = playerTextures[1];
+                }
+            } else {
+                if(playerFront) {
+                    playerTexture = playerTextures[0];
+                } else {
+                    playerTexture = playerTextures[2];
+                }
+            }
+        }
+
         batch.draw(playerTexture, playerBody.getPosition().x - tileWidth / 2, playerY,
                 tileWidth, tileWidth * ((float) playerTexture.getHeight() / playerTexture.getWidth()));
     }
