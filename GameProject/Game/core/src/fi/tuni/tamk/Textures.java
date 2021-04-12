@@ -80,7 +80,7 @@ public final class Textures {
     }
 
     public static Texture getObjectTexture() {
-        return new Texture("textures/object/mushroom1.png");
+        return new Texture("textures/object/mushroom.png");
     }
 
     public static Texture getExitCloseTexture() {
@@ -99,9 +99,9 @@ public final class Textures {
 
     public static Texture getPairLabelBackground() { return new Texture("textures/random/pairLabelBackground.png");}
 
-    public static Texture getJoystickBack() { return new Texture("textures/joystick/random/joystickBack2.png");}
+    public static Texture getJoystickBack() { return new Texture("textures/joystick/random/joystickBack.png");}
 
-    public static Texture getJoystickKnob() { return new Texture("textures/joystick/random/joystickKnob2.png");}
+    public static Texture getJoystickKnob() { return new Texture("textures/joystick/random/joystickKnob.png");}
 
     public static Texture getTutorialTextBackground() {
         return new Texture("textures/random/tutorialTextBackground.png");
