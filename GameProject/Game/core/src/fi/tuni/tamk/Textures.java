@@ -16,13 +16,13 @@ public final class Textures {
     public static Texture engFlag = new Texture("textures/random/gbr_flag.png");
 
     // Menu screen button background (40px width, 30px Height)
-    public static Texture menuButtonBackground = new Texture("textures/random/menuButtonBackground.png");
+    public static Texture menuButtonBackground = new Texture("textures/random/menuButtonBackground2.png");
 
     // Pause button
-    public static Texture pauseButtonTexture = new Texture("textures/random/pause-button.png");
+    public static Texture pauseButtonTexture = new Texture("textures/random/pauseButton.png");
 
     // Play button in pause screen
-    public static Texture playButtonTexture = new Texture("textures/random/play-button.png");
+    public static Texture playButtonTexture = new Texture("textures/random/playButton.png");
 
 
     private Textures() {}
