@@ -77,7 +77,7 @@ public class MenuScreen extends ScreenAdapter {
             public void touchUp(InputEvent event, float x, float y, int pointer, int button) {
                 if(GameConfiguration.open("language").equals("fi_FI")) {
                     flagButton.getStyle().up = new TextureRegionDrawable(new TextureRegion(Textures.finFlag));
-                    GameConfiguration.save("language", "en_GB");
+                    GameConfiguration.save("language", "en_UK");
                 } else {
                     flagButton.getStyle().up = new TextureRegionDrawable(new TextureRegion(Textures.engFlag));
                     GameConfiguration.save("language", "fi_FI");

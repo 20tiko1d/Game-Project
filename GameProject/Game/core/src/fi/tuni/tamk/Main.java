@@ -11,7 +11,7 @@ public class Main extends Game {
 
 	public static float viewPortWidth;
 	public static float viewPortHeight;
-	public static int howMany = 23;
+	public static int howMany = 20;
 	public static float oneWidth = 10f / howMany;
 	public static boolean isPortrait;
 

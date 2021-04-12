@@ -102,33 +102,28 @@ public final class GameConfiguration {
     }
 
     public static String getText(String key) {
-        I18NBundle myBundle;
-        if(!open("language").equals(noValue)) {
-            if(open("language").equals("fi_FI")) {
-                Locale locale = new Locale("fi_FI");
-                myBundle = I18NBundle.createBundle(Gdx.files.internal("MyBundle_fi_FI"), locale);
-            } else {
-                myBundle = I18NBundle.createBundle(Gdx.files.internal("MyBundle"));
-            }
-        } else {
-            Locale locale = Locale.getDefault();
-            myBundle = I18NBundle.createBundle(Gdx.files.internal("MyBundle"), locale);
+        Locale locale;
+        if(open("language").equals("fi_FI")) {
+            locale = new Locale("fi", "FI");
         }
+        else if(open("language").equals("en_UK")) {
+            locale = new Locale("en", "UK");
+        } else {
+            locale = Locale.getDefault();
+        }
+        I18NBundle myBundle = I18NBundle.createBundle(Gdx.files.internal("MyBundle"), locale);
         return myBundle.get(key);
     }
 
     public static void save(String key, String value) {
         Preferences prefs = Gdx.app.getPreferences("MyPreferences");
-
         prefs.putString(key, value);
         prefs.flush();
     }
 
     public static String open(String key) {
         Preferences prefs = Gdx.app.getPreferences("MyPreferences");
-
         String value = prefs.getString(key, noValue);
-
         return value;
     }
 
