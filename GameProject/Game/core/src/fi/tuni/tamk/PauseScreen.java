@@ -64,7 +64,7 @@ public class PauseScreen extends ScreenAdapter {
         pauseLabel.setBounds(locX, startY + height + buttonsGap, width, height);
         pauseLabel.setFontScale(3);
 
-        final Drawable drawable = new TextureRegionDrawable(new TextureRegion(Textures.pauseButtonTexture));
+        final Drawable drawable = new TextureRegionDrawable(new TextureRegion(Textures.playButtonTexture));
         final Button buttonReturnToGame = new Button(drawable);
         buttonReturnToGame.setSize(screenWidth / 10f,screenWidth / 10f);
         buttonReturnToGame.setPosition(screenWidth * 9 / 10f,screenHeight - screenWidth / 10f);

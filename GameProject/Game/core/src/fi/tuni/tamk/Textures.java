@@ -14,10 +14,10 @@ public final class Textures {
     public static Texture menuButtonBackground = new Texture("textures/random/menuButtonBackground.png");
 
     // Pause button
-    public static Texture pauseButtonTexture = new Texture("textures/random/tutorialTextBackground.png");
+    public static Texture pauseButtonTexture = new Texture("textures/random/pause-button.png");
 
     // Play button in pause screen
-    public static Texture playButtonTexture = new Texture("textures/random/tutorialTextBackground.png");
+    public static Texture playButtonTexture = new Texture("textures/random/play-button.png");
 
 
     private Textures() {}
