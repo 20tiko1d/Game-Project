@@ -6,6 +6,13 @@ import java.util.ArrayList;
 
 public final class Textures {
 
+    // Flag textures
+    public static Texture finFlag = new Texture("textures/random/suomiperkele.png");
+    public static Texture engFlag = new Texture("textures/random/londonflag.png");
+
+    // Menu screen button background
+    public static Texture menuButtonBackground = new Texture("textures/random/menuButtonBackground.png");
+
 
     private Textures() {}
 
@@ -49,8 +56,17 @@ public final class Textures {
         return textures;
     }
 
-    public static Texture getPlayerTexture() {
-        return new Texture("textures/player/random/Ukkeli.png");
+    public static Texture[] getPlayerTexture() {
+        Texture [] playerTextures = new Texture[4];
+        // Front
+        playerTextures[0] = new Texture("textures/player/blueDude/blueDudeFront.png");
+        // Left
+        playerTextures[1] = new Texture("textures/player/blueDude/blueDudeLeft.png");
+        // Back
+        playerTextures[2] = new Texture("textures/player/blueDude/blueDudeBack.png");
+        // Right
+        playerTextures[3] = new Texture("textures/player/blueDude/blueDudeRight.png");
+        return playerTextures;
     }
 
     public static Texture getBackgroundTexture() {
@@ -83,5 +99,9 @@ public final class Textures {
 
     public static Texture getTutorialTextBackground() {
         return new Texture("textures/random/tutorialTextBackground.png");
+    }
+
+    public static Texture getMenuBackground() {
+        return new Texture("textures/random/menuBackground3.png");
     }
 }
