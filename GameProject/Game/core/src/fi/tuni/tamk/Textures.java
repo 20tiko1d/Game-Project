@@ -10,8 +10,14 @@ public final class Textures {
     public static Texture finFlag = new Texture("textures/random/fin_flag.png");
     public static Texture engFlag = new Texture("textures/random/gbr_flag.png");
 
-    // Menu screen button background
+    // Menu screen button background (40px width, 30px Height)
     public static Texture menuButtonBackground = new Texture("textures/random/menuButtonBackground.png");
+
+    // Pause button
+    public static Texture pauseButtonTexture = new Texture("textures/random/tutorialTextBackground.png");
+
+    // Play button in pause screen
+    public static Texture playButtonTexture = new Texture("textures/random/tutorialTextBackground.png");
 
 
     private Textures() {}

@@ -4,6 +4,7 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.ScreenAdapter;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
+import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.InputListener;
 import com.badlogic.gdx.scenes.scene2d.Stage;
@@ -11,12 +12,17 @@ import com.badlogic.gdx.scenes.scene2d.ui.Button;
 import com.badlogic.gdx.scenes.scene2d.ui.Label;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
+import com.badlogic.gdx.scenes.scene2d.utils.Drawable;
+import com.badlogic.gdx.scenes.scene2d.utils.TextureRegionDrawable;
 import com.badlogic.gdx.utils.viewport.ScreenViewport;
 
 public class PauseScreen extends ScreenAdapter {
     private Main main;
     private GameScreen gameScreen;
     private PauseScreen pauseScreen;
+
+    private float screenWidth;
+    private float screenHeight;
 
     private Stage stage;
     private OrthographicCamera camera;
@@ -33,6 +39,8 @@ public class PauseScreen extends ScreenAdapter {
             tutorial = true;
             GameConfiguration.tutorialOn = false;
         }
+        screenWidth = Gdx.graphics.getWidth();
+        screenHeight = Gdx.graphics.getHeight();
     }
 
     @Override
@@ -56,9 +64,10 @@ public class PauseScreen extends ScreenAdapter {
         pauseLabel.setBounds(locX, startY + height + buttonsGap, width, height);
         pauseLabel.setFontScale(3);
 
-        TextButton buttonReturnToGame = new TextButton(GameConfiguration.getText("continueGame"),mySkin,"default");
-        buttonReturnToGame.setSize(width,height);
-        buttonReturnToGame.setPosition(locX, startY);
+        final Drawable drawable = new TextureRegionDrawable(new TextureRegion(Textures.pauseButtonTexture));
+        final Button buttonReturnToGame = new Button(drawable);
+        buttonReturnToGame.setSize(screenWidth / 10f,screenWidth / 10f);
+        buttonReturnToGame.setPosition(screenWidth * 9 / 10f,screenHeight - screenWidth / 10f);
         buttonReturnToGame.addListener(new InputListener(){
             @Override
             public boolean touchDown(InputEvent event, float x, float y, int pointer, int button) {
