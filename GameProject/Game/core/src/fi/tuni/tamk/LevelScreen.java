@@ -57,9 +57,10 @@ public class LevelScreen extends ScreenAdapter {
 
         Skin mySkin = Textures.mySkin;
 
-        Button buttonEasy = new TextButton(GameConfiguration.getText("easyLevel"), mySkin,"default");
+        Button buttonEasy = new TextButton(GameConfiguration.getText("easyLevel"), mySkin,"pixel48");
         buttonEasy.setSize(rect.width,rect.height);
         buttonEasy.setPosition(rect.x,rect.y);
+        buttonEasy.setColor(Color.GREEN);
         buttonEasy.addListener(new InputListener(){
             @Override
             public boolean touchDown(InputEvent event, float x, float y, int pointer, int button) {
@@ -73,14 +74,14 @@ public class LevelScreen extends ScreenAdapter {
             }
         });
 
-        Button buttonMedium = new TextButton(GameConfiguration.getText("mediumLevel"),mySkin,"default");
+        Button buttonMedium = new TextButton(GameConfiguration.getText("mediumLevel"),mySkin,"pixel48");
         buttonMedium.setSize(rect.width,rect.height);
         if(Main.isPortrait) {
             buttonMedium.setPosition(rect.x,rect.y - 2 * marginal - rect.height);
         } else {
             buttonMedium.setPosition(rect.x + 2 * marginal + rect.width, rect.y);
         }
-
+        buttonMedium.setColor(Color.ORANGE);
         buttonMedium.addListener(new InputListener(){
             @Override
             public boolean touchDown(InputEvent event, float x, float y, int pointer, int button) {
@@ -94,13 +95,14 @@ public class LevelScreen extends ScreenAdapter {
             }
         });
 
-        Button buttonHard = new TextButton(GameConfiguration.getText("hardLevel"),mySkin,"default");
+        Button buttonHard = new TextButton(GameConfiguration.getText("hardLevel"),mySkin,"pixel48");
         buttonHard.setSize(rect.width,rect.height);
         if(Main.isPortrait) {
             buttonHard.setPosition(rect.x,rect.y - (2 * marginal + rect.height) * 2);
         } else {
             buttonHard.setPosition(rect.x + (2 * marginal + rect.width) * 2, rect.y);
         }
+        buttonHard.setColor(Color.RED);
         buttonHard.addListener(new InputListener(){
             @Override
             public boolean touchDown(InputEvent event, float x, float y, int pointer, int button) {
@@ -114,9 +116,10 @@ public class LevelScreen extends ScreenAdapter {
             }
         });
 
-        Button buttonTutorial = new TextButton(GameConfiguration.getText("tutorial"),mySkin,"default");
+        Button buttonTutorial = new TextButton(GameConfiguration.getText("tutorial"),mySkin,"pixel48");
         buttonTutorial.setSize(Gdx.graphics.getWidth() / 10f,Gdx.graphics.getWidth() / 10f);
         buttonTutorial.setPosition(0, 0);
+        buttonTutorial.setColor(Color.GRAY);
         buttonTutorial.addListener(new InputListener(){
             @Override
             public boolean touchDown(InputEvent event, float x, float y, int pointer, int button) {
@@ -131,9 +134,10 @@ public class LevelScreen extends ScreenAdapter {
             }
         });
 
-        Button buttonMenu = new TextButton(GameConfiguration.getText("menu"),mySkin,"default");
+        Button buttonMenu = new TextButton(GameConfiguration.getText("menu"),mySkin,"pixel48");
         buttonMenu.setSize(Gdx.graphics.getWidth() / 10f,Gdx.graphics.getWidth() / 10f);
         buttonMenu.setPosition(0,Gdx.graphics.getHeight() - Gdx.graphics.getWidth() / 10f);
+        buttonMenu.setColor(Color.YELLOW);
         buttonMenu.addListener(new InputListener(){
             @Override
             public boolean touchDown(InputEvent event, float x, float y, int pointer, int button) {
@@ -147,10 +151,11 @@ public class LevelScreen extends ScreenAdapter {
             }
         });
 
-        Button buttonStore = new TextButton(GameConfiguration.getText("store"),mySkin,"default");
+        Button buttonStore = new TextButton(GameConfiguration.getText("store"),mySkin,"pixel48");
         buttonStore.setSize(Gdx.graphics.getWidth() / 5f,Gdx.graphics.getWidth() / 15f);
         buttonStore.setPosition(Gdx.graphics.getWidth() / 2f - buttonStore.getWidth() / 2f,
                 Gdx.graphics.getHeight() - buttonStore.getHeight());
+        buttonStore.setColor(56 / 255f, 114 / 255f, 207 / 255f, 1);
         buttonStore.addListener(new InputListener(){
             @Override
             public boolean touchDown(InputEvent event, float x, float y, int pointer, int button) {

@@ -47,6 +47,7 @@ public class AfterGameScreen extends ScreenAdapter {
         Button buttonMenu = new TextButton(GameConfiguration.getText("menu"), mySkin,"default");
         buttonMenu.setSize(Gdx.graphics.getWidth() / 10f,Gdx.graphics.getWidth() / 10f);
         buttonMenu.setPosition(0,Gdx.graphics.getHeight() - Gdx.graphics.getWidth() / 10f);
+        buttonMenu.setColor(Color.YELLOW);
         buttonMenu.addListener(new InputListener(){
             @Override
             public boolean touchDown(InputEvent event, float x, float y, int pointer, int button) {
@@ -63,6 +64,7 @@ public class AfterGameScreen extends ScreenAdapter {
         Button buttonPlayAgain = new TextButton(GameConfiguration.getText("playAgain"), mySkin,"default");
         buttonPlayAgain.setSize(Gdx.graphics.getWidth() / 5f,Gdx.graphics.getWidth() / 8f);
         buttonPlayAgain.setPosition(Gdx.graphics.getWidth() / 2f + 30,Gdx.graphics.getHeight() / 3f);
+        buttonPlayAgain.setColor(Color.GREEN);
         buttonPlayAgain.addListener(new InputListener(){
             @Override
             public boolean touchDown(InputEvent event, float x, float y, int pointer, int button) {
@@ -95,6 +97,7 @@ public class AfterGameScreen extends ScreenAdapter {
         storeButton.setSize(Gdx.graphics.getWidth() / 10f,Gdx.graphics.getWidth() / 10f);
         storeButton.setPosition(Gdx.graphics.getWidth() - storeButton.getWidth(),
                 Gdx.graphics.getHeight() - Gdx.graphics.getWidth() / 10f);
+        storeButton.setColor(56 / 255f, 114 / 255f, 207 / 255f, 1);
         storeButton.addListener(new InputListener(){
             @Override
             public boolean touchDown(InputEvent event, float x, float y, int pointer, int button) {

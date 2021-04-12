@@ -88,10 +88,12 @@ public class MenuScreen extends ScreenAdapter {
 
 
 
-        buttonPlay = new TextButton(GameConfiguration.getText("playButton"),mySkin,"big");
+        buttonPlay = new TextButton(GameConfiguration.getText("playButton"),mySkin,"pixel48");
         buttonPlay.setSize(screenWidth / 3f,screenHeight / 7f);
         buttonPlay.setPosition(screenWidth / 2f - buttonPlay.getWidth() / 2,
                 screenHeight / 2f);
+        buttonPlay.setColor(Color.GREEN);
+        buttonPlay.getLabel().setFontScale(2);
         buttonPlay.addListener(new InputListener(){
             @Override
             public boolean touchDown(InputEvent event, float x, float y, int pointer, int button) {
@@ -113,11 +115,13 @@ public class MenuScreen extends ScreenAdapter {
             }
         });
 
+        Color buttonColors = new Color(1, 208 / 255f, 0, 1);
+
         buttonSettings = new TextButton(GameConfiguration.getText("settingsButton"),mySkin,"pixel48");
         buttonSettings.setSize(screenWidth / 4f,screenHeight / 8f);
         buttonSettings.setPosition(screenWidth / 2f - buttonSettings.getWidth() / 2f,
                 buttonPlay.getY() - buttonSettings.getHeight() - screenHeight / 20f);
-        buttonSettings.setColor(Color.YELLOW);
+        buttonSettings.setColor(buttonColors);
         buttonSettings.addListener(new InputListener(){
             @Override
             public boolean touchDown(InputEvent event, float x, float y, int pointer, int button) {
@@ -131,11 +135,11 @@ public class MenuScreen extends ScreenAdapter {
             }
         });
 
-        buttonPersonal = new TextButton(GameConfiguration.getText("personalButton"),mySkin,"default");
+        buttonPersonal = new TextButton(GameConfiguration.getText("personalButton"),mySkin,"pixel48");
         buttonPersonal.setSize(screenWidth / 4f,screenHeight / 8f);
         buttonPersonal.setPosition(screenWidth / 2f - buttonPersonal.getWidth() / 2f,
                 buttonSettings.getY() - buttonPersonal.getHeight() - screenHeight / 20f);
-        buttonPersonal.setColor(Color.GREEN);
+        buttonPersonal.setColor(buttonColors);
         buttonPersonal.addListener(new InputListener(){
             @Override
             public boolean touchDown(InputEvent event, float x, float y, int pointer, int button) {

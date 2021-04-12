@@ -3,6 +3,7 @@ package fi.tuni.tamk;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.ScreenAdapter;
 import com.badlogic.gdx.graphics.Camera;
+import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
@@ -51,9 +52,10 @@ public class Store extends ScreenAdapter {
 
         Skin mySkin = Textures.mySkin;
 
-        Button buttonMenu = new TextButton(GameConfiguration.getText("menu"),mySkin,"default");
+        Button buttonMenu = new TextButton(GameConfiguration.getText("menu"),mySkin,"pixel48");
         buttonMenu.setSize(Gdx.graphics.getWidth() / 10f,Gdx.graphics.getWidth() / 10f);
         buttonMenu.setPosition(0,Gdx.graphics.getHeight() - Gdx.graphics.getWidth() / 10f);
+        buttonMenu.setColor(Color.YELLOW);
         buttonMenu.addListener(new InputListener(){
             @Override
             public boolean touchDown(InputEvent event, float x, float y, int pointer, int button) {
@@ -68,10 +70,11 @@ public class Store extends ScreenAdapter {
         });
         stage.addActor(buttonMenu);
 
-        Button buttonLevels = new TextButton(GameConfiguration.getText("levels"),mySkin,"default");
+        Button buttonLevels = new TextButton(GameConfiguration.getText("levels"),mySkin,"pixel48");
         buttonLevels.setSize(Gdx.graphics.getWidth() / 10f,Gdx.graphics.getWidth() / 10f);
         buttonLevels.setPosition(Gdx.graphics.getWidth() - buttonLevels.getWidth(),
                 Gdx.graphics.getHeight() - Gdx.graphics.getWidth() / 10f);
+        buttonLevels.setColor(0 / 255f, 255 / 255f, 195 / 255f, 1);
         buttonLevels.addListener(new InputListener(){
             @Override
             public boolean touchDown(InputEvent event, float x, float y, int pointer, int button) {
@@ -101,7 +104,7 @@ public class Store extends ScreenAdapter {
         if(GameConfiguration.theme.equals("sand")) {
             sandString = getMarkedText(buttonSandString);
         }
-        buttonSand = new TextButton(sandString,mySkin,"default");
+        buttonSand = new TextButton(sandString,mySkin,"pixel48");
         buttonSand.setSize(themeButtonWidth, themeButtonHeight);
         buttonSand.setPosition(themeButtonX, themeButtonY);
         buttonSand.addListener(new InputListener(){
@@ -123,7 +126,7 @@ public class Store extends ScreenAdapter {
         if(GameConfiguration.theme.equals("bush")) {
             bushString = getMarkedText(buttonBushString);
         }
-        buttonBush = new TextButton(bushString,mySkin,"default");
+        buttonBush = new TextButton(bushString,mySkin,"pixel48");
         buttonBush.setSize(themeButtonWidth, themeButtonHeight);
         buttonBush.setPosition(themeButtonX, themeButtonY - themeButtonGapY - themeButtonHeight);
         buttonBush.addListener(new InputListener(){
@@ -152,7 +155,7 @@ public class Store extends ScreenAdapter {
     @Override
     public void render(float deltaTime) {
         main.batch.setProjectionMatrix(camera.combined);
-        Gdx.gl.glClearColor(0, 0, 1, 1);
+        Gdx.gl.glClearColor(0, 100 / 255f, 0, 1);
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
         stage.draw();
         stage.act();
@@ -165,6 +168,6 @@ public class Store extends ScreenAdapter {
     }
 
     public String getMarkedText(String str) {
-        return "X    " + str + "      ";
+        return "X   " + str + "    ";
     }
 }

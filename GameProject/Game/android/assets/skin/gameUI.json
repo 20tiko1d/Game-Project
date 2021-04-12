@@ -150,6 +150,12 @@ com.badlogic.gdx.scenes.scene2d.ui.TextButton$TextButtonStyle: {
 		up: buttonUp
 		down: buttonDown
 	}
+	boost: {
+		font: pixel48
+		fontColor: black
+		up: boostButtonUp2
+		down: boostButtonUp2
+	}
 }
 com.badlogic.gdx.scenes.scene2d.ui.TextField$TextFieldStyle: {
 	default: {
