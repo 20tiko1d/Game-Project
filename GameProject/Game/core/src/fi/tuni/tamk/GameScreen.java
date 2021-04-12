@@ -187,7 +187,7 @@ public class GameScreen extends ScreenAdapter {
         objectHeight = tileHeight * GameConfiguration.OBJECT_HEIGHT;
         stage = new Stage(new ScreenViewport());
         tutorialOn = GameConfiguration.tutorialOn;
-        mySkin = new Skin(Gdx.files.internal("skin/testi/testi6.json"));
+        mySkin = Textures.mySkin;
 
         Image roundImage = new Image(Textures.getBackgroundTexture());
         roundImage.setBounds(screenWidth / 4f,
