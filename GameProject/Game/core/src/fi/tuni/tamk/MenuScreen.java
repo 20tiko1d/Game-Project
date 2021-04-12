@@ -36,6 +36,7 @@ public class MenuScreen extends ScreenAdapter {
 
     private Texture backgroundImage;
     private Texture buttonBackground;
+    private float backgroundHeight;
 
     private final int screenWidth = Gdx.graphics.getWidth();
     private final int screenHeight = Gdx.graphics.getHeight();
@@ -53,8 +54,9 @@ public class MenuScreen extends ScreenAdapter {
 
         backgroundImage = Textures.getMenuBackground();
         buttonBackground = Textures.menuButtonBackground;
+        backgroundHeight = (float) screenWidth * backgroundImage.getHeight() / backgroundImage.getWidth();
 
-        Skin mySkin = new Skin(Gdx.files.internal("skin/testi/testi7.json"));
+        Skin mySkin = Textures.mySkin;
 
         Texture flagTexture = Textures.engFlag;
         if(GameConfiguration.open("language").equals("en_GB")) {
@@ -86,7 +88,7 @@ public class MenuScreen extends ScreenAdapter {
 
 
 
-        buttonPlay = new TextButton(GameConfiguration.getText("playButton"),mySkin,"defaultBig");
+        buttonPlay = new TextButton(GameConfiguration.getText("playButton"),mySkin,"big");
         buttonPlay.setSize(screenWidth / 3f,screenHeight / 7f);
         buttonPlay.setPosition(screenWidth / 2f - buttonPlay.getWidth() / 2,
                 screenHeight / 2f);
@@ -111,7 +113,7 @@ public class MenuScreen extends ScreenAdapter {
             }
         });
 
-        buttonSettings = new TextButton(GameConfiguration.getText("settingsButton"),mySkin,"default");
+        buttonSettings = new TextButton(GameConfiguration.getText("settingsButton"),mySkin,"pixel48");
         buttonSettings.setSize(screenWidth / 4f,screenHeight / 8f);
         buttonSettings.setPosition(screenWidth / 2f - buttonSettings.getWidth() / 2f,
                 buttonPlay.getY() - buttonSettings.getHeight() - screenHeight / 20f);
@@ -157,10 +159,9 @@ public class MenuScreen extends ScreenAdapter {
     @Override
     public void render(float deltaTime) {
         main.batch.setProjectionMatrix(camera.combined);
-        //Gdx.gl.glClearColor(0, 255, 234, 1);
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
         batch.begin();
-        batch.draw(backgroundImage, 0, 0, screenWidth, screenHeight);
+        batch.draw(backgroundImage, 0, 0, screenWidth, backgroundHeight);
         batch.draw(buttonBackground, screenWidth * 3 / 10f, screenHeight / 10f, screenWidth * 2 / 5f,
                 screenWidth * 3 / 10f);
         batch.end();

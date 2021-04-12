@@ -1,6 +1,5 @@
 package fi.tuni.tamk;
 
-import com.badlogic.gdx.Game;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.ScreenAdapter;
 import com.badlogic.gdx.graphics.Color;
@@ -26,6 +25,7 @@ public class AfterTutorialScreen extends ScreenAdapter {
         GameConfiguration.tutorialOn = false;
         if(GameConfiguration.firstTime) {
             GameConfiguration.save("firstTime", "false");
+            GameConfiguration.firstTime = false;
         }
         camera = new OrthographicCamera();
         camera.setToOrtho(false, Main.viewPortWidth, Main.viewPortHeight);
@@ -35,7 +35,7 @@ public class AfterTutorialScreen extends ScreenAdapter {
     public void show() {
         stage = new Stage(new ScreenViewport());
 
-        Skin mySkin = new Skin(Gdx.files.internal("skin/testi/testi3.json"));
+        Skin mySkin = Textures.mySkin;
 
         Button buttonPlayAgain = new TextButton(GameConfiguration.getText("playTutorialAgain"), mySkin,"default");
         buttonPlayAgain.setSize(Gdx.graphics.getWidth() / 5f,Gdx.graphics.getWidth() / 8f);

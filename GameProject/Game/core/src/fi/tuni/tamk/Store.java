@@ -49,7 +49,7 @@ public class Store extends ScreenAdapter {
         buttonSandString = GameConfiguration.getText("sand");
         buttonBushString = GameConfiguration.getText("bush");
 
-        Skin mySkin = new Skin(Gdx.files.internal("skin/testi/testi3.json"));
+        Skin mySkin = Textures.mySkin;
 
         Button buttonMenu = new TextButton(GameConfiguration.getText("menu"),mySkin,"default");
         buttonMenu.setSize(Gdx.graphics.getWidth() / 10f,Gdx.graphics.getWidth() / 10f);

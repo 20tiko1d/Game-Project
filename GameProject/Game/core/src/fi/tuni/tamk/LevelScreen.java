@@ -5,6 +5,9 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.ScreenAdapter;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.GL20;
+import com.badlogic.gdx.graphics.Texture;
+import com.badlogic.gdx.graphics.g2d.Sprite;
+import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.World;
@@ -26,19 +29,33 @@ public class LevelScreen extends ScreenAdapter {
 
     private Stage stage;
 
+    private SpriteBatch batch;
+
+    private Texture backgroundImage;
+    private float backgroundHeight;
+
+    private int screenWidth;
+    private int screenHeight;
+
     private Rectangle rect;
     private int marginal;
 
     public LevelScreen(Main main){
         this.main = main;
         calculateAreas();
+        batch = new SpriteBatch();
+        screenWidth = Gdx.graphics.getWidth();
+        screenHeight = Gdx.graphics.getHeight();
     }
 
     @Override
     public void show() {
         stage = new Stage(new ScreenViewport());
 
-        Skin mySkin = new Skin(Gdx.files.internal("skin/testi/testi7.json"));
+        backgroundImage = Textures.getMenuBackground();
+        backgroundHeight = (float) screenWidth * backgroundImage.getHeight() / backgroundImage.getWidth();
+
+        Skin mySkin = Textures.mySkin;
 
         Button buttonEasy = new TextButton(GameConfiguration.getText("easyLevel"), mySkin,"default");
         buttonEasy.setSize(rect.width,rect.height);
@@ -168,8 +185,11 @@ public class LevelScreen extends ScreenAdapter {
 
     @Override
     public void render(float deltaTime) {
-        Gdx.gl.glClearColor(1, 1, 1, 1);
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
+
+        batch.begin();
+        batch.draw(backgroundImage, 0, 0, screenWidth, backgroundHeight);
+        batch.end();
 
         stage.draw();
         stage.act();

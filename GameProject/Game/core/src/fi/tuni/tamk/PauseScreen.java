@@ -52,7 +52,7 @@ public class PauseScreen extends ScreenAdapter {
             multiplier = 1.4f;
         }
 
-        Skin mySkin = new Skin(Gdx.files.internal("skin/testi/testi3.json"));
+        Skin mySkin = Textures.mySkin;
 
         float width = Gdx.graphics.getWidth() / 3f;
         float height = Gdx.graphics.getHeight() / (6f * multiplier);

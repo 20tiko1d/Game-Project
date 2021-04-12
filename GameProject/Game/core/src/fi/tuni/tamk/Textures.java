@@ -1,10 +1,15 @@
 package fi.tuni.tamk;
 
+import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Texture;
+import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 
 import java.util.ArrayList;
 
 public final class Textures {
+
+    // Skin
+    public static Skin mySkin = new Skin(Gdx.files.internal("skin/gameUI.json"));
 
     // Flag textures
     public static Texture finFlag = new Texture("textures/random/fin_flag.png");
