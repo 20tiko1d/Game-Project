@@ -13,6 +13,7 @@ import com.badlogic.gdx.graphics.Pixmap;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.physics.box2d.Body;
 import com.badlogic.gdx.physics.box2d.Box2DDebugRenderer;
@@ -30,6 +31,7 @@ import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
 import com.badlogic.gdx.scenes.scene2d.ui.Touchpad;
 import com.badlogic.gdx.scenes.scene2d.utils.ChangeListener;
 import com.badlogic.gdx.scenes.scene2d.utils.Drawable;
+import com.badlogic.gdx.scenes.scene2d.utils.TextureRegionDrawable;
 import com.badlogic.gdx.utils.Align;
 import com.badlogic.gdx.utils.Array;
 import com.badlogic.gdx.utils.viewport.ScreenViewport;
@@ -324,8 +326,8 @@ public class GameScreen extends ScreenAdapter {
                 }
             }));
 
-
-            Button buttonPause = new TextButton(GameConfiguration.getText("pause"),mySkin,"default");
+            final Drawable drawable = new TextureRegionDrawable(new TextureRegion(Textures.pauseButtonTexture));
+            final Button buttonPause = new Button(drawable);
             buttonPause.setSize(screenWidth / 10f,screenWidth / 10f);
             buttonPause.setPosition(screenWidth * 9 / 10f,screenHeight - screenWidth / 10f);
             buttonPause.addListener(new InputListener(){

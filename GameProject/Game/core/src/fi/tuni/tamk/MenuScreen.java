@@ -2,6 +2,7 @@ package fi.tuni.tamk;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.ScreenAdapter;
+import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Texture;
@@ -53,7 +54,7 @@ public class MenuScreen extends ScreenAdapter {
         backgroundImage = Textures.getMenuBackground();
         buttonBackground = Textures.menuButtonBackground;
 
-        Skin mySkin = new Skin(Gdx.files.internal("skin/testi/testi6.json"));
+        Skin mySkin = new Skin(Gdx.files.internal("skin/testi/testi7.json"));
 
         Texture flagTexture = Textures.engFlag;
         if(GameConfiguration.open("language").equals("en_GB")) {
@@ -114,6 +115,7 @@ public class MenuScreen extends ScreenAdapter {
         buttonSettings.setSize(screenWidth / 4f,screenHeight / 8f);
         buttonSettings.setPosition(screenWidth / 2f - buttonSettings.getWidth() / 2f,
                 buttonPlay.getY() - buttonSettings.getHeight() - screenHeight / 20f);
+        buttonSettings.setColor(Color.YELLOW);
         buttonSettings.addListener(new InputListener(){
             @Override
             public boolean touchDown(InputEvent event, float x, float y, int pointer, int button) {
@@ -131,6 +133,7 @@ public class MenuScreen extends ScreenAdapter {
         buttonPersonal.setSize(screenWidth / 4f,screenHeight / 8f);
         buttonPersonal.setPosition(screenWidth / 2f - buttonPersonal.getWidth() / 2f,
                 buttonSettings.getY() - buttonPersonal.getHeight() - screenHeight / 20f);
+        buttonPersonal.setColor(Color.GREEN);
         buttonPersonal.addListener(new InputListener(){
             @Override
             public boolean touchDown(InputEvent event, float x, float y, int pointer, int button) {
