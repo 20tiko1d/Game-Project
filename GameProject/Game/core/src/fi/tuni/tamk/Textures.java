@@ -7,8 +7,8 @@ import java.util.ArrayList;
 public final class Textures {
 
     // Flag textures
-    public static Texture finFlag = new Texture("textures/random/suomiperkele.png");
-    public static Texture engFlag = new Texture("textures/random/londonflag.png");
+    public static Texture finFlag = new Texture("textures/random/fin_flag.png");
+    public static Texture engFlag = new Texture("textures/random/gbr_flag.png");
 
     // Menu screen button background
     public static Texture menuButtonBackground = new Texture("textures/random/menuButtonBackground.png");
@@ -59,13 +59,13 @@ public final class Textures {
     public static Texture[] getPlayerTexture() {
         Texture [] playerTextures = new Texture[4];
         // Front
-        playerTextures[0] = new Texture("textures/player/blueDude/blueDudeFront.png");
+        playerTextures[0] = new Texture("textures/player/Ghost/Kawaiighost-front.png");
         // Left
-        playerTextures[1] = new Texture("textures/player/blueDude/blueDudeLeft.png");
+        playerTextures[1] = new Texture("textures/player/Ghost/Kawaiighost-left.png");
         // Back
-        playerTextures[2] = new Texture("textures/player/blueDude/blueDudeBack.png");
+        playerTextures[2] = new Texture("textures/player/Ghost/Kawaiighost-back.png");
         // Right
-        playerTextures[3] = new Texture("textures/player/blueDude/blueDudeRight.png");
+        playerTextures[3] = new Texture("textures/player/Ghost/Kawaiighost-right.png");
         return playerTextures;
     }
 
