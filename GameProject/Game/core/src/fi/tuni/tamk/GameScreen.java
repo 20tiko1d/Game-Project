@@ -609,7 +609,7 @@ public class GameScreen extends ScreenAdapter {
             accumulator -= TIME_STEP;
             second -= TIME_STEP;
             if(second <= 0) {
-                //Gdx.app.log("", "fps: " + fpsCounter);
+                Gdx.app.log("", "fps: " + fpsCounter);
 
                 fpsCounter = 0;
                 second = 1;
@@ -661,7 +661,7 @@ public class GameScreen extends ScreenAdapter {
         boolean playerDrawn = false;
         boolean isObject = false;
 
-        int objectCounter = 0;
+        int nearObjectIndex = 0;
 
         for(int row = minIndexY; row < maxIndexY; row++) {
             for(int column = minIndexX; column < maxIndexX; column++) {
@@ -679,12 +679,11 @@ public class GameScreen extends ScreenAdapter {
                     if(isObject) {
                         if(playerY > objectY) {
                             drawPlayer(batch, playerY);
-                            drawObject(batch, objectX, objectY, objectCounter);
+                            drawObject(batch, objectX, objectY, nearObjectIndex);
                         } else {
-                            drawObject(batch, objectX, objectY, objectCounter);
+                            drawObject(batch, objectX, objectY, nearObjectIndex);
                             drawPlayer(batch, playerY);
                         }
-                        objectCounter++;
                         isObject = false;
                     } else {
                         drawPlayer(batch, playerY);
@@ -695,13 +694,17 @@ public class GameScreen extends ScreenAdapter {
                 for(int i = 0; i < randomPairs.length; i++) {
                     if (row == randomPairs[i][1] && column == randomPairs[i][2] ||
                         row == randomPairs[i][3] && column == randomPairs[i][4]) {
+                        int index = i * 2;
+                        if(row == randomPairs[i][3]) {
+                            index++;
+                        }
                         if(objectIndex == i && !playerDrawn) {
+                            nearObjectIndex = index;
                             isObject = true;
                             objectX = column * tileWidth;
                             objectY = locY;
                         } else {
-                            drawObject(batch, column * tileWidth, locY, objectCounter);
-                            objectCounter++;
+                            drawObject(batch, column * tileWidth, locY, index);
                         }
                     }
                 }
@@ -834,8 +837,8 @@ public class GameScreen extends ScreenAdapter {
         this.randomPairs = randomPairs;
 
         // set random bounciness value
-        objectBouniness = new float[randomPairs.length * 2 -1];
-        objectDirections = new boolean[randomPairs.length * 2 -1];
+        objectBouniness = new float[randomPairs.length * 2];
+        objectDirections = new boolean[randomPairs.length * 2];
         for(int i = 0; i < objectBouniness.length; i++) {
             objectBouniness[i] = MathUtils.random(0, 100) / 1000f;
             objectDirections[i] = true;
@@ -1100,6 +1103,5 @@ public class GameScreen extends ScreenAdapter {
                 objectBouniness[i] = objectBouniness[i] * -1;
             }
         }
-        Gdx.app.log("", "bounce: " + objectBouniness[0]);
     }
 }
