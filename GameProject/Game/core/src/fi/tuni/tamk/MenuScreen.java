@@ -59,7 +59,7 @@ public class MenuScreen extends ScreenAdapter {
         Skin mySkin = Textures.mySkin;
 
         Texture flagTexture = Textures.engFlag;
-        if(GameConfiguration.open("language").equals("en_GB")) {
+        if(GameConfiguration.open("language").equals("en_UK")) {
             flagTexture = Textures.finFlag;
         }
         final Drawable drawable = new TextureRegionDrawable(new TextureRegion(flagTexture));
