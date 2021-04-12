@@ -85,7 +85,7 @@ public class PauseScreen extends ScreenAdapter {
             }
         });
 
-        TextButton buttonSettings = new TextButton(GameConfiguration.getText("settingsButton"),mySkin,"default");
+        TextButton buttonSettings = new TextButton(GameConfiguration.getText("settingsButton"),mySkin,"pixel48");
         buttonSettings.setSize(width,height);
         buttonSettings.setPosition(locX, startY - height - buttonsGap);
         buttonSettings.setColor(1, 208 / 255f, 0, 1);
@@ -101,7 +101,7 @@ public class PauseScreen extends ScreenAdapter {
             }
         });
 
-        TextButton buttonLevels = new TextButton(GameConfiguration.getText("levels"),mySkin,"default");
+        TextButton buttonLevels = new TextButton(GameConfiguration.getText("levels"),mySkin,"pixel48");
         buttonLevels.setSize(width,height);
         buttonLevels.setPosition(locX, startY - 2 * height - 2 * buttonsGap);
         buttonLevels.setColor(0 / 255f, 255 / 255f, 195 / 255f, 1);
@@ -121,9 +121,10 @@ public class PauseScreen extends ScreenAdapter {
             }
         });
 
-        TextButton buttonPlayAgain = new TextButton(GameConfiguration.getText("restart"),mySkin,"default");
+        TextButton buttonPlayAgain = new TextButton(GameConfiguration.getText("restart"),mySkin,"pixel48");
         buttonPlayAgain.setSize(width,height);
         buttonPlayAgain.setPosition(locX, startY - 3 * height - 3 * buttonsGap);
+        buttonPlayAgain.setColor(Color.GREEN);
         buttonPlayAgain.addListener(new InputListener(){
             @Override
             public boolean touchDown(InputEvent event, float x, float y, int pointer, int button) {
@@ -141,7 +142,7 @@ public class PauseScreen extends ScreenAdapter {
             }
         });
 
-        Button buttonMenu = new TextButton(GameConfiguration.getText("menu"),mySkin,"default");
+        Button buttonMenu = new TextButton(GameConfiguration.getText("menu"),mySkin,"pixel48");
         buttonMenu.setSize(Gdx.graphics.getWidth() / 10f,Gdx.graphics.getWidth() / 10f);
         buttonMenu.setPosition(0,Gdx.graphics.getHeight() - Gdx.graphics.getWidth() / 10f);
         buttonMenu.setColor(Color.YELLOW);
