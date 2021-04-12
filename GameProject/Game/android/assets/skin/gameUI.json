@@ -12,6 +12,12 @@ com.badlogic.gdx.graphics.g2d.BitmapFont: {
 	pixel48: {
 		file: pixel48.fnt
 	}
+	pixel50: {
+		file: pixel50.fnt
+	}
+	pixel72: {
+		file: pixel72.fnt
+	}
 }
 com.badlogic.gdx.graphics.Color: {
 	black: {
@@ -76,6 +82,16 @@ com.badlogic.gdx.scenes.scene2d.ui.Label$LabelStyle: {
 	}
 	big: {
 		font: arial-fontLarge
+	}
+	pixel48: {
+		font: pixel48
+	}
+	pixel72: {
+		font: pixel72
+		fontColor: black
+	}
+	pixel50: {
+		font: pixel50
 	}
 }
 com.badlogic.gdx.scenes.scene2d.ui.List$ListStyle: {
@@ -155,6 +171,12 @@ com.badlogic.gdx.scenes.scene2d.ui.TextButton$TextButtonStyle: {
 		fontColor: black
 		up: boostButtonUp2
 		down: boostButtonUp2
+	}
+	pixel72: {
+		font: pixel72
+		fontColor: black
+		up: buttonUp
+		down: buttonDown
 	}
 }
 com.badlogic.gdx.scenes.scene2d.ui.TextField$TextFieldStyle: {

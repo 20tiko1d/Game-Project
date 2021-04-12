@@ -52,10 +52,11 @@ public class Store extends ScreenAdapter {
 
         Skin mySkin = Textures.mySkin;
 
-        Button buttonMenu = new TextButton(GameConfiguration.getText("menu"),mySkin,"pixel48");
+        TextButton buttonMenu = new TextButton(GameConfiguration.getText("menu"),mySkin,"pixel72");
         buttonMenu.setSize(Gdx.graphics.getWidth() / 10f,Gdx.graphics.getWidth() / 10f);
         buttonMenu.setPosition(0,Gdx.graphics.getHeight() - Gdx.graphics.getWidth() / 10f);
         buttonMenu.setColor(Color.YELLOW);
+        buttonMenu.getLabel().setFontScale(GameConfiguration.fitText(buttonMenu, -1, -1));
         buttonMenu.addListener(new InputListener(){
             @Override
             public boolean touchDown(InputEvent event, float x, float y, int pointer, int button) {
@@ -70,11 +71,12 @@ public class Store extends ScreenAdapter {
         });
         stage.addActor(buttonMenu);
 
-        Button buttonLevels = new TextButton(GameConfiguration.getText("levels"),mySkin,"pixel48");
+        TextButton buttonLevels = new TextButton(GameConfiguration.getText("levels"),mySkin,"pixel72");
         buttonLevels.setSize(Gdx.graphics.getWidth() / 10f,Gdx.graphics.getWidth() / 10f);
         buttonLevels.setPosition(Gdx.graphics.getWidth() - buttonLevels.getWidth(),
                 Gdx.graphics.getHeight() - Gdx.graphics.getWidth() / 10f);
         buttonLevels.setColor(0 / 255f, 255 / 255f, 195 / 255f, 1);
+        buttonLevels.getLabel().setFontScale(GameConfiguration.fitText(buttonLevels, -1, -1));
         buttonLevels.addListener(new InputListener(){
             @Override
             public boolean touchDown(InputEvent event, float x, float y, int pointer, int button) {

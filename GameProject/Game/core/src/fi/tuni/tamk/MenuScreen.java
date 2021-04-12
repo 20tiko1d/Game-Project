@@ -59,7 +59,7 @@ public class MenuScreen extends ScreenAdapter {
         Skin mySkin = Textures.mySkin;
 
         Texture flagTexture = Textures.engFlag;
-        if(GameConfiguration.open("language").equals("en_UK")) {
+        if(GameConfiguration.getLanguage().equals("en_UK")) {
             flagTexture = Textures.finFlag;
         }
         final Drawable drawable = new TextureRegionDrawable(new TextureRegion(flagTexture));
@@ -75,7 +75,7 @@ public class MenuScreen extends ScreenAdapter {
 
             @Override
             public void touchUp(InputEvent event, float x, float y, int pointer, int button) {
-                if(GameConfiguration.open("language").equals("fi_FI")) {
+                if(GameConfiguration.getLanguage().equals("fi_FI")) {
                     flagButton.getStyle().up = new TextureRegionDrawable(new TextureRegion(Textures.finFlag));
                     GameConfiguration.save("language", "en_UK");
                 } else {
@@ -88,12 +88,12 @@ public class MenuScreen extends ScreenAdapter {
 
 
 
-        buttonPlay = new TextButton(GameConfiguration.getText("playButton"),mySkin,"pixel48");
+        buttonPlay = new TextButton(GameConfiguration.getText("playButton"),mySkin,"pixel72");
         buttonPlay.setSize(screenWidth / 3f,screenHeight / 7f);
         buttonPlay.setPosition(screenWidth / 2f - buttonPlay.getWidth() / 2,
                 screenHeight / 2f);
         buttonPlay.setColor(Color.GREEN);
-        buttonPlay.getLabel().setFontScale(2);
+        buttonPlay.getLabel().setFontScale(GameConfiguration.fitText(buttonPlay, 72, 110));
         buttonPlay.addListener(new InputListener(){
             @Override
             public boolean touchDown(InputEvent event, float x, float y, int pointer, int button) {
@@ -117,11 +117,12 @@ public class MenuScreen extends ScreenAdapter {
 
         Color buttonColors = new Color(1, 208 / 255f, 0, 1);
 
-        buttonSettings = new TextButton(GameConfiguration.getText("settingsButton"),mySkin,"pixel48");
+        buttonSettings = new TextButton(GameConfiguration.getText("settingsButton"),mySkin,"pixel72");
         buttonSettings.setSize(screenWidth / 4f,screenHeight / 8f);
         buttonSettings.setPosition(screenWidth / 2f - buttonSettings.getWidth() / 2f,
                 buttonPlay.getY() - buttonSettings.getHeight() - screenHeight / 20f);
         buttonSettings.setColor(buttonColors);
+        buttonSettings.getLabel().setFontScale(GameConfiguration.fitText(buttonSettings, -1, -1));
         buttonSettings.addListener(new InputListener(){
             @Override
             public boolean touchDown(InputEvent event, float x, float y, int pointer, int button) {
@@ -135,11 +136,12 @@ public class MenuScreen extends ScreenAdapter {
             }
         });
 
-        buttonPersonal = new TextButton(GameConfiguration.getText("personalButton"),mySkin,"pixel48");
+        buttonPersonal = new TextButton(GameConfiguration.getText("personalButton"),mySkin,"pixel72");
         buttonPersonal.setSize(screenWidth / 4f,screenHeight / 8f);
         buttonPersonal.setPosition(screenWidth / 2f - buttonPersonal.getWidth() / 2f,
                 buttonSettings.getY() - buttonPersonal.getHeight() - screenHeight / 20f);
         buttonPersonal.setColor(buttonColors);
+        buttonPersonal.getLabel().setFontScale(GameConfiguration.fitText(buttonPersonal, -1, -1));
         buttonPersonal.addListener(new InputListener(){
             @Override
             public boolean touchDown(InputEvent event, float x, float y, int pointer, int button) {

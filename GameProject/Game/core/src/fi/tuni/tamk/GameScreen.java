@@ -124,7 +124,7 @@ public class GameScreen extends ScreenAdapter {
     private float maxZoom = 1.5f;
     private boolean ifMaxZoom = false;
     private boolean ifZoomIn = true;
-    private Button buttonBoost;
+    private TextButton buttonBoost;
 
     // Objects
     private Label pairLabel;
@@ -136,9 +136,9 @@ public class GameScreen extends ScreenAdapter {
     private boolean currentFirst;
     private int closeIndex;
     private int currentIndex = -2;
-    private Button buttonValidate;
-    private Button buttonSwitch;
-    private Button buttonActivate;
+    private TextButton buttonValidate;
+    private TextButton buttonSwitch;
+    private TextButton buttonActivate;
     private String objectsFoundString;
     private float[] objectBouniness;
     private boolean[] objectDirections;
@@ -164,7 +164,7 @@ public class GameScreen extends ScreenAdapter {
     private boolean pauseGame = false;
     private int tutorialPhase;
     private Image tutorialTextBackground;
-    private Button buttonTutorial;
+    private TextButton buttonTutorial;
     private Label tutorialLabel;
     private Image objectiveBackground;
     private Label objectiveText;
@@ -175,8 +175,8 @@ public class GameScreen extends ScreenAdapter {
         this.main = main;
         this.world = world;
         this.gameScreen = this;
-        scoreString = GameConfiguration.getText("score");
-        objectsFoundString = GameConfiguration.getText("pairsFound");
+        scoreString = GameConfiguration.getText("score").toUpperCase();
+        objectsFoundString = GameConfiguration.getText("pairsFound").toUpperCase();
         score = GameConfiguration.getStartScore();
         objectScore = GameConfiguration.getObjectScore();
         playerSpeed = GameConfiguration.PLAYER_SPEED;
@@ -206,30 +206,35 @@ public class GameScreen extends ScreenAdapter {
                 screenWidth - roundImage.getX() - roundImage.getWidth(),
                 screenHeight);
 
-        pairLabel = new Label("", mySkin);
+        pairLabel = new Label("", mySkin, "default");
         pairLabel.setBounds(screenWidth * 1.1f / 4f, screenHeight * 4f / 5f,
                 screenWidth / 2.2f, screenHeight / 5f);
         pairLabel.setWrap(true);
         pairLabel.setAlignment(Align.center);
+        pairLabel.setScale(1.3f);
+        pairLabel.setColor(Color.WHITE);
 
         pairLabelBackground = new Image(Textures.getPairLabelBackground());
         pairLabelBackground.setBounds(screenWidth / 4f, pairLabel.getY(),
                 screenWidth / 2f, pairLabel.getHeight());
 
-        scoreLabel = new Label(scoreString + ": " + score,
-                mySkin);
+        scoreLabel = new Label(scoreString + ": " + score, mySkin, "pixel48");
         scoreLabel.setSize(side1Image.getWidth() * 4 / 10f, screenHeight / 10f);
         scoreLabel.setPosition(screenWidth / 100f, screenHeight - scoreLabel.getHeight());
+        scoreLabel.setFontScale(0.7f);
 
-        scoreChangeLabel = new Label("", mySkin, "default");
-        scoreChangeLabel.setBounds(scoreLabel.getX() + scoreLabel.getWidth(), scoreLabel.getY(),
+        scoreChangeLabel = new Label("", mySkin, "pixel48");
+        scoreChangeLabel.setBounds(scoreLabel.getX() + scoreLabel.getWidth() * 1.2f, scoreLabel.getY(),
                 scoreLabel.getWidth(), scoreLabel.getHeight());
-        objectLabel = new Label("", mySkin);
+        scoreChangeLabel.setFontScale(0.7f);
+        objectLabel = new Label("", mySkin, "pixel48");
         objectLabel.setBounds(scoreLabel.getX(), scoreLabel.getY() - scoreLabel.getHeight(),
                 scoreLabel.getWidth(), scoreLabel.getHeight());
-        activatedLabel = new Label(GameConfiguration.getText("activated"), mySkin, "big");
-        activatedLabel.setBounds(pairLabel.getX(), 0, pairLabel.getWidth(), pairLabel.getHeight());
+        objectLabel.setFontScale(0.7f);
+        activatedLabel = new Label(GameConfiguration.getText("activated").toUpperCase(), mySkin, "pixel50");
+        activatedLabel.setBounds(pairLabel.getX(), 0, pairLabel.getWidth(), pairLabel.getHeight() / 2);
         activatedLabel.setColor(Color.GREEN);
+        activatedLabel.setScale(3f);
         activatedLabel.setAlignment(Align.center);
 
         stage.addActor(roundImage);
@@ -340,10 +345,11 @@ public class GameScreen extends ScreenAdapter {
                 }
             });
 
-            buttonActivate = new TextButton(GameConfiguration.getText("activate"), mySkin, "default");
+            buttonActivate = new TextButton(GameConfiguration.getText("activate"), mySkin, "pixel72");
             buttonActivate.setSize(screenWidth / 2f, screenWidth / 10f);
             buttonActivate.setPosition(screenWidth / 4f, 0);
             buttonActivate.setColor(Color.GREEN);
+            buttonActivate.getLabel().setFontScale(GameConfiguration.fitText(buttonActivate, -1, -1));
             buttonActivate.addListener(new InputListener() {
                 @Override
                 public boolean touchDown(InputEvent event, float x, float y, int pointer, int button) {
@@ -363,10 +369,11 @@ public class GameScreen extends ScreenAdapter {
             buttonActivate.setVisible(false);
             buttonActivate.setDisabled(true);
 
-            buttonValidate = new TextButton(GameConfiguration.getText("validate"),mySkin,"default");
+            buttonValidate = new TextButton(GameConfiguration.getText("validate"),mySkin,"pixel72");
             buttonValidate.setSize(screenWidth / 4f,screenWidth / 10f);
             buttonValidate.setPosition(screenWidth / 4f,0);
             buttonValidate.setColor(Color.GREEN);
+            buttonValidate.getLabel().setFontScale(GameConfiguration.fitText(buttonValidate, -1, -1));
             buttonValidate.addListener(new InputListener() {
                 @Override
                 public boolean touchDown(InputEvent event, float x, float y, int pointer, int button) {
@@ -419,10 +426,11 @@ public class GameScreen extends ScreenAdapter {
             buttonValidate.setVisible(false);
             buttonValidate.setDisabled(true);
 
-            buttonSwitch = new TextButton(GameConfiguration.getText("switchButton"),mySkin,"default");
+            buttonSwitch = new TextButton(GameConfiguration.getText("switchButton"),mySkin,"pixel72");
             buttonSwitch.setSize(screenWidth / 4f,screenWidth / 10f);
             buttonSwitch.setPosition(screenWidth / 2f,0);
             buttonSwitch.setColor(Color.YELLOW);
+            buttonSwitch.getLabel().setFontScale(GameConfiguration.fitText(buttonSwitch, -1, -1));
             buttonSwitch.addListener(new InputListener(){
                 @Override
                 public boolean touchDown(InputEvent event, float x, float y, int pointer, int button) {
@@ -448,6 +456,7 @@ public class GameScreen extends ScreenAdapter {
             buttonBoost.setPosition(screenWidth / 8f - buttonBoost.getWidth() / 2f,
                     screenHeight / 4f - buttonBoost.getHeight() / 2f);
             buttonBoost.setColor(1, 0, 0, 1);
+            buttonBoost.getLabel().setFontScale(GameConfiguration.fitText(buttonBoost, 48, -1));
             buttonBoost.addListener(new InputListener(){
                 @Override
                 public boolean touchDown(InputEvent event, float x, float y, int pointer, int button) {
@@ -894,7 +903,7 @@ public class GameScreen extends ScreenAdapter {
                 indicator = '+';
                 changeColor = Color.GREEN;
             }
-            scoreChangeLabel.setText(indicator + " " + scoreAdd);
+            scoreChangeLabel.setText(indicator + "" + scoreAdd);
             scoreChangeLabel.setColor(changeColor);
             scoreAddTime -= deltaTime;
         } else {
@@ -914,7 +923,6 @@ public class GameScreen extends ScreenAdapter {
     }
 
     public void configTutorial() {
-        Gdx.app.log("j", "tutorial??");
         tutorialPhase = 1;
         buttonBoost.setVisible(false);
         buttonBoost.setDisabled(true);
@@ -927,10 +935,12 @@ public class GameScreen extends ScreenAdapter {
         tutorialTextBackground.setPosition(screenWidth / 2f - tutorialTextBackground.getWidth() / 2f,
                 screenHeight * 4 / 5 - tutorialTextBackground.getHeight());
 
-        buttonTutorial = new TextButton("Ok", mySkin, "default");
+        buttonTutorial = new TextButton("Ok", mySkin, "pixel72");
         buttonTutorial.setSize(tutorialTextBackground.getWidth() / 2, tutorialTextBackground.getHeight() / 4 );
         buttonTutorial.setPosition(screenWidth / 2f - buttonTutorial.getWidth() / 2f,
                 tutorialTextBackground.getY());
+        buttonTutorial.setColor(Color.GREEN);
+        buttonTutorial.getLabel().setScale(GameConfiguration.fitText(buttonTutorial, -1, -1));
         buttonTutorial.addListener(new InputListener() {
             @Override
             public boolean touchDown(InputEvent event, float x, float y, int pointer, int button) {

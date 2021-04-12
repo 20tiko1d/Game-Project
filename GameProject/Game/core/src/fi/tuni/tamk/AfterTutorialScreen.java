@@ -37,10 +37,11 @@ public class AfterTutorialScreen extends ScreenAdapter {
 
         Skin mySkin = Textures.mySkin;
 
-        Button buttonPlayAgain = new TextButton(GameConfiguration.getText("playTutorialAgain"), mySkin,"pixel48");
+        TextButton buttonPlayAgain = new TextButton(GameConfiguration.getText("playTutorialAgain"), mySkin,"pixel48");
         buttonPlayAgain.setSize(Gdx.graphics.getWidth() / 5f,Gdx.graphics.getWidth() / 8f);
         buttonPlayAgain.setPosition(Gdx.graphics.getWidth() / 2f + 30,Gdx.graphics.getHeight() / 3f);
         buttonPlayAgain.setColor(Color.GREEN);
+        buttonPlayAgain.getLabel().setWrap(true);
         buttonPlayAgain.addListener(new InputListener(){
             @Override
             public boolean touchDown(InputEvent event, float x, float y, int pointer, int button) {
@@ -57,9 +58,11 @@ public class AfterTutorialScreen extends ScreenAdapter {
             }
         });
 
-        Button buttonLevelScreen = new TextButton(GameConfiguration.getText("levels"), mySkin,"pixel48");
+        TextButton buttonLevelScreen = new TextButton(GameConfiguration.getText("levels"), mySkin,"pixel72");
         buttonLevelScreen.setSize(Gdx.graphics.getWidth() / 5f,Gdx.graphics.getWidth() / 8f);
         buttonLevelScreen.setPosition(Gdx.graphics.getWidth() / 2f - buttonLevelScreen.getWidth() - 30,Gdx.graphics.getHeight() / 3f);
+        buttonLevelScreen.setColor(0 / 255f, 255 / 255f, 195 / 255f, 1);
+        buttonLevelScreen.getLabel().setFontScale(GameConfiguration.fitText(buttonLevelScreen, -1, -1));
         buttonLevelScreen.addListener(new InputListener(){
             @Override
             public boolean touchDown(InputEvent event, float x, float y, int pointer, int button) {
