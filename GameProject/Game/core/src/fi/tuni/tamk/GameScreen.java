@@ -85,6 +85,7 @@ public class GameScreen extends ScreenAdapter {
     private Texture playerTexture;
     private Texture objectTexture;
     private Image pairLabelBackground;
+    private TextureRegion background;
 
     private Skin mySkin;
 
@@ -194,11 +195,17 @@ public class GameScreen extends ScreenAdapter {
         tutorialOn = GameConfiguration.tutorialOn;
         mySkin = Textures.mySkin;
         shadow = Textures.shadow;
+        Gdx.app.log("", "density: ??" + Gdx.graphics.getDensity());
+
+        calculateCircle();
 
         Image roundImage = new Image(Textures.getBackgroundTexture());
         roundImage.setBounds(screenWidth / 4f,
                 0,
                 screenWidth / 2f, screenHeight);
+
+        Image backgroundImage = new Image(background);
+        backgroundImage.setBounds(0, 0, screenWidth, screenHeight);
 
         Image side1Image = new Image(Textures.getSideTexture());
         side1Image.setBounds(0, 0, roundImage.getX(), screenHeight);
@@ -239,9 +246,10 @@ public class GameScreen extends ScreenAdapter {
         activatedLabel.setScale(3f);
         activatedLabel.setAlignment(Align.center);
 
-        stage.addActor(roundImage);
-        stage.addActor(side2Image);
-        stage.addActor(side1Image);
+        //stage.addActor(roundImage);
+        //stage.addActor(side2Image);
+        //stage.addActor(side1Image);
+        stage.addActor(backgroundImage);
         stage.addActor(scoreLabel);
         stage.addActor(scoreChangeLabel);
         stage.addActor(objectLabel);
@@ -268,8 +276,6 @@ public class GameScreen extends ScreenAdapter {
         if(!created) {
             array = FileReader.getPairElements();
             mapY = map.length * tileHeight;
-
-
 
             inputMultiplexer.addProcessor(stage);
             inputMultiplexer.addProcessor(new InputMultiplexer( new InputAdapter() {
@@ -479,7 +485,7 @@ public class GameScreen extends ScreenAdapter {
             Drawable touchBackground;
             Drawable touchKnob;
 
-            float size = screenHeight / 5f;
+            float size = screenWidth / 10f;
 
             Skin touchPadSkin = new Skin();
             touchPadSkin.add("touchBackground", Textures.getJoystickBack());
@@ -571,7 +577,6 @@ public class GameScreen extends ScreenAdapter {
         }
 
         batch.begin();
-
         if(created) {
             drawMap(batch);
             handleObjectBouncing(deltaTime);
@@ -1122,5 +1127,19 @@ public class GameScreen extends ScreenAdapter {
                 objectBouniness[i] = objectBouniness[i] * -1;
             }
         }
+    }
+
+    public void calculateCircle() {
+        float radius = Gdx.graphics.getWidth() / 2f;
+        if(radius > Gdx.graphics.getHeight() * 9 / 10f) {
+            radius = Gdx.graphics.getHeight() * 9 / 10f;
+        }
+        Texture wholeBackground = Textures.background;
+        int width = (int) (wholeBackground.getWidth() * 3 / 10 * Gdx.graphics.getWidth() / radius);
+        int height = (int) (wholeBackground.getHeight() * 3 / 10 * Gdx.graphics.getHeight() / radius);
+        int x = wholeBackground.getWidth() / 2 - width / 2;
+        int y = wholeBackground.getHeight() / 2 - height / 2;
+        background = new TextureRegion(wholeBackground, x, y, width, height);
+        Gdx.app.log("", "X: " + x + ", Y: " + y + ", w: " + width + ", H: " + height);
     }
 }

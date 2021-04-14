@@ -47,9 +47,10 @@ public final class GameConfiguration {
 
     // Joystick settings
     public static float joystickXOffset = Gdx.graphics.getWidth() / 32f;
-    public static float joystickX = Gdx.graphics.getWidth() * 3 / 4f + joystickXOffset;
-    public static float joystickY = Gdx.graphics.getWidth() / 32f;
     public static float joystickLength = Gdx.graphics.getWidth() * 3 / 16f;
+    public static float joystickX = Gdx.graphics.getWidth() * 3 / 4f + joystickXOffset;
+    public static float joystickY = Gdx.graphics.getHeight() / 4f - joystickLength / 2;
+
 
     // Saving stuff
     public static String noValue = "No value stored";
