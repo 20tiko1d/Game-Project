@@ -143,6 +143,7 @@ public class GameScreen extends ScreenAdapter {
     private float[] objectBouniness;
     private boolean[] objectDirections;
     private float bounciness = 0.1f;
+    private Texture shadow;
 
     // Score
     private float score = 0;
@@ -192,6 +193,7 @@ public class GameScreen extends ScreenAdapter {
         stage = new Stage(new ScreenViewport());
         tutorialOn = GameConfiguration.tutorialOn;
         mySkin = Textures.mySkin;
+        shadow = Textures.shadow;
 
         Image roundImage = new Image(Textures.getBackgroundTexture());
         roundImage.setBounds(screenWidth / 4f,
@@ -227,10 +229,10 @@ public class GameScreen extends ScreenAdapter {
         scoreChangeLabel.setBounds(scoreLabel.getX() + scoreLabel.getWidth() * 1.2f, scoreLabel.getY(),
                 scoreLabel.getWidth(), scoreLabel.getHeight());
         scoreChangeLabel.setFontScale(0.7f);
-        objectLabel = new Label("", mySkin, "pixel48");
+        objectLabel = new Label("", mySkin, "pixel50");
         objectLabel.setBounds(scoreLabel.getX(), scoreLabel.getY() - scoreLabel.getHeight(),
                 scoreLabel.getWidth(), scoreLabel.getHeight());
-        objectLabel.setFontScale(0.7f);
+        objectLabel.setFontScale(0.4f);
         activatedLabel = new Label(GameConfiguration.getText("activated").toUpperCase(), mySkin, "pixel50");
         activatedLabel.setBounds(pairLabel.getX(), 0, pairLabel.getWidth(), pairLabel.getHeight() / 2);
         activatedLabel.setColor(Color.GREEN);
@@ -618,14 +620,11 @@ public class GameScreen extends ScreenAdapter {
             accumulator -= TIME_STEP;
             second -= TIME_STEP;
             if(second <= 0) {
-                Gdx.app.log("", "fps: " + fpsCounter);
-
+                //Gdx.app.log("", "fps: " + fpsCounter);
                 fpsCounter = 0;
                 second = 1;
             }
         }
-        //Gdx.app.log("", "Y: " + playerLocY + ", X: " + playerLocX);
-        //Gdx.app.log("", ": " + tutorialPhase + "score: " + score);
 
         // Moves the camera
         camera.setToOrtho(false, viewPortWidth * minZoom / zoomRatio,
@@ -683,26 +682,9 @@ public class GameScreen extends ScreenAdapter {
                 batch.draw(mapTexture, column * tileWidth,
                         locY, tileWidth, currentTileHeight);
 
-                if(row == playerLocY && column == playerLocX) {
-                    float playerY = playerBody.getPosition().y / (tileWidth / tileHeight) + tileHeight / 2;
-                    if(isObject) {
-                        if(playerY > objectY) {
-                            drawPlayer(batch, playerY);
-                            drawObject(batch, objectX, objectY, nearObjectIndex);
-                        } else {
-                            drawObject(batch, objectX, objectY, nearObjectIndex);
-                            drawPlayer(batch, playerY);
-                        }
-                        isObject = false;
-                    } else {
-                        drawPlayer(batch, playerY);
-                    }
-                    playerDrawn = true;
-                    objectIndex = itemCollision();
-                }
                 for(int i = 0; i < randomPairs.length; i++) {
                     if (row == randomPairs[i][1] && column == randomPairs[i][2] ||
-                        row == randomPairs[i][3] && column == randomPairs[i][4]) {
+                            row == randomPairs[i][3] && column == randomPairs[i][4]) {
                         int index = i * 2;
                         if(row == randomPairs[i][3]) {
                             index++;
@@ -717,6 +699,25 @@ public class GameScreen extends ScreenAdapter {
                         }
                     }
                 }
+
+                if(row == playerLocY && column == playerLocX) {
+                    float playerY = playerBody.getPosition().y / (tileWidth / tileHeight) + tileHeight / 2;
+                    if(isObject) {
+                        if(playerY > objectY + tileHeight / 4) {
+                            drawPlayer(batch, playerY);
+                            drawObject(batch, objectX, objectY, nearObjectIndex);
+                        } else {
+                            drawObject(batch, objectX, objectY, nearObjectIndex);
+                            drawPlayer(batch, playerY);
+                        }
+                        isObject = false;
+                    } else {
+                        drawPlayer(batch, playerY);
+                    }
+                    playerDrawn = true;
+                    objectIndex = itemCollision();
+                }
+
             }
         }
     }
@@ -724,7 +725,6 @@ public class GameScreen extends ScreenAdapter {
     public void drawPlayer(SpriteBatch batch, float playerY) {
         float playerVelX = playerBody.getLinearVelocity().x;
         float playerVelY = playerBody.getLinearVelocity().y;
-        //Gdx.app.log("", "x: " + playerVelX + ", Y: " + playerVelY);
         if(!(playerTexture != null && playerVelX == 0 && playerVelY == 0)) {
             boolean playerFront = true;
             boolean playerRight = true;
@@ -758,7 +758,16 @@ public class GameScreen extends ScreenAdapter {
     }
 
     public void drawObject(SpriteBatch batch, float locX, float locY, int objectIndex) {
-        batch.draw(objectTexture, locX, locY + Math.round(objectBouniness[objectIndex] * relativeHeight) / relativeHeight, tileWidth, objectHeight);
+        drawShadow(batch, locX, locY, objectIndex);
+        batch.draw(objectTexture, locX, locY + Math.round(objectBouniness[objectIndex] * relativeHeight) / relativeHeight + tileHeight / 2, tileWidth, objectHeight);
+    }
+
+    public void drawShadow(SpriteBatch batch, float locX, float locY, int objectIndex) {
+        float width = tileWidth * 9 / 10 - Math.round(objectBouniness[objectIndex] * relativeHeight) / relativeHeight;
+        float height = tileHeight / 2 - Math.round(objectBouniness[objectIndex] * relativeHeight) / relativeHeight;
+        float shadowLocX = locX + (tileWidth - width) / 2;
+        float shadowLocY = locY + (tileHeight - height) / 2;
+        batch.draw(shadow, shadowLocX, shadowLocY, width, height);
     }
 
     public void handleBoost(float deltaTime) {

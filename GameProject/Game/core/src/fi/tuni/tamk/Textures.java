@@ -24,6 +24,9 @@ public final class Textures {
     // Play button in pause screen
     public static Texture playButtonTexture = new Texture("textures/random/playButton.png");
 
+    // Object shadow
+    public static Texture shadow = new Texture("textures/random/shadow2.png");
+
 
     private Textures() {}
 
