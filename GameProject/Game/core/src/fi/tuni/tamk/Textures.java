@@ -28,7 +28,7 @@ public final class Textures {
     public static Texture shadow = new Texture("textures/random/shadow2.png");
 
     // Game background "mist"
-    public static Texture background = new Texture("textures/random/backgroundTest2.png");
+    public static Texture background = new Texture("textures/random/fog8.png");
 
 
     private Textures() {}
