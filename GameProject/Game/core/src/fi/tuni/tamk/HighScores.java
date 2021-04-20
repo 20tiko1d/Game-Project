@@ -20,6 +20,9 @@ public class HighScores extends ScreenAdapter {
 
     private Main main;
 
+    private final int screenWidth = Gdx.graphics.getWidth();
+    private final int screenHeight = Gdx.graphics.getHeight();
+
     private OrthographicCamera camera;
     private Stage stage;
 
@@ -36,8 +39,8 @@ public class HighScores extends ScreenAdapter {
         Skin mySkin = Textures.mySkin;
 
         TextButton buttonMenu = new TextButton(GameConfiguration.getText("menu"),mySkin,"pixel72");
-        buttonMenu.setSize(Gdx.graphics.getWidth() / 10f,Gdx.graphics.getWidth() / 10f);
-        buttonMenu.setPosition(0,Gdx.graphics.getHeight() - Gdx.graphics.getWidth() / 10f);
+        buttonMenu.setSize(screenWidth / 10f,screenWidth / 10f);
+        buttonMenu.setPosition(0,Gdx.graphics.getHeight() - screenWidth / 10f);
         buttonMenu.setColor(Color.YELLOW);
         buttonMenu.getLabel().setFontScale(GameConfiguration.fitText(buttonMenu, -1, -1));
         buttonMenu.addListener(new InputListener(){
@@ -54,9 +57,8 @@ public class HighScores extends ScreenAdapter {
         });
 
         TextButton buttonLevels = new TextButton(GameConfiguration.getText("levels"),mySkin,"pixel72");
-        buttonLevels.setSize(Gdx.graphics.getWidth() / 10f,Gdx.graphics.getWidth() / 10f);
-        buttonLevels.setPosition(Gdx.graphics.getWidth() - buttonLevels.getWidth(),
-                Gdx.graphics.getHeight() - Gdx.graphics.getWidth() / 10f);
+        buttonLevels.setSize(screenWidth / 10f,screenWidth / 10f);
+        buttonLevels.setPosition(screenWidth - buttonLevels.getWidth(), 0);
         buttonLevels.setColor(0 / 255f, 255 / 255f, 195 / 255f, 1);
         buttonLevels.getLabel().setFontScale(GameConfiguration.fitText(buttonLevels, -1, -1));
         buttonLevels.addListener(new InputListener(){
@@ -72,8 +74,13 @@ public class HighScores extends ScreenAdapter {
             }
         });
 
+        Label nameLabel = new Label("    " + GameConfiguration.open("name"), mySkin, "objectLabel");
+        nameLabel.setSize(screenWidth / 2f, screenHeight / 7f);
+        nameLabel.setPosition(screenWidth / 2f - nameLabel.getWidth() / 2f, screenHeight - nameLabel.getHeight());
+
         stage.addActor(buttonMenu);
         stage.addActor(buttonLevels);
+        stage.addActor(nameLabel);
         Gdx.input.setInputProcessor(stage);
     }
 
