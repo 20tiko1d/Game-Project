@@ -4,6 +4,7 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Preferences;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.World;
+import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
 import com.badlogic.gdx.utils.I18NBundle;
 
 import java.util.Locale;
@@ -46,9 +47,10 @@ public final class GameConfiguration {
 
     // Joystick settings
     public static float joystickXOffset = Gdx.graphics.getWidth() / 32f;
-    public static float joystickX = Gdx.graphics.getWidth() * 3 / 4f + joystickXOffset;
-    public static float joystickY = Gdx.graphics.getWidth() / 32f;
     public static float joystickLength = Gdx.graphics.getWidth() * 3 / 16f;
+    public static float joystickX = Gdx.graphics.getWidth() * 3 / 4f + joystickXOffset;
+    public static float joystickY = Gdx.graphics.getHeight() / 4f - joystickLength / 2;
+
 
     // Saving stuff
     public static String noValue = "No value stored";
@@ -102,47 +104,81 @@ public final class GameConfiguration {
     }
 
     public static String getText(String key) {
-        I18NBundle myBundle;
-        if(!open("language").equals(noValue)) {
-            if(open("language").equals("fi_FI")) {
-                Locale locale = new Locale("fi_FI");
-                myBundle = I18NBundle.createBundle(Gdx.files.internal("MyBundle_fi_FI"), locale);
-            } else {
-                myBundle = I18NBundle.createBundle(Gdx.files.internal("MyBundle"));
-            }
-        } else {
-            Locale locale = Locale.getDefault();
-            myBundle = I18NBundle.createBundle(Gdx.files.internal("MyBundle"), locale);
+        Locale locale;
+        if(open("language").equals("fi_FI")) {
+            locale = new Locale("fi", "FI");
         }
+        else if(open("language").equals("en_UK")) {
+            locale = new Locale("en", "UK");
+        } else {
+            locale = Locale.getDefault();
+        }
+        I18NBundle myBundle = I18NBundle.createBundle(Gdx.files.internal("MyBundle"), locale);
         return myBundle.get(key);
     }
 
     public static void save(String key, String value) {
         Preferences prefs = Gdx.app.getPreferences("MyPreferences");
-
         prefs.putString(key, value);
         prefs.flush();
     }
 
     public static String open(String key) {
         Preferences prefs = Gdx.app.getPreferences("MyPreferences");
-
         String value = prefs.getString(key, noValue);
-
         return value;
     }
 
     public static void checkFirstTime() {
-        if(open(creditsString).equals(noValue)) {
+        if(open("firstTime").equals(noValue)) {
             save(creditsString, "0");
             save("theme", "sand");
-        }
-        if(open("firstTime").equals(noValue)) {
             firstTime = true;
         } else {
             firstTime = false;
         }
+
         theme = open("theme");
         credits = Integer.parseInt(open(creditsString));
+    }
+
+    public static String getLanguage() {
+        String language;
+        if(open("language").equals(noValue)) {
+            if(new Locale("fi", "FI").equals(Locale.getDefault())) {
+                language = "fi_FI";
+            } else {
+                language = "en_UK";
+            }
+        } else {
+            language = open("language");
+        }
+        return language;
+    }
+
+    public static float fitText(TextButton button, int givenFontSize, int givenMaxSize) {
+        float width = button.getWidth() * 0.8f;
+        int length = button.getText().length();
+        float fontSize = givenFontSize;
+        if(givenFontSize < 0) {
+            String styleName = button.getStyle().font.getData().name;
+            String fontSizeString = "";
+            for(int i = styleName.length() - 3; i < styleName.length() - 1; i++) {
+                try {
+                    fontSizeString = fontSizeString + Integer.parseInt(styleName.substring(i));
+                } catch (Exception e) {}
+            }
+            fontSize = Integer.parseInt(fontSizeString);
+        }
+        fontSize = fontSize * 0.7f;
+        int maxSize = givenMaxSize;
+        if(maxSize < 0) {
+            maxSize = 48;
+        }
+        if(width >= maxSize * length) {
+            return (float) maxSize / fontSize;
+        } else {
+            return width / length / fontSize;
+        }
     }
 }

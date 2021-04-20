@@ -14,6 +14,7 @@ import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
+import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.physics.box2d.Body;
 import com.badlogic.gdx.physics.box2d.Box2DDebugRenderer;
@@ -84,6 +85,7 @@ public class GameScreen extends ScreenAdapter {
     private Texture playerTexture;
     private Texture objectTexture;
     private Image pairLabelBackground;
+    private TextureRegion background;
 
     private Skin mySkin;
 
@@ -123,7 +125,7 @@ public class GameScreen extends ScreenAdapter {
     private float maxZoom = 1.5f;
     private boolean ifMaxZoom = false;
     private boolean ifZoomIn = true;
-    private Button buttonBoost;
+    private TextButton buttonBoost;
 
     // Objects
     private Label pairLabel;
@@ -135,10 +137,14 @@ public class GameScreen extends ScreenAdapter {
     private boolean currentFirst;
     private int closeIndex;
     private int currentIndex = -2;
-    private Button buttonValidate;
-    private Button buttonSwitch;
-    private Button buttonActivate;
+    private TextButton buttonValidate;
+    private TextButton buttonSwitch;
+    private TextButton buttonActivate;
     private String objectsFoundString;
+    private float[] objectBouniness;
+    private boolean[] objectDirections;
+    private float bounciness = 0.1f;
+    private Texture shadow;
 
     // Score
     private float score = 0;
@@ -160,7 +166,7 @@ public class GameScreen extends ScreenAdapter {
     private boolean pauseGame = false;
     private int tutorialPhase;
     private Image tutorialTextBackground;
-    private Button buttonTutorial;
+    private TextButton buttonTutorial;
     private Label tutorialLabel;
     private Image objectiveBackground;
     private Label objectiveText;
@@ -171,8 +177,8 @@ public class GameScreen extends ScreenAdapter {
         this.main = main;
         this.world = world;
         this.gameScreen = this;
-        scoreString = GameConfiguration.getText("score");
-        objectsFoundString = GameConfiguration.getText("pairsFound");
+        scoreString = GameConfiguration.getText("score").toUpperCase();
+        objectsFoundString = GameConfiguration.getText("pairsFound").toUpperCase();
         score = GameConfiguration.getStartScore();
         objectScore = GameConfiguration.getObjectScore();
         playerSpeed = GameConfiguration.PLAYER_SPEED;
@@ -187,12 +193,19 @@ public class GameScreen extends ScreenAdapter {
         objectHeight = tileHeight * GameConfiguration.OBJECT_HEIGHT;
         stage = new Stage(new ScreenViewport());
         tutorialOn = GameConfiguration.tutorialOn;
-        mySkin = new Skin(Gdx.files.internal("skin/testi/testi6.json"));
+        mySkin = Textures.mySkin;
+        shadow = Textures.shadow;
+        Gdx.app.log("", "density: ??" + Gdx.graphics.getDensity());
+
+        calculateCircle();
 
         Image roundImage = new Image(Textures.getBackgroundTexture());
         roundImage.setBounds(screenWidth / 4f,
                 0,
                 screenWidth / 2f, screenHeight);
+
+        Image backgroundImage = new Image(background);
+        backgroundImage.setBounds(0, 0, screenWidth, screenHeight);
 
         Image side1Image = new Image(Textures.getSideTexture());
         side1Image.setBounds(0, 0, roundImage.getX(), screenHeight);
@@ -202,39 +215,45 @@ public class GameScreen extends ScreenAdapter {
                 screenWidth - roundImage.getX() - roundImage.getWidth(),
                 screenHeight);
 
-        pairLabel = new Label("", mySkin);
+        pairLabel = new Label("", mySkin, "objectLabel");
         pairLabel.setBounds(screenWidth * 1.1f / 4f, screenHeight * 4f / 5f,
                 screenWidth / 2.2f, screenHeight / 5f);
         pairLabel.setWrap(true);
         pairLabel.setAlignment(Align.center);
+        pairLabel.setScale(1.3f);
+        pairLabel.setColor(Color.WHITE);
 
         pairLabelBackground = new Image(Textures.getPairLabelBackground());
         pairLabelBackground.setBounds(screenWidth / 4f, pairLabel.getY(),
                 screenWidth / 2f, pairLabel.getHeight());
 
-        scoreLabel = new Label(scoreString + ": " + score,
-                mySkin);
+        scoreLabel = new Label(scoreString + ": " + score, mySkin, "pixel48");
         scoreLabel.setSize(side1Image.getWidth() * 4 / 10f, screenHeight / 10f);
         scoreLabel.setPosition(screenWidth / 100f, screenHeight - scoreLabel.getHeight());
+        scoreLabel.setFontScale(0.7f);
 
-        scoreChangeLabel = new Label("", mySkin, "default");
-        scoreChangeLabel.setBounds(scoreLabel.getX() + scoreLabel.getWidth(), scoreLabel.getY(),
+        scoreChangeLabel = new Label("", mySkin, "pixel48");
+        scoreChangeLabel.setBounds(scoreLabel.getX() + scoreLabel.getWidth() * 1.2f, scoreLabel.getY(),
                 scoreLabel.getWidth(), scoreLabel.getHeight());
-        objectLabel = new Label("", mySkin);
+        scoreChangeLabel.setFontScale(0.7f);
+        objectLabel = new Label("", mySkin, "pixel50");
         objectLabel.setBounds(scoreLabel.getX(), scoreLabel.getY() - scoreLabel.getHeight(),
                 scoreLabel.getWidth(), scoreLabel.getHeight());
-        activatedLabel = new Label(GameConfiguration.getText("activated"), mySkin, "big");
-        activatedLabel.setBounds(pairLabel.getX(), 0, pairLabel.getWidth(), pairLabel.getHeight());
+        objectLabel.setFontScale(0.4f);
+        activatedLabel = new Label(GameConfiguration.getText("activated").toUpperCase(), mySkin, "pixel50");
+        activatedLabel.setBounds(pairLabel.getX(), 0, pairLabel.getWidth(), pairLabel.getHeight() / 2);
         activatedLabel.setColor(Color.GREEN);
+        activatedLabel.setScale(3f);
         activatedLabel.setAlignment(Align.center);
 
-        stage.addActor(roundImage);
-        stage.addActor(side2Image);
-        stage.addActor(side1Image);
+        //stage.addActor(roundImage);
+        //stage.addActor(side2Image);
+        //stage.addActor(side1Image);
+        stage.addActor(backgroundImage);
         stage.addActor(scoreLabel);
         stage.addActor(scoreChangeLabel);
         stage.addActor(objectLabel);
-        stage.addActor(pairLabelBackground);
+        //stage.addActor(pairLabelBackground);
         stage.addActor(pairLabel);
         stage.addActor(activatedLabel);
 
@@ -258,8 +277,6 @@ public class GameScreen extends ScreenAdapter {
             array = FileReader.getPairElements();
             mapY = map.length * tileHeight;
 
-
-
             inputMultiplexer.addProcessor(stage);
             inputMultiplexer.addProcessor(new InputMultiplexer( new InputAdapter() {
                 @Override
@@ -279,9 +296,6 @@ public class GameScreen extends ScreenAdapter {
                     if(keycode == Input.Keys.RIGHT && !isRight) {
                         velX++;
                         isRight = true;
-                    }
-                    if(keycode == Input.Keys.SHIFT_LEFT && !boost) {
-                        boost = true;
                     }
                     if(keycode == Input.Keys.SPACE && !isSpace) {
                         ifZoomIn = true;
@@ -313,9 +327,6 @@ public class GameScreen extends ScreenAdapter {
                     if(keycode == Input.Keys.SPACE && !ifZoomIn) {
                         ifZoomIn = true;
                     }
-                    if(keycode == Input.Keys.SHIFT_LEFT) {
-                        boost = false;
-                    }
                     if(keycode == Input.Keys.SPACE) {
                         ifZoomIn = false;
                         ifMaxZoom = false;
@@ -342,9 +353,11 @@ public class GameScreen extends ScreenAdapter {
                 }
             });
 
-            buttonActivate = new TextButton(GameConfiguration.getText("activate"), mySkin, "default");
+            buttonActivate = new TextButton(GameConfiguration.getText("activate"), mySkin, "pixel72");
             buttonActivate.setSize(screenWidth / 2f, screenWidth / 10f);
             buttonActivate.setPosition(screenWidth / 4f, 0);
+            buttonActivate.setColor(Color.GREEN);
+            buttonActivate.getLabel().setFontScale(GameConfiguration.fitText(buttonActivate, -1, -1));
             buttonActivate.addListener(new InputListener() {
                 @Override
                 public boolean touchDown(InputEvent event, float x, float y, int pointer, int button) {
@@ -364,9 +377,11 @@ public class GameScreen extends ScreenAdapter {
             buttonActivate.setVisible(false);
             buttonActivate.setDisabled(true);
 
-            buttonValidate = new TextButton(GameConfiguration.getText("validate"),mySkin,"default");
+            buttonValidate = new TextButton(GameConfiguration.getText("validate"),mySkin,"pixel72");
             buttonValidate.setSize(screenWidth / 4f,screenWidth / 10f);
             buttonValidate.setPosition(screenWidth / 4f,0);
+            buttonValidate.setColor(Color.GREEN);
+            buttonValidate.getLabel().setFontScale(GameConfiguration.fitText(buttonValidate, -1, -1));
             buttonValidate.addListener(new InputListener() {
                 @Override
                 public boolean touchDown(InputEvent event, float x, float y, int pointer, int button) {
@@ -419,9 +434,11 @@ public class GameScreen extends ScreenAdapter {
             buttonValidate.setVisible(false);
             buttonValidate.setDisabled(true);
 
-            buttonSwitch = new TextButton(GameConfiguration.getText("switchButton"),mySkin,"default");
+            buttonSwitch = new TextButton(GameConfiguration.getText("switchButton"),mySkin,"pixel72");
             buttonSwitch.setSize(screenWidth / 4f,screenWidth / 10f);
             buttonSwitch.setPosition(screenWidth / 2f,0);
+            buttonSwitch.setColor(Color.YELLOW);
+            buttonSwitch.getLabel().setFontScale(GameConfiguration.fitText(buttonSwitch, -1, -1));
             buttonSwitch.addListener(new InputListener(){
                 @Override
                 public boolean touchDown(InputEvent event, float x, float y, int pointer, int button) {
@@ -442,11 +459,12 @@ public class GameScreen extends ScreenAdapter {
             buttonSwitch.setVisible(false);
             buttonSwitch.setDisabled(true);
 
-            buttonBoost = new TextButton(GameConfiguration.getText("boostButton"),mySkin,"default");
-            buttonBoost.setSize(screenHeight / 4f,screenHeight / 4f);
+            buttonBoost = new TextButton(GameConfiguration.getText("boostButton"),mySkin,"boost");
+            buttonBoost.setSize(screenWidth * 3 / 18,screenWidth * 3 / 18);
             buttonBoost.setPosition(screenWidth / 8f - buttonBoost.getWidth() / 2f,
                     screenHeight / 4f - buttonBoost.getHeight() / 2f);
             buttonBoost.setColor(1, 0, 0, 1);
+            buttonBoost.getLabel().setFontScale(GameConfiguration.fitText(buttonBoost, 48, -1));
             buttonBoost.addListener(new InputListener(){
                 @Override
                 public boolean touchDown(InputEvent event, float x, float y, int pointer, int button) {
@@ -467,7 +485,7 @@ public class GameScreen extends ScreenAdapter {
             Drawable touchBackground;
             Drawable touchKnob;
 
-            float size = screenHeight / 5f;
+            float size = screenWidth / 10f;
 
             Skin touchPadSkin = new Skin();
             touchPadSkin.add("touchBackground", Textures.getJoystickBack());
@@ -559,9 +577,9 @@ public class GameScreen extends ScreenAdapter {
         }
 
         batch.begin();
-
         if(created) {
             drawMap(batch);
+            handleObjectBouncing(deltaTime);
         }
         batch.end();
         if(created) {
@@ -608,13 +626,10 @@ public class GameScreen extends ScreenAdapter {
             second -= TIME_STEP;
             if(second <= 0) {
                 //Gdx.app.log("", "fps: " + fpsCounter);
-
                 fpsCounter = 0;
                 second = 1;
             }
         }
-        //Gdx.app.log("", "Y: " + playerLocY + ", X: " + playerLocX);
-        //Gdx.app.log("", ": " + tutorialPhase + "score: " + score);
 
         // Moves the camera
         camera.setToOrtho(false, viewPortWidth * minZoom / zoomRatio,
@@ -659,6 +674,8 @@ public class GameScreen extends ScreenAdapter {
         boolean playerDrawn = false;
         boolean isObject = false;
 
+        int nearObjectIndex = 0;
+
         for(int row = minIndexY; row < maxIndexY; row++) {
             for(int column = minIndexX; column < maxIndexX; column++) {
                 Texture mapTexture = map[row][column];
@@ -670,14 +687,32 @@ public class GameScreen extends ScreenAdapter {
                 batch.draw(mapTexture, column * tileWidth,
                         locY, tileWidth, currentTileHeight);
 
+                for(int i = 0; i < randomPairs.length; i++) {
+                    if (row == randomPairs[i][1] && column == randomPairs[i][2] ||
+                            row == randomPairs[i][3] && column == randomPairs[i][4]) {
+                        int index = i * 2;
+                        if(row == randomPairs[i][3]) {
+                            index++;
+                        }
+                        if(objectIndex == i && !playerDrawn) {
+                            nearObjectIndex = index;
+                            isObject = true;
+                            objectX = column * tileWidth;
+                            objectY = locY;
+                        } else {
+                            drawObject(batch, column * tileWidth, locY, index);
+                        }
+                    }
+                }
+
                 if(row == playerLocY && column == playerLocX) {
                     float playerY = playerBody.getPosition().y / (tileWidth / tileHeight) + tileHeight / 2;
                     if(isObject) {
-                        if(playerY > objectY) {
+                        if(playerY > objectY + tileHeight / 4) {
                             drawPlayer(batch, playerY);
-                            drawObject(batch, objectX, objectY);
+                            drawObject(batch, objectX, objectY, nearObjectIndex);
                         } else {
-                            drawObject(batch, objectX, objectY);
+                            drawObject(batch, objectX, objectY, nearObjectIndex);
                             drawPlayer(batch, playerY);
                         }
                         isObject = false;
@@ -687,18 +722,7 @@ public class GameScreen extends ScreenAdapter {
                     playerDrawn = true;
                     objectIndex = itemCollision();
                 }
-                for(int i = 0; i < randomPairs.length; i++) {
-                    if (row == randomPairs[i][1] && column == randomPairs[i][2] ||
-                        row == randomPairs[i][3] && column == randomPairs[i][4]) {
-                        if(objectIndex == i && !playerDrawn) {
-                            isObject = true;
-                            objectX = column * tileWidth;
-                            objectY = locY;
-                        } else {
-                            drawObject(batch, column * tileWidth, locY);
-                        }
-                    }
-                }
+
             }
         }
     }
@@ -706,7 +730,6 @@ public class GameScreen extends ScreenAdapter {
     public void drawPlayer(SpriteBatch batch, float playerY) {
         float playerVelX = playerBody.getLinearVelocity().x;
         float playerVelY = playerBody.getLinearVelocity().y;
-        //Gdx.app.log("", "x: " + playerVelX + ", Y: " + playerVelY);
         if(!(playerTexture != null && playerVelX == 0 && playerVelY == 0)) {
             boolean playerFront = true;
             boolean playerRight = true;
@@ -739,8 +762,17 @@ public class GameScreen extends ScreenAdapter {
                 tileWidth, tileWidth * ((float) playerTexture.getHeight() / playerTexture.getWidth()));
     }
 
-    public void drawObject(SpriteBatch batch, float locX, float locY) {
-        batch.draw(objectTexture, locX, locY, tileWidth, objectHeight);
+    public void drawObject(SpriteBatch batch, float locX, float locY, int objectIndex) {
+        drawShadow(batch, locX, locY, objectIndex);
+        batch.draw(objectTexture, locX, locY + Math.round(objectBouniness[objectIndex] * relativeHeight) / relativeHeight + tileHeight / 2, tileWidth, objectHeight);
+    }
+
+    public void drawShadow(SpriteBatch batch, float locX, float locY, int objectIndex) {
+        float width = tileWidth * 9 / 10 - Math.round(objectBouniness[objectIndex] * relativeHeight) / relativeHeight;
+        float height = tileHeight / 2 - Math.round(objectBouniness[objectIndex] * relativeHeight) / relativeHeight;
+        float shadowLocX = locX + (tileWidth - width) / 2;
+        float shadowLocY = locY + (tileHeight - height) / 2;
+        batch.draw(shadow, shadowLocX, shadowLocY, width, height);
     }
 
     public void handleBoost(float deltaTime) {
@@ -826,6 +858,14 @@ public class GameScreen extends ScreenAdapter {
 
     public void setRandomPairs(int [][] randomPairs) {
         this.randomPairs = randomPairs;
+
+        // set random bounciness value
+        objectBouniness = new float[randomPairs.length * 2];
+        objectDirections = new boolean[randomPairs.length * 2];
+        for(int i = 0; i < objectBouniness.length; i++) {
+            objectBouniness[i] = MathUtils.random(0, 100) / 1000f;
+            objectDirections[i] = true;
+        }
     }
 
     public void setMap(Texture [][] map) {
@@ -877,7 +917,7 @@ public class GameScreen extends ScreenAdapter {
                 indicator = '+';
                 changeColor = Color.GREEN;
             }
-            scoreChangeLabel.setText(indicator + " " + scoreAdd);
+            scoreChangeLabel.setText(indicator + "" + scoreAdd);
             scoreChangeLabel.setColor(changeColor);
             scoreAddTime -= deltaTime;
         } else {
@@ -897,7 +937,6 @@ public class GameScreen extends ScreenAdapter {
     }
 
     public void configTutorial() {
-        Gdx.app.log("j", "tutorial??");
         tutorialPhase = 1;
         buttonBoost.setVisible(false);
         buttonBoost.setDisabled(true);
@@ -910,10 +949,12 @@ public class GameScreen extends ScreenAdapter {
         tutorialTextBackground.setPosition(screenWidth / 2f - tutorialTextBackground.getWidth() / 2f,
                 screenHeight * 4 / 5 - tutorialTextBackground.getHeight());
 
-        buttonTutorial = new TextButton("Ok", mySkin, "default");
+        buttonTutorial = new TextButton("Ok", mySkin, "pixel72");
         buttonTutorial.setSize(tutorialTextBackground.getWidth() / 2, tutorialTextBackground.getHeight() / 4 );
         buttonTutorial.setPosition(screenWidth / 2f - buttonTutorial.getWidth() / 2f,
                 tutorialTextBackground.getY());
+        buttonTutorial.setColor(Color.GREEN);
+        buttonTutorial.getLabel().setScale(GameConfiguration.fitText(buttonTutorial, -1, -1));
         buttonTutorial.addListener(new InputListener() {
             @Override
             public boolean touchDown(InputEvent event, float x, float y, int pointer, int button) {
@@ -932,10 +973,10 @@ public class GameScreen extends ScreenAdapter {
             }
         });
 
-        tutorialLabel = new Label("", mySkin, "default");
+        tutorialLabel = new Label("", mySkin, "tutorialTest2");
         tutorialLabel.setSize(tutorialTextBackground.getWidth() * 8 / 10, tutorialTextBackground.getHeight());
         tutorialLabel.setPosition(tutorialTextBackground.getX() + tutorialTextBackground.getWidth() / 10,
-                tutorialTextBackground.getY() + buttonTutorial.getHeight());
+                tutorialTextBackground.getY());
         tutorialLabel.setWrap(true);
 
         objectiveBackground = new Image(new Texture("textures/random/tutorialTextBackground.png"));
@@ -949,7 +990,7 @@ public class GameScreen extends ScreenAdapter {
         objectiveText.setWrap(true);
         objectiveText.setVisible(false);
 
-        stage.addActor(tutorialTextBackground);
+        //stage.addActor(tutorialTextBackground);
         stage.addActor(tutorialLabel);
         stage.addActor(buttonTutorial);
         stage.addActor(objectiveBackground);
@@ -1068,5 +1109,37 @@ public class GameScreen extends ScreenAdapter {
         }
         tutorialPhase++;
         Gdx.app.log("", "phase: " + tutorialPhase);
+    }
+
+    public void handleObjectBouncing(float deltaTime) {
+        for(int i = 0; i < objectBouniness.length; i++) {
+            float bounce = bounciness;
+            if(!objectDirections[i]) {
+                bounce = bounce * -1;
+            }
+            objectBouniness[i] += deltaTime * bounce;
+            if(objectBouniness[i] > 0.1f) {
+                objectDirections[i] = !objectDirections[i];
+                objectBouniness[i] = 0.2f - objectBouniness[i];
+            }
+            else if(objectBouniness[i] < 0) {
+                objectDirections[i] = !objectDirections[i];
+                objectBouniness[i] = objectBouniness[i] * -1;
+            }
+        }
+    }
+
+    public void calculateCircle() {
+        float radius = Gdx.graphics.getWidth() / 2f;
+        if(radius > Gdx.graphics.getHeight() * 9 / 10f) {
+            radius = Gdx.graphics.getHeight() * 9 / 10f;
+        }
+        Texture wholeBackground = Textures.background;
+        int width = (int) (wholeBackground.getWidth() * 3 / 10 * Gdx.graphics.getWidth() / radius);
+        int height = (int) (wholeBackground.getHeight() * 3 / 10 * Gdx.graphics.getHeight() / radius);
+        int x = wholeBackground.getWidth() / 2 - width / 2;
+        int y = wholeBackground.getHeight() / 2 - height / 2;
+        background = new TextureRegion(wholeBackground, x, y, width, height);
+        Gdx.app.log("", "X: " + x + ", Y: " + y + ", w: " + width + ", H: " + height);
     }
 }

@@ -2,6 +2,7 @@ package fi.tuni.tamk;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.ScreenAdapter;
+import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
@@ -42,11 +43,12 @@ public class SettingsScreen extends ScreenAdapter {
     public void show() {
         stage = new Stage(new ScreenViewport());
 
-        Skin mySkin = new Skin(Gdx.files.internal("skin/testi/testi3.json"));
+        Skin mySkin = Textures.mySkin;
 
         Button buttonMenu = new TextButton(GameConfiguration.getText("menu"),mySkin,"default");
         buttonMenu.setSize(Gdx.graphics.getWidth() / 10f,Gdx.graphics.getWidth() / 10f);
         buttonMenu.setPosition(0,Gdx.graphics.getHeight() - Gdx.graphics.getWidth() / 10f);
+        buttonMenu.setColor(Color.YELLOW);
         buttonMenu.addListener(new InputListener(){
             @Override
             public boolean touchDown(InputEvent event, float x, float y, int pointer, int button) {

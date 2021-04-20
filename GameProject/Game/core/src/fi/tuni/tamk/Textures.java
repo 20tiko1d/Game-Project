@@ -1,23 +1,34 @@
 package fi.tuni.tamk;
 
+import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Texture;
+import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 
 import java.util.ArrayList;
 
 public final class Textures {
 
+    // Skin
+    public static Skin mySkin = new Skin(Gdx.files.internal("skin/gameUI.json"));
+
     // Flag textures
-    public static Texture finFlag = new Texture("textures/random/suomiperkele.png");
-    public static Texture engFlag = new Texture("textures/random/londonflag.png");
+    public static Texture finFlag = new Texture("textures/random/fin_flag.png");
+    public static Texture engFlag = new Texture("textures/random/gbr_flag.png");
 
     // Menu screen button background (40px width, 30px Height)
-    public static Texture menuButtonBackground = new Texture("textures/random/menuButtonBackground.png");
+    public static Texture menuButtonBackground = new Texture("textures/random/menuButtonBackground2.png");
 
     // Pause button
-    public static Texture pauseButtonTexture = new Texture("textures/random/tutorialTextBackground.png");
+    public static Texture pauseButtonTexture = new Texture("textures/random/pauseButton.png");
 
     // Play button in pause screen
-    public static Texture playButtonTexture = new Texture("textures/random/tutorialTextBackground.png");
+    public static Texture playButtonTexture = new Texture("textures/random/playButton.png");
+
+    // Object shadow
+    public static Texture shadow = new Texture("textures/random/shadow2.png");
+
+    // Game background "mist"
+    public static Texture background = new Texture("textures/random/fog8.png");
 
 
     private Textures() {}
@@ -65,13 +76,13 @@ public final class Textures {
     public static Texture[] getPlayerTexture() {
         Texture [] playerTextures = new Texture[4];
         // Front
-        playerTextures[0] = new Texture("textures/player/blueDude/blueDudeFront.png");
+        playerTextures[0] = new Texture("textures/player/Ghost/Kawaiighost-front.png");
         // Left
-        playerTextures[1] = new Texture("textures/player/blueDude/blueDudeLeft.png");
+        playerTextures[1] = new Texture("textures/player/Ghost/Kawaiighost-left.png");
         // Back
-        playerTextures[2] = new Texture("textures/player/blueDude/blueDudeBack.png");
+        playerTextures[2] = new Texture("textures/player/Ghost/Kawaiighost-back.png");
         // Right
-        playerTextures[3] = new Texture("textures/player/blueDude/blueDudeRight.png");
+        playerTextures[3] = new Texture("textures/player/Ghost/Kawaiighost-right.png");
         return playerTextures;
     }
 
@@ -80,7 +91,7 @@ public final class Textures {
     }
 
     public static Texture getObjectTexture() {
-        return new Texture("textures/object/mushroom1.png");
+        return new Texture("textures/object/mushroom.png");
     }
 
     public static Texture getExitCloseTexture() {
@@ -99,15 +110,15 @@ public final class Textures {
 
     public static Texture getPairLabelBackground() { return new Texture("textures/random/pairLabelBackground.png");}
 
-    public static Texture getJoystickBack() { return new Texture("textures/joystick/random/joystickBack2.png");}
+    public static Texture getJoystickBack() { return new Texture("textures/joystick/random/joystickBack.png");}
 
-    public static Texture getJoystickKnob() { return new Texture("textures/joystick/random/joystickKnob2.png");}
+    public static Texture getJoystickKnob() { return new Texture("textures/joystick/random/joystickKnob.png");}
 
     public static Texture getTutorialTextBackground() {
         return new Texture("textures/random/tutorialTextBackground.png");
     }
 
     public static Texture getMenuBackground() {
-        return new Texture("textures/random/menuBackground3.png");
+        return new Texture("textures/random/backgroundImage5.png");
     }
 }

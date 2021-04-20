@@ -2,6 +2,7 @@ package fi.tuni.tamk;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.ScreenAdapter;
+import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
@@ -52,7 +53,7 @@ public class PauseScreen extends ScreenAdapter {
             multiplier = 1.4f;
         }
 
-        Skin mySkin = new Skin(Gdx.files.internal("skin/testi/testi3.json"));
+        Skin mySkin = Textures.mySkin;
 
         float width = Gdx.graphics.getWidth() / 3f;
         float height = Gdx.graphics.getHeight() / (6f * multiplier);
@@ -64,7 +65,7 @@ public class PauseScreen extends ScreenAdapter {
         pauseLabel.setBounds(locX, startY + height + buttonsGap, width, height);
         pauseLabel.setFontScale(3);
 
-        final Drawable drawable = new TextureRegionDrawable(new TextureRegion(Textures.pauseButtonTexture));
+        final Drawable drawable = new TextureRegionDrawable(new TextureRegion(Textures.playButtonTexture));
         final Button buttonReturnToGame = new Button(drawable);
         buttonReturnToGame.setSize(screenWidth / 10f,screenWidth / 10f);
         buttonReturnToGame.setPosition(screenWidth * 9 / 10f,screenHeight - screenWidth / 10f);
@@ -84,9 +85,10 @@ public class PauseScreen extends ScreenAdapter {
             }
         });
 
-        TextButton buttonSettings = new TextButton(GameConfiguration.getText("settingsButton"),mySkin,"default");
+        TextButton buttonSettings = new TextButton(GameConfiguration.getText("settingsButton"),mySkin,"pixel48");
         buttonSettings.setSize(width,height);
         buttonSettings.setPosition(locX, startY - height - buttonsGap);
+        buttonSettings.setColor(1, 208 / 255f, 0, 1);
         buttonSettings.addListener(new InputListener(){
             @Override
             public boolean touchDown(InputEvent event, float x, float y, int pointer, int button) {
@@ -99,9 +101,10 @@ public class PauseScreen extends ScreenAdapter {
             }
         });
 
-        TextButton buttonLevels = new TextButton(GameConfiguration.getText("levels"),mySkin,"default");
+        TextButton buttonLevels = new TextButton(GameConfiguration.getText("levels"),mySkin,"pixel48");
         buttonLevels.setSize(width,height);
         buttonLevels.setPosition(locX, startY - 2 * height - 2 * buttonsGap);
+        buttonLevels.setColor(0 / 255f, 255 / 255f, 195 / 255f, 1);
         buttonLevels.addListener(new InputListener(){
             @Override
             public boolean touchDown(InputEvent event, float x, float y, int pointer, int button) {
@@ -118,9 +121,10 @@ public class PauseScreen extends ScreenAdapter {
             }
         });
 
-        TextButton buttonPlayAgain = new TextButton(GameConfiguration.getText("restart"),mySkin,"default");
+        TextButton buttonPlayAgain = new TextButton(GameConfiguration.getText("restart"),mySkin,"pixel48");
         buttonPlayAgain.setSize(width,height);
         buttonPlayAgain.setPosition(locX, startY - 3 * height - 3 * buttonsGap);
+        buttonPlayAgain.setColor(Color.GREEN);
         buttonPlayAgain.addListener(new InputListener(){
             @Override
             public boolean touchDown(InputEvent event, float x, float y, int pointer, int button) {
@@ -138,9 +142,10 @@ public class PauseScreen extends ScreenAdapter {
             }
         });
 
-        Button buttonMenu = new TextButton(GameConfiguration.getText("menu"),mySkin,"default");
+        Button buttonMenu = new TextButton(GameConfiguration.getText("menu"),mySkin,"pixel48");
         buttonMenu.setSize(Gdx.graphics.getWidth() / 10f,Gdx.graphics.getWidth() / 10f);
         buttonMenu.setPosition(0,Gdx.graphics.getHeight() - Gdx.graphics.getWidth() / 10f);
+        buttonMenu.setColor(Color.YELLOW);
         buttonMenu.addListener(new InputListener(){
             @Override
             public boolean touchDown(InputEvent event, float x, float y, int pointer, int button) {
@@ -169,7 +174,7 @@ public class PauseScreen extends ScreenAdapter {
     @Override
     public void render(float deltaTime) {
         main.batch.setProjectionMatrix(camera.combined);
-        Gdx.gl.glClearColor(0, 255, 234, 1);
+        Gdx.gl.glClearColor(87 / 255f, 92 / 255f, 95 / 255f, 1);
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
         stage.draw();
         stage.act();

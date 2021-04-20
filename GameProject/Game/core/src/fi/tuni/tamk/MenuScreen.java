@@ -36,6 +36,7 @@ public class MenuScreen extends ScreenAdapter {
 
     private Texture backgroundImage;
     private Texture buttonBackground;
+    private float backgroundHeight;
 
     private final int screenWidth = Gdx.graphics.getWidth();
     private final int screenHeight = Gdx.graphics.getHeight();
@@ -53,11 +54,12 @@ public class MenuScreen extends ScreenAdapter {
 
         backgroundImage = Textures.getMenuBackground();
         buttonBackground = Textures.menuButtonBackground;
+        backgroundHeight = (float) screenWidth * backgroundImage.getHeight() / backgroundImage.getWidth();
 
-        Skin mySkin = new Skin(Gdx.files.internal("skin/testi/testi7.json"));
+        Skin mySkin = Textures.mySkin;
 
         Texture flagTexture = Textures.engFlag;
-        if(GameConfiguration.open("language").equals("en_GB")) {
+        if(GameConfiguration.getLanguage().equals("en_UK")) {
             flagTexture = Textures.finFlag;
         }
         final Drawable drawable = new TextureRegionDrawable(new TextureRegion(flagTexture));
@@ -73,9 +75,9 @@ public class MenuScreen extends ScreenAdapter {
 
             @Override
             public void touchUp(InputEvent event, float x, float y, int pointer, int button) {
-                if(GameConfiguration.open("language").equals("fi_FI")) {
+                if(GameConfiguration.getLanguage().equals("fi_FI")) {
                     flagButton.getStyle().up = new TextureRegionDrawable(new TextureRegion(Textures.finFlag));
-                    GameConfiguration.save("language", "en_GB");
+                    GameConfiguration.save("language", "en_UK");
                 } else {
                     flagButton.getStyle().up = new TextureRegionDrawable(new TextureRegion(Textures.engFlag));
                     GameConfiguration.save("language", "fi_FI");
@@ -86,10 +88,12 @@ public class MenuScreen extends ScreenAdapter {
 
 
 
-        buttonPlay = new TextButton(GameConfiguration.getText("playButton"),mySkin,"defaultBig");
+        buttonPlay = new TextButton(GameConfiguration.getText("playButton"),mySkin,"pixel72");
         buttonPlay.setSize(screenWidth / 3f,screenHeight / 7f);
         buttonPlay.setPosition(screenWidth / 2f - buttonPlay.getWidth() / 2,
                 screenHeight / 2f);
+        buttonPlay.setColor(Color.GREEN);
+        buttonPlay.getLabel().setFontScale(GameConfiguration.fitText(buttonPlay, 72, 110));
         buttonPlay.addListener(new InputListener(){
             @Override
             public boolean touchDown(InputEvent event, float x, float y, int pointer, int button) {
@@ -111,11 +115,14 @@ public class MenuScreen extends ScreenAdapter {
             }
         });
 
-        buttonSettings = new TextButton(GameConfiguration.getText("settingsButton"),mySkin,"default");
+        Color buttonColors = new Color(1, 208 / 255f, 0, 1);
+
+        buttonSettings = new TextButton(GameConfiguration.getText("settingsButton"),mySkin,"pixel72");
         buttonSettings.setSize(screenWidth / 4f,screenHeight / 8f);
         buttonSettings.setPosition(screenWidth / 2f - buttonSettings.getWidth() / 2f,
                 buttonPlay.getY() - buttonSettings.getHeight() - screenHeight / 20f);
-        buttonSettings.setColor(Color.YELLOW);
+        buttonSettings.setColor(buttonColors);
+        buttonSettings.getLabel().setFontScale(GameConfiguration.fitText(buttonSettings, -1, -1));
         buttonSettings.addListener(new InputListener(){
             @Override
             public boolean touchDown(InputEvent event, float x, float y, int pointer, int button) {
@@ -129,11 +136,12 @@ public class MenuScreen extends ScreenAdapter {
             }
         });
 
-        buttonPersonal = new TextButton(GameConfiguration.getText("personalButton"),mySkin,"default");
+        buttonPersonal = new TextButton(GameConfiguration.getText("personalButton"),mySkin,"pixel72");
         buttonPersonal.setSize(screenWidth / 4f,screenHeight / 8f);
         buttonPersonal.setPosition(screenWidth / 2f - buttonPersonal.getWidth() / 2f,
                 buttonSettings.getY() - buttonPersonal.getHeight() - screenHeight / 20f);
-        buttonPersonal.setColor(Color.GREEN);
+        buttonPersonal.setColor(buttonColors);
+        buttonPersonal.getLabel().setFontScale(GameConfiguration.fitText(buttonPersonal, -1, -1));
         buttonPersonal.addListener(new InputListener(){
             @Override
             public boolean touchDown(InputEvent event, float x, float y, int pointer, int button) {
@@ -157,10 +165,9 @@ public class MenuScreen extends ScreenAdapter {
     @Override
     public void render(float deltaTime) {
         main.batch.setProjectionMatrix(camera.combined);
-        //Gdx.gl.glClearColor(0, 255, 234, 1);
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
         batch.begin();
-        batch.draw(backgroundImage, 0, 0, screenWidth, screenHeight);
+        batch.draw(backgroundImage, 0, 0, screenWidth, backgroundHeight);
         batch.draw(buttonBackground, screenWidth * 3 / 10f, screenHeight / 10f, screenWidth * 2 / 5f,
                 screenWidth * 3 / 10f);
         batch.end();
