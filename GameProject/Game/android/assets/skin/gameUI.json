@@ -93,6 +93,26 @@ com.badlogic.gdx.scenes.scene2d.ui.Label$LabelStyle: {
 	pixel50: {
 		font: pixel50
 	}
+	tutorialLabel: {
+		font: arial-fontSmall
+		fontColor: black
+		background: buttonDown
+	}
+	tutorialTest: {
+		font: arial-fontSmall
+		fontColor: black
+		background: textBox
+	}
+	tutorialTest2: {
+		font: arial-fontSmall
+		fontColor: black
+		background: textBox2
+	}
+	objectLabel: {
+		font: arial-fontSmall
+		fontColor: black
+		background: textBox3
+	}
 }
 com.badlogic.gdx.scenes.scene2d.ui.List$ListStyle: {
 	default: {

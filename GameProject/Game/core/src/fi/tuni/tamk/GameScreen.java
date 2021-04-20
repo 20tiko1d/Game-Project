@@ -215,7 +215,7 @@ public class GameScreen extends ScreenAdapter {
                 screenWidth - roundImage.getX() - roundImage.getWidth(),
                 screenHeight);
 
-        pairLabel = new Label("", mySkin, "default");
+        pairLabel = new Label("", mySkin, "objectLabel");
         pairLabel.setBounds(screenWidth * 1.1f / 4f, screenHeight * 4f / 5f,
                 screenWidth / 2.2f, screenHeight / 5f);
         pairLabel.setWrap(true);
@@ -253,7 +253,7 @@ public class GameScreen extends ScreenAdapter {
         stage.addActor(scoreLabel);
         stage.addActor(scoreChangeLabel);
         stage.addActor(objectLabel);
-        stage.addActor(pairLabelBackground);
+        //stage.addActor(pairLabelBackground);
         stage.addActor(pairLabel);
         stage.addActor(activatedLabel);
 
@@ -973,10 +973,10 @@ public class GameScreen extends ScreenAdapter {
             }
         });
 
-        tutorialLabel = new Label("", mySkin, "default");
+        tutorialLabel = new Label("", mySkin, "tutorialTest2");
         tutorialLabel.setSize(tutorialTextBackground.getWidth() * 8 / 10, tutorialTextBackground.getHeight());
         tutorialLabel.setPosition(tutorialTextBackground.getX() + tutorialTextBackground.getWidth() / 10,
-                tutorialTextBackground.getY() + buttonTutorial.getHeight());
+                tutorialTextBackground.getY());
         tutorialLabel.setWrap(true);
 
         objectiveBackground = new Image(new Texture("textures/random/tutorialTextBackground.png"));
@@ -990,7 +990,7 @@ public class GameScreen extends ScreenAdapter {
         objectiveText.setWrap(true);
         objectiveText.setVisible(false);
 
-        stage.addActor(tutorialTextBackground);
+        //stage.addActor(tutorialTextBackground);
         stage.addActor(tutorialLabel);
         stage.addActor(buttonTutorial);
         stage.addActor(objectiveBackground);
