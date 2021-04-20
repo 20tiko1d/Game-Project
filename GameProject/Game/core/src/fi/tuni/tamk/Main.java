@@ -57,13 +57,4 @@ public class Main extends Game {
 			centerY = viewPortHeight / 2;
 		}
 	}
-
-	public float getCenterX() {
-		return centerX;
-	}
-
-	public float getCenterY() {
-		return centerY;
-	}
-
 }
