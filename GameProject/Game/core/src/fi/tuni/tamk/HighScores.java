@@ -69,8 +69,10 @@ public class HighScores extends ScreenAdapter {
 
             @Override
             public void touchUp(InputEvent event, float x, float y, int pointer, int button) {
-                dispose();
-                main.setScreen(new LevelScreen(main));
+                if(!GameConfiguration.firstTime) {
+                    dispose();
+                    main.setScreen(new LevelScreen(main));
+                }
             }
         });
 
@@ -78,9 +80,29 @@ public class HighScores extends ScreenAdapter {
         nameLabel.setSize(screenWidth / 2f, screenHeight / 7f);
         nameLabel.setPosition(screenWidth / 2f - nameLabel.getWidth() / 2f, screenHeight - nameLabel.getHeight());
 
+        TextButton buttonRename = new TextButton("Edit",mySkin,"pixel72");
+        buttonRename.setSize(nameLabel.getHeight(),nameLabel.getHeight());
+        buttonRename.setPosition(nameLabel.getX() + nameLabel.getWidth() - buttonRename.getWidth(),
+                nameLabel.getY());
+        buttonRename.setColor(0 / 255f, 255 / 255f, 195 / 255f, 1);
+        buttonRename.getLabel().setFontScale(GameConfiguration.fitText(buttonRename, -1, -1));
+        buttonRename.addListener(new InputListener(){
+            @Override
+            public boolean touchDown(InputEvent event, float x, float y, int pointer, int button) {
+                return true;
+            }
+
+            @Override
+            public void touchUp(InputEvent event, float x, float y, int pointer, int button) {
+                dispose();
+                main.setScreen(new PlayerName(main, false));
+            }
+        });
+
         stage.addActor(buttonMenu);
         stage.addActor(buttonLevels);
         stage.addActor(nameLabel);
+        stage.addActor(buttonRename);
         Gdx.input.setInputProcessor(stage);
     }
 
