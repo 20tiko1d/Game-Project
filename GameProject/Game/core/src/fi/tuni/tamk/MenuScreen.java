@@ -19,6 +19,8 @@ import com.badlogic.gdx.scenes.scene2d.utils.Drawable;
 import com.badlogic.gdx.scenes.scene2d.utils.TextureRegionDrawable;
 import com.badlogic.gdx.utils.viewport.ScreenViewport;
 
+import java.util.List;
+
 /**
  * The class contains and controls the Main menu screen.
  */
@@ -32,7 +34,7 @@ public class MenuScreen extends ScreenAdapter {
 
     private TextButton buttonPlay;
     private TextButton buttonSettings;
-    private TextButton buttonPersonal;
+    private TextButton buttonHighScores;
 
     private Texture backgroundImage;
     private Texture buttonBackground;
@@ -86,7 +88,26 @@ public class MenuScreen extends ScreenAdapter {
             }
         });
 
+        TextButton buttonMenu = new TextButton("Score",mySkin,"pixel72");
+        buttonMenu.setSize(screenWidth / 10f,screenWidth / 10f);
+        buttonMenu.setPosition(0,screenHeight - screenWidth / 10f);
+        buttonMenu.setColor(Color.YELLOW);
+        buttonMenu.getLabel().setFontScale(GameConfiguration.fitText(buttonMenu, -1, -1));
+        buttonMenu.addListener(new InputListener(){
+            @Override
+            public boolean touchDown(InputEvent event, float x, float y, int pointer, int button) {
+                return true;
+            }
 
+            @Override
+            public void touchUp(InputEvent event, float x, float y, int pointer, int button) {
+                try {
+                    GameConfiguration.getHighScores();
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+            }
+        });
 
         buttonPlay = new TextButton(GameConfiguration.getText("playButton"),mySkin,"pixel72");
         buttonPlay.setSize(screenWidth / 3f,screenHeight / 7f);
@@ -136,13 +157,13 @@ public class MenuScreen extends ScreenAdapter {
             }
         });
 
-        buttonPersonal = new TextButton(GameConfiguration.getText("personalButton"),mySkin,"pixel72");
-        buttonPersonal.setSize(screenWidth / 4f,screenHeight / 8f);
-        buttonPersonal.setPosition(screenWidth / 2f - buttonPersonal.getWidth() / 2f,
-                buttonSettings.getY() - buttonPersonal.getHeight() - screenHeight / 20f);
-        buttonPersonal.setColor(buttonColors);
-        buttonPersonal.getLabel().setFontScale(GameConfiguration.fitText(buttonPersonal, -1, -1));
-        buttonPersonal.addListener(new InputListener(){
+        buttonHighScores = new TextButton(GameConfiguration.getText("highScores"),mySkin,"pixel72");
+        buttonHighScores.setSize(screenWidth / 4f,screenHeight / 8f);
+        buttonHighScores.setPosition(screenWidth / 2f - buttonHighScores.getWidth() / 2f,
+                buttonSettings.getY() - buttonHighScores.getHeight() - screenHeight / 20f);
+        buttonHighScores.setColor(buttonColors);
+        buttonHighScores.getLabel().setFontScale(GameConfiguration.fitText(buttonHighScores, -1, -1));
+        buttonHighScores.addListener(new InputListener(){
             @Override
             public boolean touchDown(InputEvent event, float x, float y, int pointer, int button) {
                 return true;
@@ -150,14 +171,16 @@ public class MenuScreen extends ScreenAdapter {
 
             @Override
             public void touchUp(InputEvent event, float x, float y, int pointer, int button) {
-                // Player profile?
+                dispose();
+                main.setScreen(new HighScores(main));
             }
         });
 
+        stage.addActor(buttonMenu);
         stage.addActor(flagButton);
         stage.addActor(buttonPlay);
         stage.addActor(buttonSettings);
-        stage.addActor(buttonPersonal);
+        stage.addActor(buttonHighScores);
         Gdx.input.setInputProcessor(stage);
     }
 
@@ -185,7 +208,6 @@ public class MenuScreen extends ScreenAdapter {
     public void updateLanguage() {
         buttonPlay.setText(GameConfiguration.getText("playButton"));
         buttonSettings.setText(GameConfiguration.getText("settingsButton"));
-        buttonPersonal.setText(GameConfiguration.getText("personalButton"));
+        buttonHighScores.setText(GameConfiguration.getText("personalButton"));
     }
-
 }

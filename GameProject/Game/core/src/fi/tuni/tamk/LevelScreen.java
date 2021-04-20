@@ -176,6 +176,25 @@ public class LevelScreen extends ScreenAdapter {
             }
         });
 
+        TextButton buttonHighScores = new TextButton(GameConfiguration.getText("highScores"),mySkin,"pixel72");
+        buttonHighScores.setSize(screenWidth / 10f,screenWidth / 10f);
+        buttonHighScores.setPosition(screenWidth -buttonHighScores.getWidth(),
+                0);
+        buttonHighScores.setColor(56 / 255f, 114 / 255f, 207 / 255f, 1);
+        buttonHighScores.getLabel().setFontScale(GameConfiguration.fitText(buttonHighScores, -1, -1));
+        buttonHighScores.addListener(new InputListener(){
+            @Override
+            public boolean touchDown(InputEvent event, float x, float y, int pointer, int button) {
+                return true;
+            }
+
+            @Override
+            public void touchUp(InputEvent event, float x, float y, int pointer, int button) {
+                dispose();
+                main.setScreen(new HighScores(main));
+            }
+        });
+
         String themeString = GameConfiguration.getText("themeLabel") + ": " + GameConfiguration.theme.toUpperCase();
         Label themeLabel = new Label(themeString , mySkin, "default");
         themeLabel.setBounds(screenWidth * 5 / 7f, screenHeight * 9 / 10f,
@@ -190,6 +209,7 @@ public class LevelScreen extends ScreenAdapter {
         stage.addActor(buttonTutorial);
         stage.addActor(buttonMenu);
         stage.addActor(buttonStore);
+        stage.addActor(buttonHighScores);
 
         Gdx.input.setInputProcessor(stage);
     }
