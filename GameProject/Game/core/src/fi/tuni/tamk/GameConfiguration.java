@@ -7,9 +7,10 @@ import com.badlogic.gdx.physics.box2d.World;
 import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
 import com.badlogic.gdx.utils.I18NBundle;
 
+import java.util.List;
 import java.util.Locale;
 
-public final class GameConfiguration {
+public final class GameConfiguration implements HighScoreListener {
 
     // Current game level
     public static int gameLevel;
@@ -179,6 +180,51 @@ public final class GameConfiguration {
             return (float) maxSize / fontSize;
         } else {
             return width / length / fontSize;
+        }
+    }
+
+
+    @Override
+    public void receiveHighScore(List<HighScoreEntry> highScores) {
+        for(HighScoreEntry item : highScores) {
+            Gdx.app.log("", "id: " + item.getId() + ", name: " + item.getName() +
+                    ", score: " + item.getScore() + ", mapId: " + item.getMap_id());
+        }
+        //Gdx.app.log("", "receiveHighScore: " + highScores);
+    }
+
+    @Override
+    public void failedToRetrieveHighScores(String s) {
+        Gdx.app.log("", "failedToRetrieveHighScores: " + s);
+    }
+
+    @Override
+    public void receiveSendReply(int httpResponse) {
+        Gdx.app.log("", "receiveSendReply: " + httpResponse);
+    }
+
+    @Override
+    public void failedToSendHighScore(String s) {
+        Gdx.app.log("", "failedToSendHighScore: " + s);
+    }
+
+    public static void getHighScores() {
+        try {
+            HighScoreServer.readConfig("highscore.config");
+            HighScoreServer.fetchHighScores(new GameConfiguration());
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+    public static void sendHighScores() {
+
+        HighScoreEntry entry = new HighScoreEntry("test", 1, 1, 2);
+        try {
+            HighScoreServer.readConfig("highscore.config");
+            HighScoreServer.sendNewHighScore(entry, new GameConfiguration());
+        } catch (Exception e) {
+            e.printStackTrace();
         }
     }
 }
