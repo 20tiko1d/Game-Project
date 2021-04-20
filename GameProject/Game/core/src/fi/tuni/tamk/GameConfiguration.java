@@ -211,7 +211,7 @@ public final class GameConfiguration implements HighScoreListener {
     public static void getHighScores() {
         try {
             HighScoreServer.readConfig("highscore.config");
-            HighScoreServer.fetchHighScores(new GameConfiguration());
+            HighScoreServer.fetchHighScores(new GameConfiguration(), 1);
         } catch (Exception e) {
             e.printStackTrace();
         }

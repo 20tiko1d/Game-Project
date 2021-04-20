@@ -61,10 +61,9 @@ public class HighScoreServer {
      *
      * @param source source class implementing HighScoreListener
      */
-    public static void fetchHighScores(final HighScoreListener source) {
+    public static void fetchHighScores(final HighScoreListener source, int mapid) {
         // Load CAs from an InputStream
         // (could be from a resource or ByteArrayInputStream or ...)
-        Gdx.app.log("", "here?");
         HttpsURLConnection urlConnection = null;
         try {
             /*
@@ -100,7 +99,7 @@ public class HighScoreServer {
 
              */
 
-            URL connectionURL = new URL(url);
+            URL connectionURL = new URL(url + "?json&mapid=" + mapid);
 
             urlConnection = (HttpsURLConnection) connectionURL.openConnection();
             //urlConnection.setSSLSocketFactory(context.getSocketFactory());
@@ -198,26 +197,11 @@ public class HighScoreServer {
             urlConnection.setDoInput(true);
             urlConnection.setDoOutput(true);
 
-            Json json = new Json();
-            StringWriter jsonText = new StringWriter();
-            JsonWriter jsonWriter = new JsonWriter(jsonText);
-            json.setOutputType(JsonWriter.OutputType.json);
-            json.setWriter(jsonWriter);
-            json.writeObjectStart();
-            json.writeValue("name", "test");
-            json.writeValue("score", 1);
-            json.writeValue("psw", password);
-            json.writeValue("mapid", 1);
-            json.writeObjectEnd();
-
-            Gdx.app.log("", "json: " + json.getWriter().getWriter().toString());
-
             OutputStream os = urlConnection.getOutputStream();
             BufferedWriter writer = new BufferedWriter(
                     new OutputStreamWriter(os, "UTF-8"));
 
-            //writer.write(String.format("name=%s&score=%d&psw=%s&mapid=%d", highScore.getName(), highScore.getScore(), password, highScore.getMap_id()));
-            writer.write(json.getWriter().getWriter().toString());
+            writer.write(String.format("name=%s&score=%d&psw=%s&mapid=%d", highScore.getName(), highScore.getScore(), password, highScore.getMap_id()));
             writer.flush();
             writer.close();
             os.close();
