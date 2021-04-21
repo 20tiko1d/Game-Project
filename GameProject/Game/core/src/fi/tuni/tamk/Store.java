@@ -2,6 +2,7 @@ package fi.tuni.tamk;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.ScreenAdapter;
+import com.badlogic.gdx.audio.Sound;
 import com.badlogic.gdx.graphics.Camera;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.GL20;
@@ -36,11 +37,14 @@ public class Store extends ScreenAdapter {
     private String buttonBushString;
     private String buttonSandString;
 
+    private Sound buttonPressSound;
+
     public Store(Main main) {
         this.main = main;
         camera = new OrthographicCamera();
         camera.setToOrtho(false, Main.viewPortWidth, Main.viewPortHeight);
         creditsString = GameConfiguration.getText("credits");
+        //buttonPressSound = Sounds.buttonPressSound;
     }
 
     @Override
@@ -65,6 +69,7 @@ public class Store extends ScreenAdapter {
 
             @Override
             public void touchUp(InputEvent event, float x, float y, int pointer, int button) {
+                //buttonPressSound.play();
                 dispose();
                 main.setScreen(new MenuScreen(main));
             }
@@ -84,6 +89,7 @@ public class Store extends ScreenAdapter {
 
             @Override
             public void touchUp(InputEvent event, float x, float y, int pointer, int button) {
+                //buttonPressSound.play();
                 dispose();
                 main.setScreen(new LevelScreen(main));
             }
@@ -116,6 +122,7 @@ public class Store extends ScreenAdapter {
 
             @Override
             public void touchUp(InputEvent event, float x, float y, int pointer, int button) {
+                //buttonPressSound.play();
                 GameConfiguration.save("theme", "sand");
                 GameConfiguration.theme = "sand";
                 buttonSand.setText(getMarkedText(buttonSandString));
@@ -138,6 +145,7 @@ public class Store extends ScreenAdapter {
 
             @Override
             public void touchUp(InputEvent event, float x, float y, int pointer, int button) {
+                //buttonPressSound.play();
                 GameConfiguration.save("theme", "bush");
                 GameConfiguration.theme = "bush";
                 buttonSand.setText(buttonSandString);
