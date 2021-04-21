@@ -2,6 +2,7 @@ package fi.tuni.tamk;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.ScreenAdapter;
+import com.badlogic.gdx.audio.Sound;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
@@ -29,10 +30,13 @@ public class AfterGameScreen extends ScreenAdapter {
 
     private int score;
 
+    private Sound buttonPressSound;
+
     public AfterGameScreen(Main main, int score) {
         this.main = main;
         this.score = score;
         addCredits();
+        //buttonPressSound = Sounds.buttonPressSound;
 
         camera = new OrthographicCamera();
         camera.setToOrtho(false, Main.viewPortWidth, Main.viewPortHeight);
@@ -57,6 +61,7 @@ public class AfterGameScreen extends ScreenAdapter {
 
             @Override
             public void touchUp(InputEvent event, float x, float y, int pointer, int button) {
+                //buttonPressSound.play();
                 dispose();
                 main.setScreen(new MenuScreen(main));
             }
@@ -75,6 +80,7 @@ public class AfterGameScreen extends ScreenAdapter {
 
             @Override
             public void touchUp(InputEvent event, float x, float y, int pointer, int button) {
+                //buttonPressSound.play();
                 GameScreen gameScreen = GameConfiguration.createGame(main);
                 main.setScreen(gameScreen);
             }
@@ -92,6 +98,7 @@ public class AfterGameScreen extends ScreenAdapter {
 
             @Override
             public void touchUp(InputEvent event, float x, float y, int pointer, int button) {
+                //buttonPressSound.play();
                 main.setScreen(new LevelScreen(main));
             }
         });
@@ -110,6 +117,7 @@ public class AfterGameScreen extends ScreenAdapter {
 
             @Override
             public void touchUp(InputEvent event, float x, float y, int pointer, int button) {
+                //buttonPressSound.play();
                 dispose();
                 main.setScreen(new Store(main));
             }
