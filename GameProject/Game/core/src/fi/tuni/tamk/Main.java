@@ -25,7 +25,11 @@ public class Main extends Game {
 		checkDevice();
 		GameConfiguration.checkFirstTime();
 		batch = new SpriteBatch();
-		setScreen(new MenuScreen(this));
+		if(GameConfiguration.open("name").equals(GameConfiguration.noValue)) {
+			setScreen(new PlayerName(this, true));
+		} else {
+			setScreen(new MenuScreen(this));
+		}
 	}
 
 	@Override
@@ -57,13 +61,4 @@ public class Main extends Game {
 			centerY = viewPortHeight / 2;
 		}
 	}
-
-	public float getCenterX() {
-		return centerX;
-	}
-
-	public float getCenterY() {
-		return centerY;
-	}
-
 }
