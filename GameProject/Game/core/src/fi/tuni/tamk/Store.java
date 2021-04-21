@@ -69,7 +69,6 @@ public class Store extends ScreenAdapter {
                 main.setScreen(new MenuScreen(main));
             }
         });
-        stage.addActor(buttonMenu);
 
         TextButton buttonLevels = new TextButton(GameConfiguration.getText("levels"),mySkin,"pixel72");
         buttonLevels.setSize(Gdx.graphics.getWidth() / 10f,Gdx.graphics.getWidth() / 10f);
@@ -146,6 +145,7 @@ public class Store extends ScreenAdapter {
             }
         });
 
+        stage.addActor(buttonMenu);
         stage.addActor(buttonBush);
         stage.addActor(buttonSand);
         stage.addActor(buttonLevels);
