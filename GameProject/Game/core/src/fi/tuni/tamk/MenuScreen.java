@@ -88,27 +88,6 @@ public class MenuScreen extends ScreenAdapter {
             }
         });
 
-        TextButton buttonMenu = new TextButton("Score",mySkin,"pixel72");
-        buttonMenu.setSize(screenWidth / 10f,screenWidth / 10f);
-        buttonMenu.setPosition(0,screenHeight - screenWidth / 10f);
-        buttonMenu.setColor(Color.YELLOW);
-        buttonMenu.getLabel().setFontScale(GameConfiguration.fitText(buttonMenu, -1, -1));
-        buttonMenu.addListener(new InputListener(){
-            @Override
-            public boolean touchDown(InputEvent event, float x, float y, int pointer, int button) {
-                return true;
-            }
-
-            @Override
-            public void touchUp(InputEvent event, float x, float y, int pointer, int button) {
-                try {
-                    GameConfiguration.getHighScores();
-                } catch (Exception e) {
-                    e.printStackTrace();
-                }
-            }
-        });
-
         buttonPlay = new TextButton(GameConfiguration.getText("playButton"),mySkin,"pixel72");
         buttonPlay.setSize(screenWidth / 3f,screenHeight / 7f);
         buttonPlay.setPosition(screenWidth / 2f - buttonPlay.getWidth() / 2,
@@ -176,7 +155,6 @@ public class MenuScreen extends ScreenAdapter {
             }
         });
 
-        stage.addActor(buttonMenu);
         stage.addActor(flagButton);
         stage.addActor(buttonPlay);
         stage.addActor(buttonSettings);
