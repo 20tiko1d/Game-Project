@@ -76,6 +76,9 @@ public class GameScreen extends ScreenAdapter {
     private int[][] exitLocations;
     private Rectangle exitRectangle;
 
+    // Start locations
+    private int[][] startLocations;
+
     // Pairs
     private Array<String> array;
     private int[][] randomPairs;
@@ -726,6 +729,12 @@ public class GameScreen extends ScreenAdapter {
                 if((float) mapTexture.getHeight() / mapTexture.getWidth() > relativeTileHeight) {
                     currentTileHeight = tileHeight * (1 + wallHeight);
                 }
+                for(int j = 0; j < 3; j++) {
+                    if(row == startLocations[j][0] && column == startLocations[j][1]) {
+                        batch.draw(map[row - 1][column], column * tileWidth,
+                                locY, tileWidth, tileHeight);
+                    }
+                }
                 batch.draw(mapTexture, column * tileWidth,
                         locY, tileWidth, currentTileHeight);
 
@@ -929,6 +938,10 @@ public class GameScreen extends ScreenAdapter {
 
     public void setExitLocations(int[][] exitLocations) {
         this.exitLocations = exitLocations;
+    }
+
+    public void setStartLocations(int[][] startLocations) {
+        this.startLocations = startLocations;
     }
 
     public void openExit() {
@@ -1182,7 +1195,6 @@ public class GameScreen extends ScreenAdapter {
         int x = wholeBackground.getWidth() / 2 - width / 2;
         int y = wholeBackground.getHeight() / 2 - height / 2;
         background = new TextureRegion(wholeBackground, x, y, width, height);
-        Gdx.app.log("", "X: " + x + ", Y: " + y + ", w: " + width + ", H: " + height);
     }
 
     public void handleMovingSounds() {

@@ -93,6 +93,7 @@ public final class Textures {
 
     public static Texture getObjectTexture() {
         ArrayList<Texture> textures = new ArrayList<Texture>();
+
         textures.add(new Texture("textures/object/alarmClock.png"));
         textures.add(new Texture("textures/object/apple.png"));
         textures.add(new Texture("textures/object/board.png"));
@@ -109,6 +110,7 @@ public final class Textures {
         textures.add(new Texture("textures/object/taco.png"));
         textures.add(new Texture("textures/object/tree.png"));
         textures.add(new Texture("textures/object/watermelon.png"));
+
         int random = MathUtils.random(0, textures.size() - 1);
         return textures.get(random);
     }
