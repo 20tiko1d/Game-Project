@@ -2,6 +2,7 @@ package fi.tuni.tamk;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.ScreenAdapter;
+import com.badlogic.gdx.audio.Sound;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
@@ -26,10 +27,13 @@ public class HighScores extends ScreenAdapter {
     private OrthographicCamera camera;
     private Stage stage;
 
+    private Sound buttonPressSound;
+
     public HighScores(Main main) {
         this.main = main;
         camera = new OrthographicCamera();
         camera.setToOrtho(false, Main.viewPortWidth, Main.viewPortHeight);
+        //buttonPressSound = Sounds.buttonPressSound;
     }
 
     @Override
@@ -51,6 +55,7 @@ public class HighScores extends ScreenAdapter {
 
             @Override
             public void touchUp(InputEvent event, float x, float y, int pointer, int button) {
+                //buttonPressSound.play();
                 dispose();
                 main.setScreen(new MenuScreen(main));
             }
@@ -69,6 +74,7 @@ public class HighScores extends ScreenAdapter {
 
             @Override
             public void touchUp(InputEvent event, float x, float y, int pointer, int button) {
+                //buttonPressSound.play();
                 if(!GameConfiguration.firstTime) {
                     dispose();
                     main.setScreen(new LevelScreen(main));
@@ -94,6 +100,7 @@ public class HighScores extends ScreenAdapter {
 
             @Override
             public void touchUp(InputEvent event, float x, float y, int pointer, int button) {
+                //buttonPressSound.play();
                 dispose();
                 main.setScreen(new PlayerName(main, false));
             }

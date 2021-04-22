@@ -2,6 +2,7 @@ package fi.tuni.tamk;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.ScreenAdapter;
+import com.badlogic.gdx.audio.Sound;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
@@ -25,10 +26,13 @@ public class SettingsScreen extends ScreenAdapter {
     private OrthographicCamera camera;
     private Stage stage;
 
+    private Sound buttonPressSound;
+
     public SettingsScreen(Main main) {
         this.main = main;
         camera = new OrthographicCamera();
         camera.setToOrtho(false, Main.viewPortWidth, Main.viewPortHeight);
+        //buttonPressSound = Sounds.buttonPressSound;
     }
 
     public SettingsScreen(Main main, PauseScreen pauseScreen, GameScreen gameScreen) {
@@ -57,6 +61,7 @@ public class SettingsScreen extends ScreenAdapter {
 
             @Override
             public void touchUp(InputEvent event, float x, float y, int pointer, int button) {
+                //buttonPressSound.play();
                 if(pauseScreen != null) {
                     pauseScreen.dispose();
                     gameScreen.dispose();
@@ -79,6 +84,7 @@ public class SettingsScreen extends ScreenAdapter {
 
                 @Override
                 public void touchUp(InputEvent event, float x, float y, int pointer, int button) {
+                    //buttonPressSound.play();
                     dispose();
                     main.setScreen(pauseScreen);
                 }

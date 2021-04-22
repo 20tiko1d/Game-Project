@@ -3,6 +3,7 @@ package fi.tuni.tamk;
 import com.badlogic.gdx.Game;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.ScreenAdapter;
+import com.badlogic.gdx.audio.Sound;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.Texture;
@@ -40,12 +41,15 @@ public class LevelScreen extends ScreenAdapter {
     private Rectangle rect;
     private int marginal;
 
+    private Sound buttonPressSound;
+
     public LevelScreen(Main main){
         this.main = main;
         calculateAreas();
         batch = new SpriteBatch();
         screenWidth = Gdx.graphics.getWidth();
         screenHeight = Gdx.graphics.getHeight();
+        //buttonPressSound = Sounds.buttonPressSound;
     }
 
     @Override
@@ -70,6 +74,7 @@ public class LevelScreen extends ScreenAdapter {
 
             @Override
             public void touchUp(InputEvent event, float x, float y, int pointer, int button) {
+                //buttonPressSound.play();
                 GameConfiguration.gameLevel = 1;
                 createGame();
             }
@@ -92,6 +97,7 @@ public class LevelScreen extends ScreenAdapter {
 
             @Override
             public void touchUp(InputEvent event, float x, float y, int pointer, int button) {
+                //buttonPressSound.play();
                 GameConfiguration.gameLevel = 2;
                 createGame();
             }
@@ -114,6 +120,7 @@ public class LevelScreen extends ScreenAdapter {
 
             @Override
             public void touchUp(InputEvent event, float x, float y, int pointer, int button) {
+                //buttonPressSound.play();
                 GameConfiguration.gameLevel = 3;
                 createGame();
             }
@@ -133,6 +140,7 @@ public class LevelScreen extends ScreenAdapter {
 
             @Override
             public void touchUp(InputEvent event, float x, float y, int pointer, int button) {
+                //buttonPressSound.play();
                 GameConfiguration.tutorialOn = true;
                 GameConfiguration.gameLevel = 1;
                 createGame();
@@ -152,6 +160,7 @@ public class LevelScreen extends ScreenAdapter {
 
             @Override
             public void touchUp(InputEvent event, float x, float y, int pointer, int button) {
+                //buttonPressSound.play();
                 dispose();
                 main.setScreen(new MenuScreen(main));
             }
@@ -171,6 +180,7 @@ public class LevelScreen extends ScreenAdapter {
 
             @Override
             public void touchUp(InputEvent event, float x, float y, int pointer, int button) {
+                //buttonPressSound.play();
                 dispose();
                 main.setScreen(new Store(main));
             }
@@ -190,6 +200,7 @@ public class LevelScreen extends ScreenAdapter {
 
             @Override
             public void touchUp(InputEvent event, float x, float y, int pointer, int button) {
+                //buttonPressSound.play();
                 dispose();
                 main.setScreen(new HighScores(main));
             }
