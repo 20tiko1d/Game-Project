@@ -100,6 +100,7 @@ public class HighScoreServer {
              */
 
             URL connectionURL = new URL(url + "?json&mapid=" + mapid);
+            //URL connectionURL = new URL(url + "?json");
 
             urlConnection = (HttpsURLConnection) connectionURL.openConnection();
             //urlConnection.setSSLSocketFactory(context.getSocketFactory());
@@ -114,7 +115,6 @@ public class HighScoreServer {
                 }
 
                 JsonValue jsonObject = (new JsonReader().parse(sb.toString()));
-
                 ArrayList<HighScoreEntry> highScores = new ArrayList<>();
 
                 for (int i = 0; i < jsonObject.size; i++) {

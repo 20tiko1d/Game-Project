@@ -1,7 +1,6 @@
 package fi.tuni.tamk;
 
-
-import java.util.List;
+import java.util.ArrayList;
 
 /**
  * The HighScore part of the game needs to implement this interface.
@@ -12,7 +11,7 @@ public interface HighScoreListener {
      * has been downloaded from the server. It is passed using this method.
      * @param highScores the loaded highScoreEntry data in a List
      */
-    void receiveHighScore(List<HighScoreEntry> highScores);
+    void receiveHighScore(ArrayList<HighScoreEntry> highScores);
 
     /**
      * If retrieving the high scores fails for some reason this is called.
