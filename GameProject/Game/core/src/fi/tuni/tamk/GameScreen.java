@@ -295,9 +295,9 @@ public class GameScreen extends ScreenAdapter {
     @Override
     public void show() {
         if(!created) {
-            //backgroundMusic = Sounds.backgroundMusic;
-            //backgroundMusic.setLooping(true);
-            //backgroundMusic.play();
+            backgroundMusic = Sounds.backgroundMusic;
+            backgroundMusic.setLooping(true);
+            backgroundMusic.play();
             array = FileReader.getPairElements();
             mapY = map.length * tileHeight;
 
@@ -374,6 +374,7 @@ public class GameScreen extends ScreenAdapter {
                 @Override
                 public void touchUp(InputEvent event, float x, float y, int pointer, int button) {
                     //buttonPressSound.play();
+                    backgroundMusic.pause();
                     main.setScreen(new PauseScreen(main, gameScreen));
                 }
             });
@@ -551,6 +552,8 @@ public class GameScreen extends ScreenAdapter {
                 configTutorial();
             }
             created = true;
+        } else {
+            backgroundMusic.play();
         }
         Gdx.input.setInputProcessor(inputMultiplexer);
     }
@@ -632,6 +635,14 @@ public class GameScreen extends ScreenAdapter {
         array = null;
         randomPairs = null;
         objectTexture.dispose();
+        backgroundMusic.dispose();
+        //buttonPressSound.dispose();
+        //activationSound.dispose();
+        //switchSound.dispose();
+        //connectingSound.dispose();
+        //wrongValidationSound.dispose();
+        //walkSound.dispose();
+        //sprintSound.dispose();
     }
 
     public void getTextures() {
