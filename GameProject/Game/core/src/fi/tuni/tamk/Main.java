@@ -25,6 +25,7 @@ public class Main extends Game {
 		checkDevice();
 		GameConfiguration.checkFirstTime();
 		batch = new SpriteBatch();
+		calculateCircleRadius();
 		if(GameConfiguration.open("name").equals(GameConfiguration.noValue)) {
 			setScreen(new PlayerName(this, true));
 		} else {
@@ -60,5 +61,13 @@ public class Main extends Game {
 			centerX = viewPortWidth / 2;
 			centerY = viewPortHeight / 2;
 		}
+	}
+
+	public void calculateCircleRadius() {
+		float radius = Gdx.graphics.getWidth() / 2f;
+		if(radius > Gdx.graphics.getHeight() * 9 / 10f) {
+			radius = Gdx.graphics.getHeight() * 9 / 10f;
+		}
+		oneWidth = oneWidth * Gdx.graphics.getWidth() / 2f / radius;
 	}
 }

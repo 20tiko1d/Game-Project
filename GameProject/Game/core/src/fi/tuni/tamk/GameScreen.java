@@ -589,7 +589,6 @@ public class GameScreen extends ScreenAdapter {
             pairLabel.setVisible(false);
             pairLabelBackground.setVisible(false);
             buttonValidate.setVisible(false);
-            //buttonValidate.setDisabled(true);
             buttonSwitch.setDisabled(true);
             buttonSwitch.setVisible(false);
             buttonActivate.setVisible(false);
