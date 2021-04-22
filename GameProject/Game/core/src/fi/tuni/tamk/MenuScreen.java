@@ -89,7 +89,7 @@ public class MenuScreen extends ScreenAdapter {
             }
         });
 
-        TextButton buttonTest = new TextButton(GameConfiguration.getText("menu"),mySkin,"pixel72");
+        TextButton buttonTest = new TextButton("test",mySkin,"pixel72");
         buttonTest.setSize(screenWidth / 10f,screenWidth / 10f);
         buttonTest.setPosition(0,screenHeight - screenWidth / 10f);
         buttonTest.setColor(Color.YELLOW);
@@ -102,8 +102,8 @@ public class MenuScreen extends ScreenAdapter {
 
             @Override
             public void touchUp(InputEvent event, float x, float y, int pointer, int button) {
-                dispose();
-                main.setScreen(new AfterGameScreen(main, 1.1111f));
+                GameConfiguration.gameLevel = 1;
+                GameConfiguration.sendHighScores(200);
             }
         });
 

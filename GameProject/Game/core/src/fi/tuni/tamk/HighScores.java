@@ -6,13 +6,17 @@ import com.badlogic.gdx.audio.Sound;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
+import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.InputListener;
 import com.badlogic.gdx.scenes.scene2d.Stage;
+import com.badlogic.gdx.scenes.scene2d.ui.Image;
 import com.badlogic.gdx.scenes.scene2d.ui.Label;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
 import com.badlogic.gdx.utils.viewport.ScreenViewport;
+
+import java.util.ArrayList;
 
 /**
  * The class contains all of the player's personal achievements and the profile.
@@ -27,6 +31,15 @@ public class HighScores extends ScreenAdapter {
     private OrthographicCamera camera;
     private Stage stage;
 
+    private Skin mySkin;
+
+    private float scoreWidth;
+    private float scoreHeight;
+    private float scoreY;
+
+    private float startX;
+    private float listWidth;
+
     private Sound buttonPressSound;
 
     public HighScores(Main main) {
@@ -40,7 +53,7 @@ public class HighScores extends ScreenAdapter {
     public void show() {
         stage = new Stage(new ScreenViewport());
 
-        Skin mySkin = Textures.mySkin;
+        mySkin = Textures.mySkin;
 
         TextButton buttonMenu = new TextButton(GameConfiguration.getText("menu"),mySkin,"pixel72");
         buttonMenu.setSize(screenWidth / 10f,screenWidth / 10f);
@@ -63,7 +76,7 @@ public class HighScores extends ScreenAdapter {
 
         TextButton buttonLevels = new TextButton(GameConfiguration.getText("levels"),mySkin,"pixel72");
         buttonLevels.setSize(screenWidth / 10f,screenWidth / 10f);
-        buttonLevels.setPosition(screenWidth - buttonLevels.getWidth(), 0);
+        buttonLevels.setPosition(screenWidth - buttonLevels.getWidth(), screenHeight - buttonLevels.getHeight());
         buttonLevels.setColor(0 / 255f, 255 / 255f, 195 / 255f, 1);
         buttonLevels.getLabel().setFontScale(GameConfiguration.fitText(buttonLevels, -1, -1));
         buttonLevels.addListener(new InputListener(){
@@ -106,10 +119,39 @@ public class HighScores extends ScreenAdapter {
             }
         });
 
+        Label backgroundLabel = new Label("", mySkin, "tutorialTest2");
+        backgroundLabel.setSize(screenWidth * 8 / 10f, screenHeight * 8 / 10f);
+        backgroundLabel.setPosition(screenWidth / 10f, 0);
+
+        Label easyBackgroundLabel = new Label("", mySkin, "tutorialTest2");
+        easyBackgroundLabel.setSize(backgroundLabel.getWidth() / 3, backgroundLabel.getHeight() * 8 / 10f);
+        easyBackgroundLabel.setPosition(backgroundLabel.getX(), 0);
+
+        Label mediumBackgroundLabel = new Label("", mySkin, "tutorialTest2");
+        mediumBackgroundLabel.setSize(easyBackgroundLabel.getWidth(), easyBackgroundLabel.getHeight());
+        mediumBackgroundLabel.setPosition(easyBackgroundLabel.getX() + easyBackgroundLabel.getWidth(), 0);
+
+        Label hardBackgroundLabel = new Label("", mySkin, "tutorialTest2");
+        hardBackgroundLabel.setSize(easyBackgroundLabel.getWidth(), easyBackgroundLabel.getHeight());
+        hardBackgroundLabel.setPosition(mediumBackgroundLabel.getX() + mediumBackgroundLabel.getWidth(), 0);
+
+        scoreWidth = easyBackgroundLabel.getWidth() * 9 / 10f;
+        scoreHeight = easyBackgroundLabel.getHeight() * 9 / 10f;
+        scoreY = easyBackgroundLabel.getY() + easyBackgroundLabel.getHeight() * 9 / 10f;
+        startX = easyBackgroundLabel.getX();
+        listWidth = easyBackgroundLabel.getWidth();
+
         stage.addActor(buttonMenu);
         stage.addActor(buttonLevels);
         stage.addActor(nameLabel);
         stage.addActor(buttonRename);
+        stage.addActor(backgroundLabel);
+        stage.addActor(easyBackgroundLabel);
+        stage.addActor(mediumBackgroundLabel);
+        stage.addActor(hardBackgroundLabel);
+
+        createHighScoreLabels();
+
         Gdx.input.setInputProcessor(stage);
     }
 
@@ -127,5 +169,75 @@ public class HighScores extends ScreenAdapter {
     public void dispose() {
         stage.dispose();
         camera = null;
+    }
+
+    public void createHighScoreLabels() {
+        GameConfiguration.getHighScores(1);
+        ArrayList<HighScoreEntry> highScoresEasy = getTopHighScores(GameConfiguration.highScores);
+        GameConfiguration.getHighScores(2);
+        ArrayList<HighScoreEntry> highScoresMedium = getTopHighScores(GameConfiguration.highScores);
+        GameConfiguration.getHighScores(3);
+        ArrayList<HighScoreEntry> highScoresHard = getTopHighScores(GameConfiguration.highScores);
+
+        createScoreLabel(startX + listWidth / 20f, highScoresEasy);
+        createScoreLabel(startX + listWidth * 21 / 20f, highScoresMedium);
+        createScoreLabel(startX + listWidth * 41 / 20f, highScoresHard);
+
+    }
+
+    public ArrayList<HighScoreEntry> getTopHighScores(ArrayList<HighScoreEntry> highScores) {
+        ArrayList<HighScoreEntry> topScores = new ArrayList<HighScoreEntry>();
+
+        for(int i = 0; i < 10; i++) {
+            int biggestValue = -1;
+            int index = 0;
+            for(int j = 0; j < highScores.size(); j++) {
+                if(highScores.get(j).getScore() > biggestValue) {
+                    biggestValue = highScores.get(j).getScore();
+                    index = j;
+                }
+            }
+            if(biggestValue > 0) {
+                topScores.add(highScores.get(index));
+                highScores.remove(index);
+            }
+        }
+        return topScores;
+    }
+
+    public void createScoreLabel(float x, ArrayList<HighScoreEntry> highScores) {
+        int size = highScores.size();
+        for(int i = 0; i < 10; i++) {
+            Label label = new Label("", mySkin, "default");
+            label.setSize(scoreWidth, scoreHeight / 10f);
+            label.setPosition(x, scoreY - scoreHeight /20f - i * label.getHeight());
+            label.setColor(Color.BLACK);
+            String name = "";
+            String score = "";
+            String beforeNumber = "   ";
+            if(i == 9) {
+                beforeNumber = " ";
+            }
+            if(size > i) {
+                name = highScores.get(i).getName() + ": ";
+                score = "" + highScores.get(i).getScore() / 100f;
+            }
+            label.setText(beforeNumber + (i + 1) + ". " + name + score);
+            if(i < 3) {
+                float y = scoreY - scoreHeight / 20f - i * label.getHeight();
+                String textureName = "gold.png";
+                if(i == 1) {
+                    textureName = "silver.png";
+                }
+                else if(i == 2) {
+                    textureName = "bronze.png";
+                }
+                Image backgroundImage = new Image(new Texture("textures/random/" + textureName));
+                backgroundImage.setBounds(x, y, scoreWidth, scoreHeight / 10f);
+                stage.addActor(backgroundImage);
+            }
+
+            stage.addActor(label);
+        }
     }
 }

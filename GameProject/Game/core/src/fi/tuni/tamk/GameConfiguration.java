@@ -8,6 +8,7 @@ import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
 import com.badlogic.gdx.utils.I18NBundle;
 import com.badlogic.gdx.utils.Json;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
 
@@ -62,6 +63,9 @@ public final class GameConfiguration implements HighScoreListener {
     public static int credits;
 
     public static boolean firstTime;
+
+    // High Score
+    public static ArrayList<HighScoreEntry> highScores;
 
     private GameConfiguration() {}
 
@@ -184,14 +188,10 @@ public final class GameConfiguration implements HighScoreListener {
         }
     }
 
-
     @Override
-    public void receiveHighScore(List<HighScoreEntry> highScores) {
-        for(HighScoreEntry item : highScores) {
-            Gdx.app.log("", "id: " + item.getId() + ", name: " + item.getName() +
-                    ", score: " + item.getScore() + ", mapId: " + item.getMap_id());
-        }
-        //Gdx.app.log("", "receiveHighScore: " + highScores);
+    public void receiveHighScore(ArrayList<HighScoreEntry> highScores) {
+        this.highScores = null;
+        this.highScores = highScores;
     }
 
     @Override
