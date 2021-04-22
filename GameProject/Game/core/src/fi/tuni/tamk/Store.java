@@ -175,6 +175,7 @@ public class Store extends ScreenAdapter {
     public void dispose() {
         stage.dispose();
         camera = null;
+        //buttonPressSound.dispose();
     }
 
     public String getMarkedText(String str) {
