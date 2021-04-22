@@ -42,6 +42,7 @@ public class AfterGameScreen extends ScreenAdapter {
         camera.setToOrtho(false, Main.viewPortWidth, Main.viewPortHeight);
 
         GameConfiguration.sendHighScores((int) (score * 100));
+        //GameConfiguration.getHighScores(GameConfiguration.gameLevel);
     }
 
     @Override
