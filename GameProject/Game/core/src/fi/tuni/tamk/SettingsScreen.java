@@ -111,5 +111,6 @@ public class SettingsScreen extends ScreenAdapter {
     public void dispose() {
         stage.dispose();
         camera = null;
+        //buttonPressSound.dispose();
     }
 }
