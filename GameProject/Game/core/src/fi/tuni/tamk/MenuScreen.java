@@ -2,6 +2,7 @@ package fi.tuni.tamk;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.ScreenAdapter;
+import com.badlogic.gdx.audio.Sound;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
@@ -12,14 +13,11 @@ import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.InputListener;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.Button;
-import com.badlogic.gdx.scenes.scene2d.ui.ImageButton;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
 import com.badlogic.gdx.scenes.scene2d.utils.Drawable;
 import com.badlogic.gdx.scenes.scene2d.utils.TextureRegionDrawable;
 import com.badlogic.gdx.utils.viewport.ScreenViewport;
-
-import java.util.List;
 
 /**
  * The class contains and controls the Main menu screen.
@@ -43,11 +41,14 @@ public class MenuScreen extends ScreenAdapter {
     private final int screenWidth = Gdx.graphics.getWidth();
     private final int screenHeight = Gdx.graphics.getHeight();
 
+    private Sound buttonPressSound;
+
     public MenuScreen(Main main) {
         this.main = main;
         camera = new OrthographicCamera();
         camera.setToOrtho(false, Main.viewPortWidth, Main.viewPortHeight);
         batch = new SpriteBatch();
+        //buttonPressSound = Sounds.buttonPressSound;
     }
 
     @Override
@@ -102,6 +103,7 @@ public class MenuScreen extends ScreenAdapter {
 
             @Override
             public void touchUp(InputEvent event, float x, float y, int pointer, int button) {
+                //buttonPressSound.play();
                 if(GameConfiguration.firstTime) {
                     GameConfiguration.tutorialOn = true;
                     GameConfiguration.gameLevel = 1;
@@ -131,6 +133,7 @@ public class MenuScreen extends ScreenAdapter {
 
             @Override
             public void touchUp(InputEvent event, float x, float y, int pointer, int button) {
+                //buttonPressSound.play();
                 dispose();
                 main.setScreen(new SettingsScreen(main));
             }
@@ -150,6 +153,7 @@ public class MenuScreen extends ScreenAdapter {
 
             @Override
             public void touchUp(InputEvent event, float x, float y, int pointer, int button) {
+                //buttonPressSound.play();
                 dispose();
                 main.setScreen(new HighScores(main));
             }

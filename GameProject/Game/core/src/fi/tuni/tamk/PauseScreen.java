@@ -2,6 +2,7 @@ package fi.tuni.tamk;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.ScreenAdapter;
+import com.badlogic.gdx.audio.Sound;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
@@ -30,6 +31,8 @@ public class PauseScreen extends ScreenAdapter {
 
     private boolean tutorial = false;
 
+    private Sound buttonPressSound;
+
     public PauseScreen(Main main, GameScreen gameScreen) {
         this.main = main;
         this.gameScreen = gameScreen;
@@ -42,6 +45,7 @@ public class PauseScreen extends ScreenAdapter {
         }
         screenWidth = Gdx.graphics.getWidth();
         screenHeight = Gdx.graphics.getHeight();
+        //buttonPressSound = Sounds.buttonPressSound;
     }
 
     @Override
@@ -77,6 +81,7 @@ public class PauseScreen extends ScreenAdapter {
 
             @Override
             public void touchUp(InputEvent event, float x, float y, int pointer, int button) {
+                //buttonPressSound.play();
                 dispose();
                 if(tutorial) {
                     GameConfiguration.tutorialOn = true;
@@ -97,6 +102,7 @@ public class PauseScreen extends ScreenAdapter {
 
             @Override
             public void touchUp(InputEvent event, float x, float y, int pointer, int button) {
+                //buttonPressSound.play();
                 main.setScreen(new SettingsScreen(main, pauseScreen, gameScreen));
             }
         });
@@ -113,6 +119,7 @@ public class PauseScreen extends ScreenAdapter {
 
             @Override
             public void touchUp(InputEvent event, float x, float y, int pointer, int button) {
+                //buttonPressSound.play();
                 if(!GameConfiguration.firstTime) {
                     gameScreen.dispose();
                     dispose();
@@ -133,6 +140,7 @@ public class PauseScreen extends ScreenAdapter {
 
             @Override
             public void touchUp(InputEvent event, float x, float y, int pointer, int button) {
+                //buttonPressSound.play();
                 if(tutorial) {
                     GameConfiguration.tutorialOn = true;
                 }
@@ -154,6 +162,7 @@ public class PauseScreen extends ScreenAdapter {
 
             @Override
             public void touchUp(InputEvent event, float x, float y, int pointer, int button) {
+                //buttonPressSound.play();
                 gameScreen.dispose();
                 dispose();
                 main.setScreen(new MenuScreen(main));
