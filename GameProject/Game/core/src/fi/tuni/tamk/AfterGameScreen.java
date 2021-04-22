@@ -6,6 +6,7 @@ import com.badlogic.gdx.audio.Sound;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
+import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.InputListener;
 import com.badlogic.gdx.scenes.scene2d.Stage;
@@ -28,18 +29,19 @@ public class AfterGameScreen extends ScreenAdapter {
     private Stage stage;
     private OrthographicCamera camera;
 
-    private int score;
+    private float score;
 
     private Sound buttonPressSound;
 
-    public AfterGameScreen(Main main, int score) {
+    public AfterGameScreen(Main main, float score) {
         this.main = main;
         this.score = score;
-        addCredits();
         //buttonPressSound = Sounds.buttonPressSound;
 
         camera = new OrthographicCamera();
         camera.setToOrtho(false, Main.viewPortWidth, Main.viewPortHeight);
+
+        GameConfiguration.sendHighScores((int) (score * 100));
     }
 
     @Override
@@ -123,7 +125,7 @@ public class AfterGameScreen extends ScreenAdapter {
             }
         });
 
-        Label scoreLabel = new Label( GameConfiguration.getText("score") + ": " + score, mySkin, "pixel72");
+        Label scoreLabel = new Label( GameConfiguration.getText("score") + ": " + MathUtils.round(score * 100) / 100f, mySkin, "pixel72");
         float scoreLabelWidth = Gdx.graphics.getWidth() / 2f;
         float scoreLabelHeight = Gdx.graphics.getHeight() / 4f;
 
@@ -159,13 +161,14 @@ public class AfterGameScreen extends ScreenAdapter {
         //buttonPressSound.dispose();
     }
 
+    /*
     public void addCredits() {
-        int newCredits = score / 50 + 1;
+        float newCredits = score / 50 + 1;
         int oldCredits = GameConfiguration.credits;
-        int sum = newCredits + oldCredits;
+        float sum = newCredits + oldCredits;
         GameConfiguration.credits = sum;
         String newCreditString = "" + sum;
         GameConfiguration.save(GameConfiguration.creditsString, newCreditString);
         Gdx.app.log("", newCreditString);
-    }
+    }*/
 }
