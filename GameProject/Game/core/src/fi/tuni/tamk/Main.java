@@ -12,8 +12,8 @@ public class Main extends Game {
 	public static float viewPortWidth;
 	public static float viewPortHeight;
 	public static int howMany = 20;
-	public static float oneWidth = 10f / howMany;
-	public static boolean isPortrait;
+	public static float oneWidth = 10f / howMany / 2;
+	public static boolean isPortrait = false;
 
 	public float centerX;
 	public float centerY;
@@ -43,9 +43,10 @@ public class Main extends Game {
 	}
 
 	public void checkDevice() {
+		/*
 		int width = Gdx.graphics.getWidth();
 		int height = Gdx.graphics.getHeight();
-		if(width > height) {
+		if(width >= height) {
 			isPortrait = false;
 		} else {
 			isPortrait = true;
@@ -60,14 +61,19 @@ public class Main extends Game {
 			viewPortWidth = width / density;
 			centerX = viewPortWidth / 2;
 			centerY = viewPortHeight / 2;
-		}
-	}
+		}*/
 
-	public void calculateCircleRadius() {
 		float radius = Gdx.graphics.getWidth() / 2f;
 		if(radius > Gdx.graphics.getHeight() * 9 / 10f) {
 			radius = Gdx.graphics.getHeight() * 9 / 10f;
 		}
-		oneWidth = oneWidth * Gdx.graphics.getWidth() / 2f / radius;
+		float multiplier = Gdx.graphics.getWidth() / 2f / radius * 0.9f;
+
+		viewPortWidth = 10 * multiplier;
+		viewPortHeight = (float) Gdx.graphics.getHeight() / Gdx.graphics.getWidth() * 10 * multiplier;
+	}
+
+	public void calculateCircleRadius() {
+
 	}
 }
