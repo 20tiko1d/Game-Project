@@ -152,7 +152,7 @@ public class GameScreen extends ScreenAdapter {
     private Texture shadow;
 
     // Score
-    private float score = 0;
+    private float score;
     private int objectScore;
     private Label scoreLabel;
     private Label scoreChangeLabel;
@@ -605,7 +605,7 @@ public class GameScreen extends ScreenAdapter {
                 if(GameConfiguration.tutorialOn) {
                     main.setScreen(new AfterTutorialScreen(main));
                 } else {
-                    main.setScreen(new AfterGameScreen(main, (int) score));
+                    main.setScreen(new AfterGameScreen(main, score));
                 }
             }
         }
@@ -976,7 +976,7 @@ public class GameScreen extends ScreenAdapter {
         } else {
             scoreChangeLabel.setText("");
         }
-        scoreLabel.setText(scoreString + ": " + (int) score);
+        scoreLabel.setText(scoreString + ": " + MathUtils.round(score * 100) / 100f);
     }
 
     public void activateObject() {
