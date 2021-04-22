@@ -124,7 +124,7 @@ public final class Textures {
     }
 
     public static Texture getStartTexture() {
-        return new Texture("textures/walls/random/wallStart0.66.png");
+        return new Texture("textures/walls/random/wallStart10.png");
     }
 
     public static Texture getSideTexture() { return new Texture("textures/random/sides.png");}
