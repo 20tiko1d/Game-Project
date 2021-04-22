@@ -111,5 +111,6 @@ public class AfterTutorialScreen extends ScreenAdapter {
     public void dispose() {
         stage.dispose();
         camera = null;
+        //buttonPressSound.dispose();
     }
 }

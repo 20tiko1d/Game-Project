@@ -2,6 +2,7 @@ package fi.tuni.tamk;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Texture;
+import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 
 import java.util.ArrayList;
@@ -91,7 +92,25 @@ public final class Textures {
     }
 
     public static Texture getObjectTexture() {
-        return new Texture("textures/object/mushroom.png");
+        ArrayList<Texture> textures = new ArrayList<Texture>();
+        textures.add(new Texture("textures/object/alarmClock.png"));
+        textures.add(new Texture("textures/object/apple.png"));
+        textures.add(new Texture("textures/object/board.png"));
+        textures.add(new Texture("textures/object/cactus.png"));
+        textures.add(new Texture("textures/object/carrot.png"));
+        textures.add(new Texture("textures/object/cherry.png"));
+        textures.add(new Texture("textures/object/diamond.png"));
+        textures.add(new Texture("textures/object/eggs.png"));
+        textures.add(new Texture("textures/object/flower.png"));
+        textures.add(new Texture("textures/object/mushroom.png"));
+        textures.add(new Texture("textures/object/pencils.png"));
+        textures.add(new Texture("textures/object/snowglobe.png"));
+        textures.add(new Texture("textures/object/sushi.png"));
+        textures.add(new Texture("textures/object/taco.png"));
+        textures.add(new Texture("textures/object/tree.png"));
+        textures.add(new Texture("textures/object/watermelon.png"));
+        int random = MathUtils.random(0, textures.size() - 1);
+        return textures.get(random);
     }
 
     public static Texture getExitCloseTexture() {
