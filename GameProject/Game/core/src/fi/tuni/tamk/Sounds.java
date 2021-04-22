@@ -1,12 +1,13 @@
 package fi.tuni.tamk;
 
+import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.audio.Music;
 import com.badlogic.gdx.audio.Sound;
 
 public final class Sounds {
 
     // Background music
-    public static Music backgroundMusic;
+    public static Music backgroundMusic = Gdx.audio.newMusic(Gdx.files.internal("Music/gamemusic.wav"));
 
     // Activate object
     public static Sound activationSound;
