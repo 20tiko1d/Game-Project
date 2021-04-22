@@ -156,6 +156,7 @@ public class AfterGameScreen extends ScreenAdapter {
     public void dispose() {
         stage.dispose();
         camera = null;
+        //buttonPressSound.dispose();
     }
 
     public void addCredits() {

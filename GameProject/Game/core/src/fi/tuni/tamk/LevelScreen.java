@@ -242,6 +242,7 @@ public class LevelScreen extends ScreenAdapter {
     public void dispose () {
         stage.dispose();
         rect = null;
+        //buttonPressSound.dispose();
     }
 
     /**

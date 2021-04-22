@@ -76,6 +76,9 @@ public class GameScreen extends ScreenAdapter {
     private int[][] exitLocations;
     private Rectangle exitRectangle;
 
+    // Start locations
+    private int[][] startLocations;
+
     // Pairs
     private Array<String> array;
     private int[][] randomPairs;
@@ -143,7 +146,7 @@ public class GameScreen extends ScreenAdapter {
     private TextButton buttonSwitch;
     private TextButton buttonActivate;
     private String objectsFoundString;
-    private float[] objectBouniness;
+    private float[] objectBounciness;
     private boolean[] objectDirections;
     private float bounciness = 0.1f;
     private Texture shadow;
@@ -252,6 +255,7 @@ public class GameScreen extends ScreenAdapter {
         scoreLabel.setSize(side1Image.getWidth() * 4 / 10f, screenHeight / 10f);
         scoreLabel.setPosition(screenWidth / 100f, screenHeight - scoreLabel.getHeight());
         scoreLabel.setFontScale(0.7f);
+        scoreLabel.setColor(Color.BLACK);
 
         scoreChangeLabel = new Label("", mySkin, "pixel48");
         scoreChangeLabel.setBounds(scoreLabel.getX() + scoreLabel.getWidth() * 1.2f, scoreLabel.getY(),
@@ -261,6 +265,7 @@ public class GameScreen extends ScreenAdapter {
         objectLabel.setBounds(scoreLabel.getX(), scoreLabel.getY() - scoreLabel.getHeight(),
                 scoreLabel.getWidth(), scoreLabel.getHeight());
         objectLabel.setFontScale(0.4f);
+        objectLabel.setColor(Color.BLACK);
         activatedLabel = new Label(GameConfiguration.getText("activated").toUpperCase(), mySkin, "pixel50");
         activatedLabel.setBounds(pairLabel.getX(), 0, pairLabel.getWidth(), pairLabel.getHeight() / 2);
         activatedLabel.setColor(Color.GREEN);
@@ -584,7 +589,6 @@ public class GameScreen extends ScreenAdapter {
             pairLabel.setVisible(false);
             pairLabelBackground.setVisible(false);
             buttonValidate.setVisible(false);
-            //buttonValidate.setDisabled(true);
             buttonSwitch.setDisabled(true);
             buttonSwitch.setVisible(false);
             buttonActivate.setVisible(false);
@@ -724,6 +728,12 @@ public class GameScreen extends ScreenAdapter {
                 if((float) mapTexture.getHeight() / mapTexture.getWidth() > relativeTileHeight) {
                     currentTileHeight = tileHeight * (1 + wallHeight);
                 }
+                for(int j = 0; j < 3; j++) {
+                    if(row == startLocations[j][0] && column == startLocations[j][1]) {
+                        batch.draw(map[row - 1][column], column * tileWidth,
+                                locY, tileWidth, tileHeight);
+                    }
+                }
                 batch.draw(mapTexture, column * tileWidth,
                         locY, tileWidth, currentTileHeight);
 
@@ -804,12 +814,12 @@ public class GameScreen extends ScreenAdapter {
 
     public void drawObject(SpriteBatch batch, float locX, float locY, int objectIndex) {
         drawShadow(batch, locX, locY, objectIndex);
-        batch.draw(objectTexture, locX, locY + Math.round(objectBouniness[objectIndex] * relativeHeight) / relativeHeight + tileHeight / 2, tileWidth, objectHeight);
+        batch.draw(objectTexture, locX, locY + Math.round(objectBounciness[objectIndex] * relativeHeight) / relativeHeight + tileHeight / 2, tileWidth, objectHeight);
     }
 
     public void drawShadow(SpriteBatch batch, float locX, float locY, int objectIndex) {
-        float width = tileWidth * 9 / 10 - Math.round(objectBouniness[objectIndex] * relativeHeight) / relativeHeight;
-        float height = tileHeight / 2 - Math.round(objectBouniness[objectIndex] * relativeHeight) / relativeHeight;
+        float width = tileWidth * 9 / 10 - Math.round(objectBounciness[objectIndex] * relativeHeight) / relativeHeight;
+        float height = tileHeight / 2 - Math.round(objectBounciness[objectIndex] * relativeHeight) / relativeHeight;
         float shadowLocX = locX + (tileWidth - width) / 2;
         float shadowLocY = locY + (tileHeight - height) / 2;
         batch.draw(shadow, shadowLocX, shadowLocY, width, height);
@@ -900,10 +910,10 @@ public class GameScreen extends ScreenAdapter {
         this.randomPairs = randomPairs;
 
         // set random bounciness value
-        objectBouniness = new float[randomPairs.length * 2];
+        objectBounciness = new float[randomPairs.length * 2];
         objectDirections = new boolean[randomPairs.length * 2];
-        for(int i = 0; i < objectBouniness.length; i++) {
-            objectBouniness[i] = MathUtils.random(0, 100) / 1000f;
+        for(int i = 0; i < objectBounciness.length; i++) {
+            objectBounciness[i] = MathUtils.random(0, 100) / 1000f;
             objectDirections[i] = true;
         }
     }
@@ -927,6 +937,10 @@ public class GameScreen extends ScreenAdapter {
 
     public void setExitLocations(int[][] exitLocations) {
         this.exitLocations = exitLocations;
+    }
+
+    public void setStartLocations(int[][] startLocations) {
+        this.startLocations = startLocations;
     }
 
     public void openExit() {
@@ -1152,19 +1166,19 @@ public class GameScreen extends ScreenAdapter {
     }
 
     public void handleObjectBouncing(float deltaTime) {
-        for(int i = 0; i < objectBouniness.length; i++) {
+        for(int i = 0; i < objectBounciness.length; i++) {
             float bounce = bounciness;
             if(!objectDirections[i]) {
                 bounce = bounce * -1;
             }
-            objectBouniness[i] += deltaTime * bounce;
-            if(objectBouniness[i] > 0.1f) {
+            objectBounciness[i] += deltaTime * bounce;
+            if(objectBounciness[i] > 0.1f) {
                 objectDirections[i] = !objectDirections[i];
-                objectBouniness[i] = 0.2f - objectBouniness[i];
+                objectBounciness[i] = 0.2f - objectBounciness[i];
             }
-            else if(objectBouniness[i] < 0) {
+            else if(objectBounciness[i] < 0) {
                 objectDirections[i] = !objectDirections[i];
-                objectBouniness[i] = objectBouniness[i] * -1;
+                objectBounciness[i] = objectBounciness[i] * -1;
             }
         }
     }
@@ -1180,7 +1194,6 @@ public class GameScreen extends ScreenAdapter {
         int x = wholeBackground.getWidth() / 2 - width / 2;
         int y = wholeBackground.getHeight() / 2 - height / 2;
         background = new TextureRegion(wholeBackground, x, y, width, height);
-        Gdx.app.log("", "X: " + x + ", Y: " + y + ", w: " + width + ", H: " + height);
     }
 
     public void handleMovingSounds() {

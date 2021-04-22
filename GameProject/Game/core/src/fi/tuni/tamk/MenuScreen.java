@@ -184,12 +184,13 @@ public class MenuScreen extends ScreenAdapter {
     public void dispose() {
         stage.dispose();
         camera = null;
+        //buttonPressSound.dispose();
     }
 
 
     public void updateLanguage() {
         buttonPlay.setText(GameConfiguration.getText("playButton"));
         buttonSettings.setText(GameConfiguration.getText("settingsButton"));
-        buttonHighScores.setText(GameConfiguration.getText("personalButton"));
+        buttonHighScores.setText(GameConfiguration.getText("highScores"));
     }
 }

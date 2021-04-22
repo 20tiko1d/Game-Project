@@ -593,7 +593,9 @@ public class MapGenerator {
         mapY = map.length * oneWidth;
 
         int[][] exitLocations = new int[3][2];
+        int[][] startLocations = new int[3][2];
         int exitCounter = 0;
+        int startCounter = 0;
 
         // Converts the randomly generated map to the larger scale and also inserts textures.
         for(int row = 0; row < generatingMap.length; row++) {
@@ -611,6 +613,9 @@ public class MapGenerator {
                         else if(generatingMap[row][column][3] == 2 && row2 == (row + 1) * 4 &&
                                 (map[row2 + 48][column2 + 24] == null)) {
                             map[row2 + 48][column2 + 24] = startTexture;
+                            startLocations[startCounter][0] = row2 + 48;
+                            startLocations[startCounter][1] = column2 + 24;
+                            startCounter++;
                         }
                         else if(((generatingMap[row][column][0] == 3 && column2 == column * 4) ||
                                 (generatingMap[row][column][1] == 3 && row2 == row * 4) ||
@@ -669,6 +674,7 @@ public class MapGenerator {
             }
         }
         gameScreen.setExitLocations(exitLocations);
+        gameScreen.setStartLocations(startLocations);
 
         // Sets textures to the surroundings of the labyrinth.
         for(int row = 0; row < map.length; row++) {
