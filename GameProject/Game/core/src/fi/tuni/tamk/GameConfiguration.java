@@ -6,6 +6,7 @@ import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.World;
 import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
 import com.badlogic.gdx.utils.I18NBundle;
+import com.badlogic.gdx.utils.Json;
 
 import java.util.List;
 import java.util.Locale;
@@ -208,18 +209,17 @@ public final class GameConfiguration implements HighScoreListener {
         Gdx.app.log("", "failedToSendHighScore: " + s);
     }
 
-    public static void getHighScores() {
+    public static void getHighScores(int mapId) {
         try {
             HighScoreServer.readConfig("highscore.config");
-            HighScoreServer.fetchHighScores(new GameConfiguration(), 1);
+            HighScoreServer.fetchHighScores(new GameConfiguration(), mapId);
         } catch (Exception e) {
             e.printStackTrace();
         }
     }
 
-    public static void sendHighScores() {
-
-        HighScoreEntry entry = new HighScoreEntry("test", 1, 1, 2);
+    public static void sendHighScores(int score) {
+        HighScoreEntry entry = new HighScoreEntry(open("name"), score, 1, gameLevel);
         try {
             HighScoreServer.readConfig("highscore.config");
             HighScoreServer.sendNewHighScore(entry, new GameConfiguration());

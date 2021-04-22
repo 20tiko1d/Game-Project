@@ -31,8 +31,6 @@ www-test/
 /android/out/
 com_crashlytics_export_strings.xml
 
-/android/assets/highscore.config
-
 ## Eclipse
 
 .classpath
