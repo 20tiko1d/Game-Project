@@ -107,7 +107,7 @@ public class MenuScreen extends ScreenAdapter {
             }
         });
 
-        buttonPlay = new TextButton(GameConfiguration.getText("playButton"),mySkin,"pixel72");
+        buttonPlay = new TextButton(GameConfiguration.getText("playButton"),mySkin,"pixel120");
         buttonPlay.setSize(screenWidth / 3f,screenHeight / 7f);
         buttonPlay.setPosition(screenWidth / 2f - buttonPlay.getWidth() / 2,
                 screenHeight / 2f);
@@ -134,6 +134,7 @@ public class MenuScreen extends ScreenAdapter {
                 }
             }
         });
+
 
         Color buttonColors = new Color(1, 208 / 255f, 0, 1);
 
