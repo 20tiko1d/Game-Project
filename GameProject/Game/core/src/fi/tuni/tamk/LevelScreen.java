@@ -131,7 +131,6 @@ public class LevelScreen extends ScreenAdapter {
         buttonTutorial.setPosition(0, 0);
         buttonTutorial.setColor(Color.GRAY);
         buttonTutorial.getLabel().setFontScale(GameConfiguration.fitText(buttonTutorial, -1, -1));
-        Gdx.app.log("", "" + buttonTutorial.getLabel().getFontScaleX());
         buttonTutorial.addListener(new InputListener(){
             @Override
             public boolean touchDown(InputEvent event, float x, float y, int pointer, int button) {

@@ -77,7 +77,6 @@ public class FileReader {
         int[][][] map = new int[10][10][4];
         FileHandle file = Gdx.files.internal("tutorialMap.txt");
         String mapString = file.readString();
-        Gdx.app.log("", ": " + mapString);
         int randomCounter = 0;
         for(int row = 0; row < 10; row++) {
             for(int column = 0; column < 10; column++) {
