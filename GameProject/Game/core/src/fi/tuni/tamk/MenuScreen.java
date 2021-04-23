@@ -112,7 +112,7 @@ public class MenuScreen extends ScreenAdapter {
         buttonPlay.setPosition(screenWidth / 2f - buttonPlay.getWidth() / 2,
                 screenHeight / 2f);
         buttonPlay.setColor(Color.GREEN);
-        buttonPlay.getLabel().setFontScale(GameConfiguration.fitText(buttonPlay, 72, 110));
+        buttonPlay.getLabel().setFontScale(GameConfiguration.fitText(buttonPlay, 120, 70));
         buttonPlay.addListener(new InputListener(){
             @Override
             public boolean touchDown(InputEvent event, float x, float y, int pointer, int button) {
