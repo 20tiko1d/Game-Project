@@ -190,7 +190,6 @@ public class GameScreen extends ScreenAdapter {
     private boolean sprintSoundOn = false;
 
     public GameScreen(Main main, World world) {
-        Gdx.app.log("", "mitä??");
         this.main = main;
         this.world = world;
         this.gameScreen = this;
@@ -219,7 +218,6 @@ public class GameScreen extends ScreenAdapter {
         //wrongValidationSound = Sounds.wrongValidationSound;
         //walkSound = Sounds.walkSound;
         //sprintSound = Sounds.sprintSound;
-        Gdx.app.log("", "density: ??" + Gdx.graphics.getDensity());
 
         calculateCircle();
 
@@ -678,6 +676,7 @@ public class GameScreen extends ScreenAdapter {
         // Moves the camera
         camera.setToOrtho(false, viewPortWidth * minZoom / zoomRatio,
                     viewPortHeight * minZoom / zoomRatio);
+
         camera.position.x = Math.round(playerBody.getPosition().x * relativeWidth) / relativeWidth;
         camera.position.y = Math.round(playerBody.getPosition().y / (tileWidth / tileHeight) * relativeHeight) / relativeHeight;
 
@@ -818,8 +817,8 @@ public class GameScreen extends ScreenAdapter {
     }
 
     public void drawShadow(SpriteBatch batch, float locX, float locY, int objectIndex) {
-        float width = tileWidth * 9 / 10 - Math.round(objectBounciness[objectIndex] * relativeHeight) / relativeHeight;
-        float height = tileHeight / 2 - Math.round(objectBounciness[objectIndex] * relativeHeight) / relativeHeight;
+        float width = tileWidth * 9 / 10 - Math.round(objectBounciness[objectIndex] * relativeHeight) / relativeHeight / 2;
+        float height = tileHeight / 2 - Math.round(objectBounciness[objectIndex] * relativeHeight) / relativeHeight / 2;
         float shadowLocX = locX + (tileWidth - width) / 2;
         float shadowLocY = locY + (tileHeight - height) / 2;
         batch.draw(shadow, shadowLocX, shadowLocY, width, height);
@@ -862,7 +861,7 @@ public class GameScreen extends ScreenAdapter {
                 if(Math.sqrt(Math.pow(playerBody.getPosition().y -
                         (tileWidth * map.length - randomPairs[i][a] * tileWidth - tileWidth / 2), 2)
                         + Math.pow(playerBody.getPosition().x -
-                        (randomPairs[i][b] * tileWidth + tileWidth / 2), 2)) <= 1
+                        (randomPairs[i][b] * tileWidth + tileWidth / 2), 2)) <= tileWidth * 2
                         && randomPairs[i][0] != -1) {
 
                     createPairLabel(randomPairs[i][0]);
@@ -1162,7 +1161,6 @@ public class GameScreen extends ScreenAdapter {
                 pauseGame = false;
         }
         tutorialPhase++;
-        Gdx.app.log("", "phase: " + tutorialPhase);
     }
 
     public void handleObjectBouncing(float deltaTime) {

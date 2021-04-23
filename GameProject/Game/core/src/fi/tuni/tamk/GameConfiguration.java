@@ -39,7 +39,7 @@ public final class GameConfiguration implements HighScoreListener {
 
     public static boolean tutorialOn = false;
 
-    public static final float PLAYER_SPEED = 200;
+    public static final float PLAYER_SPEED = 100;
 
     // Wall height settings
     public static final float RELATIVE_TILE_HEIGHT = 2 / 3f;
