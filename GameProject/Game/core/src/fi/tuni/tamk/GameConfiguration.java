@@ -191,7 +191,6 @@ public final class GameConfiguration implements HighScoreListener {
 
     @Override
     public void receiveHighScore(ArrayList<HighScoreEntry> highScores) {
-        this.highScores = null;
         this.highScores = highScores;
     }
 
