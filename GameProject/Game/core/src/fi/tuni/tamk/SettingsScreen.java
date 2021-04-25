@@ -10,6 +10,7 @@ import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.InputListener;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.Button;
+import com.badlogic.gdx.scenes.scene2d.ui.Image;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
 import com.badlogic.gdx.utils.viewport.ScreenViewport;
@@ -28,6 +29,12 @@ public class SettingsScreen extends ScreenAdapter {
 
     private final float screenWidth = Gdx.graphics.getWidth();
     private final float screenHeight = Gdx.graphics.getHeight();
+
+    private float leftX;
+    private float rightX;
+
+    private Image boostImage;
+    private Image joystickImage;
 
     private Sound buttonPressSound;
 
@@ -74,10 +81,14 @@ public class SettingsScreen extends ScreenAdapter {
             }
         });
 
+        Image controlsBackground = new Image(Textures.whiteBackground);
+        controlsBackground.setSize(screenWidth / 3, screenWidth / 6);
+        controlsBackground.setPosition(screenWidth / 20, screenWidth / 20);
+
         Button buttonInvert = new TextButton(GameConfiguration.getText("switchButton"),mySkin,"default");
-        buttonInvert.setSize(screenWidth / 10f,screenWidth / 10f);
-        buttonInvert.setPosition(screenWidth / 2 - buttonInvert.getWidth() / 2,screenHeight
-                - buttonInvert.getHeight());
+        buttonInvert.setSize(screenWidth / 6f,screenWidth / 12f);
+        buttonInvert.setPosition(controlsBackground.getX() + controlsBackground.getWidth() / 2 -
+                buttonInvert.getWidth() / 2,controlsBackground.getY() + controlsBackground.getHeight());
         buttonInvert.setColor(Color.YELLOW);
         buttonInvert.addListener(new InputListener(){
             @Override
@@ -89,8 +100,25 @@ public class SettingsScreen extends ScreenAdapter {
             public void touchUp(InputEvent event, float x, float y, int pointer, int button) {
                 //buttonPressSound.play();
                 GameConfiguration.invert();
+                setControlLocations();
             }
         });
+
+
+        float controlSize = controlsBackground.getWidth() / 8;
+
+        leftX = controlsBackground.getX() + controlsBackground.getWidth() / 16;
+        rightX = controlsBackground.getX() + controlsBackground.getWidth() * 13 / 16;
+
+        boostImage = new Image(Textures.boostTexture);
+        boostImage.setSize(controlSize, controlSize);
+        boostImage.setY(controlsBackground.getY() + controlsBackground.getWidth() / 16);
+
+        joystickImage = new Image(Textures.joystickTexture);
+        joystickImage.setSize(controlSize, controlSize);
+        joystickImage.setY(boostImage.getY());
+
+        setControlLocations();
 
         if(pauseScreen != null) {
             Button returnToGame = new TextButton(GameConfiguration.getText("back"),mySkin,"default");
@@ -115,6 +143,9 @@ public class SettingsScreen extends ScreenAdapter {
 
         stage.addActor(buttonMenu);
         stage.addActor(buttonInvert);
+        stage.addActor(controlsBackground);
+        stage.addActor(boostImage);
+        stage.addActor(joystickImage);
 
         Gdx.input.setInputProcessor(stage);
     }
@@ -134,5 +165,15 @@ public class SettingsScreen extends ScreenAdapter {
         stage.dispose();
         camera = null;
         //buttonPressSound.dispose();
+    }
+
+    public void setControlLocations() {
+        if(GameConfiguration.open("controls").equals("default")) {
+            boostImage.setX(leftX);
+            joystickImage.setX(rightX);
+        } else {
+            boostImage.setX(rightX);
+            joystickImage.setX(leftX);
+        }
     }
 }

@@ -39,6 +39,11 @@ public final class Textures {
     public static Texture playerBlueDude = new Texture("textures/random/blueDudeTheme.png");
     public static Texture playerPig = new Texture("textures/random/pigTheme.png");
 
+    // Controls images in settings
+    public static Texture whiteBackground = new Texture("textures/random/backgroundWhite.png");
+    public static Texture boostTexture = new Texture("textures/random/boostSettings.png");
+    public static Texture joystickTexture = new Texture("textures/random/joystickSettings.png");
+
 
     private Textures() {}
 
