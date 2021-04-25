@@ -1,22 +1,16 @@
 package fi.tuni.tamk;
 
-import com.badlogic.gdx.Game;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.ScreenAdapter;
 import com.badlogic.gdx.audio.Sound;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.Texture;
-import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.math.Rectangle;
-import com.badlogic.gdx.math.Vector2;
-import com.badlogic.gdx.physics.box2d.World;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.InputListener;
 import com.badlogic.gdx.scenes.scene2d.Stage;
-import com.badlogic.gdx.scenes.scene2d.ui.Button;
-import com.badlogic.gdx.scenes.scene2d.ui.Label;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
 import com.badlogic.gdx.utils.viewport.ScreenViewport;
@@ -165,7 +159,7 @@ public class LevelScreen extends ScreenAdapter {
             }
         });
 
-        TextButton buttonStore = new TextButton(GameConfiguration.getText("store"),mySkin,"pixel72");
+        TextButton buttonStore = new TextButton(GameConfiguration.getText("themes"),mySkin,"pixel72");
         buttonStore.setSize(screenWidth / 5f,screenWidth / 15f);
         buttonStore.setPosition(screenWidth / 2f - buttonStore.getWidth() / 2f,
                 screenHeight - buttonStore.getHeight());
@@ -181,7 +175,7 @@ public class LevelScreen extends ScreenAdapter {
             public void touchUp(InputEvent event, float x, float y, int pointer, int button) {
                 //buttonPressSound.play();
                 dispose();
-                main.setScreen(new Store(main));
+                main.setScreen(new Themes(main));
             }
         });
 

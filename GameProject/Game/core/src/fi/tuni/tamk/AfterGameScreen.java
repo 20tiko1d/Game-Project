@@ -10,17 +10,10 @@ import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.InputListener;
 import com.badlogic.gdx.scenes.scene2d.Stage;
-import com.badlogic.gdx.scenes.scene2d.ui.Button;
-import com.badlogic.gdx.scenes.scene2d.ui.Dialog;
 import com.badlogic.gdx.scenes.scene2d.ui.Label;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
-import com.badlogic.gdx.scenes.scene2d.ui.TextArea;
 import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
 import com.badlogic.gdx.utils.viewport.ScreenViewport;
-
-import java.util.logging.Level;
-
-import javax.xml.soap.Text;
 
 public class AfterGameScreen extends ScreenAdapter {
 
@@ -106,7 +99,7 @@ public class AfterGameScreen extends ScreenAdapter {
             }
         });
 
-        TextButton storeButton = new TextButton(GameConfiguration.getText("store"),mySkin,"pixel72");
+        TextButton storeButton = new TextButton(GameConfiguration.getText("themes"),mySkin,"pixel72");
         storeButton.setSize(Gdx.graphics.getWidth() / 10f,Gdx.graphics.getWidth() / 10f);
         storeButton.setPosition(Gdx.graphics.getWidth() - storeButton.getWidth(),
                 Gdx.graphics.getHeight() - Gdx.graphics.getWidth() / 10f);
@@ -122,7 +115,7 @@ public class AfterGameScreen extends ScreenAdapter {
             public void touchUp(InputEvent event, float x, float y, int pointer, int button) {
                 //buttonPressSound.play();
                 dispose();
-                main.setScreen(new Store(main));
+                main.setScreen(new Themes(main));
             }
         });
 

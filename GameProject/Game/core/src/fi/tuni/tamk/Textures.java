@@ -31,6 +31,11 @@ public final class Textures {
     // Game background "mist"
     public static Texture background = new Texture("textures/random/fog8.png");
 
+    // Theme buttons
+    public static Texture themeBush = new Texture("textures/random/themeBush.png");
+    public static Texture themeSand = new Texture("textures/random/themeSand.png");
+    public static Texture checkMark = new Texture("textures/random/checkMark.png");
+
 
     private Textures() {}
 

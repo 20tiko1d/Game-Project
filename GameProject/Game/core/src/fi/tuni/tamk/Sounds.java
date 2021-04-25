@@ -7,7 +7,7 @@ import com.badlogic.gdx.audio.Sound;
 public final class Sounds {
 
     // Background music
-    public static Music backgroundMusic = Gdx.audio.newMusic(Gdx.files.internal("Music/gamemusic.wav"));
+    public static Music backgroundMusic = Gdx.audio.newMusic(Gdx.files.internal("Sounds and Music/gamemusic.wav"));
 
     // Activate object
     public static Sound activationSound;

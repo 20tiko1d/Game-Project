@@ -7,29 +7,33 @@ import com.badlogic.gdx.graphics.Camera;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
+import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.InputListener;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.Touchable;
 import com.badlogic.gdx.scenes.scene2d.ui.Button;
 import com.badlogic.gdx.scenes.scene2d.ui.ButtonGroup;
+import com.badlogic.gdx.scenes.scene2d.ui.Image;
+import com.badlogic.gdx.scenes.scene2d.ui.ImageButton;
 import com.badlogic.gdx.scenes.scene2d.ui.Label;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
+import com.badlogic.gdx.scenes.scene2d.utils.Drawable;
+import com.badlogic.gdx.scenes.scene2d.utils.TextureRegionDrawable;
 import com.badlogic.gdx.utils.viewport.ScreenViewport;
 
 import javax.swing.JRadioButton;
 
-public class Store extends ScreenAdapter {
+public class Themes extends ScreenAdapter {
 
     private Main main;
 
     private OrthographicCamera camera;
     private Stage stage;
 
-    private Label creditLabel;
-
-    private String creditsString;
+    private final float screenWidth = Gdx.graphics.getWidth();
+    private final float screenHeight = Gdx.graphics.getHeight();
 
     private TextButton buttonSand;
     private TextButton buttonBush;
@@ -39,11 +43,15 @@ public class Store extends ScreenAdapter {
 
     private Sound buttonPressSound;
 
-    public Store(Main main) {
+    private float themeMarkSandY;
+    private float themeMarkBushY;
+
+    private Image checkMarkTheme;
+
+    public Themes(Main main) {
         this.main = main;
         camera = new OrthographicCamera();
         camera.setToOrtho(false, Main.viewPortWidth, Main.viewPortHeight);
-        creditsString = GameConfiguration.getText("credits");
         //buttonPressSound = Sounds.buttonPressSound;
     }
 
@@ -57,8 +65,8 @@ public class Store extends ScreenAdapter {
         Skin mySkin = Textures.mySkin;
 
         TextButton buttonMenu = new TextButton(GameConfiguration.getText("menu"),mySkin,"pixel72");
-        buttonMenu.setSize(Gdx.graphics.getWidth() / 10f,Gdx.graphics.getWidth() / 10f);
-        buttonMenu.setPosition(0,Gdx.graphics.getHeight() - Gdx.graphics.getWidth() / 10f);
+        buttonMenu.setSize(screenWidth / 10f,screenWidth / 10f);
+        buttonMenu.setPosition(0,screenHeight - screenWidth / 10f);
         buttonMenu.setColor(Color.YELLOW);
         buttonMenu.getLabel().setFontScale(GameConfiguration.fitText(buttonMenu, -1, -1));
         buttonMenu.addListener(new InputListener(){
@@ -76,9 +84,9 @@ public class Store extends ScreenAdapter {
         });
 
         TextButton buttonLevels = new TextButton(GameConfiguration.getText("levels"),mySkin,"pixel72");
-        buttonLevels.setSize(Gdx.graphics.getWidth() / 10f,Gdx.graphics.getWidth() / 10f);
-        buttonLevels.setPosition(Gdx.graphics.getWidth() - buttonLevels.getWidth(),
-                Gdx.graphics.getHeight() - Gdx.graphics.getWidth() / 10f);
+        buttonLevels.setSize(screenWidth / 10f,screenWidth / 10f);
+        buttonLevels.setPosition(screenWidth - buttonLevels.getWidth(),
+                screenHeight - screenWidth / 10f);
         buttonLevels.setColor(0 / 255f, 255 / 255f, 195 / 255f, 1);
         buttonLevels.getLabel().setFontScale(GameConfiguration.fitText(buttonLevels, -1, -1));
         buttonLevels.addListener(new InputListener(){
@@ -95,26 +103,12 @@ public class Store extends ScreenAdapter {
             }
         });
 
-
-        creditLabel = new Label( creditsString + ": " + GameConfiguration.credits, mySkin, "default");
-        creditLabel.setBounds(Gdx.graphics.getWidth() / 2f - Gdx.graphics.getWidth() / 10f, Gdx.graphics.getHeight() * 4 / 5f,
-                Gdx.graphics.getWidth() / 5f, Gdx.graphics.getHeight() / 10f);
-
-
-        float themeButtonWidth = Gdx.graphics.getWidth() / 5f;
-        float themeButtonHeight = Gdx.graphics.getHeight() / 10f;
-        float themeButtonX = Gdx.graphics.getWidth() / 2f - themeButtonWidth / 2f;
-        float themeButtonY = Gdx.graphics.getHeight() / 2f;
-        float themeButtonGapY = themeButtonHeight / 10f;
-
-        String sandString = buttonSandString;
-        if(GameConfiguration.theme.equals("sand")) {
-            sandString = getMarkedText(buttonSandString);
-        }
-        buttonSand = new TextButton(sandString,mySkin,"pixel48");
-        buttonSand.setSize(themeButtonWidth, themeButtonHeight);
-        buttonSand.setPosition(themeButtonX, themeButtonY);
-        buttonSand.addListener(new InputListener(){
+        Drawable sandThemeDrawable = new TextureRegionDrawable(Textures.themeSand);
+        ImageButton buttonThemeSand = new ImageButton(sandThemeDrawable);
+        buttonThemeSand.setSize(screenWidth / 10f, screenWidth / 10f);
+        buttonThemeSand.setPosition(screenWidth / 4f - buttonThemeSand.getWidth() / 2f,
+                screenHeight * 2 / 3 - buttonThemeSand.getHeight() / 2f);
+        buttonThemeSand.addListener(new InputListener(){
             @Override
             public boolean touchDown(InputEvent event, float x, float y, int pointer, int button) {
                 return true;
@@ -125,19 +119,16 @@ public class Store extends ScreenAdapter {
                 //buttonPressSound.play();
                 GameConfiguration.save("theme", "sand");
                 GameConfiguration.theme = "sand";
-                buttonSand.setText(getMarkedText(buttonSandString));
-                buttonBush.setText(buttonBushString);
+                checkMarkTheme.setY(themeMarkSandY);
             }
         });
 
-        String bushString = buttonBushString;
-        if(GameConfiguration.theme.equals("bush")) {
-            bushString = getMarkedText(buttonBushString);
-        }
-        buttonBush = new TextButton(bushString,mySkin,"pixel48");
-        buttonBush.setSize(themeButtonWidth, themeButtonHeight);
-        buttonBush.setPosition(themeButtonX, themeButtonY - themeButtonGapY - themeButtonHeight);
-        buttonBush.addListener(new InputListener(){
+        Drawable bushThemeDrawable = new TextureRegionDrawable(Textures.themeBush);
+        ImageButton buttonThemeBush = new ImageButton(bushThemeDrawable);
+        buttonThemeBush.setSize(screenWidth / 10f, screenWidth / 10f);
+        buttonThemeBush.setPosition(screenWidth / 4f - buttonThemeSand.getWidth() / 2f,
+                screenHeight / 3 - buttonThemeSand.getHeight() / 2f);
+        buttonThemeBush.addListener(new InputListener(){
             @Override
             public boolean touchDown(InputEvent event, float x, float y, int pointer, int button) {
                 return true;
@@ -148,16 +139,30 @@ public class Store extends ScreenAdapter {
                 //buttonPressSound.play();
                 GameConfiguration.save("theme", "bush");
                 GameConfiguration.theme = "bush";
-                buttonSand.setText(buttonSandString);
-                buttonBush.setText(getMarkedText(buttonBushString));
+                checkMarkTheme.setY(themeMarkBushY);
             }
         });
 
+        float checkMarkSize = screenWidth / 20f;
+        themeMarkBushY = buttonThemeBush.getY() +
+                buttonThemeBush.getHeight() / 2f - checkMarkSize / 2f;
+        themeMarkSandY = buttonThemeSand.getY() +
+                buttonThemeSand.getHeight() / 2f - checkMarkSize / 2f;
+
+        float themeMarkY = themeMarkBushY;
+        if(GameConfiguration.theme.equals("sand")) {
+            themeMarkY = themeMarkSandY;
+        }
+
+        checkMarkTheme = new Image(Textures.checkMark);
+        checkMarkTheme.setSize(checkMarkSize, checkMarkSize);
+        checkMarkTheme.setPosition(buttonThemeBush.getX() + buttonThemeBush.getWidth() * 1.5f - checkMarkTheme.getWidth() / 2f, themeMarkY);
+
         stage.addActor(buttonMenu);
-        stage.addActor(buttonBush);
-        stage.addActor(buttonSand);
         stage.addActor(buttonLevels);
-        stage.addActor(creditLabel);
+        stage.addActor(buttonThemeSand);
+        stage.addActor(buttonThemeBush);
+        stage.addActor(checkMarkTheme);
         Gdx.input.setInputProcessor(stage);
     }
 

@@ -58,10 +58,6 @@ public final class GameConfiguration implements HighScoreListener {
 
     // Saving stuff
     public static String noValue = "No value stored";
-    public static String creditsString = "credits";
-
-    // Personal info
-    public static int credits;
 
     public static boolean firstTime;
 
@@ -138,7 +134,6 @@ public final class GameConfiguration implements HighScoreListener {
 
     public static void checkFirstTime() {
         if(open("firstTime").equals(noValue)) {
-            save(creditsString, "0");
             save("theme", "sand");
             firstTime = true;
         } else {
@@ -146,7 +141,6 @@ public final class GameConfiguration implements HighScoreListener {
         }
 
         theme = open("theme");
-        credits = Integer.parseInt(open(creditsString));
     }
 
     public static String getLanguage() {
