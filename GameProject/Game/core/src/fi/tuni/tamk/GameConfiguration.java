@@ -136,6 +136,7 @@ public final class GameConfiguration implements HighScoreListener {
         if(open("firstTime").equals(noValue)) {
             save("theme", "sand");
             save("player", "ghost");
+            save("controls", "default");
             firstTime = true;
         } else {
             firstTime = false;
@@ -220,6 +221,24 @@ public final class GameConfiguration implements HighScoreListener {
             HighScoreServer.sendNewHighScore(entry, new GameConfiguration());
         } catch (Exception e) {
             e.printStackTrace();
+        }
+    }
+
+    public static float getControlsX(int indicator, float width) {
+        boolean isDefault = open("controls").equals("default");
+        float screenWidth = Gdx.graphics.getWidth();
+        if((indicator == 1 && isDefault) || (indicator == 2 && !isDefault)) {
+            return screenWidth / 8 - width / 2;
+        } else {
+            return screenWidth * 7 / 8 - width / 2;
+        }
+    }
+
+    public static void invert() {
+        if(open("controls").equals("default")) {
+            save("controls", "inverted");
+        } else {
+            save("controls", "default");
         }
     }
 }

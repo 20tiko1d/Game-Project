@@ -26,6 +26,9 @@ public class SettingsScreen extends ScreenAdapter {
     private OrthographicCamera camera;
     private Stage stage;
 
+    private final float screenWidth = Gdx.graphics.getWidth();
+    private final float screenHeight = Gdx.graphics.getHeight();
+
     private Sound buttonPressSound;
 
     public SettingsScreen(Main main) {
@@ -50,8 +53,8 @@ public class SettingsScreen extends ScreenAdapter {
         Skin mySkin = Textures.mySkin;
 
         Button buttonMenu = new TextButton(GameConfiguration.getText("menu"),mySkin,"default");
-        buttonMenu.setSize(Gdx.graphics.getWidth() / 10f,Gdx.graphics.getWidth() / 10f);
-        buttonMenu.setPosition(0,Gdx.graphics.getHeight() - Gdx.graphics.getWidth() / 10f);
+        buttonMenu.setSize(screenWidth / 10f,screenWidth / 10f);
+        buttonMenu.setPosition(0,screenHeight - buttonMenu.getHeight());
         buttonMenu.setColor(Color.YELLOW);
         buttonMenu.addListener(new InputListener(){
             @Override
@@ -71,11 +74,29 @@ public class SettingsScreen extends ScreenAdapter {
             }
         });
 
+        Button buttonInvert = new TextButton(GameConfiguration.getText("switchButton"),mySkin,"default");
+        buttonInvert.setSize(screenWidth / 10f,screenWidth / 10f);
+        buttonInvert.setPosition(screenWidth / 2 - buttonInvert.getWidth() / 2,screenHeight
+                - buttonInvert.getHeight());
+        buttonInvert.setColor(Color.YELLOW);
+        buttonInvert.addListener(new InputListener(){
+            @Override
+            public boolean touchDown(InputEvent event, float x, float y, int pointer, int button) {
+                return true;
+            }
+
+            @Override
+            public void touchUp(InputEvent event, float x, float y, int pointer, int button) {
+                //buttonPressSound.play();
+                GameConfiguration.invert();
+            }
+        });
+
         if(pauseScreen != null) {
             Button returnToGame = new TextButton(GameConfiguration.getText("back"),mySkin,"default");
-            returnToGame.setSize(Gdx.graphics.getWidth() / 10f,Gdx.graphics.getWidth() / 10f);
-            returnToGame.setPosition(Gdx.graphics.getWidth() - returnToGame.getWidth(),
-                    Gdx.graphics.getHeight() - Gdx.graphics.getWidth() / 10f);
+            returnToGame.setSize(screenWidth / 10f,screenWidth / 10f);
+            returnToGame.setPosition(screenWidth - returnToGame.getWidth(),
+                    screenHeight - returnToGame.getHeight());
             returnToGame.addListener(new InputListener(){
                 @Override
                 public boolean touchDown(InputEvent event, float x, float y, int pointer, int button) {
@@ -93,6 +114,7 @@ public class SettingsScreen extends ScreenAdapter {
         }
 
         stage.addActor(buttonMenu);
+        stage.addActor(buttonInvert);
 
         Gdx.input.setInputProcessor(stage);
     }

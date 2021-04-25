@@ -494,7 +494,7 @@ public class GameScreen extends ScreenAdapter {
 
             buttonBoost = new TextButton(GameConfiguration.getText("boostButton"),mySkin,"boost");
             buttonBoost.setSize(screenWidth * 3 / 18,screenWidth * 3 / 18);
-            buttonBoost.setPosition(screenWidth / 8f - buttonBoost.getWidth() / 2f,
+            buttonBoost.setPosition(GameConfiguration.getControlsX(1, buttonBoost.getWidth()),
                     screenHeight / 4f - buttonBoost.getHeight() / 2f);
             buttonBoost.setColor(1, 0, 0, 1);
             buttonBoost.getLabel().setFontScale(GameConfiguration.fitText(buttonBoost, 48, -1));
@@ -531,7 +531,8 @@ public class GameScreen extends ScreenAdapter {
             touchPadStyle.background = touchBackground;
             touchPadStyle.knob = touchKnob;
             touchpad = new Touchpad(0.75f, touchPadStyle);
-            touchpad.setBounds(GameConfiguration.joystickX, GameConfiguration.joystickY,
+            touchpad.setBounds(GameConfiguration.getControlsX(2,
+                    GameConfiguration.joystickLength), GameConfiguration.joystickY,
                     GameConfiguration.joystickLength, GameConfiguration.joystickLength);
             touchpad.addListener(new ChangeListener() {
                 @Override
@@ -557,6 +558,8 @@ public class GameScreen extends ScreenAdapter {
             created = true;
         } else {
             backgroundMusic.play();
+            buttonBoost.setX(GameConfiguration.getControlsX(1, buttonBoost.getWidth()));
+            touchpad.setX(GameConfiguration.getControlsX(2, touchpad.getWidth()));
         }
         Gdx.input.setInputProcessor(inputMultiplexer);
     }
