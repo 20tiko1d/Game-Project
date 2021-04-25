@@ -205,14 +205,6 @@ public class LevelScreen extends ScreenAdapter {
             }
         });
 
-        String themeString = GameConfiguration.getText("themeLabel") + ": " + GameConfiguration.theme.toUpperCase();
-        Label themeLabel = new Label(themeString , mySkin, "default");
-        themeLabel.setBounds(screenWidth * 5 / 7f, screenHeight * 9 / 10f,
-                screenWidth / 5f, screenHeight / 10f);
-        themeLabel.setColor(Color.BLACK);
-        themeLabel.setFontScale(1.3f);
-
-        stage.addActor(themeLabel);
         stage.addActor(buttonEasy);
         stage.addActor(buttonMedium);
         stage.addActor(buttonHard);

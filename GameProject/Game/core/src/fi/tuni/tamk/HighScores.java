@@ -135,12 +135,6 @@ public class HighScores extends ScreenAdapter {
         hardBackgroundLabel.setSize(easyBackgroundLabel.getWidth(), easyBackgroundLabel.getHeight());
         hardBackgroundLabel.setPosition(mediumBackgroundLabel.getX() + mediumBackgroundLabel.getWidth(), 0);
 
-        scoreWidth = easyBackgroundLabel.getWidth() * 9 / 10f;
-        scoreHeight = easyBackgroundLabel.getHeight() * 9 / 10f;
-        scoreY = easyBackgroundLabel.getY() + easyBackgroundLabel.getHeight() * 9 / 10f;
-        startX = easyBackgroundLabel.getX();
-        listWidth = easyBackgroundLabel.getWidth();
-
         stage.addActor(buttonMenu);
         stage.addActor(buttonLevels);
         stage.addActor(nameLabel);
@@ -150,9 +144,14 @@ public class HighScores extends ScreenAdapter {
         stage.addActor(mediumBackgroundLabel);
         stage.addActor(hardBackgroundLabel);
 
-        createHighScoreLabels();
-
         Gdx.input.setInputProcessor(stage);
+
+        scoreWidth = easyBackgroundLabel.getWidth() * 9 / 10f;
+        scoreHeight = easyBackgroundLabel.getHeight() * 9 / 10f;
+        scoreY = easyBackgroundLabel.getY() + easyBackgroundLabel.getHeight() * 9 / 10f;
+        startX = easyBackgroundLabel.getX();
+        listWidth = easyBackgroundLabel.getWidth();
+        createHighScoreLabels();
     }
 
 
@@ -173,16 +172,28 @@ public class HighScores extends ScreenAdapter {
 
     public void createHighScoreLabels() {
         GameConfiguration.getHighScores(1);
-        ArrayList<HighScoreEntry> highScoresEasy = getTopHighScores(GameConfiguration.highScores);
+        ArrayList<HighScoreEntry> highScoresEasy = GameConfiguration.highScores;
         GameConfiguration.getHighScores(2);
-        ArrayList<HighScoreEntry> highScoresMedium = getTopHighScores(GameConfiguration.highScores);
+        ArrayList<HighScoreEntry> highScoresMedium = GameConfiguration.highScores;
         GameConfiguration.getHighScores(3);
-        ArrayList<HighScoreEntry> highScoresHard = getTopHighScores(GameConfiguration.highScores);
+        ArrayList<HighScoreEntry> highScoresHard = GameConfiguration.highScores;
+        GameConfiguration.highScores = null;
 
-        createScoreLabel(startX + listWidth / 20f, highScoresEasy);
-        createScoreLabel(startX + listWidth * 21 / 20f, highScoresMedium);
-        createScoreLabel(startX + listWidth * 41 / 20f, highScoresHard);
-
+        if(highScoresEasy != null) {
+            createScoreLabel(startX + listWidth / 20f, getTopHighScores(highScoresEasy));
+            createScoreLabel(startX + listWidth * 21 / 20f, getTopHighScores(highScoresMedium));
+            createScoreLabel(startX + listWidth * 41 / 20f, getTopHighScores(highScoresHard));
+        } else {
+            Image errorBackground = new Image(new Texture("textures/random/tutorialTextBackground.png"));
+            errorBackground.setSize(screenWidth / 2f, screenHeight / 4f);
+            errorBackground.setPosition(screenWidth / 2f - errorBackground.getWidth() / 2f,
+                    screenHeight / 2f - errorBackground.getHeight() / 2f);
+            stage.addActor(errorBackground);
+            Label errorLabel = new Label("    " + GameConfiguration.getText("fetchError"), mySkin, "default");
+            errorLabel.setSize(errorBackground.getWidth(), errorBackground.getHeight());
+            errorLabel.setPosition(errorBackground.getX(), errorBackground.getY());
+            stage.addActor(errorLabel);
+        }
     }
 
     public ArrayList<HighScoreEntry> getTopHighScores(ArrayList<HighScoreEntry> highScores) {

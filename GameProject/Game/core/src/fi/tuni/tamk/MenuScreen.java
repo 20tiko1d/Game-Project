@@ -107,12 +107,12 @@ public class MenuScreen extends ScreenAdapter {
             }
         });
 
-        buttonPlay = new TextButton(GameConfiguration.getText("playButton"),mySkin,"pixel72");
+        buttonPlay = new TextButton(GameConfiguration.getText("playButton"),mySkin,"pixel120");
         buttonPlay.setSize(screenWidth / 3f,screenHeight / 7f);
         buttonPlay.setPosition(screenWidth / 2f - buttonPlay.getWidth() / 2,
                 screenHeight / 2f);
         buttonPlay.setColor(Color.GREEN);
-        buttonPlay.getLabel().setFontScale(GameConfiguration.fitText(buttonPlay, 72, 110));
+        buttonPlay.getLabel().setFontScale(GameConfiguration.fitText(buttonPlay, 120, 70));
         buttonPlay.addListener(new InputListener(){
             @Override
             public boolean touchDown(InputEvent event, float x, float y, int pointer, int button) {
@@ -134,6 +134,7 @@ public class MenuScreen extends ScreenAdapter {
                 }
             }
         });
+
 
         Color buttonColors = new Color(1, 208 / 255f, 0, 1);
 

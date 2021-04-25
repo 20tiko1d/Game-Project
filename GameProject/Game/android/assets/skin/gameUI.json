@@ -9,6 +9,9 @@ com.badlogic.gdx.graphics.g2d.BitmapFont: {
 	arial-fontSmall: {
 		file: arial-test.fnt
 	}
+	pixel120: {
+		file: pixel120.fnt
+	}
 	pixel48: {
 		file: pixel48.fnt
 	}
@@ -194,6 +197,12 @@ com.badlogic.gdx.scenes.scene2d.ui.TextButton$TextButtonStyle: {
 	}
 	pixel72: {
 		font: pixel72
+		fontColor: black
+		up: buttonUp
+		down: buttonDown
+	}
+	pixel120: {
+		font: pixel120
 		fontColor: black
 		up: buttonUp
 		down: buttonDown
