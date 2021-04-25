@@ -83,6 +83,7 @@ public class AfterGameScreen extends ScreenAdapter {
             public void touchUp(InputEvent event, float x, float y, int pointer, int button) {
                 //buttonPressSound.play();
                 GameScreen gameScreen = GameConfiguration.createGame(main);
+                dispose();
                 main.setScreen(gameScreen);
             }
         });
@@ -100,6 +101,7 @@ public class AfterGameScreen extends ScreenAdapter {
             @Override
             public void touchUp(InputEvent event, float x, float y, int pointer, int button) {
                 //buttonPressSound.play();
+                dispose();
                 main.setScreen(new LevelScreen(main));
             }
         });
@@ -155,9 +157,10 @@ public class AfterGameScreen extends ScreenAdapter {
 
     @Override
     public void dispose() {
-        levelCompletedMusic.dispose();
         stage.dispose();
         camera = null;
+        levelCompletedMusic.stop();
+        //levelCompletedMusic = null;
         //buttonPressSound.dispose();
     }
 

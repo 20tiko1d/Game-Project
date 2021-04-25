@@ -83,6 +83,7 @@ public class AfterTutorialScreen extends ScreenAdapter {
             @Override
             public void touchUp(InputEvent event, float x, float y, int pointer, int button) {
                 //buttonPressSound.play();
+                dispose();
                 main.setScreen(new LevelScreen(main));
             }
         });
@@ -116,7 +117,7 @@ public class AfterTutorialScreen extends ScreenAdapter {
 
     @Override
     public void dispose() {
-        levelCompletedMusic.dispose();
+        levelCompletedMusic.stop();
         stage.dispose();
         camera = null;
         //buttonPressSound.dispose();

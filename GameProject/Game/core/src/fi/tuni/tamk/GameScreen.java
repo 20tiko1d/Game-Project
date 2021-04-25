@@ -644,9 +644,9 @@ public class GameScreen extends ScreenAdapter {
         backgroundMusic = null;
         //buttonPressSound.dispose();
         //activationSound.dispose();
-        switchSound.dispose();
-        connectingSound.dispose();
-        wrongValidationSound.dispose();
+        //switchSound.dispose();
+        //connectingSound.dispose();
+        //wrongValidationSound.dispose();
         //walkSound.dispose();
         //sprintSound.dispose();
     }
