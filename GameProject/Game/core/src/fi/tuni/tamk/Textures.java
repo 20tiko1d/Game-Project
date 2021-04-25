@@ -35,6 +35,9 @@ public final class Textures {
     public static Texture themeBush = new Texture("textures/random/themeBush.png");
     public static Texture themeSand = new Texture("textures/random/themeSand.png");
     public static Texture checkMark = new Texture("textures/random/checkMark.png");
+    public static Texture playerGhost = new Texture("textures/random/ghostTheme.png");
+    public static Texture playerBlueDude = new Texture("textures/random/blueDudeTheme.png");
+    public static Texture playerPig = new Texture("textures/random/pigTheme.png");
 
 
     private Textures() {}
