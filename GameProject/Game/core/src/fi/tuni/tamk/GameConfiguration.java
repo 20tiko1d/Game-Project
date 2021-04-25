@@ -135,6 +135,7 @@ public final class GameConfiguration implements HighScoreListener {
     public static void checkFirstTime() {
         if(open("firstTime").equals(noValue)) {
             save("theme", "sand");
+            save("player", "ghost");
             firstTime = true;
         } else {
             firstTime = false;

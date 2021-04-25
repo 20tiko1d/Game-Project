@@ -79,16 +79,16 @@ public final class Textures {
         return textures;
     }
 
-    public static Texture[] getPlayerTexture() {
+    public static Texture[] getPlayerTexture(String name) {
         Texture [] playerTextures = new Texture[4];
         // Front
-        playerTextures[0] = new Texture("textures/player/Ghost/Kawaiighost-front.png");
+        playerTextures[0] = new Texture("textures/player/" + name + "/" + name + "Front.png");
         // Left
-        playerTextures[1] = new Texture("textures/player/Ghost/Kawaiighost-left.png");
+        playerTextures[1] = new Texture("textures/player/" + name + "/" + name + "Left.png");
         // Back
-        playerTextures[2] = new Texture("textures/player/Ghost/Kawaiighost-back.png");
+        playerTextures[2] = new Texture("textures/player/" + name + "/" + name + "Back.png");
         // Right
-        playerTextures[3] = new Texture("textures/player/Ghost/Kawaiighost-right.png");
+        playerTextures[3] = new Texture("textures/player/" + name + "/" + name + "Right.png");
         return playerTextures;
     }
 

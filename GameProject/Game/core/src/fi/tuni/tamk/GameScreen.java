@@ -649,7 +649,7 @@ public class GameScreen extends ScreenAdapter {
     }
 
     public void getTextures() {
-        playerTextures = Textures.getPlayerTexture();
+        playerTextures = Textures.getPlayerTexture(GameConfiguration.open("player"));
         objectTexture = Textures.getObjectTexture();
     }
 

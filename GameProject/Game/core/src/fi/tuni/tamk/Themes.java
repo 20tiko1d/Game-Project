@@ -8,6 +8,8 @@ import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.g2d.Batch;
+import com.badlogic.gdx.scenes.scene2d.Event;
+import com.badlogic.gdx.scenes.scene2d.EventListener;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.InputListener;
 import com.badlogic.gdx.scenes.scene2d.Stage;
@@ -45,8 +47,13 @@ public class Themes extends ScreenAdapter {
 
     private float themeMarkSandY;
     private float themeMarkBushY;
-
     private Image checkMarkTheme;
+
+    private float playerMarkGhostY;
+    private float playerMarkBlueDudeY;
+    private float playerMarkPigY;
+    private Image checkMarkPlayer;
+
 
     public Themes(Main main) {
         this.main = main;
@@ -106,7 +113,7 @@ public class Themes extends ScreenAdapter {
         Drawable sandThemeDrawable = new TextureRegionDrawable(Textures.themeSand);
         ImageButton buttonThemeSand = new ImageButton(sandThemeDrawable);
         buttonThemeSand.setSize(screenWidth / 10f, screenWidth / 10f);
-        buttonThemeSand.setPosition(screenWidth / 4f - buttonThemeSand.getWidth() / 2f,
+        buttonThemeSand.setPosition(screenWidth / 4f - buttonThemeSand.getWidth(),
                 screenHeight * 2 / 3 - buttonThemeSand.getHeight() / 2f);
         buttonThemeSand.addListener(new InputListener(){
             @Override
@@ -126,7 +133,7 @@ public class Themes extends ScreenAdapter {
         Drawable bushThemeDrawable = new TextureRegionDrawable(Textures.themeBush);
         ImageButton buttonThemeBush = new ImageButton(bushThemeDrawable);
         buttonThemeBush.setSize(screenWidth / 10f, screenWidth / 10f);
-        buttonThemeBush.setPosition(screenWidth / 4f - buttonThemeSand.getWidth() / 2f,
+        buttonThemeBush.setPosition(screenWidth / 4f - buttonThemeSand.getWidth(),
                 screenHeight / 3 - buttonThemeSand.getHeight() / 2f);
         buttonThemeBush.addListener(new InputListener(){
             @Override
@@ -143,6 +150,60 @@ public class Themes extends ScreenAdapter {
             }
         });
 
+        Drawable ghostDrawable = new TextureRegionDrawable(Textures.getPlayerTexture("ghost")[0]);
+        ImageButton buttonGhost = new ImageButton(ghostDrawable);
+        buttonGhost.setSize(screenWidth / 10f, screenWidth / 10f);
+        buttonGhost.setPosition(screenWidth * 2 / 3f - buttonGhost.getWidth(),
+                screenHeight * 3 / 4 - buttonGhost.getHeight() / 2f);
+        buttonGhost.addListener(new InputListener() {
+            @Override
+            public boolean touchDown(InputEvent event, float x, float y, int pointer, int button) {
+                return true;
+            }
+
+            @Override
+            public void touchUp(InputEvent event, float x, float y, int pointer, int button) {
+                GameConfiguration.save("player", "ghost");
+                checkMarkPlayer.setY(playerMarkGhostY);
+            }
+        });
+
+        Drawable blueDudeDrawable = new TextureRegionDrawable(Textures.getPlayerTexture("blueDude")[0]);
+        ImageButton buttonBlueDude = new ImageButton(blueDudeDrawable);
+        buttonBlueDude.setSize(screenWidth / 10f, screenWidth / 10f);
+        buttonBlueDude.setPosition(screenWidth * 2 / 3f - buttonBlueDude.getWidth(),
+                screenHeight / 2 - buttonBlueDude.getHeight() / 2f);
+        buttonBlueDude.addListener(new InputListener() {
+            @Override
+            public boolean touchDown(InputEvent event, float x, float y, int pointer, int button) {
+                return true;
+            }
+
+            @Override
+            public void touchUp(InputEvent event, float x, float y, int pointer, int button) {
+                GameConfiguration.save("player", "blueDude");
+                checkMarkPlayer.setY(playerMarkBlueDudeY);
+            }
+        });
+
+        Drawable pigDrawable = new TextureRegionDrawable(Textures.getPlayerTexture("pig")[0]);
+        ImageButton buttonPig = new ImageButton(pigDrawable);
+        buttonPig.setSize(screenWidth / 10f, screenWidth / 10f);
+        buttonPig.setPosition(screenWidth * 2 / 3f - buttonPig.getWidth(),
+                screenHeight / 4 - buttonPig.getHeight() / 2f);
+        buttonPig.addListener(new InputListener() {
+            @Override
+            public boolean touchDown(InputEvent event, float x, float y, int pointer, int button) {
+                return true;
+            }
+
+            @Override
+            public void touchUp(InputEvent event, float x, float y, int pointer, int button) {
+                GameConfiguration.save("player", "pig");
+                checkMarkPlayer.setY(playerMarkPigY);
+            }
+        });
+
         float checkMarkSize = screenWidth / 20f;
         themeMarkBushY = buttonThemeBush.getY() +
                 buttonThemeBush.getHeight() / 2f - checkMarkSize / 2f;
@@ -153,16 +214,37 @@ public class Themes extends ScreenAdapter {
         if(GameConfiguration.theme.equals("sand")) {
             themeMarkY = themeMarkSandY;
         }
-
         checkMarkTheme = new Image(Textures.checkMark);
         checkMarkTheme.setSize(checkMarkSize, checkMarkSize);
         checkMarkTheme.setPosition(buttonThemeBush.getX() + buttonThemeBush.getWidth() * 1.5f - checkMarkTheme.getWidth() / 2f, themeMarkY);
+
+
+        playerMarkGhostY = buttonGhost.getY() + buttonGhost.getHeight() / 2f - checkMarkSize / 2f;
+        playerMarkBlueDudeY = buttonBlueDude.getY() + buttonBlueDude.getHeight() / 2f - checkMarkSize / 2f;
+        playerMarkPigY = buttonPig.getY() + buttonPig.getHeight() / 2f - checkMarkSize / 2f;
+
+        float playerMarkY = playerMarkGhostY;
+        if(GameConfiguration.open("player").equals("blueDude")) {
+            playerMarkY = playerMarkBlueDudeY;
+        }
+        else if(GameConfiguration.open("player").equals("pig")) {
+            playerMarkY = playerMarkPigY;
+        }
+
+        checkMarkPlayer = new Image(Textures.checkMark);
+        checkMarkPlayer.setSize(checkMarkSize, checkMarkSize);
+        checkMarkPlayer.setPosition(buttonGhost.getX() + buttonGhost.getWidth() * 1.5f - checkMarkPlayer.getWidth() / 2f, playerMarkY);
+
 
         stage.addActor(buttonMenu);
         stage.addActor(buttonLevels);
         stage.addActor(buttonThemeSand);
         stage.addActor(buttonThemeBush);
         stage.addActor(checkMarkTheme);
+        stage.addActor(buttonGhost);
+        stage.addActor(buttonBlueDude);
+        stage.addActor(buttonPig);
+        stage.addActor(checkMarkPlayer);
         Gdx.input.setInputProcessor(stage);
     }
 
