@@ -213,9 +213,9 @@ public class GameScreen extends ScreenAdapter {
         shadow = Textures.shadow;
         //buttonPressSound = Sounds.buttonPressSound;
         //activationSound = Sounds.activationSound;
-        //switchSound = Sounds.switchSound;
-        //connectingSound = Sounds.connectingSound;
-        //wrongValidationSound = Sounds.wrongValidationSound;
+        switchSound = Sounds.switchSound;
+        connectingSound = Sounds.connectingSound;
+        wrongValidationSound = Sounds.wrongValidationSound;
         //walkSound = Sounds.walkSound;
         //sprintSound = Sounds.sprintSound;
 
@@ -421,7 +421,7 @@ public class GameScreen extends ScreenAdapter {
                 @Override
                 public void touchUp(InputEvent event, float x, float y, int pointer, int button) {
                     if(currentIndex == closeIndex && currentFirst != first) {
-                        //connectingSound.play();
+                        connectingSound.play();
                         for(int i = 0; i < randomPairs.length; i++) {
                             if(randomPairs[i][0] == closeIndex) {
                                 randomPairs[i][1] = 0;
@@ -444,7 +444,7 @@ public class GameScreen extends ScreenAdapter {
                             }
                         }
                     } else {
-                        //wrongValidationSound.play();
+                        wrongValidationSound.play();
                         if(currentIndex != -1 && currentIndex != closeIndex) {
                             score -= objectScore / 2f;
                             if(score < 0) {
@@ -479,7 +479,7 @@ public class GameScreen extends ScreenAdapter {
 
                 @Override
                 public void touchUp(InputEvent event, float x, float y, int pointer, int button) {
-                    //switchSound.play();
+                    switchSound.play();
                     currentIndex = closeIndex;
                     currentFirst = first;
                     activateObject();
@@ -641,9 +641,9 @@ public class GameScreen extends ScreenAdapter {
         backgroundMusic = null;
         //buttonPressSound.dispose();
         //activationSound.dispose();
-        //switchSound.dispose();
-        //connectingSound.dispose();
-        //wrongValidationSound.dispose();
+        switchSound.dispose();
+        connectingSound.dispose();
+        wrongValidationSound.dispose();
         //walkSound.dispose();
         //sprintSound.dispose();
     }

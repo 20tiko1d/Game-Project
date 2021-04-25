@@ -13,16 +13,16 @@ public final class Sounds {
     public static Sound activationSound;
 
     // Switch object
-    public static Sound switchSound;
+    public static Sound switchSound = Gdx.audio.newSound(Gdx.files.internal("Sounds and Music/pair_switch.wav"));
 
     // Connecting objects
-    public static Sound connectingSound;
+    public static Sound connectingSound = Gdx.audio.newSound(Gdx.files.internal("Sounds and Music/object_pickup.wav"));
 
     // Wrong validation
-    public static Sound wrongValidationSound;
+    public static Sound wrongValidationSound = Gdx.audio.newSound(Gdx.files.internal("Sounds and Music/wrong_pair.wav"));
 
     // Level completed
-    public static Music levelCompletedMusic;
+    public static Music levelCompletedMusic = Gdx.audio.newMusic(Gdx.files.internal("Sounds and Music/level_complete.wav"));
 
     // Character walk
     public static Sound walkSound;

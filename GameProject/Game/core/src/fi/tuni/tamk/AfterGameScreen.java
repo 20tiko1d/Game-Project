@@ -2,6 +2,7 @@ package fi.tuni.tamk;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.ScreenAdapter;
+import com.badlogic.gdx.audio.Music;
 import com.badlogic.gdx.audio.Sound;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.GL20;
@@ -25,6 +26,7 @@ public class AfterGameScreen extends ScreenAdapter {
     private float score;
 
     private Sound buttonPressSound;
+    private Music levelCompletedMusic;
 
     public AfterGameScreen(Main main, float score) {
         this.main = main;
@@ -41,6 +43,9 @@ public class AfterGameScreen extends ScreenAdapter {
     @Override
     public void show() {
         stage = new Stage(new ScreenViewport());
+
+        levelCompletedMusic = Sounds.levelCompletedMusic;
+        levelCompletedMusic.play();
 
         Skin mySkin = Textures.mySkin;
 
@@ -150,6 +155,7 @@ public class AfterGameScreen extends ScreenAdapter {
 
     @Override
     public void dispose() {
+        levelCompletedMusic.dispose();
         stage.dispose();
         camera = null;
         //buttonPressSound.dispose();
