@@ -128,11 +128,18 @@ public final class Textures {
         return textures.get(random);
     }
 
-    public static Texture getExitCloseTexture() {
-        return new Texture("textures/walls/random/wallExitClose0.66.png");
+    public static Texture getExitCloseTexture(boolean onTop) {
+        if(onTop) {
+            return new Texture("textures/walls/random/exitTestClosedUp.png");
+        } else {
+            return new Texture("textures/walls/random/wallExitClose0.66.png");
+        }
     }
 
-    public static Texture getExitOpenTexture() {
+    public static Texture getExitOpenTexture(boolean onTop) {
+        if(onTop) {
+            return new Texture("textures/walls/random/exitTestOpenUp.png");
+        }
         return new Texture("textures/walls/random/wallExitOpen0.66.png");
     }
 

@@ -85,6 +85,7 @@ public class MapGenerator {
         gameScreen.setPlayerBody(playerBody);
         gameScreen.setPlayerLoc(path1[0][1] + 24, path1[0][0] + 48);
         createRandomPairs(numOfPairs, arraySize);
+        gameScreen.setExitTop(exitRow == 0);
         disposeAll();
         gameScreen.setMap(map);
     }
@@ -584,7 +585,7 @@ public class MapGenerator {
         ArrayList<Texture> wallTextures= Textures.getWallTextures();
 
         Texture startTexture = Textures.getStartTexture();
-        Texture exitCloseTexture = Textures.getExitCloseTexture();
+        Texture exitCloseTexture = Textures.getExitCloseTexture(exitRow == 0);
 
         map = new Texture[(size + 24) * 4 + 1][(size + 12) * 4 + 1];
 

@@ -71,10 +71,11 @@ public class GameScreen extends ScreenAdapter {
 
     // Exit
     private Body exitBody;
-    private Texture exitOpenTexture = Textures.getExitOpenTexture();
+    private Texture exitOpenTexture;
     private boolean exitOpen = false;
     private int[][] exitLocations;
     private Rectangle exitRectangle;
+    private boolean exitTop;
 
     // Start locations
     private int[][] startLocations;
@@ -654,6 +655,7 @@ public class GameScreen extends ScreenAdapter {
     public void getTextures() {
         playerTextures = Textures.getPlayerTexture(GameConfiguration.open("player"));
         objectTexture = Textures.getObjectTexture();
+
     }
 
     public void doPhysicsStep(float deltaTime)  {
@@ -723,11 +725,14 @@ public class GameScreen extends ScreenAdapter {
 
         int nearObjectIndex = 0;
 
+        int exitCounter = 0;
+
         for(int row = minIndexY; row < maxIndexY; row++) {
             for(int column = minIndexX; column < maxIndexX; column++) {
                 Texture mapTexture = map[row][column];
                 float locY = mapY - row * tileHeight;
                 float currentTileHeight = tileHeight;
+                boolean skip = false;
                 if((float) mapTexture.getHeight() / mapTexture.getWidth() > relativeTileHeight) {
                     currentTileHeight = tileHeight * (1 + wallHeight);
                 }
@@ -736,9 +741,20 @@ public class GameScreen extends ScreenAdapter {
                         batch.draw(map[row - 1][column], column * tileWidth,
                                 locY, tileWidth, tileHeight);
                     }
+                    else if(row == exitLocations[j][0] && column == exitLocations[j][1] && exitTop) {
+                        skip = true;
+                        exitCounter++;
+                    }
                 }
-                batch.draw(mapTexture, column * tileWidth,
-                        locY, tileWidth, currentTileHeight);
+                if(skip && exitCounter == 3) {
+                    batch.draw(mapTexture, (column - 2) * tileWidth,
+                            locY, tileWidth * 3, tileHeight * 3);
+                    exitCounter = 0;
+                }
+                else if(!skip) {
+                    batch.draw(mapTexture, column * tileWidth,
+                            locY, tileWidth, currentTileHeight);
+                }
 
                 for(int i = 0; i < randomPairs.length; i++) {
                     if (row == randomPairs[i][1] && column == randomPairs[i][2] ||
@@ -944,6 +960,11 @@ public class GameScreen extends ScreenAdapter {
 
     public void setStartLocations(int[][] startLocations) {
         this.startLocations = startLocations;
+    }
+
+    public void setExitTop(boolean exitTop) {
+        this.exitTop = exitTop;
+        exitOpenTexture = Textures.getExitOpenTexture(exitTop);
     }
 
     public void openExit() {
