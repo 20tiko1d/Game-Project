@@ -27,6 +27,7 @@ public class PlayerName extends ScreenAdapter {
     private final int screenHeight = Gdx.graphics.getHeight();
 
     private TextField textField;
+    private Label errorLabel;
 
     private boolean firstTime;
 
@@ -51,18 +52,26 @@ public class PlayerName extends ScreenAdapter {
         boxBackground.setPosition(screenWidth / 2f - boxBackground.getWidth() / 2f,
                 screenHeight / 3f);
 
-        Label label = new Label("", mySkin);
+        Label label = new Label("", mySkin, "default");
         label.setSize(screenWidth / 3f, screenHeight / 7f);
         label.setPosition(screenWidth / 2f - label.getWidth() / 2f, boxBackground.getY() +
                 boxBackground.getHeight() - label.getHeight());
+        label.setText(GameConfiguration.getText("giveName"));
+        label.setColor(Color.BLACK);
 
         textField = new TextField(GameConfiguration.open("name"), mySkin);
         textField.setSize(label.getWidth(), label.getHeight());
         textField.setPosition(label.getX(), label.getY() - textField.getHeight());
 
+        errorLabel = new Label("", mySkin, "default");
+        errorLabel.setSize(label.getWidth(), label.getHeight() / 2);
+        errorLabel.setPosition(label.getX(), textField.getY() - errorLabel.getHeight());
+        errorLabel.setColor(Color.RED);
+
         TextButton buttonSave = new TextButton("save",mySkin,"pixel72");
         buttonSave.setSize(label.getWidth() / 2f,label.getHeight());
-        buttonSave.setPosition(screenWidth / 2f, textField.getY() - buttonSave.getHeight());
+        buttonSave.setPosition(boxBackground.getX() + boxBackground.getWidth() -
+                buttonSave.getWidth(), boxBackground.getY());
         buttonSave.setColor(Color.GREEN);
         buttonSave.getLabel().setFontScale(GameConfiguration.fitText(buttonSave, -1, -1));
         buttonSave.addListener(new InputListener(){
@@ -81,14 +90,15 @@ public class PlayerName extends ScreenAdapter {
                     } else {
                         main.setScreen(new HighScores(main));
                     }
-                } else {
-                    writeError();
                 }
             }
         });
 
         stage.addActor(boxBackground);
         stage.addActor(label);
+        stage.addActor(textField);
+        stage.addActor(errorLabel);
+        stage.addActor(buttonSave);
 
         if(firstTime) {
             buttonSave.setPosition(screenWidth / 2f - buttonSave.getWidth() / 2f, buttonSave.getY());
@@ -96,7 +106,7 @@ public class PlayerName extends ScreenAdapter {
         } else {
             TextButton buttonCancel = new TextButton("Cancel", mySkin,"pixel72");
             buttonCancel.setSize(buttonSave.getWidth(), buttonSave.getHeight());
-            buttonCancel.setPosition(label.getX(), textField.getY() - buttonCancel.getHeight());
+            buttonCancel.setPosition(boxBackground.getX(), boxBackground.getY());
             buttonCancel.setColor(Color.GREEN);
             buttonCancel.getLabel().setFontScale(GameConfiguration.fitText(buttonCancel, -1, -1));
             buttonCancel.addListener(new InputListener(){
@@ -116,8 +126,7 @@ public class PlayerName extends ScreenAdapter {
         }
 
 
-        stage.addActor(textField);
-        stage.addActor(buttonSave);
+
         Gdx.input.setInputProcessor(stage);
     }
 
@@ -138,16 +147,26 @@ public class PlayerName extends ScreenAdapter {
     }
 
     public boolean checkName() {
-        if(textField.getText().length() >= 3 && textField.getText().length() <= 16) {
-            GameConfiguration.save("name", textField.getText());
+        boolean allRight = true;
+        String name = textField.getText();
+        if(textField.getText().length() < 3 || textField.getText().length() > 16) {
+            allRight = false;
+            errorLabel.setText(GameConfiguration.getText("nameLengthError"));
+        }
+
+        for(char chr : name.toCharArray()) {
+            if(Character.isWhitespace(chr)) {
+                allRight = false;
+                errorLabel.setText(GameConfiguration.getText("spacesError"));
+            }
+        }
+
+        if(allRight) {
+            GameConfiguration.save("name", name);
             return true;
         } else {
             return false;
         }
-    }
-
-    public void writeError() {
-        Gdx.app.log("", "error");
     }
 }
 
