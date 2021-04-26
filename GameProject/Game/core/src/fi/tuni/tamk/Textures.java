@@ -138,7 +138,7 @@ public final class Textures {
 
     public static Texture getExitOpenTexture(boolean onTop) {
         if(onTop) {
-            return new Texture("textures/walls/random/exitTestOpenUp.png");
+            return new Texture("textures/walls/random/wallExitTop_open.png");
         }
         return new Texture("textures/walls/random/wallExitOpen0.66.png");
     }
