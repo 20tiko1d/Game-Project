@@ -965,6 +965,7 @@ public class GameScreen extends ScreenAdapter {
     public void setExitTop(boolean exitTop) {
         this.exitTop = exitTop;
         exitOpenTexture = Textures.getExitOpenTexture(exitTop);
+        Gdx.app.log("", "Exit on top: " + exitTop);
     }
 
     public void openExit() {
