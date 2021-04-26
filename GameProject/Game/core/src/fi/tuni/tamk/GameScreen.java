@@ -71,11 +71,13 @@ public class GameScreen extends ScreenAdapter {
 
     // Exit
     private Body exitBody;
+    private Texture exitClosedTexture;
     private Texture exitOpenTexture;
     private boolean exitOpen = false;
-    private int[][] exitLocations;
+    private int[] exitLocations;
     private Rectangle exitRectangle;
     private boolean exitTop;
+    private boolean exitLeft;
 
     // Start locations
     private int[][] startLocations;
@@ -725,14 +727,13 @@ public class GameScreen extends ScreenAdapter {
 
         int nearObjectIndex = 0;
 
-        int exitCounter = 0;
+        boolean drawExit = false;
 
         for(int row = minIndexY; row < maxIndexY; row++) {
             for(int column = minIndexX; column < maxIndexX; column++) {
                 Texture mapTexture = map[row][column];
                 float locY = mapY - row * tileHeight;
                 float currentTileHeight = tileHeight;
-                boolean skip = false;
                 if((float) mapTexture.getHeight() / mapTexture.getWidth() > relativeTileHeight) {
                     currentTileHeight = tileHeight * (1 + wallHeight);
                 }
@@ -741,19 +742,38 @@ public class GameScreen extends ScreenAdapter {
                         batch.draw(map[row - 1][column], column * tileWidth,
                                 locY, tileWidth, tileHeight);
                     }
-                    else if(row == exitLocations[j][0] && column == exitLocations[j][1] && exitTop) {
-                        skip = true;
-                        exitCounter++;
+                }
+                if(drawExit) {
+                    Texture exitTexture = exitClosedTexture;
+                    if(exitOpen) {
+                        exitTexture = exitOpenTexture;
+                    }
+                    drawTexture(batch, exitTexture, column * tileWidth, locY,
+                            tileWidth * 2, tileHeight * 5, true);
+                    drawExit = false;
+                }
+                else if(row == exitLocations[0] && column == exitLocations[1]) {
+                    Texture exitTexture = exitClosedTexture;
+                    if(exitOpen) {
+                        exitTexture = exitOpenTexture;
+                    }
+                    if(exitTop) {
+                        drawTexture(batch, mapTexture, column * tileWidth, locY, tileWidth,
+                                tileHeight, false);
+                        drawTexture(batch, exitTexture, (column - 2) * tileWidth,
+                                locY, tileWidth * 3,
+                                tileHeight * 4, false);
+                    }
+                    else if(exitLeft) {
+                        drawTexture(batch, exitTexture, (column - 1) * tileWidth, locY,
+                                tileWidth * 2, tileHeight * 5, false);
+                    }
+                    else {
+                        drawExit = true;
                     }
                 }
-                if(skip && exitCounter == 3) {
-                    batch.draw(mapTexture, (column - 2) * tileWidth,
-                            locY, tileWidth * 3, tileHeight * 3);
-                    exitCounter = 0;
-                }
-                else if(!skip) {
-                    batch.draw(mapTexture, column * tileWidth,
-                            locY, tileWidth, currentTileHeight);
+                else {
+                    batch.draw(mapTexture, column * tileWidth, locY, tileWidth, currentTileHeight);
                 }
 
                 for(int i = 0; i < randomPairs.length; i++) {
@@ -834,6 +854,10 @@ public class GameScreen extends ScreenAdapter {
     public void drawObject(SpriteBatch batch, float locX, float locY, int objectIndex) {
         drawShadow(batch, locX, locY, objectIndex);
         batch.draw(objectTexture, locX, locY + Math.round(objectBounciness[objectIndex] * relativeHeight) / relativeHeight + tileHeight / 2, tileWidth, objectHeight);
+    }
+
+    public void drawTexture(SpriteBatch batch, Texture texture, float locX, float locY, float width, float height, boolean flip) {
+        batch.draw(texture, flip ? locX + width : locX, locY, flip ? - width : width, height);
     }
 
     public void drawShadow(SpriteBatch batch, float locX, float locY, int objectIndex) {
@@ -954,7 +978,7 @@ public class GameScreen extends ScreenAdapter {
         this.exitBody = exitBody;
     }
 
-    public void setExitLocations(int[][] exitLocations) {
+    public void setExitLocations(int[] exitLocations) {
         this.exitLocations = exitLocations;
     }
 
@@ -962,16 +986,15 @@ public class GameScreen extends ScreenAdapter {
         this.startLocations = startLocations;
     }
 
-    public void setExitTop(boolean exitTop) {
+    public void setExitTop(boolean exitTop, boolean exitLeft) {
         this.exitTop = exitTop;
+        this.exitLeft = exitLeft;
         exitOpenTexture = Textures.getExitOpenTexture(exitTop);
+        exitClosedTexture = Textures.getExitCloseTexture(exitTop);
         Gdx.app.log("", "Exit on top: " + exitTop);
     }
 
     public void openExit() {
-        for(int i = 0; i < exitLocations.length; i++) {
-            map[exitLocations[i][0]][exitLocations[i][1]] = exitOpenTexture;
-        }
         world.destroyBody(exitBody);
         playerRect = new Rectangle();
         playerRect.x = playerBody.getPosition().x - Main.oneWidth / 2;

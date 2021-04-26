@@ -138,7 +138,7 @@ public class PlayerName extends ScreenAdapter {
     }
 
     public boolean checkName() {
-        if(textField.getText().length() >= 3) {
+        if(textField.getText().length() >= 3 && textField.getText().length() <= 16) {
             GameConfiguration.save("name", textField.getText());
             return true;
         } else {

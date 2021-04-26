@@ -85,7 +85,7 @@ public class MapGenerator {
         gameScreen.setPlayerBody(playerBody);
         gameScreen.setPlayerLoc(path1[0][1] + 24, path1[0][0] + 48);
         createRandomPairs(numOfPairs, arraySize);
-        gameScreen.setExitTop(exitRow == 0);
+        gameScreen.setExitTop(exitRow == 0, exitColumn == 0);
         disposeAll();
         gameScreen.setMap(map);
     }
@@ -101,6 +101,7 @@ public class MapGenerator {
         gameScreen.setPlayerBody(playerBody);
         gameScreen.setPlayerLoc(29, 57);
         gameScreen.setRandomPairs(new int[][]{{0, 78, 46, -1, -1}, {1, 58, 42, 54, 54}});
+        gameScreen.setExitTop(true, false);
         disposeAll();
         gameScreen.setMap(map);
     }
@@ -585,7 +586,6 @@ public class MapGenerator {
         ArrayList<Texture> wallTextures= Textures.getWallTextures();
 
         Texture startTexture = Textures.getStartTexture();
-        Texture exitCloseTexture = Textures.getExitCloseTexture(exitRow == 0);
 
         map = new Texture[(size + 24) * 4 + 1][(size + 12) * 4 + 1];
 
@@ -593,7 +593,7 @@ public class MapGenerator {
         int [][] collisionArray = new int[(size + 24) * 4 + 1][(size + 12) * 4 + 1];
         mapY = map.length * oneWidth;
 
-        int[][] exitLocations = new int[3][2];
+        int[] exitLocations = new int[2];
         int[][] startLocations = new int[3][2];
         int exitCounter = 0;
         int startCounter = 0;
@@ -622,10 +622,12 @@ public class MapGenerator {
                                 (generatingMap[row][column][1] == 3 && row2 == row * 4) ||
                                 (generatingMap[row][column][2] == 3 && column2 == (column + 1) * 4))
                                 && exitCounter < 3 && map[row2 + 48][column2 + 24] == null) {
-                            map[row2 + 48][column2 + 24] = exitCloseTexture;
-                            exitLocations[exitCounter][0] = row2 + 48;
-                            exitLocations[exitCounter][1] = column2 + 24;
+                            map[row2 + 48][column2 + 24] = randomTexture(floor1Textures);
                             exitCounter++;
+                            if(exitCounter == 3) {
+                                exitLocations[0] = row2 + 48;
+                                exitLocations[1] = column2 + 24;
+                            }
                         }
                         else if(map[row2 + 48][column2 + 24] == null) {
                             map[row2 + 48][column2 + 24] = randomTexture(floor1Textures);
