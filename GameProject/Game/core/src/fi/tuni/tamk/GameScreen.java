@@ -212,7 +212,7 @@ public class GameScreen extends ScreenAdapter {
         mySkin = Textures.mySkin;
         shadow = Textures.shadow;
         //buttonPressSound = Sounds.buttonPressSound;
-        //activationSound = Sounds.activationSound;
+        activationSound = Sounds.activationSound;
         switchSound = Sounds.switchSound;
         connectingSound = Sounds.connectingSound;
         wrongValidationSound = Sounds.wrongValidationSound;
@@ -395,7 +395,7 @@ public class GameScreen extends ScreenAdapter {
 
                 @Override
                 public void touchUp(InputEvent event, float x, float y, int pointer, int button) {
-                    //activationSound.play();
+                    activationSound.play();
                     currentIndex = closeIndex;
                     currentFirst = first;
                     objectActivated = true;

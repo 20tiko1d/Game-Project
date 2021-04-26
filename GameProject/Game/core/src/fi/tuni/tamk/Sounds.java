@@ -10,13 +10,13 @@ public final class Sounds {
     public static Music backgroundMusic = Gdx.audio.newMusic(Gdx.files.internal("Sounds and Music/gamemusic.wav"));
 
     // Activate object
-    public static Sound activationSound;
+    public static Sound activationSound = Gdx.audio.newSound(Gdx.files.internal("Sounds and Music/object_pickup.wav"));
 
     // Switch object
     public static Sound switchSound = Gdx.audio.newSound(Gdx.files.internal("Sounds and Music/pair_switch.wav"));
 
     // Connecting objects
-    public static Sound connectingSound = Gdx.audio.newSound(Gdx.files.internal("Sounds and Music/object_pickup.wav"));
+    public static Sound connectingSound = Gdx.audio.newSound(Gdx.files.internal("Sounds and Music/right_pair.wav"));
 
     // Wrong validation
     public static Sound wrongValidationSound = Gdx.audio.newSound(Gdx.files.internal("Sounds and Music/wrong_pair.wav"));
