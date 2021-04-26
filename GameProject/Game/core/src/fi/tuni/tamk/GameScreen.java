@@ -256,7 +256,7 @@ public class GameScreen extends ScreenAdapter {
         scoreLabel.setColor(Color.BLACK);
 
         scoreChangeLabel = new Label("", mySkin, "pixel48");
-        scoreChangeLabel.setBounds(scoreLabel.getX() + scoreLabel.getWidth() * 1.2f, scoreLabel.getY(),
+        scoreChangeLabel.setBounds(scoreLabel.getX() + scoreLabel.getWidth() * 1.5f, scoreLabel.getY(),
                 scoreLabel.getWidth(), scoreLabel.getHeight());
         scoreChangeLabel.setFontScale(0.7f);
         objectLabel = new Label("", mySkin, "pixel50");
