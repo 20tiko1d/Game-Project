@@ -130,7 +130,7 @@ public final class Textures {
 
     public static Texture getExitCloseTexture(boolean onTop) {
         if(onTop) {
-            return new Texture("textures/walls/random/exitTestClosedUp.png");
+            return new Texture("textures/walls/random/wallExitTop_closed.png");
         } else {
             return new Texture("textures/walls/random/wallExitClose0.66.png");
         }
