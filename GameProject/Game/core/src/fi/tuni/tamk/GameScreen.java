@@ -749,7 +749,7 @@ public class GameScreen extends ScreenAdapter {
                         exitTexture = exitOpenTexture;
                     }
                     drawTexture(batch, exitTexture, column * tileWidth, locY,
-                            tileWidth * 2, tileHeight * 5, false);
+                            tileWidth * 3, tileHeight * 6, false);
                     drawExit = false;
                 }
                 else if(row == exitLocations[0] && column == exitLocations[1]) {
@@ -766,7 +766,7 @@ public class GameScreen extends ScreenAdapter {
                     }
                     else if(exitLeft) {
                         drawTexture(batch, exitTexture, (column - 1) * tileWidth, locY,
-                                tileWidth * 2, tileHeight * 5, true);
+                                tileWidth * 3, tileHeight * 6, true);
                     }
                     else {
                         drawExit = true;
