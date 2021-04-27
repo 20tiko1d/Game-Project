@@ -1,4 +1,4 @@
-package fi.tuni.tiko1d;
+package fi.tuni.tamk.tiko1d;
 
 /**
  * HighScoreEntry needs to have variables for all the attributes from the

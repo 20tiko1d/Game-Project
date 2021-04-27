@@ -1,4 +1,4 @@
-package fi.tuni.tiko1d;
+package fi.tuni.tamk.tiko1d;
 
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.math.MathUtils;

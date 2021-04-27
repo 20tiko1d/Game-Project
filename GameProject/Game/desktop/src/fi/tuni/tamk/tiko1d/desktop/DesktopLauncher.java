@@ -1,8 +1,8 @@
-package fi.tuni.tiko1d.desktop;
+package fi.tuni.tamk.tiko1d.desktop;
 
 import com.badlogic.gdx.backends.lwjgl.LwjglApplication;
 import com.badlogic.gdx.backends.lwjgl.LwjglApplicationConfiguration;
-import fi.tuni.tiko1d.Main;
+import fi.tuni.tamk.tiko1d.Main;
 
 public class DesktopLauncher {
 	public static void main (String[] arg) {

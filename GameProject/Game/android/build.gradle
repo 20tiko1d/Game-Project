@@ -17,7 +17,7 @@ android {
         exclude 'META-INF/robovm/ios/robovm.xml'
     }
     defaultConfig {
-        applicationId "fi.tuni.tamk"
+        applicationId "fi.tuni.tamk.tiko1d"
         minSdkVersion 14
         targetSdkVersion 30
         versionCode 1
@@ -86,7 +86,7 @@ task run(type: Exec) {
     }
 
     def adb = path + "/platform-tools/adb"
-    commandLine "$adb", 'shell', 'am', 'start', '-n', 'fi.tuni.tamk/fi.tuni.tamk.AndroidLauncher'
+    commandLine "$adb", 'shell', 'am', 'start', '-n', 'fi.tuni.tamk/fi.tuni.tamk.tiko1d.AndroidLauncher'
 }
 
 eclipse.project.name = appName + "-android"
