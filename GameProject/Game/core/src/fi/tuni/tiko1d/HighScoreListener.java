@@ -1,4 +1,4 @@
-package fi.tuni.tamk;
+package fi.tuni.tiko1d;
 
 import java.util.ArrayList;
 

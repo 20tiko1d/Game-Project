@@ -1,4 +1,4 @@
-package fi.tuni.tamk;
+package fi.tuni.tiko1d;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.ScreenAdapter;
@@ -14,6 +14,7 @@ import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.Label;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
+import com.badlogic.gdx.utils.Align;
 import com.badlogic.gdx.utils.viewport.ScreenViewport;
 
 public class AfterGameScreen extends ScreenAdapter {
@@ -36,7 +37,7 @@ public class AfterGameScreen extends ScreenAdapter {
         camera = new OrthographicCamera();
         camera.setToOrtho(false, Main.viewPortWidth, Main.viewPortHeight);
 
-        GameConfiguration.sendHighScores((int) (score * 100));
+        //GameConfiguration.sendHighScores((int) (score * 100));
         //GameConfiguration.getHighScores(GameConfiguration.gameLevel);
     }
 
@@ -53,7 +54,7 @@ public class AfterGameScreen extends ScreenAdapter {
         buttonMenu.setSize(Gdx.graphics.getWidth() / 10f,Gdx.graphics.getWidth() / 10f);
         buttonMenu.setPosition(0,Gdx.graphics.getHeight() - Gdx.graphics.getWidth() / 10f);
         buttonMenu.setColor(Color.YELLOW);
-        buttonMenu.getLabel().setFontScale(GameConfiguration.fitText(buttonMenu, - 1, -1));
+        buttonMenu.getLabel().setFontScale(GameConfiguration.fitText(buttonMenu, - 1, -1, 2));
         buttonMenu.addListener(new InputListener(){
             @Override
             public boolean touchDown(InputEvent event, float x, float y, int pointer, int button) {
@@ -72,7 +73,7 @@ public class AfterGameScreen extends ScreenAdapter {
         buttonPlayAgain.setSize(Gdx.graphics.getWidth() / 5f,Gdx.graphics.getWidth() / 8f);
         buttonPlayAgain.setPosition(Gdx.graphics.getWidth() / 2f + 30,Gdx.graphics.getHeight() / 3f);
         buttonPlayAgain.setColor(Color.GREEN);
-        buttonPlayAgain.getLabel().setFontScale(GameConfiguration.fitText(buttonPlayAgain, - 1,-1));
+        buttonPlayAgain.getLabel().setFontScale(GameConfiguration.fitText(buttonPlayAgain, - 1,-1, 2));
         buttonPlayAgain.addListener(new InputListener(){
             @Override
             public boolean touchDown(InputEvent event, float x, float y, int pointer, int button) {
@@ -91,7 +92,7 @@ public class AfterGameScreen extends ScreenAdapter {
         TextButton buttonLevelScreen = new TextButton(GameConfiguration.getText("levels"), mySkin,"pixel72");
         buttonLevelScreen.setSize(Gdx.graphics.getWidth() / 5f,Gdx.graphics.getWidth() / 8f);
         buttonLevelScreen.setPosition(Gdx.graphics.getWidth() / 2f - buttonLevelScreen.getWidth() - 30,Gdx.graphics.getHeight() / 3f);
-        buttonLevelScreen.getLabel().setFontScale(GameConfiguration.fitText(buttonLevelScreen, - 1, -1));
+        buttonLevelScreen.getLabel().setFontScale(GameConfiguration.fitText(buttonLevelScreen, - 1, -1, 2));
         buttonLevelScreen.addListener(new InputListener(){
             @Override
             public boolean touchDown(InputEvent event, float x, float y, int pointer, int button) {
@@ -111,7 +112,7 @@ public class AfterGameScreen extends ScreenAdapter {
         storeButton.setPosition(Gdx.graphics.getWidth() - storeButton.getWidth(),
                 Gdx.graphics.getHeight() - Gdx.graphics.getWidth() / 10f);
         storeButton.setColor(56 / 255f, 114 / 255f, 207 / 255f, 1);
-        storeButton.getLabel().setFontScale(GameConfiguration.fitText(storeButton, -1, -1));
+        storeButton.getLabel().setFontScale(GameConfiguration.fitText(storeButton, -1, -1, 2));
         storeButton.addListener(new InputListener(){
             @Override
             public boolean touchDown(InputEvent event, float x, float y, int pointer, int button) {
@@ -126,15 +127,15 @@ public class AfterGameScreen extends ScreenAdapter {
             }
         });
 
-        Label scoreLabel = new Label( GameConfiguration.getText("score") + ": " + MathUtils.round(score * 100) / 100f, mySkin, "pixel72");
+        Label scoreLabel = new Label( GameConfiguration.getText("score") + ": " + MathUtils.round(score * 100) / 100f, mySkin, "pixel100");
         float scoreLabelWidth = Gdx.graphics.getWidth() / 2f;
         float scoreLabelHeight = Gdx.graphics.getHeight() / 4f;
 
 
         scoreLabel.setBounds(scoreLabelWidth / 2, scoreLabelHeight * 3,
                 scoreLabelWidth, scoreLabelHeight);
-        scoreLabel.setFontScale(2);
         scoreLabel.setColor(Color.BLACK);
+        scoreLabel.setAlignment(Align.center);
 
         stage.addActor(buttonMenu);
         stage.addActor(buttonPlayAgain);

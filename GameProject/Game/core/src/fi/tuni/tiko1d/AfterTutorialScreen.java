@@ -1,4 +1,4 @@
-package fi.tuni.tamk;
+package fi.tuni.tiko1d;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.ScreenAdapter;
@@ -10,10 +10,10 @@ import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.InputListener;
 import com.badlogic.gdx.scenes.scene2d.Stage;
-import com.badlogic.gdx.scenes.scene2d.ui.Button;
 import com.badlogic.gdx.scenes.scene2d.ui.Label;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
+import com.badlogic.gdx.utils.Align;
 import com.badlogic.gdx.utils.viewport.ScreenViewport;
 
 public class AfterTutorialScreen extends ScreenAdapter {
@@ -21,6 +21,9 @@ public class AfterTutorialScreen extends ScreenAdapter {
 
     private Stage stage;
     private OrthographicCamera camera;
+
+    private float screenWidth;
+    private float screenHeight;
 
     private Sound buttonPressSound;
     private Music levelCompletedMusic;
@@ -36,6 +39,9 @@ public class AfterTutorialScreen extends ScreenAdapter {
         camera.setToOrtho(false, Main.viewPortWidth, Main.viewPortHeight);
 
         buttonPressSound = Sounds.buttonPressSound;
+
+        screenWidth = Gdx.graphics.getWidth();
+        screenHeight = Gdx.graphics.getHeight();
     }
 
     @Override
@@ -48,8 +54,8 @@ public class AfterTutorialScreen extends ScreenAdapter {
         Skin mySkin = Textures.mySkin;
 
         TextButton buttonPlayAgain = new TextButton(GameConfiguration.getText("playTutorialAgain"), mySkin,"pixel48");
-        buttonPlayAgain.setSize(Gdx.graphics.getWidth() / 5f,Gdx.graphics.getWidth() / 8f);
-        buttonPlayAgain.setPosition(Gdx.graphics.getWidth() / 2f + 30,Gdx.graphics.getHeight() / 3f);
+        buttonPlayAgain.setSize(screenWidth / 5f,screenWidth / 8f);
+        buttonPlayAgain.setPosition(screenWidth / 2f + 30,screenHeight / 3f);
         buttonPlayAgain.setColor(Color.GREEN);
         buttonPlayAgain.getLabel().setWrap(true);
         buttonPlayAgain.addListener(new InputListener(){
@@ -70,10 +76,10 @@ public class AfterTutorialScreen extends ScreenAdapter {
         });
 
         TextButton buttonLevelScreen = new TextButton(GameConfiguration.getText("levels"), mySkin,"pixel72");
-        buttonLevelScreen.setSize(Gdx.graphics.getWidth() / 5f,Gdx.graphics.getWidth() / 8f);
-        buttonLevelScreen.setPosition(Gdx.graphics.getWidth() / 2f - buttonLevelScreen.getWidth() - 30,Gdx.graphics.getHeight() / 3f);
+        buttonLevelScreen.setSize(screenWidth / 5f,screenWidth / 8f);
+        buttonLevelScreen.setPosition(screenWidth / 2f - buttonLevelScreen.getWidth() - 30,screenHeight / 3f);
         buttonLevelScreen.setColor(0 / 255f, 255 / 255f, 195 / 255f, 1);
-        buttonLevelScreen.getLabel().setFontScale(GameConfiguration.fitText(buttonLevelScreen, -1, -1));
+        buttonLevelScreen.getLabel().setFontScale(GameConfiguration.fitText(buttonLevelScreen, -1, -1, 2));
         buttonLevelScreen.addListener(new InputListener(){
             @Override
             public boolean touchDown(InputEvent event, float x, float y, int pointer, int button) {
@@ -88,14 +94,13 @@ public class AfterTutorialScreen extends ScreenAdapter {
             }
         });
 
-        Label tutorialLabel = new Label( GameConfiguration.getText("tutorialFinished"), mySkin, "default");
-        float tutorialLabelWidth = Gdx.graphics.getWidth() / 2f;
-        float tutorialLabelHeight = Gdx.graphics.getHeight() / 4f;
+        Label tutorialLabel = new Label(GameConfiguration.getText("tutorialFinished"), mySkin, "pixel100");
+        tutorialLabel.setSize(screenWidth / 2f, screenWidth / 8);
 
-        tutorialLabel.setBounds(tutorialLabelWidth / 2, tutorialLabelHeight * 3,
-                tutorialLabelWidth, tutorialLabelHeight);
-        tutorialLabel.setFontScale(3);
+        tutorialLabel.setPosition(screenWidth / 2 - tutorialLabel.getWidth() / 2,
+                screenHeight * 3 / 4);
         tutorialLabel.setColor(Color.BLACK);
+        tutorialLabel.setAlignment(Align.center);
 
         stage.addActor(buttonLevelScreen);
         stage.addActor(buttonPlayAgain);

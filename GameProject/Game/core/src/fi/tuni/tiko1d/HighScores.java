@@ -1,4 +1,4 @@
-package fi.tuni.tamk;
+package fi.tuni.tiko1d;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.ScreenAdapter;
@@ -14,6 +14,7 @@ import com.badlogic.gdx.scenes.scene2d.ui.Image;
 import com.badlogic.gdx.scenes.scene2d.ui.Label;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
+import com.badlogic.gdx.utils.Align;
 import com.badlogic.gdx.utils.viewport.ScreenViewport;
 
 import java.util.ArrayList;
@@ -59,7 +60,7 @@ public class HighScores extends ScreenAdapter {
         buttonMenu.setSize(screenWidth / 10f,screenWidth / 10f);
         buttonMenu.setPosition(0,Gdx.graphics.getHeight() - screenWidth / 10f);
         buttonMenu.setColor(Color.YELLOW);
-        buttonMenu.getLabel().setFontScale(GameConfiguration.fitText(buttonMenu, -1, -1));
+        buttonMenu.getLabel().setFontScale(GameConfiguration.fitText(buttonMenu, -1, -1, 2));
         buttonMenu.addListener(new InputListener(){
             @Override
             public boolean touchDown(InputEvent event, float x, float y, int pointer, int button) {
@@ -78,7 +79,7 @@ public class HighScores extends ScreenAdapter {
         buttonLevels.setSize(screenWidth / 10f,screenWidth / 10f);
         buttonLevels.setPosition(screenWidth - buttonLevels.getWidth(), screenHeight - buttonLevels.getHeight());
         buttonLevels.setColor(0 / 255f, 255 / 255f, 195 / 255f, 1);
-        buttonLevels.getLabel().setFontScale(GameConfiguration.fitText(buttonLevels, -1, -1));
+        buttonLevels.getLabel().setFontScale(GameConfiguration.fitText(buttonLevels, -1, -1, 2));
         buttonLevels.addListener(new InputListener(){
             @Override
             public boolean touchDown(InputEvent event, float x, float y, int pointer, int button) {
@@ -104,7 +105,7 @@ public class HighScores extends ScreenAdapter {
         buttonRename.setPosition(nameLabel.getX() + nameLabel.getWidth() - buttonRename.getWidth(),
                 nameLabel.getY());
         buttonRename.setColor(0 / 255f, 255 / 255f, 195 / 255f, 1);
-        buttonRename.getLabel().setFontScale(GameConfiguration.fitText(buttonRename, -1, -1));
+        buttonRename.getLabel().setFontScale(GameConfiguration.fitText(buttonRename, -1, -1, 2));
         buttonRename.addListener(new InputListener(){
             @Override
             public boolean touchDown(InputEvent event, float x, float y, int pointer, int button) {
@@ -123,6 +124,25 @@ public class HighScores extends ScreenAdapter {
         backgroundLabel.setSize(screenWidth * 8 / 10f, screenHeight * 8 / 10f);
         backgroundLabel.setPosition(screenWidth / 10f, 0);
 
+        Label easyLabel = new Label(GameConfiguration.getText("easyLevel"), mySkin, "pixel72");
+        easyLabel.setSize(backgroundLabel.getWidth() / 3, backgroundLabel.getHeight() * 2 / 10);
+        easyLabel.setPosition(backgroundLabel.getX(), backgroundLabel.getY() + backgroundLabel.getHeight() - easyLabel.getHeight());
+        easyLabel.setAlignment(Align.center);
+        easyLabel.setColor(Color.BLACK);
+
+        Label mediumLabel = new Label(GameConfiguration.getText("mediumLevel"), mySkin, "pixel72");
+        mediumLabel.setSize(easyLabel.getWidth(), easyLabel.getHeight());
+        mediumLabel.setPosition(easyLabel.getX() + easyLabel.getWidth(), easyLabel.getY());
+        mediumLabel.setAlignment(Align.center);
+        mediumLabel.setColor(Color.BLACK);
+
+        Label hardLabel = new Label(GameConfiguration.getText("hardLevel"), mySkin, "pixel72");
+        hardLabel.setSize(easyLabel.getWidth(), easyLabel.getHeight());
+        hardLabel.setPosition(mediumLabel.getX() + mediumLabel.getWidth(), easyLabel.getY());
+        hardLabel.setAlignment(Align.center);
+        hardLabel.setColor(Color.BLACK);
+
+
         Label easyBackgroundLabel = new Label("", mySkin, "tutorialTest2");
         easyBackgroundLabel.setSize(backgroundLabel.getWidth() / 3, backgroundLabel.getHeight() * 8 / 10f);
         easyBackgroundLabel.setPosition(backgroundLabel.getX(), 0);
@@ -140,6 +160,9 @@ public class HighScores extends ScreenAdapter {
         stage.addActor(nameLabel);
         stage.addActor(buttonRename);
         stage.addActor(backgroundLabel);
+        stage.addActor(easyLabel);
+        stage.addActor(mediumLabel);
+        stage.addActor(hardLabel);
         stage.addActor(easyBackgroundLabel);
         stage.addActor(mediumBackgroundLabel);
         stage.addActor(hardBackgroundLabel);

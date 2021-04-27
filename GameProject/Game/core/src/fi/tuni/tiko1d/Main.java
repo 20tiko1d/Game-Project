@@ -1,4 +1,4 @@
-package fi.tuni.tamk;
+package fi.tuni.tiko1d;
 
 import com.badlogic.gdx.Game;
 import com.badlogic.gdx.Gdx;

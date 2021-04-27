@@ -1,4 +1,4 @@
-package fi.tuni.tamk;
+package fi.tuni.tiko1d;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.ScreenAdapter;
@@ -16,6 +16,7 @@ import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
 import com.badlogic.gdx.scenes.scene2d.utils.Drawable;
 import com.badlogic.gdx.scenes.scene2d.utils.TextureRegionDrawable;
+import com.badlogic.gdx.utils.Align;
 import com.badlogic.gdx.utils.viewport.ScreenViewport;
 
 public class PauseScreen extends ScreenAdapter {
@@ -65,9 +66,9 @@ public class PauseScreen extends ScreenAdapter {
         float startY = Gdx.graphics.getHeight() * 4 / 6f;
         float buttonsGap = height / 6f;
 
-        Label pauseLabel = new Label(GameConfiguration.getText("gamePaused"), mySkin);
-        pauseLabel.setBounds(locX, startY + height + buttonsGap, width, height);
-        pauseLabel.setFontScale(3);
+        Label pauseLabel = new Label(GameConfiguration.getText("gamePaused").toUpperCase(), mySkin, "pixel100");
+        pauseLabel.setBounds(locX, screenHeight - height, width, height);
+        pauseLabel.setAlignment(Align.center);
 
         final Drawable drawable = new TextureRegionDrawable(new TextureRegion(Textures.playButtonTexture));
         final Button buttonReturnToGame = new Button(drawable);
@@ -150,10 +151,11 @@ public class PauseScreen extends ScreenAdapter {
             }
         });
 
-        Button buttonMenu = new TextButton(GameConfiguration.getText("menu"),mySkin,"pixel48");
+        TextButton buttonMenu = new TextButton(GameConfiguration.getText("menu"),mySkin,"pixel48");
         buttonMenu.setSize(Gdx.graphics.getWidth() / 10f,Gdx.graphics.getWidth() / 10f);
         buttonMenu.setPosition(0,Gdx.graphics.getHeight() - Gdx.graphics.getWidth() / 10f);
         buttonMenu.setColor(Color.YELLOW);
+        buttonMenu.getLabel().setFontScale(GameConfiguration.fitText(buttonMenu, -1, -1, 2));
         buttonMenu.addListener(new InputListener(){
             @Override
             public boolean touchDown(InputEvent event, float x, float y, int pointer, int button) {

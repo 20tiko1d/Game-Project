@@ -1,6 +1,5 @@
-package fi.tuni.tamk;
+package fi.tuni.tiko1d;
 
-import com.badlogic.gdx.Game;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.ScreenAdapter;
 import com.badlogic.gdx.audio.Sound;
@@ -16,7 +15,6 @@ import com.badlogic.gdx.scenes.scene2d.ui.Label;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.badlogic.gdx.scenes.scene2d.ui.Slider;
 import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
-import com.badlogic.gdx.scenes.scene2d.utils.ChangeListener;
 import com.badlogic.gdx.utils.Align;
 import com.badlogic.gdx.utils.viewport.ScreenViewport;
 
@@ -172,6 +170,10 @@ public class SettingsScreen extends ScreenAdapter {
         musicVolumeSlider.addListener(new InputListener() {
             @Override
             public boolean touchDown (InputEvent event, float x, float y, int pointer, int button) {
+                int volume = (int) (musicVolumeSlider.getValue() * 100);
+                String volumeString = "" + volume;
+                GameConfiguration.save("musicVolume", volumeString);
+                changeMusicVolume(volume);
                 return true;
             }
 
@@ -181,7 +183,6 @@ public class SettingsScreen extends ScreenAdapter {
                 String volumeString = "" + volume;
                 GameConfiguration.save("musicVolume", volumeString);
                 changeMusicVolume(volume);
-
             }
         });
 

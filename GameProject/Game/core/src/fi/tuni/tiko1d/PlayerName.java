@@ -1,6 +1,5 @@
-package fi.tuni.tamk;
+package fi.tuni.tiko1d;
 
-import com.badlogic.gdx.Game;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.ScreenAdapter;
 import com.badlogic.gdx.audio.Sound;
@@ -73,7 +72,7 @@ public class PlayerName extends ScreenAdapter {
         buttonSave.setPosition(boxBackground.getX() + boxBackground.getWidth() -
                 buttonSave.getWidth(), boxBackground.getY());
         buttonSave.setColor(Color.GREEN);
-        buttonSave.getLabel().setFontScale(GameConfiguration.fitText(buttonSave, -1, -1));
+        buttonSave.getLabel().setFontScale(GameConfiguration.fitText(buttonSave, -1, -1, 2));
         buttonSave.addListener(new InputListener(){
             @Override
             public boolean touchDown(InputEvent event, float x, float y, int pointer, int button) {
@@ -108,7 +107,7 @@ public class PlayerName extends ScreenAdapter {
             buttonCancel.setSize(buttonSave.getWidth(), buttonSave.getHeight());
             buttonCancel.setPosition(boxBackground.getX(), boxBackground.getY());
             buttonCancel.setColor(Color.GREEN);
-            buttonCancel.getLabel().setFontScale(GameConfiguration.fitText(buttonCancel, -1, -1));
+            buttonCancel.getLabel().setFontScale(GameConfiguration.fitText(buttonCancel, -1, -1, 2));
             buttonCancel.addListener(new InputListener(){
                 @Override
                 public boolean touchDown(InputEvent event, float x, float y, int pointer, int button) {

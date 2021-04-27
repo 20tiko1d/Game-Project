@@ -1,21 +1,14 @@
-package fi.tuni.tamk;
+package fi.tuni.tiko1d;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.ScreenAdapter;
 import com.badlogic.gdx.audio.Sound;
-import com.badlogic.gdx.graphics.Camera;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
-import com.badlogic.gdx.graphics.g2d.Batch;
-import com.badlogic.gdx.scenes.scene2d.Event;
-import com.badlogic.gdx.scenes.scene2d.EventListener;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.InputListener;
 import com.badlogic.gdx.scenes.scene2d.Stage;
-import com.badlogic.gdx.scenes.scene2d.Touchable;
-import com.badlogic.gdx.scenes.scene2d.ui.Button;
-import com.badlogic.gdx.scenes.scene2d.ui.ButtonGroup;
 import com.badlogic.gdx.scenes.scene2d.ui.Image;
 import com.badlogic.gdx.scenes.scene2d.ui.ImageButton;
 import com.badlogic.gdx.scenes.scene2d.ui.Label;
@@ -24,8 +17,6 @@ import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
 import com.badlogic.gdx.scenes.scene2d.utils.Drawable;
 import com.badlogic.gdx.scenes.scene2d.utils.TextureRegionDrawable;
 import com.badlogic.gdx.utils.viewport.ScreenViewport;
-
-import javax.swing.JRadioButton;
 
 public class Themes extends ScreenAdapter {
 
@@ -75,7 +66,7 @@ public class Themes extends ScreenAdapter {
         buttonMenu.setSize(screenWidth / 10f,screenWidth / 10f);
         buttonMenu.setPosition(0,screenHeight - screenWidth / 10f);
         buttonMenu.setColor(Color.YELLOW);
-        buttonMenu.getLabel().setFontScale(GameConfiguration.fitText(buttonMenu, -1, -1));
+        buttonMenu.getLabel().setFontScale(GameConfiguration.fitText(buttonMenu, -1, -1, 2));
         buttonMenu.addListener(new InputListener(){
             @Override
             public boolean touchDown(InputEvent event, float x, float y, int pointer, int button) {
@@ -95,7 +86,7 @@ public class Themes extends ScreenAdapter {
         buttonLevels.setPosition(screenWidth - buttonLevels.getWidth(),
                 screenHeight - screenWidth / 10f);
         buttonLevels.setColor(0 / 255f, 255 / 255f, 195 / 255f, 1);
-        buttonLevels.getLabel().setFontScale(GameConfiguration.fitText(buttonLevels, -1, -1));
+        buttonLevels.getLabel().setFontScale(GameConfiguration.fitText(buttonLevels, -1, -1, 2));
         buttonLevels.addListener(new InputListener(){
             @Override
             public boolean touchDown(InputEvent event, float x, float y, int pointer, int button) {
@@ -116,7 +107,7 @@ public class Themes extends ScreenAdapter {
 
         Drawable sandThemeDrawable = new TextureRegionDrawable(Textures.themeSand);
         ImageButton buttonThemeSand = new ImageButton(sandThemeDrawable);
-        buttonThemeSand.setSize(themeLabel.getHeight() / 3f, themeLabel.getHeight() / 3f);
+        buttonThemeSand.setSize(themeLabel.getWidth() / 3f, themeLabel.getWidth() / 3f);
         buttonThemeSand.setPosition(themeLabel.getX() + themeLabel.getWidth() / 2f - buttonThemeSand.getWidth(),
                 themeLabel.getY() + themeLabel.getHeight() * 8 / 9 - buttonThemeSand.getHeight());
         buttonThemeSand.addListener(new InputListener(){

@@ -1,16 +1,13 @@
-package fi.tuni.tamk;
+package fi.tuni.tiko1d;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Preferences;
-import com.badlogic.gdx.audio.Music;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.World;
 import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
 import com.badlogic.gdx.utils.I18NBundle;
-import com.badlogic.gdx.utils.Json;
 
 import java.util.ArrayList;
-import java.util.List;
 import java.util.Locale;
 
 public final class GameConfiguration implements HighScoreListener {
@@ -160,14 +157,14 @@ public final class GameConfiguration implements HighScoreListener {
         return language;
     }
 
-    public static float fitText(TextButton button, int givenFontSize, int givenMaxSize) {
+    public static float fitText(TextButton button, int givenFontSize, int givenMaxSize, int numbers) {
         float width = button.getWidth() * 0.8f;
         int length = button.getText().length();
         float fontSize = givenFontSize;
         if(givenFontSize < 0) {
             String styleName = button.getStyle().font.getData().name;
             String fontSizeString = "";
-            for(int i = styleName.length() - 3; i < styleName.length() - 1; i++) {
+            for(int i = styleName.length() - numbers - 1; i < styleName.length() - 1; i++) {
                 try {
                     fontSizeString = fontSizeString + Integer.parseInt(styleName.substring(i));
                 } catch (Exception e) {}

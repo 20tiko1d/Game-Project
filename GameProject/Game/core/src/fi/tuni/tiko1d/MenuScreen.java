@@ -1,4 +1,4 @@
-package fi.tuni.tamk;
+package fi.tuni.tiko1d;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.ScreenAdapter;
@@ -37,6 +37,11 @@ public class MenuScreen extends ScreenAdapter {
     private Texture backgroundImage;
     private Texture buttonBackground;
     private float backgroundHeight;
+
+    private float buttonBackgroundWidth;
+    private float buttonBackgroundHeight;
+    private float buttonBackgroundX;
+    private float buttonBackgroundY;
 
     private final int screenWidth = Gdx.graphics.getWidth();
     private final int screenHeight = Gdx.graphics.getHeight();
@@ -89,11 +94,11 @@ public class MenuScreen extends ScreenAdapter {
             }
         });
 
-        TextButton buttonTest = new TextButton("test",mySkin,"pixel72");
+        TextButton buttonTest = new TextButton("test", mySkin,"pixel72");
         buttonTest.setSize(screenWidth / 10f,screenWidth / 10f);
         buttonTest.setPosition(0,screenHeight - screenWidth / 10f);
         buttonTest.setColor(Color.YELLOW);
-        buttonTest.getLabel().setFontScale(GameConfiguration.fitText(buttonTest, -1, -1));
+        buttonTest.getLabel().setFontScale(GameConfiguration.fitText(buttonTest, -1, -1, 2));
         buttonTest.addListener(new InputListener(){
             @Override
             public boolean touchDown(InputEvent event, float x, float y, int pointer, int button) {
@@ -102,17 +107,22 @@ public class MenuScreen extends ScreenAdapter {
 
             @Override
             public void touchUp(InputEvent event, float x, float y, int pointer, int button) {
-                GameConfiguration.gameLevel = 1;
-                GameConfiguration.sendHighScores(200);
+                dispose();
+                main.setScreen(new AfterGameScreen(main, 0));
             }
         });
 
-        buttonPlay = new TextButton(GameConfiguration.getText("playButton"),mySkin,"pixel120");
-        buttonPlay.setSize(screenWidth / 3f,screenHeight / 7f);
-        buttonPlay.setPosition(screenWidth / 2f - buttonPlay.getWidth() / 2,
-                screenHeight / 2f);
+        buttonBackgroundWidth = screenWidth * 2 / 5f;
+        buttonBackgroundHeight = screenWidth * 3 / 10f;
+        buttonBackgroundX = screenWidth / 2f - buttonBackgroundWidth / 2f;
+        buttonBackgroundY = screenHeight / 8f;
+
+        buttonPlay = new TextButton(GameConfiguration.getText("playButton"), mySkin,"pixel120");
+        buttonPlay.setSize(buttonBackgroundWidth * 9 / 10f,buttonBackgroundHeight / 4);
+        buttonPlay.setPosition(buttonBackgroundX + buttonBackgroundWidth / 2 - buttonPlay.getWidth() / 2,
+                buttonBackgroundY + buttonBackgroundHeight * 15 / 16 - buttonPlay.getHeight());
         buttonPlay.setColor(Color.GREEN);
-        buttonPlay.getLabel().setFontScale(GameConfiguration.fitText(buttonPlay, 120, 70));
+        buttonPlay.getLabel().setFontScale(GameConfiguration.fitText(buttonPlay, 120, (int) (screenWidth / 2000f * 70), 3));
         buttonPlay.addListener(new InputListener(){
             @Override
             public boolean touchDown(InputEvent event, float x, float y, int pointer, int button) {
@@ -138,12 +148,12 @@ public class MenuScreen extends ScreenAdapter {
 
         Color buttonColors = new Color(1, 208 / 255f, 0, 1);
 
-        buttonSettings = new TextButton(GameConfiguration.getText("settingsButton"),mySkin,"pixel72");
-        buttonSettings.setSize(screenWidth / 4f,screenHeight / 8f);
+        buttonSettings = new TextButton(GameConfiguration.getText("settingsButton"), mySkin,"pixel72");
+        buttonSettings.setSize(buttonBackgroundWidth * 7 / 10,buttonBackgroundHeight / 4);
         buttonSettings.setPosition(screenWidth / 2f - buttonSettings.getWidth() / 2f,
-                buttonPlay.getY() - buttonSettings.getHeight() - screenHeight / 20f);
+                buttonPlay.getY() - buttonSettings.getHeight() - buttonBackgroundHeight / 15);
         buttonSettings.setColor(buttonColors);
-        buttonSettings.getLabel().setFontScale(GameConfiguration.fitText(buttonSettings, -1, -1));
+        buttonSettings.getLabel().setFontScale(GameConfiguration.fitText(buttonSettings, -1, -1, 2));
         buttonSettings.addListener(new InputListener(){
             @Override
             public boolean touchDown(InputEvent event, float x, float y, int pointer, int button) {
@@ -159,11 +169,11 @@ public class MenuScreen extends ScreenAdapter {
         });
 
         buttonHighScores = new TextButton(GameConfiguration.getText("highScores"),mySkin,"pixel72");
-        buttonHighScores.setSize(screenWidth / 4f,screenHeight / 8f);
+        buttonHighScores.setSize(buttonSettings.getWidth(),buttonSettings.getHeight());
         buttonHighScores.setPosition(screenWidth / 2f - buttonHighScores.getWidth() / 2f,
-                buttonSettings.getY() - buttonHighScores.getHeight() - screenHeight / 20f);
+                buttonSettings.getY() - buttonHighScores.getHeight() - buttonBackgroundHeight / 15);
         buttonHighScores.setColor(buttonColors);
-        buttonHighScores.getLabel().setFontScale(GameConfiguration.fitText(buttonHighScores, -1, -1));
+        buttonHighScores.getLabel().setFontScale(GameConfiguration.fitText(buttonHighScores, -1, -1, 2));
         buttonHighScores.addListener(new InputListener(){
             @Override
             public boolean touchDown(InputEvent event, float x, float y, int pointer, int button) {
@@ -182,7 +192,7 @@ public class MenuScreen extends ScreenAdapter {
         stage.addActor(buttonPlay);
         stage.addActor(buttonSettings);
         stage.addActor(buttonHighScores);
-        //stage.addActor(buttonTest);
+        stage.addActor(buttonTest);
         Gdx.input.setInputProcessor(stage);
     }
 
@@ -193,8 +203,8 @@ public class MenuScreen extends ScreenAdapter {
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
         batch.begin();
         batch.draw(backgroundImage, 0, 0, screenWidth, backgroundHeight);
-        batch.draw(buttonBackground, screenWidth * 3 / 10f, screenHeight / 10f, screenWidth * 2 / 5f,
-                screenWidth * 3 / 10f);
+        batch.draw(buttonBackground, buttonBackgroundX, buttonBackgroundY, buttonBackgroundWidth,
+                buttonBackgroundHeight);
         batch.end();
         stage.draw();
         stage.act();
