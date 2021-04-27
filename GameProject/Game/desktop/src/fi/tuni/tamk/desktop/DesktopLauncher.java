@@ -7,8 +7,8 @@ import fi.tuni.tamk.Main;
 public class DesktopLauncher {
 	public static void main (String[] arg) {
 		LwjglApplicationConfiguration config = new LwjglApplicationConfiguration();
-		config.width = 1600;
-		config.height = 900;
+		config.width = 2000;
+		config.height = 1000;
 		new LwjglApplication(new Main(), config);
 	}
 }

@@ -11,6 +11,7 @@ import com.badlogic.gdx.scenes.scene2d.InputListener;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.Button;
 import com.badlogic.gdx.scenes.scene2d.ui.Image;
+import com.badlogic.gdx.scenes.scene2d.ui.Label;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
 import com.badlogic.gdx.utils.viewport.ScreenViewport;
@@ -141,11 +142,17 @@ public class SettingsScreen extends ScreenAdapter {
             stage.addActor(returnToGame);
         }
 
+        Label musicVolumeLabel = new Label(GameConfiguration.getText("musicVolume"), mySkin, "default");
+        musicVolumeLabel.setSize(screenWidth / 2, screenWidth / 10);
+        musicVolumeLabel.setPosition(screenWidth / 2f, screenHeight / 2f);
+        //musicVolumeLabel.setColor(Color.BLACK);
+
         stage.addActor(buttonMenu);
         stage.addActor(buttonInvert);
         stage.addActor(controlsBackground);
         stage.addActor(boostImage);
         stage.addActor(joystickImage);
+        stage.addActor(musicVolumeLabel);
 
         Gdx.input.setInputProcessor(stage);
     }

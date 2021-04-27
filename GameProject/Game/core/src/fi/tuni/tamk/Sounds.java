@@ -31,7 +31,7 @@ public final class Sounds {
     public static Sound sprintSound;
 
     // Button click sound
-    public static Sound buttonPressSound = Gdx.audio.newSound(Gdx.files.internal("Sounds and Music/button_click.wav"));
+    public static Sound buttonPressSound = Gdx.audio.newSound(Gdx.files.internal("Sounds and Music/button_click2.wav"));
 
     private Sounds() {}
 }
