@@ -1,5 +1,6 @@
 package fi.tuni.tamk;
 
+import com.badlogic.gdx.Game;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.ScreenAdapter;
 import com.badlogic.gdx.audio.Sound;
@@ -13,7 +14,10 @@ import com.badlogic.gdx.scenes.scene2d.ui.Button;
 import com.badlogic.gdx.scenes.scene2d.ui.Image;
 import com.badlogic.gdx.scenes.scene2d.ui.Label;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
+import com.badlogic.gdx.scenes.scene2d.ui.Slider;
 import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
+import com.badlogic.gdx.scenes.scene2d.utils.ChangeListener;
+import com.badlogic.gdx.utils.Align;
 import com.badlogic.gdx.utils.viewport.ScreenViewport;
 
 /**
@@ -39,11 +43,12 @@ public class SettingsScreen extends ScreenAdapter {
 
     private Sound buttonPressSound;
 
+    private Label musicVolumeLabel;
+
     public SettingsScreen(Main main) {
         this.main = main;
         camera = new OrthographicCamera();
         camera.setToOrtho(false, Main.viewPortWidth, Main.viewPortHeight);
-        buttonPressSound = Sounds.buttonPressSound;
     }
 
     public SettingsScreen(Main main, PauseScreen pauseScreen, GameScreen gameScreen) {
@@ -57,7 +62,7 @@ public class SettingsScreen extends ScreenAdapter {
     @Override
     public void show() {
         stage = new Stage(new ScreenViewport());
-
+        buttonPressSound = Sounds.buttonPressSound;
         Skin mySkin = Textures.mySkin;
 
         Button buttonMenu = new TextButton(GameConfiguration.getText("menu"),mySkin,"default");
@@ -142,10 +147,43 @@ public class SettingsScreen extends ScreenAdapter {
             stage.addActor(returnToGame);
         }
 
-        Label musicVolumeLabel = new Label(GameConfiguration.getText("musicVolume"), mySkin, "default");
+        musicVolumeLabel = new Label("", mySkin, "default");
         musicVolumeLabel.setSize(screenWidth / 2, screenWidth / 10);
         musicVolumeLabel.setPosition(screenWidth / 2f, screenHeight / 2f);
-        //musicVolumeLabel.setColor(Color.BLACK);
+        musicVolumeLabel.setAlignment(Align.center);
+        try {
+            changeMusicVolume(Integer.parseInt(GameConfiguration.open("musicVolume")));
+        } catch (Exception e) {}
+
+
+        final Slider musicVolumeSlider = new Slider(0, 1, 0.1f, false, mySkin);
+        musicVolumeSlider.setSize(musicVolumeLabel.getWidth() * 3 / 4, screenWidth / 20);
+        musicVolumeSlider.setPosition(musicVolumeLabel.getX() + musicVolumeLabel.getWidth() / 2 -
+                musicVolumeSlider.getWidth() / 2, musicVolumeLabel.getY() -
+                musicVolumeSlider.getHeight());
+        musicVolumeSlider.getStyle().knob.setMinWidth(screenWidth / 15);
+        musicVolumeSlider.getStyle().knob.setMinHeight(screenWidth / 15);
+        musicVolumeSlider.getStyle().background.setMinHeight(screenWidth / 30);
+        musicVolumeSlider.getStyle().background.setMinWidth(screenWidth / 30);
+        try {
+            musicVolumeSlider.setValue(Integer.parseInt(GameConfiguration.open("musicVolume")) / 100f);
+        } catch (Exception e) {}
+
+        musicVolumeSlider.addListener(new InputListener() {
+            @Override
+            public boolean touchDown (InputEvent event, float x, float y, int pointer, int button) {
+                return true;
+            }
+
+            @Override
+            public void touchDragged(InputEvent event, float x, float y, int pointer) {
+                int volume = (int) (musicVolumeSlider.getValue() * 100);
+                String volumeString = "" + volume;
+                GameConfiguration.save("musicVolume", volumeString);
+                changeMusicVolume(volume);
+
+            }
+        });
 
         stage.addActor(buttonMenu);
         stage.addActor(buttonInvert);
@@ -153,6 +191,7 @@ public class SettingsScreen extends ScreenAdapter {
         stage.addActor(boostImage);
         stage.addActor(joystickImage);
         stage.addActor(musicVolumeLabel);
+        stage.addActor(musicVolumeSlider);
 
         Gdx.input.setInputProcessor(stage);
     }
@@ -181,5 +220,11 @@ public class SettingsScreen extends ScreenAdapter {
             boostImage.setX(rightX);
             joystickImage.setX(leftX);
         }
+    }
+
+    public void changeMusicVolume(int volume) {
+        String text = GameConfiguration.getText("musicVolume");
+        String volumeText = ":  " + volume + "%";
+        musicVolumeLabel.setText(text + volumeText);
     }
 }

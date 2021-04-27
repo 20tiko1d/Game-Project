@@ -137,6 +137,7 @@ public final class GameConfiguration implements HighScoreListener {
             save("theme", "sand");
             save("player", "ghost");
             save("controls", "default");
+            save("musicVolume", "50");
             firstTime = true;
         } else {
             firstTime = false;

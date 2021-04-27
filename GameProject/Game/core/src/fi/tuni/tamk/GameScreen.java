@@ -303,6 +303,10 @@ public class GameScreen extends ScreenAdapter {
         if(!created) {
             backgroundMusic = Sounds.backgroundMusic;
             backgroundMusic.setLooping(true);
+            try {
+                backgroundMusic.setVolume(Integer.parseInt(GameConfiguration.open("musicVolume")) / 100f);
+            } catch (Exception e) {}
+
             backgroundMusic.play();
             array = FileReader.getPairElements();
             mapY = map.length * tileHeight;
@@ -563,6 +567,9 @@ public class GameScreen extends ScreenAdapter {
             backgroundMusic.play();
             buttonBoost.setX(GameConfiguration.getControlsX(1, buttonBoost.getWidth()));
             touchpad.setX(GameConfiguration.getControlsX(2, touchpad.getWidth()));
+            try {
+                backgroundMusic.setVolume(Integer.parseInt(GameConfiguration.open("musicVolume")) / 100f);
+            } catch (Exception e) {}
         }
         Gdx.input.setInputProcessor(inputMultiplexer);
     }
