@@ -727,6 +727,8 @@ public class GameScreen extends ScreenAdapter {
 
         int nearObjectIndex = 0;
 
+        int exitCounter = 0;
+
         boolean drawExit = false;
 
         for(int row = minIndexY; row < maxIndexY; row++) {
@@ -748,9 +750,17 @@ public class GameScreen extends ScreenAdapter {
                     if(exitOpen) {
                         exitTexture = exitOpenTexture;
                     }
-                    drawTexture(batch, exitTexture, column * tileWidth, locY,
+                    drawTexture(batch, mapTexture, column * tileWidth, locY, tileWidth,
+                            tileHeight, false);
+                    drawTexture(batch, exitTexture, (column - 2) * tileWidth, locY,
                             tileWidth * 3, tileHeight * 6, false);
                     drawExit = false;
+                }
+                else if(exitCounter > 0) {
+                    drawTexture(batch, mapTexture, column * tileWidth, locY, tileWidth,
+                            tileHeight, false);
+                    drawExit = true;
+                    exitCounter = 0;
                 }
                 else if(row == exitLocations[0] && column == exitLocations[1]) {
                     Texture exitTexture = exitClosedTexture;
@@ -765,11 +775,13 @@ public class GameScreen extends ScreenAdapter {
                                 tileHeight * 4, false);
                     }
                     else if(exitLeft) {
-                        drawTexture(batch, exitTexture, (column - 1) * tileWidth, locY,
+                        drawTexture(batch, exitTexture, (column - 2) * tileWidth, locY,
                                 tileWidth * 3, tileHeight * 6, true);
                     }
                     else {
-                        drawExit = true;
+                        exitCounter++;
+                        drawTexture(batch, mapTexture, column * tileWidth, locY, tileWidth,
+                                tileHeight, false);
                     }
                 }
                 else {
