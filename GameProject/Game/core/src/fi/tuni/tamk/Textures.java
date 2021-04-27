@@ -140,7 +140,7 @@ public final class Textures {
         if(onTop) {
             return new Texture("textures/walls/random/wallExitTop_open.png");
         }
-        return new Texture("textures/walls/random/wallExitOpen0.66.png");
+        return new Texture("textures/walls/random/wallExitSide_open.png");
     }
 
     public static Texture getStartTexture() {
