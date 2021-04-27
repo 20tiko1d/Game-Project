@@ -20,22 +20,22 @@ import com.badlogic.gdx.utils.viewport.ScreenViewport;
  */
 public class LevelScreen extends ScreenAdapter {
 
-    private Main main;
+    private final Main main;
 
     private Stage stage;
 
-    private SpriteBatch batch;
+    private final SpriteBatch batch;
 
     private Texture backgroundImage;
     private float backgroundHeight;
 
-    private int screenWidth;
-    private int screenHeight;
+    private final int screenWidth;
+    private final int screenHeight;
 
     private Rectangle rect;
     private int marginal;
 
-    private Sound buttonPressSound;
+    private final Sound buttonPressSound;
 
     public LevelScreen(Main main){
         this.main = main;
@@ -59,7 +59,7 @@ public class LevelScreen extends ScreenAdapter {
         buttonEasy.setSize(rect.width,rect.height);
         buttonEasy.setPosition(rect.x,rect.y);
         buttonEasy.setColor(Color.GREEN);
-        buttonEasy.getLabel().setFontScale(GameConfiguration.fitText(buttonEasy, -1, -1, 2));
+        buttonEasy.getLabel().setFontScale(GameConfiguration.fitText(buttonEasy, -1, -1));
         buttonEasy.addListener(new InputListener(){
             @Override
             public boolean touchDown(InputEvent event, float x, float y, int pointer, int button) {
@@ -82,7 +82,7 @@ public class LevelScreen extends ScreenAdapter {
             buttonMedium.setPosition(rect.x + 2 * marginal + rect.width, rect.y);
         }
         buttonMedium.setColor(Color.ORANGE);
-        buttonMedium.getLabel().setFontScale(GameConfiguration.fitText(buttonMedium, -1, -1, 2));
+        buttonMedium.getLabel().setFontScale(GameConfiguration.fitText(buttonMedium, -1, -1));
         buttonMedium.addListener(new InputListener(){
             @Override
             public boolean touchDown(InputEvent event, float x, float y, int pointer, int button) {
@@ -105,7 +105,7 @@ public class LevelScreen extends ScreenAdapter {
             buttonHard.setPosition(rect.x + (2 * marginal + rect.width) * 2, rect.y);
         }
         buttonHard.setColor(Color.RED);
-        buttonHard.getLabel().setFontScale(GameConfiguration.fitText(buttonHard, -1, -1, 2));
+        buttonHard.getLabel().setFontScale(GameConfiguration.fitText(buttonHard, -1, -1));
         buttonHard.addListener(new InputListener(){
             @Override
             public boolean touchDown(InputEvent event, float x, float y, int pointer, int button) {
@@ -124,7 +124,7 @@ public class LevelScreen extends ScreenAdapter {
         buttonTutorial.setSize(screenWidth / 10f,screenWidth / 10f);
         buttonTutorial.setPosition(0, 0);
         buttonTutorial.setColor(Color.GRAY);
-        buttonTutorial.getLabel().setFontScale(GameConfiguration.fitText(buttonTutorial, -1, -1, 2));
+        buttonTutorial.getLabel().setFontScale(GameConfiguration.fitText(buttonTutorial, -1, -1));
         buttonTutorial.addListener(new InputListener(){
             @Override
             public boolean touchDown(InputEvent event, float x, float y, int pointer, int button) {
@@ -144,7 +144,7 @@ public class LevelScreen extends ScreenAdapter {
         buttonMenu.setSize(screenWidth / 10f,screenWidth / 10f);
         buttonMenu.setPosition(0,screenHeight - screenWidth / 10f);
         buttonMenu.setColor(Color.YELLOW);
-        buttonMenu.getLabel().setFontScale(GameConfiguration.fitText(buttonMenu, -1, -1, 2));
+        buttonMenu.getLabel().setFontScale(GameConfiguration.fitText(buttonMenu, -1, -1));
         buttonMenu.addListener(new InputListener(){
             @Override
             public boolean touchDown(InputEvent event, float x, float y, int pointer, int button) {
@@ -164,7 +164,7 @@ public class LevelScreen extends ScreenAdapter {
         buttonStore.setPosition(screenWidth / 2f - buttonStore.getWidth() / 2f,
                 screenHeight - buttonStore.getHeight());
         buttonStore.setColor(56 / 255f, 114 / 255f, 207 / 255f, 1);
-        buttonStore.getLabel().setFontScale(GameConfiguration.fitText(buttonStore, -1, -1, 2));
+        buttonStore.getLabel().setFontScale(GameConfiguration.fitText(buttonStore, -1, -1));
         buttonStore.addListener(new InputListener(){
             @Override
             public boolean touchDown(InputEvent event, float x, float y, int pointer, int button) {
@@ -184,7 +184,7 @@ public class LevelScreen extends ScreenAdapter {
         buttonHighScores.setPosition(screenWidth -buttonHighScores.getWidth(),
                 0);
         buttonHighScores.setColor(56 / 255f, 114 / 255f, 207 / 255f, 1);
-        buttonHighScores.getLabel().setFontScale(GameConfiguration.fitText(buttonHighScores, -1, -1, 2));
+        buttonHighScores.getLabel().setFontScale(GameConfiguration.fitText(buttonHighScores, -1, -1));
         buttonHighScores.addListener(new InputListener(){
             @Override
             public boolean touchDown(InputEvent event, float x, float y, int pointer, int button) {

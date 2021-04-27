@@ -17,7 +17,7 @@ import com.badlogic.gdx.utils.viewport.ScreenViewport;
 
 public class PlayerName extends ScreenAdapter {
 
-    private Main main;
+    private final Main main;
 
     private Stage stage;
     private OrthographicCamera camera;
@@ -28,16 +28,16 @@ public class PlayerName extends ScreenAdapter {
     private TextField textField;
     private Label errorLabel;
 
-    private boolean firstTime;
+    private final boolean firstTime;
 
-    private Sound buttonPressSound;
+    private final Sound buttonPressSound;
 
     public PlayerName(Main main, boolean firstTime) {
         this.main = main;
         camera = new OrthographicCamera();
         camera.setToOrtho(false, Main.viewPortWidth, Main.viewPortHeight);
         this.firstTime = firstTime;
-        //buttonPressSound = Sounds.buttonPressSound;
+        buttonPressSound = Sounds.buttonPressSound;
     }
 
     @Override
@@ -72,16 +72,16 @@ public class PlayerName extends ScreenAdapter {
         buttonSave.setPosition(boxBackground.getX() + boxBackground.getWidth() -
                 buttonSave.getWidth(), boxBackground.getY());
         buttonSave.setColor(Color.GREEN);
-        buttonSave.getLabel().setFontScale(GameConfiguration.fitText(buttonSave, -1, -1, 2));
+        buttonSave.getLabel().setFontScale(GameConfiguration.fitText(buttonSave, -1, -1));
         buttonSave.addListener(new InputListener(){
             @Override
             public boolean touchDown(InputEvent event, float x, float y, int pointer, int button) {
+                buttonPressSound.play();
                 return true;
             }
 
             @Override
             public void touchUp(InputEvent event, float x, float y, int pointer, int button) {
-                //buttonPressSound.play();
                 if(checkName()) {
                     dispose();
                     if(firstTime) {
@@ -107,16 +107,16 @@ public class PlayerName extends ScreenAdapter {
             buttonCancel.setSize(buttonSave.getWidth(), buttonSave.getHeight());
             buttonCancel.setPosition(boxBackground.getX(), boxBackground.getY());
             buttonCancel.setColor(Color.GREEN);
-            buttonCancel.getLabel().setFontScale(GameConfiguration.fitText(buttonCancel, -1, -1, 2));
+            buttonCancel.getLabel().setFontScale(GameConfiguration.fitText(buttonCancel, -1, -1));
             buttonCancel.addListener(new InputListener(){
                 @Override
                 public boolean touchDown(InputEvent event, float x, float y, int pointer, int button) {
+                    buttonPressSound.play();
                     return true;
                 }
 
                 @Override
                 public void touchUp(InputEvent event, float x, float y, int pointer, int button) {
-                    //buttonPressSound.play();
                     dispose();
                     main.setScreen(new HighScores(main));
                 }

@@ -23,7 +23,7 @@ import com.badlogic.gdx.utils.viewport.ScreenViewport;
  */
 public class SettingsScreen extends ScreenAdapter {
 
-    private Main main;
+    private final Main main;
     private PauseScreen pauseScreen;
     private GameScreen gameScreen;
 
@@ -151,7 +151,9 @@ public class SettingsScreen extends ScreenAdapter {
         musicVolumeLabel.setAlignment(Align.center);
         try {
             changeMusicVolume(Integer.parseInt(GameConfiguration.open("musicVolume")));
-        } catch (Exception e) {}
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
 
 
         final Slider musicVolumeSlider = new Slider(0, 1, 0.1f, false, mySkin);
@@ -165,7 +167,9 @@ public class SettingsScreen extends ScreenAdapter {
         musicVolumeSlider.getStyle().background.setMinWidth(screenWidth / 30);
         try {
             musicVolumeSlider.setValue(Integer.parseInt(GameConfiguration.open("musicVolume")) / 100f);
-        } catch (Exception e) {}
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
 
         musicVolumeSlider.addListener(new InputListener() {
             @Override

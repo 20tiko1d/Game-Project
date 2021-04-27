@@ -25,10 +25,10 @@ public final class Sounds {
     public static Music levelCompletedMusic = Gdx.audio.newMusic(Gdx.files.internal("Sounds and Music/level_complete.wav"));
 
     // Character walk
-    public static Sound walkSound;
+    //public static Sound walkSound;
 
     // Character sprint
-    public static Sound sprintSound;
+    //public static Sound sprintSound;
 
     // Button click sound
     public static Sound buttonPressSound = Gdx.audio.newSound(Gdx.files.internal("Sounds and Music/button_click2.wav"));

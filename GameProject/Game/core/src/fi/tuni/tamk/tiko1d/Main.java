@@ -15,9 +15,6 @@ public class Main extends Game {
 	public static float oneWidth = 10f / howMany / 2;
 	public static boolean isPortrait = false;
 
-	public float centerX;
-	public float centerY;
-
 	SpriteBatch batch;
 
 	@Override
@@ -25,7 +22,6 @@ public class Main extends Game {
 		checkDevice();
 		GameConfiguration.checkFirstTime();
 		batch = new SpriteBatch();
-		calculateCircleRadius();
 		if(GameConfiguration.open("name").equals(GameConfiguration.noValue)) {
 			setScreen(new PlayerName(this, true));
 		} else {
@@ -43,26 +39,6 @@ public class Main extends Game {
 	}
 
 	public void checkDevice() {
-		/*
-		int width = Gdx.graphics.getWidth();
-		int height = Gdx.graphics.getHeight();
-		if(width >= height) {
-			isPortrait = false;
-		} else {
-			isPortrait = true;
-		}
-		if(isPortrait) {
-			viewPortWidth = 10;
-			float density = width / 10f;
-			viewPortHeight = height / density;
-		} else {
-			viewPortHeight = 10;
-			float density = height / 10f;
-			viewPortWidth = width / density;
-			centerX = viewPortWidth / 2;
-			centerY = viewPortHeight / 2;
-		}*/
-
 		float radius = Gdx.graphics.getWidth() / 2f;
 		if(radius > Gdx.graphics.getHeight() * 9 / 10f) {
 			radius = Gdx.graphics.getHeight() * 9 / 10f;
@@ -71,9 +47,5 @@ public class Main extends Game {
 
 		viewPortWidth = 10 * multiplier;
 		viewPortHeight = (float) Gdx.graphics.getHeight() / Gdx.graphics.getWidth() * 10 * multiplier;
-	}
-
-	public void calculateCircleRadius() {
-
 	}
 }

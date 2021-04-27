@@ -48,7 +48,7 @@ public final class Textures {
     private Textures() {}
 
     public static ArrayList<Texture> getFloor1Textures() {
-        ArrayList<Texture> textures = new ArrayList<Texture>();
+        ArrayList<Texture> textures = new ArrayList<>();
         if(GameConfiguration.theme.equals("bush")) {
             textures.add(new Texture("textures/floorsInside/Bush/Rockfloor.png"));
         }
@@ -61,7 +61,7 @@ public final class Textures {
     }
 
     public static ArrayList<Texture> getFloor2Textures() {
-        ArrayList<Texture> textures = new ArrayList<Texture>();
+        ArrayList<Texture> textures = new ArrayList<>();
 
         if(GameConfiguration.theme.equals("bush")) {
             textures.add(new Texture("textures/floorsOutside/Bush/grass1.png"));
@@ -75,7 +75,7 @@ public final class Textures {
     }
 
     public static ArrayList<Texture> getWallTextures() {
-        ArrayList<Texture> textures = new ArrayList<Texture>();
+        ArrayList<Texture> textures = new ArrayList<>();
       
         if(GameConfiguration.theme.equals("bush")) {
             textures.add(new Texture("textures/walls/Bush/bushWall.png"));
@@ -105,7 +105,7 @@ public final class Textures {
     }
 
     public static Texture getObjectTexture() {
-        ArrayList<Texture> textures = new ArrayList<Texture>();
+        ArrayList<Texture> textures = new ArrayList<>();
 
         textures.add(new Texture("textures/object/alarmClock.png"));
         textures.add(new Texture("textures/object/apple.png"));
@@ -155,9 +155,10 @@ public final class Textures {
 
     public static Texture getJoystickKnob() { return new Texture("textures/joystick/random/joystickKnob.png");}
 
+    /*
     public static Texture getTutorialTextBackground() {
         return new Texture("textures/random/tutorialTextBackground.png");
-    }
+    }*/
 
     public static Texture getMenuBackground() {
         return new Texture("textures/random/backgroundImage5.png");

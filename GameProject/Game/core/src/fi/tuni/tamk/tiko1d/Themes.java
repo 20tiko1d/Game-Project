@@ -20,7 +20,7 @@ import com.badlogic.gdx.utils.viewport.ScreenViewport;
 
 public class Themes extends ScreenAdapter {
 
-    private Main main;
+    private final Main main;
 
     private OrthographicCamera camera;
     private Stage stage;
@@ -28,13 +28,7 @@ public class Themes extends ScreenAdapter {
     private final float screenWidth = Gdx.graphics.getWidth();
     private final float screenHeight = Gdx.graphics.getHeight();
 
-    private TextButton buttonSand;
-    private TextButton buttonBush;
-
-    private String buttonBushString;
-    private String buttonSandString;
-
-    private Sound buttonPressSound;
+    private final Sound buttonPressSound;
 
     private float themeMarkSandY;
     private float themeMarkBushY;
@@ -57,16 +51,13 @@ public class Themes extends ScreenAdapter {
     public void show() {
         stage = new Stage(new ScreenViewport());
 
-        buttonSandString = GameConfiguration.getText("sand");
-        buttonBushString = GameConfiguration.getText("bush");
-
         Skin mySkin = Textures.mySkin;
 
         TextButton buttonMenu = new TextButton(GameConfiguration.getText("menu"),mySkin,"pixel72");
         buttonMenu.setSize(screenWidth / 10f,screenWidth / 10f);
         buttonMenu.setPosition(0,screenHeight - screenWidth / 10f);
         buttonMenu.setColor(Color.YELLOW);
-        buttonMenu.getLabel().setFontScale(GameConfiguration.fitText(buttonMenu, -1, -1, 2));
+        buttonMenu.getLabel().setFontScale(GameConfiguration.fitText(buttonMenu, -1, -1));
         buttonMenu.addListener(new InputListener(){
             @Override
             public boolean touchDown(InputEvent event, float x, float y, int pointer, int button) {
@@ -86,7 +77,7 @@ public class Themes extends ScreenAdapter {
         buttonLevels.setPosition(screenWidth - buttonLevels.getWidth(),
                 screenHeight - screenWidth / 10f);
         buttonLevels.setColor(0 / 255f, 255 / 255f, 195 / 255f, 1);
-        buttonLevels.getLabel().setFontScale(GameConfiguration.fitText(buttonLevels, -1, -1, 2));
+        buttonLevels.getLabel().setFontScale(GameConfiguration.fitText(buttonLevels, -1, -1));
         buttonLevels.addListener(new InputListener(){
             @Override
             public boolean touchDown(InputEvent event, float x, float y, int pointer, int button) {
@@ -269,9 +260,5 @@ public class Themes extends ScreenAdapter {
     public void dispose() {
         stage.dispose();
         camera = null;
-    }
-
-    public String getMarkedText(String str) {
-        return "X   " + str + "    ";
     }
 }

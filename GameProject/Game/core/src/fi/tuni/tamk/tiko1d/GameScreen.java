@@ -42,29 +42,29 @@ import com.badlogic.gdx.utils.viewport.ScreenViewport;
 public class GameScreen extends ScreenAdapter {
 
 
-    private Main main;
-    private GameScreen gameScreen;
+    private final Main main;
+    private final GameScreen gameScreen;
 
-    private float viewPortWidth;
-    private float viewPortHeight;
+    private final float viewPortWidth;
+    private final float viewPortHeight;
 
-    private float relativeWidth = Gdx.graphics.getWidth() / Main.viewPortWidth;
-    private float relativeHeight = Gdx.graphics.getHeight() / Main.viewPortHeight;
-    private float relativeTileHeight;
+    private final float relativeWidth = Gdx.graphics.getWidth() / Main.viewPortWidth;
+    private final float relativeHeight = Gdx.graphics.getHeight() / Main.viewPortHeight;
+    private final float relativeTileHeight;
 
-    private float screenWidth;
-    private float screenHeight;
+    private final float screenWidth;
+    private final float screenHeight;
 
     private static final boolean DEBUG_PHYSICS = false;
 
-    private OrthographicCamera camera;
-    private Box2DDebugRenderer debugRenderer;
+    private final OrthographicCamera camera;
+    private final Box2DDebugRenderer debugRenderer;
 
-    private SpriteBatch batch;
+    private final SpriteBatch batch;
 
-    private Stage stage;
-    private SpriteBatch player;
-    private InputMultiplexer inputMultiplexer;
+    private final Stage stage;
+    private final SpriteBatch player;
+    private final InputMultiplexer inputMultiplexer;
 
     // Exit
     private Body exitBody;
@@ -82,17 +82,17 @@ public class GameScreen extends ScreenAdapter {
     // Pairs
     private Array<String> array;
     private int[][] randomPairs;
-    private float objectHeight;
+    private final float objectHeight;
 
     // Textures
     private Texture[][] map;
     private Texture[] playerTextures;
     private Texture playerTexture;
     private Texture objectTexture;
-    private Image pairLabelBackground;
+    private final Image pairLabelBackground;
     private TextureRegion background;
 
-    private Skin mySkin;
+    private final Skin mySkin;
 
     // Map rendering
     private Rectangle playerRect;
@@ -100,9 +100,9 @@ public class GameScreen extends ScreenAdapter {
     private int playerLocY;
     private boolean created = false;
     private float mapY;
-    private float tileWidth;
-    private float tileHeight;
-    private float wallHeight;
+    private final float tileWidth;
+    private final float tileHeight;
+    private final float wallHeight;
 
     // Controls
     private boolean boost = false;
@@ -114,26 +114,26 @@ public class GameScreen extends ScreenAdapter {
     private float velX;
     private float velY;
     private float velMultiplier = 1;
-    private float playerSpeed;
+    private final float playerSpeed;
     private Touchpad touchpad;
 
     // Box2d
-    private World world;
+    private final World world;
     private Body playerBody;
     private double accumulator;
     private final float TIME_STEP = 1 / 60f;
 
     // ZoomOut
     private float zoomRatio = 1;
-    private float zoomSpeed = 0.5f;
-    private float minZoom = 1;
-    private float maxZoom = 1.5f;
+    private final float zoomSpeed = 0.5f;
+    private final float minZoom = 1;
+    private final float maxZoom = 1.5f;
     private boolean ifMaxZoom = false;
     private boolean ifZoomIn = true;
     private TextButton buttonBoost;
 
     // Objects
-    private Label pairLabel;
+    private final Label pairLabel;
     private boolean pairClose = false;
     private int pairCount = 0;
     private int objectIndex;
@@ -145,29 +145,29 @@ public class GameScreen extends ScreenAdapter {
     private TextButton buttonValidate;
     private TextButton buttonSwitch;
     private TextButton buttonActivate;
-    private String objectsFoundString;
+    private final String objectsFoundString;
     private float[] objectBounciness;
     private boolean[] objectDirections;
-    private float bounciness = 0.1f;
-    private Texture shadow;
+    private final float bounciness = 0.1f;
+    private final Texture shadow;
 
     // Score
     private float score;
-    private int objectScore;
-    private Label scoreLabel;
-    private Label scoreChangeLabel;
-    private Label objectLabel;
-    private Label activatedLabel;
+    private final int objectScore;
+    private final Label scoreLabel;
+    private final Label scoreChangeLabel;
+    private final Label objectLabel;
+    private final Label activatedLabel;
     private float scoreAddTime = 0;
     private int scoreAdd;
-    private String scoreString;
+    private final String scoreString;
 
     // Fps counter
     private int fpsCounter = 0;
     private float second = 1;
 
     // Tutorial
-    private boolean tutorialOn;
+    private final boolean tutorialOn;
     private boolean pauseGame = false;
     private int tutorialPhase;
     private Image tutorialTextBackground;
@@ -178,16 +178,16 @@ public class GameScreen extends ScreenAdapter {
 
     // Sounds
     private Music backgroundMusic;
-    private Sound buttonPressSound;
-    private Sound activationSound;
-    private Sound switchSound;
-    private Sound connectingSound;
-    private Sound wrongValidationSound;
+    private final Sound buttonPressSound;
+    private final Sound activationSound;
+    private final Sound switchSound;
+    private final Sound connectingSound;
+    private final Sound wrongValidationSound;
     private Sound walkSound;
     private Sound sprintSound;
 
-    private boolean walkSoundOn = false;
-    private boolean sprintSoundOn = false;
+   // private boolean walkSoundOn = false;
+    //private boolean sprintSoundOn = false;
 
     public GameScreen(Main main, World world) {
         this.main = main;
@@ -302,7 +302,9 @@ public class GameScreen extends ScreenAdapter {
             backgroundMusic.setLooping(true);
             try {
                 backgroundMusic.setVolume(Integer.parseInt(GameConfiguration.open("musicVolume")) / 100f);
-            } catch (Exception e) {}
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
 
             backgroundMusic.play();
             array = FileReader.getPairElements();
@@ -390,7 +392,7 @@ public class GameScreen extends ScreenAdapter {
             buttonActivate.setSize(screenWidth / 2f, screenWidth / 10f);
             buttonActivate.setPosition(screenWidth / 4f, 0);
             buttonActivate.setColor(Color.GREEN);
-            buttonActivate.getLabel().setFontScale(GameConfiguration.fitText(buttonActivate, -1, -1, 2));
+            buttonActivate.getLabel().setFontScale(GameConfiguration.fitText(buttonActivate, -1, -1));
             buttonActivate.addListener(new InputListener() {
                 @Override
                 public boolean touchDown(InputEvent event, float x, float y, int pointer, int button) {
@@ -415,7 +417,7 @@ public class GameScreen extends ScreenAdapter {
             buttonValidate.setSize(screenWidth / 4f,screenWidth / 10f);
             buttonValidate.setPosition(screenWidth / 4f,0);
             buttonValidate.setColor(Color.GREEN);
-            buttonValidate.getLabel().setFontScale(GameConfiguration.fitText(buttonValidate, -1, -1, 2));
+            buttonValidate.getLabel().setFontScale(GameConfiguration.fitText(buttonValidate, -1, -1));
             buttonValidate.addListener(new InputListener() {
                 @Override
                 public boolean touchDown(InputEvent event, float x, float y, int pointer, int button) {
@@ -474,7 +476,7 @@ public class GameScreen extends ScreenAdapter {
             buttonSwitch.setSize(screenWidth / 4f,screenWidth / 10f);
             buttonSwitch.setPosition(screenWidth / 2f,0);
             buttonSwitch.setColor(Color.YELLOW);
-            buttonSwitch.getLabel().setFontScale(GameConfiguration.fitText(buttonSwitch, -1, -1, 2));
+            buttonSwitch.getLabel().setFontScale(GameConfiguration.fitText(buttonSwitch, -1, -1));
             buttonSwitch.addListener(new InputListener(){
                 @Override
                 public boolean touchDown(InputEvent event, float x, float y, int pointer, int button) {
@@ -501,7 +503,7 @@ public class GameScreen extends ScreenAdapter {
             buttonBoost.setPosition(GameConfiguration.getControlsX(1, buttonBoost.getWidth()),
                     screenHeight / 4f - buttonBoost.getHeight() / 2f);
             buttonBoost.setColor(1, 0, 0, 1);
-            buttonBoost.getLabel().setFontScale(GameConfiguration.fitText(buttonBoost, 48, -1, 2));
+            buttonBoost.getLabel().setFontScale(GameConfiguration.fitText(buttonBoost, 48, -1));
             buttonBoost.addListener(new InputListener(){
                 @Override
                 public boolean touchDown(InputEvent event, float x, float y, int pointer, int button) {
@@ -566,7 +568,9 @@ public class GameScreen extends ScreenAdapter {
             touchpad.setX(GameConfiguration.getControlsX(2, touchpad.getWidth()));
             try {
                 backgroundMusic.setVolume(Integer.parseInt(GameConfiguration.open("musicVolume")) / 100f);
-            } catch (Exception e) {}
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
         }
         Gdx.input.setInputProcessor(inputMultiplexer);
     }
@@ -649,13 +653,6 @@ public class GameScreen extends ScreenAdapter {
         objectTexture.dispose();
         backgroundMusic.stop();
         backgroundMusic = null;
-        //buttonPressSound.dispose();
-        //activationSound.dispose();
-        //switchSound.dispose();
-        //connectingSound.dispose();
-        //wrongValidationSound.dispose();
-        //walkSound.dispose();
-        //sprintSound.dispose();
     }
 
     public void getTextures() {
@@ -927,11 +924,7 @@ public class GameScreen extends ScreenAdapter {
                     createPairLabel(randomPairs[i][0]);
                     closeIndex = randomPairs[i][0];
                     index = i;
-                    if(j == 0) {
-                        first = true;
-                    } else {
-                        first = false;
-                    }
+                    first = j == 0;
                     stillClose = true;
                 }
             }
@@ -1007,7 +1000,6 @@ public class GameScreen extends ScreenAdapter {
         this.exitLeft = exitLeft;
         exitOpenTexture = Textures.getExitOpenTexture(exitTop);
         exitClosedTexture = Textures.getExitCloseTexture(exitTop);
-        Gdx.app.log("", "Exit on top: " + exitTop + ", Left: " + exitLeft);
     }
 
     public void openExit() {
@@ -1072,7 +1064,7 @@ public class GameScreen extends ScreenAdapter {
         buttonTutorial.setPosition(screenWidth / 2f - buttonTutorial.getWidth() / 2f,
                 tutorialTextBackground.getY());
         buttonTutorial.setColor(Color.GREEN);
-        buttonTutorial.getLabel().setScale(GameConfiguration.fitText(buttonTutorial, -1, -1, 2));
+        buttonTutorial.getLabel().setScale(GameConfiguration.fitText(buttonTutorial, -1, -1));
         buttonTutorial.addListener(new InputListener() {
             @Override
             public boolean touchDown(InputEvent event, float x, float y, int pointer, int button) {
@@ -1259,6 +1251,7 @@ public class GameScreen extends ScreenAdapter {
         background = new TextureRegion(wholeBackground, x, y, width, height);
     }
 
+    /*
     public void handleMovingSounds() {
         if(boost) {
             if(walkSoundOn) {
@@ -1277,5 +1270,5 @@ public class GameScreen extends ScreenAdapter {
                 walkSound.play();
             }
         }
-    }
+    }*/
 }

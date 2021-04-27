@@ -27,7 +27,7 @@ public class FileReader {
      */
 
     public static Array<String> getPairElements() {
-        Array<String> array = new Array<String>();
+        Array<String> array = new Array<>();
         try {
 
             FileHandle fileHandle = Gdx.files.internal(getFileName());

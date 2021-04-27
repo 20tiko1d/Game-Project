@@ -24,11 +24,11 @@ import com.badlogic.gdx.utils.viewport.ScreenViewport;
  */
 public class MenuScreen extends ScreenAdapter {
 
-    private Main main;
+    private final Main main;
 
     private Stage stage;
     private OrthographicCamera camera;
-    private SpriteBatch batch;
+    private final SpriteBatch batch;
 
     private TextButton buttonPlay;
     private TextButton buttonSettings;
@@ -46,7 +46,7 @@ public class MenuScreen extends ScreenAdapter {
     private final int screenWidth = Gdx.graphics.getWidth();
     private final int screenHeight = Gdx.graphics.getHeight();
 
-    private Sound buttonPressSound;
+    private final Sound buttonPressSound;
 
     public MenuScreen(Main main) {
         this.main = main;
@@ -98,7 +98,7 @@ public class MenuScreen extends ScreenAdapter {
         buttonTest.setSize(screenWidth / 10f,screenWidth / 10f);
         buttonTest.setPosition(0,screenHeight - screenWidth / 10f);
         buttonTest.setColor(Color.YELLOW);
-        buttonTest.getLabel().setFontScale(GameConfiguration.fitText(buttonTest, -1, -1, 2));
+        buttonTest.getLabel().setFontScale(GameConfiguration.fitText(buttonTest, -1, -1));
         buttonTest.addListener(new InputListener(){
             @Override
             public boolean touchDown(InputEvent event, float x, float y, int pointer, int button) {
@@ -122,7 +122,7 @@ public class MenuScreen extends ScreenAdapter {
         buttonPlay.setPosition(buttonBackgroundX + buttonBackgroundWidth / 2 - buttonPlay.getWidth() / 2,
                 buttonBackgroundY + buttonBackgroundHeight * 15 / 16 - buttonPlay.getHeight());
         buttonPlay.setColor(Color.GREEN);
-        buttonPlay.getLabel().setFontScale(GameConfiguration.fitText(buttonPlay, 120, (int) (screenWidth / 2000f * 70), 3));
+        buttonPlay.getLabel().setFontScale(GameConfiguration.fitText(buttonPlay, 120, (int) (screenWidth / 2000f * 70)));
         buttonPlay.addListener(new InputListener(){
             @Override
             public boolean touchDown(InputEvent event, float x, float y, int pointer, int button) {
@@ -153,7 +153,7 @@ public class MenuScreen extends ScreenAdapter {
         buttonSettings.setPosition(screenWidth / 2f - buttonSettings.getWidth() / 2f,
                 buttonPlay.getY() - buttonSettings.getHeight() - buttonBackgroundHeight / 15);
         buttonSettings.setColor(buttonColors);
-        buttonSettings.getLabel().setFontScale(GameConfiguration.fitText(buttonSettings, -1, -1, 2));
+        buttonSettings.getLabel().setFontScale(GameConfiguration.fitText(buttonSettings, -1, -1));
         buttonSettings.addListener(new InputListener(){
             @Override
             public boolean touchDown(InputEvent event, float x, float y, int pointer, int button) {
@@ -173,7 +173,7 @@ public class MenuScreen extends ScreenAdapter {
         buttonHighScores.setPosition(screenWidth / 2f - buttonHighScores.getWidth() / 2f,
                 buttonSettings.getY() - buttonHighScores.getHeight() - buttonBackgroundHeight / 15);
         buttonHighScores.setColor(buttonColors);
-        buttonHighScores.getLabel().setFontScale(GameConfiguration.fitText(buttonHighScores, -1, -1, 2));
+        buttonHighScores.getLabel().setFontScale(GameConfiguration.fitText(buttonHighScores, -1, -1));
         buttonHighScores.addListener(new InputListener(){
             @Override
             public boolean touchDown(InputEvent event, float x, float y, int pointer, int button) {

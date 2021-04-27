@@ -47,9 +47,9 @@ public final class GameConfiguration implements HighScoreListener {
     public static final float OBJECT_HEIGHT = 3;
 
     // Joystick settings
-    public static float joystickXOffset = Gdx.graphics.getWidth() / 32f;
+    //public static float joystickXOffset = Gdx.graphics.getWidth() / 32f;
     public static float joystickLength = Gdx.graphics.getWidth() * 3 / 16f;
-    public static float joystickX = Gdx.graphics.getWidth() * 3 / 4f + joystickXOffset;
+    //public static float joystickX = Gdx.graphics.getWidth() * 3 / 4f + joystickXOffset;
     public static float joystickY = Gdx.graphics.getHeight() / 4f - joystickLength / 2;
 
 
@@ -125,8 +125,7 @@ public final class GameConfiguration implements HighScoreListener {
 
     public static String open(String key) {
         Preferences prefs = Gdx.app.getPreferences("MyPreferences");
-        String value = prefs.getString(key, noValue);
-        return value;
+        return prefs.getString(key, noValue);
     }
 
     public static void checkFirstTime() {
@@ -157,17 +156,21 @@ public final class GameConfiguration implements HighScoreListener {
         return language;
     }
 
-    public static float fitText(TextButton button, int givenFontSize, int givenMaxSize, int numbers) {
+    public static float fitText(TextButton button, int givenFontSize, int givenMaxSize) {
         float width = button.getWidth() * 0.8f;
         int length = button.getText().length();
         float fontSize = givenFontSize;
         if(givenFontSize < 0) {
             String styleName = button.getStyle().font.getData().name;
             String fontSizeString = "";
-            for(int i = styleName.length() - numbers - 1; i < styleName.length() - 1; i++) {
+            for(int i = styleName.length() - 3; i < styleName.length() - 1; i++) {
+                String str = "";
                 try {
-                    fontSizeString = fontSizeString + Integer.parseInt(styleName.substring(i));
-                } catch (Exception e) {}
+                    str = str + Integer.parseInt(styleName.substring(i));
+                } catch (Exception e) { }
+                finally {
+                    fontSizeString = fontSizeString + str;
+                }
             }
             fontSize = Integer.parseInt(fontSizeString);
         }
@@ -184,8 +187,8 @@ public final class GameConfiguration implements HighScoreListener {
     }
 
     @Override
-    public void receiveHighScore(ArrayList<HighScoreEntry> highScores) {
-        this.highScores = highScores;
+    public void receiveHighScore(ArrayList<HighScoreEntry> getHighScores) {
+        highScores = getHighScores;
     }
 
     @Override

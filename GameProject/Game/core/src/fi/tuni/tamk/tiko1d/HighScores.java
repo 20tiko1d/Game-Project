@@ -24,7 +24,7 @@ import java.util.ArrayList;
  */
 public class HighScores extends ScreenAdapter {
 
-    private Main main;
+    private final Main main;
 
     private final int screenWidth = Gdx.graphics.getWidth();
     private final int screenHeight = Gdx.graphics.getHeight();
@@ -41,7 +41,7 @@ public class HighScores extends ScreenAdapter {
     private float startX;
     private float listWidth;
 
-    private Sound buttonPressSound;
+    private final Sound buttonPressSound;
 
     public HighScores(Main main) {
         this.main = main;
@@ -60,7 +60,7 @@ public class HighScores extends ScreenAdapter {
         buttonMenu.setSize(screenWidth / 10f,screenWidth / 10f);
         buttonMenu.setPosition(0,Gdx.graphics.getHeight() - screenWidth / 10f);
         buttonMenu.setColor(Color.YELLOW);
-        buttonMenu.getLabel().setFontScale(GameConfiguration.fitText(buttonMenu, -1, -1, 2));
+        buttonMenu.getLabel().setFontScale(GameConfiguration.fitText(buttonMenu, -1, -1));
         buttonMenu.addListener(new InputListener(){
             @Override
             public boolean touchDown(InputEvent event, float x, float y, int pointer, int button) {
@@ -79,7 +79,7 @@ public class HighScores extends ScreenAdapter {
         buttonLevels.setSize(screenWidth / 10f,screenWidth / 10f);
         buttonLevels.setPosition(screenWidth - buttonLevels.getWidth(), screenHeight - buttonLevels.getHeight());
         buttonLevels.setColor(0 / 255f, 255 / 255f, 195 / 255f, 1);
-        buttonLevels.getLabel().setFontScale(GameConfiguration.fitText(buttonLevels, -1, -1, 2));
+        buttonLevels.getLabel().setFontScale(GameConfiguration.fitText(buttonLevels, -1, -1));
         buttonLevels.addListener(new InputListener(){
             @Override
             public boolean touchDown(InputEvent event, float x, float y, int pointer, int button) {
@@ -105,7 +105,7 @@ public class HighScores extends ScreenAdapter {
         buttonRename.setPosition(nameLabel.getX() + nameLabel.getWidth() - buttonRename.getWidth(),
                 nameLabel.getY());
         buttonRename.setColor(0 / 255f, 255 / 255f, 195 / 255f, 1);
-        buttonRename.getLabel().setFontScale(GameConfiguration.fitText(buttonRename, -1, -1, 2));
+        buttonRename.getLabel().setFontScale(GameConfiguration.fitText(buttonRename, -1, -1));
         buttonRename.addListener(new InputListener(){
             @Override
             public boolean touchDown(InputEvent event, float x, float y, int pointer, int button) {
@@ -220,7 +220,7 @@ public class HighScores extends ScreenAdapter {
     }
 
     public ArrayList<HighScoreEntry> getTopHighScores(ArrayList<HighScoreEntry> highScores) {
-        ArrayList<HighScoreEntry> topScores = new ArrayList<HighScoreEntry>();
+        ArrayList<HighScoreEntry> topScores = new ArrayList<>();
 
         for(int i = 0; i < 10; i++) {
             int biggestValue = -1;

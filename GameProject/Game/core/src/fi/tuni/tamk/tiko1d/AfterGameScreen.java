@@ -19,14 +19,14 @@ import com.badlogic.gdx.utils.viewport.ScreenViewport;
 
 public class AfterGameScreen extends ScreenAdapter {
 
-    private Main main;
+    private final Main main;
 
     private Stage stage;
     private OrthographicCamera camera;
 
-    private float score;
+    private final float score;
 
-    private Sound buttonPressSound;
+    private final Sound buttonPressSound;
     private Music levelCompletedMusic;
 
     public AfterGameScreen(Main main, float score) {
@@ -54,7 +54,7 @@ public class AfterGameScreen extends ScreenAdapter {
         buttonMenu.setSize(Gdx.graphics.getWidth() / 10f,Gdx.graphics.getWidth() / 10f);
         buttonMenu.setPosition(0,Gdx.graphics.getHeight() - Gdx.graphics.getWidth() / 10f);
         buttonMenu.setColor(Color.YELLOW);
-        buttonMenu.getLabel().setFontScale(GameConfiguration.fitText(buttonMenu, - 1, -1, 2));
+        buttonMenu.getLabel().setFontScale(GameConfiguration.fitText(buttonMenu, - 1, -1));
         buttonMenu.addListener(new InputListener(){
             @Override
             public boolean touchDown(InputEvent event, float x, float y, int pointer, int button) {
@@ -73,7 +73,7 @@ public class AfterGameScreen extends ScreenAdapter {
         buttonPlayAgain.setSize(Gdx.graphics.getWidth() / 5f,Gdx.graphics.getWidth() / 8f);
         buttonPlayAgain.setPosition(Gdx.graphics.getWidth() / 2f + 30,Gdx.graphics.getHeight() / 3f);
         buttonPlayAgain.setColor(Color.GREEN);
-        buttonPlayAgain.getLabel().setFontScale(GameConfiguration.fitText(buttonPlayAgain, - 1,-1, 2));
+        buttonPlayAgain.getLabel().setFontScale(GameConfiguration.fitText(buttonPlayAgain, - 1,-1));
         buttonPlayAgain.addListener(new InputListener(){
             @Override
             public boolean touchDown(InputEvent event, float x, float y, int pointer, int button) {
@@ -92,7 +92,7 @@ public class AfterGameScreen extends ScreenAdapter {
         TextButton buttonLevelScreen = new TextButton(GameConfiguration.getText("levels"), mySkin,"pixel72");
         buttonLevelScreen.setSize(Gdx.graphics.getWidth() / 5f,Gdx.graphics.getWidth() / 8f);
         buttonLevelScreen.setPosition(Gdx.graphics.getWidth() / 2f - buttonLevelScreen.getWidth() - 30,Gdx.graphics.getHeight() / 3f);
-        buttonLevelScreen.getLabel().setFontScale(GameConfiguration.fitText(buttonLevelScreen, - 1, -1, 2));
+        buttonLevelScreen.getLabel().setFontScale(GameConfiguration.fitText(buttonLevelScreen, - 1, -1));
         buttonLevelScreen.addListener(new InputListener(){
             @Override
             public boolean touchDown(InputEvent event, float x, float y, int pointer, int button) {
@@ -112,7 +112,7 @@ public class AfterGameScreen extends ScreenAdapter {
         storeButton.setPosition(Gdx.graphics.getWidth() - storeButton.getWidth(),
                 Gdx.graphics.getHeight() - Gdx.graphics.getWidth() / 10f);
         storeButton.setColor(56 / 255f, 114 / 255f, 207 / 255f, 1);
-        storeButton.getLabel().setFontScale(GameConfiguration.fitText(storeButton, -1, -1, 2));
+        storeButton.getLabel().setFontScale(GameConfiguration.fitText(storeButton, -1, -1));
         storeButton.addListener(new InputListener(){
             @Override
             public boolean touchDown(InputEvent event, float x, float y, int pointer, int button) {

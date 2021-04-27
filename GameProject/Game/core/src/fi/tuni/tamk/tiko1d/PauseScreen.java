@@ -20,19 +20,19 @@ import com.badlogic.gdx.utils.Align;
 import com.badlogic.gdx.utils.viewport.ScreenViewport;
 
 public class PauseScreen extends ScreenAdapter {
-    private Main main;
-    private GameScreen gameScreen;
-    private PauseScreen pauseScreen;
+    private final Main main;
+    private final GameScreen gameScreen;
+    private final PauseScreen pauseScreen;
 
-    private float screenWidth;
-    private float screenHeight;
+    private final float screenWidth;
+    private final float screenHeight;
 
     private Stage stage;
     private OrthographicCamera camera;
 
     private boolean tutorial = false;
 
-    private Sound buttonPressSound;
+    private final Sound buttonPressSound;
 
     public PauseScreen(Main main, GameScreen gameScreen) {
         this.main = main;
@@ -155,7 +155,7 @@ public class PauseScreen extends ScreenAdapter {
         buttonMenu.setSize(Gdx.graphics.getWidth() / 10f,Gdx.graphics.getWidth() / 10f);
         buttonMenu.setPosition(0,Gdx.graphics.getHeight() - Gdx.graphics.getWidth() / 10f);
         buttonMenu.setColor(Color.YELLOW);
-        buttonMenu.getLabel().setFontScale(GameConfiguration.fitText(buttonMenu, -1, -1, 2));
+        buttonMenu.getLabel().setFontScale(GameConfiguration.fitText(buttonMenu, -1, -1));
         buttonMenu.addListener(new InputListener(){
             @Override
             public boolean touchDown(InputEvent event, float x, float y, int pointer, int button) {

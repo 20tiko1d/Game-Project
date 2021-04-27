@@ -17,15 +17,15 @@ import com.badlogic.gdx.utils.Align;
 import com.badlogic.gdx.utils.viewport.ScreenViewport;
 
 public class AfterTutorialScreen extends ScreenAdapter {
-    private Main main;
+    private final Main main;
 
     private Stage stage;
     private OrthographicCamera camera;
 
-    private float screenWidth;
-    private float screenHeight;
+    private final float screenWidth;
+    private final float screenHeight;
 
-    private Sound buttonPressSound;
+    private final Sound buttonPressSound;
     private Music levelCompletedMusic;
 
     public AfterTutorialScreen(Main main) {
@@ -79,7 +79,7 @@ public class AfterTutorialScreen extends ScreenAdapter {
         buttonLevelScreen.setSize(screenWidth / 5f,screenWidth / 8f);
         buttonLevelScreen.setPosition(screenWidth / 2f - buttonLevelScreen.getWidth() - 30,screenHeight / 3f);
         buttonLevelScreen.setColor(0 / 255f, 255 / 255f, 195 / 255f, 1);
-        buttonLevelScreen.getLabel().setFontScale(GameConfiguration.fitText(buttonLevelScreen, -1, -1, 2));
+        buttonLevelScreen.getLabel().setFontScale(GameConfiguration.fitText(buttonLevelScreen, -1, -1));
         buttonLevelScreen.addListener(new InputListener(){
             @Override
             public boolean touchDown(InputEvent event, float x, float y, int pointer, int button) {

@@ -48,7 +48,7 @@ public class MapGenerator {
 
     private float oneWidth;
 
-    private GameScreen gameScreen;
+    private final GameScreen gameScreen;
 
     public MapGenerator(GameScreen gameScreen) {
         this.gameScreen = gameScreen;
@@ -325,34 +325,29 @@ public class MapGenerator {
      */
     public boolean checkTemp(int[][] tempPath, int row, int column) {
         try {
-            for(int i = 0; i < path1.length; i++) {
-                if(path1[i][0] == row && path1[i][1] == column) {
+            for (int[] ints : path1) {
+                if (ints[0] == row && ints[1] == column) {
                     return false;
                 }
             }
-        } catch (Exception e) {
-
-        }
+        } catch (Exception e) {}
 
 
-        for(int i = 0; i < middle.length; i++) {
-            if(middle[i][0] == row && middle[i][1] == column) {
+        for (int[] value : middle) {
+            if (value[0] == row && value[1] == column) {
                 return false;
             }
         }
 
-        for(int i = 0; i < tempPath.length; i++) {
-            if(tempPath[i][0] == row && tempPath[i][1] == column) {
+        for (int[] ints : tempPath) {
+            if (ints[0] == row && ints[1] == column) {
                 return false;
             }
         }
         if(row < 0 || column > size - 1 || column < 0 || row > size - 1) {
             return false;
         }
-        if(firstPath && row <= path1Min) {
-            return false;
-        }
-        return true;
+        return !firstPath || row > path1Min;
     }
 
     /**
@@ -484,8 +479,8 @@ public class MapGenerator {
             pathClear = false;
             return;
         }
-        for(int i = 0; i < randomPath.length; i++) {
-            if(randomPath[i][0] == row && randomPath[i][1] == column) {
+        for (int[] ints : randomPath) {
+            if (ints[0] == row && ints[1] == column) {
                 pathClear = false;
                 return;
             }
@@ -771,9 +766,10 @@ public class MapGenerator {
 
             boolean clear = true;
             int random = MathUtils.random(1, arraySize);
-            for(int j = 0; j < pairs.length; j++) {
-                if(random == pairs[j][0]) {
+            for (int[] pair : pairs) {
+                if (random == pair[0]) {
                     clear = false;
+                    break;
                 }
             }
             if(!clear) {
@@ -839,15 +835,15 @@ public class MapGenerator {
             return false;
         }
         // Check each other.
-        for(int i = 0; i < pairs.length; i++) {
-            int R3 = pairs[i][1];
-            int C3 = pairs[i][2];
-            int R4 = pairs[i][3];
-            int C4 = pairs[i][4];
-            if(R3 == 0 && C3 == 0 && R4 == 0 && C4 == 0) {
+        for (int[] pair : pairs) {
+            int R3 = pair[1];
+            int C3 = pair[2];
+            int R4 = pair[3];
+            int C4 = pair[4];
+            if (R3 == 0 && C3 == 0 && R4 == 0 && C4 == 0) {
                 continue;
             }
-            if((R1 == R3 && C1 == C3) || (R1 == R4 && C1 == C4) || (R2 == R3 && C2 == C3) || (R2 == R4 && C2 == C4)) {
+            if ((R1 == R3 && C1 == C3) || (R1 == R4 && C1 == C4) || (R2 == R3 && C2 == C3) || (R2 == R4 && C2 == C4)) {
                 return false;
             }
         }
