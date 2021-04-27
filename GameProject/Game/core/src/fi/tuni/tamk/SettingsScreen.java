@@ -42,7 +42,7 @@ public class SettingsScreen extends ScreenAdapter {
         this.main = main;
         camera = new OrthographicCamera();
         camera.setToOrtho(false, Main.viewPortWidth, Main.viewPortHeight);
-        //buttonPressSound = Sounds.buttonPressSound;
+        buttonPressSound = Sounds.buttonPressSound;
     }
 
     public SettingsScreen(Main main, PauseScreen pauseScreen, GameScreen gameScreen) {
@@ -66,12 +66,12 @@ public class SettingsScreen extends ScreenAdapter {
         buttonMenu.addListener(new InputListener(){
             @Override
             public boolean touchDown(InputEvent event, float x, float y, int pointer, int button) {
+                buttonPressSound.play();
                 return true;
             }
 
             @Override
             public void touchUp(InputEvent event, float x, float y, int pointer, int button) {
-                //buttonPressSound.play();
                 if(pauseScreen != null) {
                     pauseScreen.dispose();
                     gameScreen.dispose();
@@ -93,12 +93,12 @@ public class SettingsScreen extends ScreenAdapter {
         buttonInvert.addListener(new InputListener(){
             @Override
             public boolean touchDown(InputEvent event, float x, float y, int pointer, int button) {
+                buttonPressSound.play();
                 return true;
             }
 
             @Override
             public void touchUp(InputEvent event, float x, float y, int pointer, int button) {
-                //buttonPressSound.play();
                 GameConfiguration.invert();
                 setControlLocations();
             }
@@ -128,12 +128,12 @@ public class SettingsScreen extends ScreenAdapter {
             returnToGame.addListener(new InputListener(){
                 @Override
                 public boolean touchDown(InputEvent event, float x, float y, int pointer, int button) {
+                    buttonPressSound.play();
                     return true;
                 }
 
                 @Override
                 public void touchUp(InputEvent event, float x, float y, int pointer, int button) {
-                    //buttonPressSound.play();
                     dispose();
                     main.setScreen(pauseScreen);
                 }
@@ -164,7 +164,6 @@ public class SettingsScreen extends ScreenAdapter {
     public void dispose() {
         stage.dispose();
         camera = null;
-        //buttonPressSound.dispose();
     }
 
     public void setControlLocations() {

@@ -214,7 +214,7 @@ public class GameScreen extends ScreenAdapter {
         tutorialOn = GameConfiguration.tutorialOn;
         mySkin = Textures.mySkin;
         shadow = Textures.shadow;
-        //buttonPressSound = Sounds.buttonPressSound;
+        buttonPressSound = Sounds.buttonPressSound;
         activationSound = Sounds.activationSound;
         switchSound = Sounds.switchSound;
         connectingSound = Sounds.connectingSound;
@@ -374,12 +374,12 @@ public class GameScreen extends ScreenAdapter {
             buttonPause.addListener(new InputListener(){
                 @Override
                 public boolean touchDown(InputEvent event, float x, float y, int pointer, int button) {
+                    buttonPressSound.play();
                     return true;
                 }
 
                 @Override
                 public void touchUp(InputEvent event, float x, float y, int pointer, int button) {
-                    //buttonPressSound.play();
                     backgroundMusic.pause();
                     main.setScreen(new PauseScreen(main, gameScreen));
                 }

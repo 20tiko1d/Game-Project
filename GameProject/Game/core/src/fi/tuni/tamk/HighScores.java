@@ -46,7 +46,7 @@ public class HighScores extends ScreenAdapter {
         this.main = main;
         camera = new OrthographicCamera();
         camera.setToOrtho(false, Main.viewPortWidth, Main.viewPortHeight);
-        //buttonPressSound = Sounds.buttonPressSound;
+        buttonPressSound = Sounds.buttonPressSound;
     }
 
     @Override
@@ -63,12 +63,12 @@ public class HighScores extends ScreenAdapter {
         buttonMenu.addListener(new InputListener(){
             @Override
             public boolean touchDown(InputEvent event, float x, float y, int pointer, int button) {
+                buttonPressSound.play();
                 return true;
             }
 
             @Override
             public void touchUp(InputEvent event, float x, float y, int pointer, int button) {
-                //buttonPressSound.play();
                 dispose();
                 main.setScreen(new MenuScreen(main));
             }
@@ -82,12 +82,12 @@ public class HighScores extends ScreenAdapter {
         buttonLevels.addListener(new InputListener(){
             @Override
             public boolean touchDown(InputEvent event, float x, float y, int pointer, int button) {
+                buttonPressSound.play();
                 return true;
             }
 
             @Override
             public void touchUp(InputEvent event, float x, float y, int pointer, int button) {
-                //buttonPressSound.play();
                 if(!GameConfiguration.firstTime) {
                     dispose();
                     main.setScreen(new LevelScreen(main));
@@ -108,12 +108,12 @@ public class HighScores extends ScreenAdapter {
         buttonRename.addListener(new InputListener(){
             @Override
             public boolean touchDown(InputEvent event, float x, float y, int pointer, int button) {
+                buttonPressSound.play();
                 return true;
             }
 
             @Override
             public void touchUp(InputEvent event, float x, float y, int pointer, int button) {
-                //buttonPressSound.play();
                 dispose();
                 main.setScreen(new PlayerName(main, false));
             }

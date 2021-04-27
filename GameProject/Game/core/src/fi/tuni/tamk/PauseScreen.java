@@ -45,7 +45,7 @@ public class PauseScreen extends ScreenAdapter {
         }
         screenWidth = Gdx.graphics.getWidth();
         screenHeight = Gdx.graphics.getHeight();
-        //buttonPressSound = Sounds.buttonPressSound;
+        buttonPressSound = Sounds.buttonPressSound;
     }
 
     @Override
@@ -76,12 +76,12 @@ public class PauseScreen extends ScreenAdapter {
         buttonReturnToGame.addListener(new InputListener(){
             @Override
             public boolean touchDown(InputEvent event, float x, float y, int pointer, int button) {
+                buttonPressSound.play();
                 return true;
             }
 
             @Override
             public void touchUp(InputEvent event, float x, float y, int pointer, int button) {
-                //buttonPressSound.play();
                 dispose();
                 if(tutorial) {
                     GameConfiguration.tutorialOn = true;
@@ -97,12 +97,12 @@ public class PauseScreen extends ScreenAdapter {
         buttonSettings.addListener(new InputListener(){
             @Override
             public boolean touchDown(InputEvent event, float x, float y, int pointer, int button) {
+                buttonPressSound.play();
                 return true;
             }
 
             @Override
             public void touchUp(InputEvent event, float x, float y, int pointer, int button) {
-                //buttonPressSound.play();
                 main.setScreen(new SettingsScreen(main, pauseScreen, gameScreen));
             }
         });
@@ -114,12 +114,12 @@ public class PauseScreen extends ScreenAdapter {
         buttonLevels.addListener(new InputListener(){
             @Override
             public boolean touchDown(InputEvent event, float x, float y, int pointer, int button) {
+                buttonPressSound.play();
                 return true;
             }
 
             @Override
             public void touchUp(InputEvent event, float x, float y, int pointer, int button) {
-                //buttonPressSound.play();
                 if(!GameConfiguration.firstTime) {
                     gameScreen.dispose();
                     dispose();
@@ -135,12 +135,12 @@ public class PauseScreen extends ScreenAdapter {
         buttonPlayAgain.addListener(new InputListener(){
             @Override
             public boolean touchDown(InputEvent event, float x, float y, int pointer, int button) {
+                buttonPressSound.play();
                 return true;
             }
 
             @Override
             public void touchUp(InputEvent event, float x, float y, int pointer, int button) {
-                //buttonPressSound.play();
                 if(tutorial) {
                     GameConfiguration.tutorialOn = true;
                 }
@@ -157,12 +157,12 @@ public class PauseScreen extends ScreenAdapter {
         buttonMenu.addListener(new InputListener(){
             @Override
             public boolean touchDown(InputEvent event, float x, float y, int pointer, int button) {
+                buttonPressSound.play();
                 return true;
             }
 
             @Override
             public void touchUp(InputEvent event, float x, float y, int pointer, int button) {
-                //buttonPressSound.play();
                 gameScreen.dispose();
                 dispose();
                 main.setScreen(new MenuScreen(main));
@@ -193,7 +193,6 @@ public class PauseScreen extends ScreenAdapter {
     public void dispose() {
         stage.dispose();
         camera = null;
-        //buttonPressSound.dispose();
     }
 
 }

@@ -43,7 +43,7 @@ public class LevelScreen extends ScreenAdapter {
         batch = new SpriteBatch();
         screenWidth = Gdx.graphics.getWidth();
         screenHeight = Gdx.graphics.getHeight();
-        //buttonPressSound = Sounds.buttonPressSound;
+        buttonPressSound = Sounds.buttonPressSound;
     }
 
     @Override
@@ -63,12 +63,12 @@ public class LevelScreen extends ScreenAdapter {
         buttonEasy.addListener(new InputListener(){
             @Override
             public boolean touchDown(InputEvent event, float x, float y, int pointer, int button) {
+                buttonPressSound.play();
                 return true;
             }
 
             @Override
             public void touchUp(InputEvent event, float x, float y, int pointer, int button) {
-                //buttonPressSound.play();
                 GameConfiguration.gameLevel = 1;
                 createGame();
             }
@@ -86,12 +86,12 @@ public class LevelScreen extends ScreenAdapter {
         buttonMedium.addListener(new InputListener(){
             @Override
             public boolean touchDown(InputEvent event, float x, float y, int pointer, int button) {
+                buttonPressSound.play();
                 return true;
             }
 
             @Override
             public void touchUp(InputEvent event, float x, float y, int pointer, int button) {
-                //buttonPressSound.play();
                 GameConfiguration.gameLevel = 2;
                 createGame();
             }
@@ -109,12 +109,12 @@ public class LevelScreen extends ScreenAdapter {
         buttonHard.addListener(new InputListener(){
             @Override
             public boolean touchDown(InputEvent event, float x, float y, int pointer, int button) {
+                buttonPressSound.play();
                 return true;
             }
 
             @Override
             public void touchUp(InputEvent event, float x, float y, int pointer, int button) {
-                //buttonPressSound.play();
                 GameConfiguration.gameLevel = 3;
                 createGame();
             }
@@ -128,12 +128,12 @@ public class LevelScreen extends ScreenAdapter {
         buttonTutorial.addListener(new InputListener(){
             @Override
             public boolean touchDown(InputEvent event, float x, float y, int pointer, int button) {
+                buttonPressSound.play();
                 return true;
             }
 
             @Override
             public void touchUp(InputEvent event, float x, float y, int pointer, int button) {
-                //buttonPressSound.play();
                 GameConfiguration.tutorialOn = true;
                 GameConfiguration.gameLevel = 1;
                 createGame();
@@ -148,12 +148,12 @@ public class LevelScreen extends ScreenAdapter {
         buttonMenu.addListener(new InputListener(){
             @Override
             public boolean touchDown(InputEvent event, float x, float y, int pointer, int button) {
+                buttonPressSound.play();
                 return true;
             }
 
             @Override
             public void touchUp(InputEvent event, float x, float y, int pointer, int button) {
-                //buttonPressSound.play();
                 dispose();
                 main.setScreen(new MenuScreen(main));
             }
@@ -168,12 +168,12 @@ public class LevelScreen extends ScreenAdapter {
         buttonStore.addListener(new InputListener(){
             @Override
             public boolean touchDown(InputEvent event, float x, float y, int pointer, int button) {
+                buttonPressSound.play();
                 return true;
             }
 
             @Override
             public void touchUp(InputEvent event, float x, float y, int pointer, int button) {
-                //buttonPressSound.play();
                 dispose();
                 main.setScreen(new Themes(main));
             }
@@ -188,12 +188,12 @@ public class LevelScreen extends ScreenAdapter {
         buttonHighScores.addListener(new InputListener(){
             @Override
             public boolean touchDown(InputEvent event, float x, float y, int pointer, int button) {
+                buttonPressSound.play();
                 return true;
             }
 
             @Override
             public void touchUp(InputEvent event, float x, float y, int pointer, int button) {
-                //buttonPressSound.play();
                 dispose();
                 main.setScreen(new HighScores(main));
             }
@@ -227,7 +227,6 @@ public class LevelScreen extends ScreenAdapter {
     public void dispose () {
         stage.dispose();
         rect = null;
-        //buttonPressSound.dispose();
     }
 
     /**

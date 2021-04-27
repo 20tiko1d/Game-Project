@@ -48,7 +48,7 @@ public class MenuScreen extends ScreenAdapter {
         camera = new OrthographicCamera();
         camera.setToOrtho(false, Main.viewPortWidth, Main.viewPortHeight);
         batch = new SpriteBatch();
-        //buttonPressSound = Sounds.buttonPressSound;
+        buttonPressSound = Sounds.buttonPressSound;
     }
 
     @Override
@@ -116,12 +116,12 @@ public class MenuScreen extends ScreenAdapter {
         buttonPlay.addListener(new InputListener(){
             @Override
             public boolean touchDown(InputEvent event, float x, float y, int pointer, int button) {
+                buttonPressSound.play();
                 return true;
             }
 
             @Override
             public void touchUp(InputEvent event, float x, float y, int pointer, int button) {
-                //buttonPressSound.play();
                 if(GameConfiguration.firstTime) {
                     GameConfiguration.tutorialOn = true;
                     GameConfiguration.gameLevel = 1;
@@ -147,12 +147,12 @@ public class MenuScreen extends ScreenAdapter {
         buttonSettings.addListener(new InputListener(){
             @Override
             public boolean touchDown(InputEvent event, float x, float y, int pointer, int button) {
+                buttonPressSound.play();
                 return true;
             }
 
             @Override
             public void touchUp(InputEvent event, float x, float y, int pointer, int button) {
-                //buttonPressSound.play();
                 dispose();
                 main.setScreen(new SettingsScreen(main));
             }
@@ -167,12 +167,12 @@ public class MenuScreen extends ScreenAdapter {
         buttonHighScores.addListener(new InputListener(){
             @Override
             public boolean touchDown(InputEvent event, float x, float y, int pointer, int button) {
+                buttonPressSound.play();
                 return true;
             }
 
             @Override
             public void touchUp(InputEvent event, float x, float y, int pointer, int button) {
-                //buttonPressSound.play();
                 dispose();
                 main.setScreen(new HighScores(main));
             }
@@ -204,7 +204,6 @@ public class MenuScreen extends ScreenAdapter {
     public void dispose() {
         stage.dispose();
         camera = null;
-        //buttonPressSound.dispose();
     }
 
 

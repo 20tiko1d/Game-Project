@@ -35,7 +35,7 @@ public class AfterTutorialScreen extends ScreenAdapter {
         camera = new OrthographicCamera();
         camera.setToOrtho(false, Main.viewPortWidth, Main.viewPortHeight);
 
-        //buttonPressSound = Sounds.buttonPressSound;
+        buttonPressSound = Sounds.buttonPressSound;
     }
 
     @Override
@@ -55,12 +55,12 @@ public class AfterTutorialScreen extends ScreenAdapter {
         buttonPlayAgain.addListener(new InputListener(){
             @Override
             public boolean touchDown(InputEvent event, float x, float y, int pointer, int button) {
+                buttonPressSound.play();
                 return true;
             }
 
             @Override
             public void touchUp(InputEvent event, float x, float y, int pointer, int button) {
-                //buttonPressSound.play();
                 GameConfiguration.tutorialOn = true;
                 GameConfiguration.gameLevel = 1;
                 GameScreen gameScreen = GameConfiguration.createGame(main);
@@ -77,12 +77,12 @@ public class AfterTutorialScreen extends ScreenAdapter {
         buttonLevelScreen.addListener(new InputListener(){
             @Override
             public boolean touchDown(InputEvent event, float x, float y, int pointer, int button) {
+                buttonPressSound.play();
                 return true;
             }
 
             @Override
             public void touchUp(InputEvent event, float x, float y, int pointer, int button) {
-                //buttonPressSound.play();
                 dispose();
                 main.setScreen(new LevelScreen(main));
             }
@@ -120,6 +120,5 @@ public class AfterTutorialScreen extends ScreenAdapter {
         levelCompletedMusic.stop();
         stage.dispose();
         camera = null;
-        //buttonPressSound.dispose();
     }
 }

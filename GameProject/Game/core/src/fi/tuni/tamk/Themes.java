@@ -59,7 +59,7 @@ public class Themes extends ScreenAdapter {
         this.main = main;
         camera = new OrthographicCamera();
         camera.setToOrtho(false, Main.viewPortWidth, Main.viewPortHeight);
-        //buttonPressSound = Sounds.buttonPressSound;
+        buttonPressSound = Sounds.buttonPressSound;
     }
 
     @Override
@@ -79,12 +79,12 @@ public class Themes extends ScreenAdapter {
         buttonMenu.addListener(new InputListener(){
             @Override
             public boolean touchDown(InputEvent event, float x, float y, int pointer, int button) {
+                buttonPressSound.play();
                 return true;
             }
 
             @Override
             public void touchUp(InputEvent event, float x, float y, int pointer, int button) {
-                //buttonPressSound.play();
                 dispose();
                 main.setScreen(new MenuScreen(main));
             }
@@ -99,12 +99,12 @@ public class Themes extends ScreenAdapter {
         buttonLevels.addListener(new InputListener(){
             @Override
             public boolean touchDown(InputEvent event, float x, float y, int pointer, int button) {
+                buttonPressSound.play();
                 return true;
             }
 
             @Override
             public void touchUp(InputEvent event, float x, float y, int pointer, int button) {
-                //buttonPressSound.play();
                 dispose();
                 main.setScreen(new LevelScreen(main));
             }
@@ -122,12 +122,12 @@ public class Themes extends ScreenAdapter {
         buttonThemeSand.addListener(new InputListener(){
             @Override
             public boolean touchDown(InputEvent event, float x, float y, int pointer, int button) {
+                buttonPressSound.play();
                 return true;
             }
 
             @Override
             public void touchUp(InputEvent event, float x, float y, int pointer, int button) {
-                //buttonPressSound.play();
                 GameConfiguration.save("theme", "sand");
                 GameConfiguration.theme = "sand";
                 checkMarkTheme.setY(themeMarkSandY);
@@ -142,12 +142,12 @@ public class Themes extends ScreenAdapter {
         buttonThemeBush.addListener(new InputListener(){
             @Override
             public boolean touchDown(InputEvent event, float x, float y, int pointer, int button) {
+                buttonPressSound.play();
                 return true;
             }
 
             @Override
             public void touchUp(InputEvent event, float x, float y, int pointer, int button) {
-                //buttonPressSound.play();
                 GameConfiguration.save("theme", "bush");
                 GameConfiguration.theme = "bush";
                 checkMarkTheme.setY(themeMarkBushY);
@@ -166,6 +166,7 @@ public class Themes extends ScreenAdapter {
         buttonGhost.addListener(new InputListener() {
             @Override
             public boolean touchDown(InputEvent event, float x, float y, int pointer, int button) {
+                buttonPressSound.play();
                 return true;
             }
 
@@ -184,6 +185,7 @@ public class Themes extends ScreenAdapter {
         buttonBlueDude.addListener(new InputListener() {
             @Override
             public boolean touchDown(InputEvent event, float x, float y, int pointer, int button) {
+                buttonPressSound.play();
                 return true;
             }
 
@@ -202,6 +204,7 @@ public class Themes extends ScreenAdapter {
         buttonPig.addListener(new InputListener() {
             @Override
             public boolean touchDown(InputEvent event, float x, float y, int pointer, int button) {
+                buttonPressSound.play();
                 return true;
             }
 
@@ -275,7 +278,6 @@ public class Themes extends ScreenAdapter {
     public void dispose() {
         stage.dispose();
         camera = null;
-        //buttonPressSound.dispose();
     }
 
     public String getMarkedText(String str) {
