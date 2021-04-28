@@ -31,6 +31,9 @@ public final class Textures {
     // Game background "mist"
     public static Texture background = new Texture("textures/backgrounds/fogBackground.png");
 
+    // Tutorial guidance background
+    public static Texture tutorialTextBackground = new Texture("textures/backgrounds/tutorialTextBackground.png");
+
     // Theme buttons
     public static Texture themeBush = new Texture("textures/themeScreenTextures/themeBush.png");
     public static Texture themeSand = new Texture("textures/themeScreenTextures/themeSand.png");

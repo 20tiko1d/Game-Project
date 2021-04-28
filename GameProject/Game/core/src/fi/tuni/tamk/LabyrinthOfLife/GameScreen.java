@@ -184,11 +184,6 @@ public class GameScreen extends ScreenAdapter {
     private final Sound switchSound;
     private final Sound connectingSound;
     private final Sound wrongValidationSound;
-    private Sound walkSound;
-    private Sound sprintSound;
-
-    //private boolean walkSoundOn = false;
-    //private boolean sprintSoundOn = false;
 
     public GameScreen(Main main, World world) {
         this.main = main;
@@ -217,8 +212,6 @@ public class GameScreen extends ScreenAdapter {
         switchSound = Sounds.switchSound;
         connectingSound = Sounds.connectingSound;
         wrongValidationSound = Sounds.wrongValidationSound;
-        //walkSound = Sounds.walkSound;
-        //sprintSound = Sounds.sprintSound;
 
         calculateCircle();
 
@@ -1043,7 +1036,7 @@ public class GameScreen extends ScreenAdapter {
         buttonActivate.setDisabled(true);
         touchpad.setVisible(false);
 
-        tutorialTextBackground = new Image(new Texture("textures/random/tutorialTextBackground.png"));
+        tutorialTextBackground = new Image(Textures.tutorialTextBackground);
         tutorialTextBackground.setSize(screenWidth / 2f, screenHeight / 2f);
         tutorialTextBackground.setPosition(screenWidth / 2f - tutorialTextBackground.getWidth() / 2f,
                 screenHeight * 4 / 5 - tutorialTextBackground.getHeight());
@@ -1078,7 +1071,7 @@ public class GameScreen extends ScreenAdapter {
                 tutorialTextBackground.getY());
         tutorialLabel.setWrap(true);
 
-        objectiveBackground = new Image(new Texture("textures/random/tutorialTextBackground.png"));
+        objectiveBackground = new Image(Textures.tutorialTextBackground);
         objectiveBackground.setSize(screenWidth / 4, screenHeight / 4);
         objectiveBackground.setPosition(0, screenHeight / 2);
         objectiveBackground.setVisible(false);
