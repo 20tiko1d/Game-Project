@@ -118,7 +118,7 @@ public class PlayerName extends ScreenAdapter {
             stage.addActor(buttonCancel);
         }
 
-        //stage.addActor(boxBackground);
+        stage.addActor(boxBackground);
         stage.addActor(label);
         stage.addActor(textField);
         stage.addActor(errorLabel);
