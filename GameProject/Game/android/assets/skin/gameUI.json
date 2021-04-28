@@ -1,33 +1,33 @@
 {
-com.badlogic.gdx.graphics.g2d.BitmapFont: {
-	arial-fontLarge: {
-		file: largeFont4.fnt
+"com.badlogic.gdx.graphics.g2d.BitmapFont": {
+	"arial-fontLarge": {
+		"file": "largeFont4.fnt"
+	},
+	"arial-fontMedium": {
+		"file": "largeFont3.fnt"
+	},
+	"arial-fontSmall": {
+		"file": "arial-test.fnt"
+	},
+	"pixel100": {
+		"file": "pixel100.fnt"
+	},
+	"pixel120": {
+		"file": "pixel120.fnt"
+	},
+	"pixel48": {
+		"file": "pixel48.fnt"
+	},
+	"pixel50": {
+		"file": "pixel50.fnt"
+	},
+	"pixel72": {
+		"file": "pixel72.fnt"
+	},
+	"pixel722": {
+		"file": "pixel72.2.fnt"
 	}
-	arial-fontMedium: {
-		file: largeFont3.fnt
-	}
-	arial-fontSmall: {
-		file: arial-test.fnt
-	}
-	pixel100: {
-		file: pixel100.fnt
-	}
-	pixel120: {
-		file: pixel120.fnt
-	}
-	pixel48: {
-		file: pixel48.fnt
-	}
-	pixel50: {
-		file: pixel50.fnt
-	}
-	pixel72: {
-		file: pixel72.fnt
-	}
-	pixel722: {
-		file: pixel72.2.fnt
-	}
-}
+},
 com.badlogic.gdx.graphics.Color: {
 	black: {
 		r: 0
@@ -60,77 +60,77 @@ com.badlogic.gdx.scenes.scene2d.ui.Skin$TintedDrawable: {
 		color: {
 			r: 0.48342222
 			g: 0.76367503
-			b: 0.99333334
-			a: 1
+			"b": 0.99333334
+			"a": 1
 		}
 	}
-	black: {
-		name: white
-		color: {
-			r: 0
-			g: 0
-			b: 0
-			a: 1
+	"black": {
+		"name": "white",
+		"color": {
+			"r": 0,
+			"g": 0,
+			"b": 0,
+			"a": 1
 		}
 	}
 }
-com.badlogic.gdx.scenes.scene2d.ui.Button$ButtonStyle: {
-	default: {
-		up: buttonUp
-		down: buttonDown
+"com.badlogic.gdx.scenes.scene2d.ui.Button$ButtonStyle": {
+	"default": {
+		"up": "buttonUp",
+		"down": "buttonDown"
 	}
 }
-com.badlogic.gdx.scenes.scene2d.ui.ImageTextButton$ImageTextButtonStyle: {
-	default: {
-		font: arial-fontSmall
+"com.badlogic.gdx.scenes.scene2d.ui.ImageTextButton$ImageTextButtonStyle": {
+	"default": {
+		"font": "arial-fontSmall"
 	}
-}
-com.badlogic.gdx.scenes.scene2d.ui.Label$LabelStyle: {
-	default: {
-		font: arial-fontSmall
+},
+"com.badlogic.gdx.scenes.scene2d.ui.Label$LabelStyle": {
+	"default": {
+		"font": "arial-fontSmall"
+	},
+	"big": {
+		"font": "arial-fontLarge"
+	},
+	"pixel48": {
+		"font": "pixel48"
+	},
+	"pixel72": {
+		"font": "pixel72"
+	},
+	"pixel50": {
+		"font": "pixel50"
+	},
+	"tutorialLabel": {
+		"font": "arial-fontSmall",
+		"fontColor": "black",
+		"background": "buttonDown"
+	},
+	"tutorialTest": {
+		"font": "arial-fontSmall",
+		"fontColor": "black",
+		"background": "textBox"
+	},
+	"tutorialTest2": {
+		"font": "arial-fontSmall",
+		"fontColor": "black",
+		"background": "textBox2"
+	},
+	"objectLabel": {
+		"font": "arial-fontSmall",
+		"fontColor": "black",
+		"background": "textBox3"
+	},
+	"pixel120": {
+		"font": "pixel120"
+	},
+	"pixel100": {
+		"font": "pixel100"
+	},
+	"pixel722": {
+		"font": "pixel722"
 	}
-	big: {
-		font: arial-fontLarge
-	}
-	pixel48: {
-		font: pixel48
-	}
-	pixel72: {
-		font: pixel72
-	}
-	pixel50: {
-		font: pixel50
-	}
-	tutorialLabel: {
-		font: arial-fontSmall
-		fontColor: black
-		background: buttonDown
-	}
-	tutorialTest: {
-		font: arial-fontSmall
-		fontColor: black
-		background: textBox
-	}
-	tutorialTest2: {
-		font: arial-fontSmall
-		fontColor: black
-		background: textBox2
-	}
-	objectLabel: {
-		font: arial-fontSmall
-		fontColor: black
-		background: textBox3
-	}
-	pixel120: {
-		font: pixel120
-	}
-	pixel100: {
-		font: pixel100
-	}
-	pixel722: {
-		font: pixel722
-	}
-}
+},
 com.badlogic.gdx.scenes.scene2d.ui.List$ListStyle: {
 	default: {
 		font: arial-fontSmall

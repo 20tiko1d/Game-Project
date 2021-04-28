@@ -93,12 +93,6 @@ public class PlayerName extends ScreenAdapter {
             }
         });
 
-        stage.addActor(boxBackground);
-        stage.addActor(label);
-        stage.addActor(textField);
-        stage.addActor(errorLabel);
-        stage.addActor(buttonSave);
-
         if(firstTime) {
             buttonSave.setPosition(screenWidth / 2f - buttonSave.getWidth() / 2f, buttonSave.getY());
             textField.setText("");
@@ -124,7 +118,11 @@ public class PlayerName extends ScreenAdapter {
             stage.addActor(buttonCancel);
         }
 
-
+        //stage.addActor(boxBackground);
+        stage.addActor(label);
+        stage.addActor(textField);
+        stage.addActor(errorLabel);
+        stage.addActor(buttonSave);
 
         Gdx.input.setInputProcessor(stage);
     }

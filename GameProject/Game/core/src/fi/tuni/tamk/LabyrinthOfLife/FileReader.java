@@ -8,6 +8,8 @@ import org.w3c.dom.Element;
 import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
 import java.io.InputStream;
+import java.util.Locale;
+
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
 
@@ -55,14 +57,12 @@ public class FileReader {
             }
 
 
-        } catch(Exception e) {
-            e.printStackTrace();
-        }
+        } catch(Exception e) {}
         return array;
     }
 
     public static String getFileName() {
-        if(GameConfiguration.open("language").equals("fi_FI")) {
+        if(GameConfiguration.open("language").equals("fi_FI") || new Locale("fi", "FI").equals(Locale.getDefault())) {
             return "Parit.xml";
         } else {
             return "Pairs.xml";
