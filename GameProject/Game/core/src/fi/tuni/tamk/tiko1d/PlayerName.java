@@ -58,7 +58,7 @@ public class PlayerName extends ScreenAdapter {
         label.setText(GameConfiguration.getText("giveName"));
         label.setColor(Color.BLACK);
 
-        textField = new TextField(GameConfiguration.open("name"), mySkin);
+        textField = new TextField(GameConfiguration.open("name"), mySkin, "textFieldPixel");
         textField.setSize(label.getWidth(), label.getHeight());
         textField.setPosition(label.getX(), label.getY() - textField.getHeight());
 
@@ -106,7 +106,7 @@ public class PlayerName extends ScreenAdapter {
             TextButton buttonCancel = new TextButton("Cancel", mySkin,"pixel72");
             buttonCancel.setSize(buttonSave.getWidth(), buttonSave.getHeight());
             buttonCancel.setPosition(boxBackground.getX(), boxBackground.getY());
-            buttonCancel.setColor(Color.GREEN);
+            buttonCancel.setColor(Color.RED);
             buttonCancel.getLabel().setFontScale(GameConfiguration.fitText(buttonCancel, -1, -1));
             buttonCancel.addListener(new InputListener(){
                 @Override

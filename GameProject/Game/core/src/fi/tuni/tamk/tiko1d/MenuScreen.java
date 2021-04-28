@@ -192,7 +192,7 @@ public class MenuScreen extends ScreenAdapter {
         stage.addActor(buttonPlay);
         stage.addActor(buttonSettings);
         stage.addActor(buttonHighScores);
-        //stage.addActor(buttonTest);
+        stage.addActor(buttonTest);
         Gdx.input.setInputProcessor(stage);
     }
 

@@ -89,6 +89,11 @@ public class SettingsScreen extends ScreenAdapter {
         controlsBackground.setSize(screenWidth / 3, screenWidth / 6);
         controlsBackground.setPosition(screenWidth / 20, screenWidth / 20);
 
+        //Label controlsBackground = new Label("", mySkin, "default");
+        //controlsBackground.setSize(screenWidth / 3, screenWidth / 6);
+        //controlsBackground.setPosition(screenWidth / 20, screenWidth / 20);
+        //controlsBackground.setColor(200 / 255f, 200 / 255f, 200 / 255f, 1);
+
         Button buttonInvert = new TextButton(GameConfiguration.getText("switchButton"),mySkin,"default");
         buttonInvert.setSize(screenWidth / 6f,screenWidth / 12f);
         buttonInvert.setPosition(controlsBackground.getX() + controlsBackground.getWidth() / 2 -
@@ -149,6 +154,7 @@ public class SettingsScreen extends ScreenAdapter {
         musicVolumeLabel.setSize(screenWidth / 2, screenWidth / 10);
         musicVolumeLabel.setPosition(screenWidth / 2f, screenHeight / 2f);
         musicVolumeLabel.setAlignment(Align.center);
+        musicVolumeLabel.setColor(Color.BLACK);
         try {
             changeMusicVolume(Integer.parseInt(GameConfiguration.open("musicVolume")));
         } catch (Exception e) {
@@ -205,7 +211,7 @@ public class SettingsScreen extends ScreenAdapter {
     @Override
     public void render(float deltaTime) {
         main.batch.setProjectionMatrix(camera.combined);
-        Gdx.gl.glClearColor(56 / 255f, 64 / 255f, 61 / 255f, 1);
+        Gdx.gl.glClearColor(56 / 255f, 142 / 255f, 142 / 255f, 1);
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
         stage.draw();
         stage.act();

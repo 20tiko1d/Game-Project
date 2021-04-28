@@ -96,7 +96,7 @@ public class HighScores extends ScreenAdapter {
             }
         });
 
-        Label nameLabel = new Label("    " + GameConfiguration.open("name"), mySkin, "objectLabel");
+        Label nameLabel = new Label("    " + GameConfiguration.open("name"), mySkin, "tutorialTest");
         nameLabel.setSize(screenWidth / 2f, screenHeight / 7f);
         nameLabel.setPosition(screenWidth / 2f - nameLabel.getWidth() / 2f, screenHeight - nameLabel.getHeight());
 
@@ -104,7 +104,7 @@ public class HighScores extends ScreenAdapter {
         buttonRename.setSize(nameLabel.getHeight(),nameLabel.getHeight());
         buttonRename.setPosition(nameLabel.getX() + nameLabel.getWidth() - buttonRename.getWidth(),
                 nameLabel.getY());
-        buttonRename.setColor(0 / 255f, 255 / 255f, 195 / 255f, 1);
+        buttonRename.setColor(Color.GREEN);
         buttonRename.getLabel().setFontScale(GameConfiguration.fitText(buttonRename, -1, -1));
         buttonRename.addListener(new InputListener(){
             @Override
@@ -146,6 +146,7 @@ public class HighScores extends ScreenAdapter {
         Label easyBackgroundLabel = new Label("", mySkin, "tutorialTest2");
         easyBackgroundLabel.setSize(backgroundLabel.getWidth() / 3, backgroundLabel.getHeight() * 8 / 10f);
         easyBackgroundLabel.setPosition(backgroundLabel.getX(), 0);
+        easyBackgroundLabel.setColor(Color.WHITE);
 
         Label mediumBackgroundLabel = new Label("", mySkin, "tutorialTest2");
         mediumBackgroundLabel.setSize(easyBackgroundLabel.getWidth(), easyBackgroundLabel.getHeight());
@@ -181,7 +182,7 @@ public class HighScores extends ScreenAdapter {
     @Override
     public void render(float deltaTime) {
         main.batch.setProjectionMatrix(camera.combined);
-        Gdx.gl.glClearColor(0, 100 / 255f, 0, 1);
+        Gdx.gl.glClearColor(56 / 255f, 142 / 255f, 142 / 255f, 1);
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
         stage.draw();
         stage.act();

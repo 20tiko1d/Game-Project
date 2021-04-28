@@ -53,22 +53,18 @@ public class PauseScreen extends ScreenAdapter {
     public void show() {
         stage = new Stage(new ScreenViewport());
 
-        float multiplier = 1;
-        if(Main.isPortrait) {
-            multiplier = 1.4f;
-        }
-
         Skin mySkin = Textures.mySkin;
 
         float width = Gdx.graphics.getWidth() / 3f;
-        float height = Gdx.graphics.getHeight() / (6f * multiplier);
+        float height = Gdx.graphics.getHeight() / 6f;
         float locX = Gdx.graphics.getWidth() / 2f - width / 2f;
         float startY = Gdx.graphics.getHeight() * 4 / 6f;
         float buttonsGap = height / 6f;
 
         Label pauseLabel = new Label(GameConfiguration.getText("gamePaused").toUpperCase(), mySkin, "pixel100");
-        pauseLabel.setBounds(locX, screenHeight - height, width, height);
+        pauseLabel.setBounds(locX, screenHeight - height * 1.5f, width, height);
         pauseLabel.setAlignment(Align.center);
+        pauseLabel.setColor(Color.BLACK);
 
         final Drawable drawable = new TextureRegionDrawable(new TextureRegion(Textures.playButtonTexture));
         final Button buttonReturnToGame = new Button(drawable);
@@ -185,7 +181,7 @@ public class PauseScreen extends ScreenAdapter {
     @Override
     public void render(float deltaTime) {
         main.batch.setProjectionMatrix(camera.combined);
-        Gdx.gl.glClearColor(87 / 255f, 92 / 255f, 95 / 255f, 1);
+        Gdx.gl.glClearColor(56 / 255f, 142 / 255f, 142 / 255f, 1);
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
         stage.draw();
         stage.act();

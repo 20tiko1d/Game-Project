@@ -37,7 +37,7 @@ import com.badlogic.gdx.utils.Array;
 import com.badlogic.gdx.utils.viewport.ScreenViewport;
 
 /**
- * The class is responsible for running the actual game play.
+ * The class is responsible for running the game level and tutorial.
  */
 public class GameScreen extends ScreenAdapter {
 
@@ -186,7 +186,7 @@ public class GameScreen extends ScreenAdapter {
     private Sound walkSound;
     private Sound sprintSound;
 
-   // private boolean walkSoundOn = false;
+    //private boolean walkSoundOn = false;
     //private boolean sprintSoundOn = false;
 
     public GameScreen(Main main, World world) {
@@ -249,17 +249,17 @@ public class GameScreen extends ScreenAdapter {
         pairLabelBackground.setBounds(screenWidth / 4f, pairLabel.getY(),
                 screenWidth / 2f, pairLabel.getHeight());
 
-        scoreLabel = new Label(scoreString + ": " + score, mySkin, "pixel48");
+        scoreLabel = new Label(scoreString + ": " + score, mySkin, "pixel72");
         scoreLabel.setSize(side1Image.getWidth() * 4 / 10f, screenHeight / 10f);
         scoreLabel.setPosition(screenWidth / 100f, screenHeight - scoreLabel.getHeight());
         scoreLabel.setFontScale(0.7f);
         scoreLabel.setColor(Color.BLACK);
 
-        scoreChangeLabel = new Label("", mySkin, "pixel48");
+        scoreChangeLabel = new Label("", mySkin, "pixel72");
         scoreChangeLabel.setBounds(scoreLabel.getX() + scoreLabel.getWidth() * 1.5f, scoreLabel.getY(),
                 scoreLabel.getWidth(), scoreLabel.getHeight());
         scoreChangeLabel.setFontScale(0.7f);
-        objectLabel = new Label("", mySkin, "pixel50");
+        objectLabel = new Label("", mySkin, "pixel722");
         objectLabel.setBounds(scoreLabel.getX(), scoreLabel.getY() - scoreLabel.getHeight(),
                 scoreLabel.getWidth(), scoreLabel.getHeight());
         objectLabel.setFontScale(0.4f);
@@ -1250,25 +1250,4 @@ public class GameScreen extends ScreenAdapter {
         int y = wholeBackground.getHeight() / 2 - height / 2;
         background = new TextureRegion(wholeBackground, x, y, width, height);
     }
-
-    /*
-    public void handleMovingSounds() {
-        if(boost) {
-            if(walkSoundOn) {
-                walkSound.stop();
-            }
-            if(!sprintSoundOn) {
-                sprintSound.setLooping(100000, true);
-                sprintSound.play();
-            }
-        } else {
-            if(sprintSoundOn) {
-                sprintSound.stop();
-            }
-            if(!walkSoundOn) {
-                walkSound.setLooping(100000, true);
-                walkSound.play();
-            }
-        }
-    }*/
 }

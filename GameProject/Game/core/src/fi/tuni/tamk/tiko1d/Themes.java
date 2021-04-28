@@ -6,6 +6,8 @@ import com.badlogic.gdx.audio.Sound;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
+import com.badlogic.gdx.graphics.Pixmap;
+import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.InputListener;
 import com.badlogic.gdx.scenes.scene2d.Stage;
@@ -92,9 +94,12 @@ public class Themes extends ScreenAdapter {
             }
         });
 
+        Color labelColor = new Color(224 / 255f, 238 / 255f, 238 / 255f, 1);
+
         Label themeLabel = new Label("", mySkin, "tutorialTest2");
         themeLabel.setSize(screenWidth / 3f, screenHeight * 3 / 4f);
-        themeLabel.setPosition(screenWidth / 6f, 0);
+        themeLabel.setPosition(screenWidth / 7f, screenHeight / 2 - themeLabel.getHeight() / 2);
+        themeLabel.setColor(labelColor);
 
         Drawable sandThemeDrawable = new TextureRegionDrawable(Textures.themeSand);
         ImageButton buttonThemeSand = new ImageButton(sandThemeDrawable);
@@ -137,8 +142,9 @@ public class Themes extends ScreenAdapter {
         });
 
         Label playerLabel = new Label("", mySkin, "tutorialTest2");
-        playerLabel.setSize(screenWidth / 3f, screenHeight * 3 / 4f);
-        playerLabel.setPosition(screenWidth / 2f, 0);
+        playerLabel.setSize(themeLabel.getWidth(), themeLabel.getHeight());
+        playerLabel.setPosition(screenWidth * 6 / 7 - playerLabel.getWidth(), themeLabel.getY());
+        playerLabel.setColor(labelColor);
 
         Drawable ghostDrawable = new TextureRegionDrawable(Textures.playerGhost);
         ImageButton buttonGhost = new ImageButton(ghostDrawable);
@@ -250,7 +256,7 @@ public class Themes extends ScreenAdapter {
     @Override
     public void render(float deltaTime) {
         main.batch.setProjectionMatrix(camera.combined);
-        Gdx.gl.glClearColor(0, 100 / 255f, 0, 1);
+        Gdx.gl.glClearColor(56 / 255f, 142 / 255f, 142 / 255f, 1);
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
         stage.draw();
         stage.act();

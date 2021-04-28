@@ -26,6 +26,9 @@ public class AfterGameScreen extends ScreenAdapter {
 
     private final float score;
 
+    private final float screenWidth;
+    private final float screenHeight;
+
     private final Sound buttonPressSound;
     private Music levelCompletedMusic;
 
@@ -37,7 +40,10 @@ public class AfterGameScreen extends ScreenAdapter {
         camera = new OrthographicCamera();
         camera.setToOrtho(false, Main.viewPortWidth, Main.viewPortHeight);
 
-        GameConfiguration.sendHighScores((int) (score * 100));
+        screenWidth = Gdx.graphics.getWidth();
+        screenHeight = Gdx.graphics.getHeight();
+
+        //GameConfiguration.sendHighScores((int) (score * 100));
         //GameConfiguration.getHighScores(GameConfiguration.gameLevel);
     }
 
@@ -51,8 +57,8 @@ public class AfterGameScreen extends ScreenAdapter {
         Skin mySkin = Textures.mySkin;
 
         TextButton buttonMenu = new TextButton(GameConfiguration.getText("menu"), mySkin,"pixel72");
-        buttonMenu.setSize(Gdx.graphics.getWidth() / 10f,Gdx.graphics.getWidth() / 10f);
-        buttonMenu.setPosition(0,Gdx.graphics.getHeight() - Gdx.graphics.getWidth() / 10f);
+        buttonMenu.setSize(screenWidth / 10f,screenWidth / 10f);
+        buttonMenu.setPosition(0,screenHeight - screenWidth / 10f);
         buttonMenu.setColor(Color.YELLOW);
         buttonMenu.getLabel().setFontScale(GameConfiguration.fitText(buttonMenu, - 1, -1));
         buttonMenu.addListener(new InputListener(){
@@ -70,8 +76,8 @@ public class AfterGameScreen extends ScreenAdapter {
         });
 
         TextButton buttonPlayAgain = new TextButton(GameConfiguration.getText("playAgain"), mySkin,"pixel72");
-        buttonPlayAgain.setSize(Gdx.graphics.getWidth() / 5f,Gdx.graphics.getWidth() / 8f);
-        buttonPlayAgain.setPosition(Gdx.graphics.getWidth() / 2f + 30,Gdx.graphics.getHeight() / 3f);
+        buttonPlayAgain.setSize(screenWidth / 5f,screenWidth / 8f);
+        buttonPlayAgain.setPosition(screenWidth / 2f + 30,screenHeight / 3f);
         buttonPlayAgain.setColor(Color.GREEN);
         buttonPlayAgain.getLabel().setFontScale(GameConfiguration.fitText(buttonPlayAgain, - 1,-1));
         buttonPlayAgain.addListener(new InputListener(){
@@ -90,8 +96,8 @@ public class AfterGameScreen extends ScreenAdapter {
         });
 
         TextButton buttonLevelScreen = new TextButton(GameConfiguration.getText("levels"), mySkin,"pixel72");
-        buttonLevelScreen.setSize(Gdx.graphics.getWidth() / 5f,Gdx.graphics.getWidth() / 8f);
-        buttonLevelScreen.setPosition(Gdx.graphics.getWidth() / 2f - buttonLevelScreen.getWidth() - 30,Gdx.graphics.getHeight() / 3f);
+        buttonLevelScreen.setSize(screenWidth / 5f,screenWidth / 8f);
+        buttonLevelScreen.setPosition(screenWidth / 2f - buttonLevelScreen.getWidth() - 30,screenHeight / 3f);
         buttonLevelScreen.getLabel().setFontScale(GameConfiguration.fitText(buttonLevelScreen, - 1, -1));
         buttonLevelScreen.addListener(new InputListener(){
             @Override
@@ -108,9 +114,9 @@ public class AfterGameScreen extends ScreenAdapter {
         });
 
         TextButton storeButton = new TextButton(GameConfiguration.getText("themes"),mySkin,"pixel72");
-        storeButton.setSize(Gdx.graphics.getWidth() / 10f,Gdx.graphics.getWidth() / 10f);
-        storeButton.setPosition(Gdx.graphics.getWidth() - storeButton.getWidth(),
-                Gdx.graphics.getHeight() - Gdx.graphics.getWidth() / 10f);
+        storeButton.setSize(screenWidth / 10f,screenWidth / 10f);
+        storeButton.setPosition(screenWidth - storeButton.getWidth(),
+                screenHeight - screenWidth / 10f);
         storeButton.setColor(56 / 255f, 114 / 255f, 207 / 255f, 1);
         storeButton.getLabel().setFontScale(GameConfiguration.fitText(storeButton, -1, -1));
         storeButton.addListener(new InputListener(){
@@ -127,9 +133,30 @@ public class AfterGameScreen extends ScreenAdapter {
             }
         });
 
+        TextButton buttonHighScores = new TextButton(GameConfiguration.getText("highScores"),mySkin,"pixel72");
+        buttonHighScores.setSize(screenWidth / 10f,screenWidth / 10f);
+        buttonHighScores.setPosition(screenWidth -buttonHighScores.getWidth(),
+                0);
+        buttonHighScores.setColor(0 / 255f, 255 / 255f, 195 / 255f, 1);
+        buttonHighScores.getLabel().setFontScale(GameConfiguration.fitText(buttonHighScores, 40, -1));
+        buttonHighScores.getLabel().setWrap(true);
+        buttonHighScores.addListener(new InputListener(){
+            @Override
+            public boolean touchDown(InputEvent event, float x, float y, int pointer, int button) {
+                buttonPressSound.play();
+                return true;
+            }
+
+            @Override
+            public void touchUp(InputEvent event, float x, float y, int pointer, int button) {
+                dispose();
+                main.setScreen(new HighScores(main));
+            }
+        });
+
         Label scoreLabel = new Label( GameConfiguration.getText("score") + ": " + MathUtils.round(score * 100) / 100f, mySkin, "pixel100");
-        float scoreLabelWidth = Gdx.graphics.getWidth() / 2f;
-        float scoreLabelHeight = Gdx.graphics.getHeight() / 4f;
+        float scoreLabelWidth = screenWidth / 2f;
+        float scoreLabelHeight = screenHeight / 4f;
 
 
         scoreLabel.setBounds(scoreLabelWidth / 2, scoreLabelHeight * 3,
@@ -142,6 +169,7 @@ public class AfterGameScreen extends ScreenAdapter {
         stage.addActor(buttonLevelScreen);
         stage.addActor(storeButton);
         stage.addActor(scoreLabel);
+        stage.addActor(buttonHighScores);
 
         Gdx.input.setInputProcessor(stage);
     }
@@ -150,7 +178,7 @@ public class AfterGameScreen extends ScreenAdapter {
     @Override
     public void render(float deltaTime) {
         main.batch.setProjectionMatrix(camera.combined);
-        Gdx.gl.glClearColor(1, 1, 1, 1);
+        Gdx.gl.glClearColor(56 / 255f, 142 / 255f, 142 / 255f, 1);
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
         stage.draw();
         stage.act();
@@ -163,15 +191,4 @@ public class AfterGameScreen extends ScreenAdapter {
         levelCompletedMusic.stop();
         //levelCompletedMusic = null;
     }
-
-    /*
-    public void addCredits() {
-        float newCredits = score / 50 + 1;
-        int oldCredits = GameConfiguration.credits;
-        float sum = newCredits + oldCredits;
-        GameConfiguration.credits = sum;
-        String newCreditString = "" + sum;
-        GameConfiguration.save(GameConfiguration.creditsString, newCreditString);
-        Gdx.app.log("", newCreditString);
-    }*/
 }

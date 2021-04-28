@@ -159,13 +159,13 @@ public class LevelScreen extends ScreenAdapter {
             }
         });
 
-        TextButton buttonStore = new TextButton(GameConfiguration.getText("themes"),mySkin,"pixel72");
-        buttonStore.setSize(screenWidth / 5f,screenWidth / 15f);
-        buttonStore.setPosition(screenWidth / 2f - buttonStore.getWidth() / 2f,
-                screenHeight - buttonStore.getHeight());
-        buttonStore.setColor(56 / 255f, 114 / 255f, 207 / 255f, 1);
-        buttonStore.getLabel().setFontScale(GameConfiguration.fitText(buttonStore, -1, -1));
-        buttonStore.addListener(new InputListener(){
+        TextButton buttonThemes = new TextButton(GameConfiguration.getText("themes"),mySkin,"pixel72");
+        buttonThemes.setSize(screenWidth / 5f,screenWidth / 10f);
+        buttonThemes.setPosition(screenWidth / 2f - buttonThemes.getWidth() / 2f,
+                screenHeight - buttonThemes.getHeight());
+        buttonThemes.setColor(56 / 255f, 114 / 255f, 207 / 255f, 1);
+        buttonThemes.getLabel().setFontScale(GameConfiguration.fitText(buttonThemes, -1, -1));
+        buttonThemes.addListener(new InputListener(){
             @Override
             public boolean touchDown(InputEvent event, float x, float y, int pointer, int button) {
                 buttonPressSound.play();
@@ -183,8 +183,9 @@ public class LevelScreen extends ScreenAdapter {
         buttonHighScores.setSize(screenWidth / 10f,screenWidth / 10f);
         buttonHighScores.setPosition(screenWidth -buttonHighScores.getWidth(),
                 0);
-        buttonHighScores.setColor(56 / 255f, 114 / 255f, 207 / 255f, 1);
-        buttonHighScores.getLabel().setFontScale(GameConfiguration.fitText(buttonHighScores, -1, -1));
+        buttonHighScores.setColor(0 / 255f, 255 / 255f, 195 / 255f, 1);
+        buttonHighScores.getLabel().setFontScale(GameConfiguration.fitText(buttonHighScores, 40, -1));
+        buttonHighScores.getLabel().setWrap(true);
         buttonHighScores.addListener(new InputListener(){
             @Override
             public boolean touchDown(InputEvent event, float x, float y, int pointer, int button) {
@@ -204,7 +205,7 @@ public class LevelScreen extends ScreenAdapter {
         stage.addActor(buttonHard);
         stage.addActor(buttonTutorial);
         stage.addActor(buttonMenu);
-        stage.addActor(buttonStore);
+        stage.addActor(buttonThemes);
         stage.addActor(buttonHighScores);
 
         Gdx.input.setInputProcessor(stage);
