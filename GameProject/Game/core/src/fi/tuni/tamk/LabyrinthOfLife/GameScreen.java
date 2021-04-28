@@ -479,9 +479,7 @@ public class GameScreen extends ScreenAdapter {
         }
         try {
             backgroundMusic.setVolume(Integer.parseInt(GameConfiguration.open("musicVolume")) / 10f);
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
+        } catch (Exception e) { }
         Gdx.input.setInputProcessor(inputMultiplexer);
     }
 
