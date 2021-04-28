@@ -21,7 +21,7 @@ allprojects {
 
     version = '1.0'
     ext {
-        appName = "newGame"
+        appName = "Labyrinth of Life"
         gdxVersion = '1.9.13'
         roboVMVersion = '2.3.12'
         box2DLightsVersion = '1.5'
