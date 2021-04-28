@@ -55,8 +55,6 @@ public class FileReader {
                     }
                 }
             }
-
-
         } catch(Exception e) {}
         return array;
     }

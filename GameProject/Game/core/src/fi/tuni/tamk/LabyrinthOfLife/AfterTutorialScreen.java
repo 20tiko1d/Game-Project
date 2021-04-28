@@ -32,6 +32,7 @@ public class AfterTutorialScreen extends ScreenAdapter {
 
     public AfterTutorialScreen(Main main, Textures textures) {
         this.main = main;
+        this.textures = textures;
         GameConfiguration.tutorialOn = false;
         if(GameConfiguration.firstTime) {
             GameConfiguration.save("firstTime", "false");

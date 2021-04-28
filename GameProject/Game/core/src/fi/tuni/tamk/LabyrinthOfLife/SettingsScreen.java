@@ -51,8 +51,9 @@ public class SettingsScreen extends ScreenAdapter {
         camera.setToOrtho(false, Main.viewPortWidth, Main.viewPortHeight);
     }
 
-    public SettingsScreen(Main main, PauseScreen pauseScreen, GameScreen gameScreen) {
+    public SettingsScreen(Main main, Textures textures, PauseScreen pauseScreen, GameScreen gameScreen) {
         this.main = main;
+        this.textures = textures;
         camera = new OrthographicCamera();
         camera.setToOrtho(false, Main.viewPortWidth, Main.viewPortHeight);
         this.pauseScreen = pauseScreen;

@@ -102,7 +102,7 @@ public class PauseScreen extends ScreenAdapter {
 
             @Override
             public void touchUp(InputEvent event, float x, float y, int pointer, int button) {
-                main.setScreen(new SettingsScreen(main, pauseScreen, gameScreen));
+                main.setScreen(new SettingsScreen(main, textures, pauseScreen, gameScreen));
             }
         });
 
