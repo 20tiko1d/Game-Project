@@ -24,6 +24,9 @@ com.badlogic.gdx.graphics.g2d.BitmapFont: {
 	pixel72: {
 		file: pixel72.fnt
 	}
+	pixel722: {
+		file: pixel72.2.fnt
+	}
 }
 com.badlogic.gdx.graphics.Color: {
 	black: {
@@ -124,6 +127,9 @@ com.badlogic.gdx.scenes.scene2d.ui.Label$LabelStyle: {
 	pixel100: {
 		font: pixel100
 	}
+	pixel722: {
+		font: pixel722
+	}
 }
 com.badlogic.gdx.scenes.scene2d.ui.List$ListStyle: {
 	default: {
@@ -161,8 +167,8 @@ com.badlogic.gdx.scenes.scene2d.ui.ScrollPane$ScrollPaneStyle: {
 }
 com.badlogic.gdx.scenes.scene2d.ui.Slider$SliderStyle: {
 	default-horizontal: {
-		background: slider
-		knob: slider-knob
+		background: slider2
+		knob: sliderKnob2
 	}
 	default-vertical: {
 		background: slider-vertical
@@ -221,6 +227,13 @@ com.badlogic.gdx.scenes.scene2d.ui.TextField$TextFieldStyle: {
 		font: arial-fontSmall
 		fontColor: black
 		background: textfield
+		cursor: black
+		selection: pale-blue
+	}
+	textFieldPixel: {
+		font: arial-fontSmall
+		fontColor: black
+		background: textField2
 		cursor: black
 		selection: pale-blue
 	}
