@@ -39,9 +39,12 @@ public class Themes extends ScreenAdapter {
     private float playerMarkPigY;
     private Image checkMarkPlayer;
 
+    private Textures textures;
 
-    public Themes(Main main) {
+
+    public Themes(Main main, Textures textures) {
         this.main = main;
+        this.textures = textures;
         camera = new OrthographicCamera();
         camera.setToOrtho(false, Main.viewPortWidth, Main.viewPortHeight);
         buttonPressSound = Sounds.buttonPressSound;
@@ -51,7 +54,7 @@ public class Themes extends ScreenAdapter {
     public void show() {
         stage = new Stage(new ScreenViewport());
 
-        Skin mySkin = Textures.mySkin;
+        Skin mySkin = textures.mySkin;
 
         TextButton buttonMenu = new TextButton(GameConfiguration.getText("menu"),mySkin,"pixel72");
         buttonMenu.setSize(screenWidth / 10f,screenWidth / 10f);
@@ -68,7 +71,7 @@ public class Themes extends ScreenAdapter {
             @Override
             public void touchUp(InputEvent event, float x, float y, int pointer, int button) {
                 dispose();
-                main.setScreen(new MenuScreen(main));
+                main.setScreen(new MenuScreen(main, textures));
             }
         });
 
@@ -88,7 +91,7 @@ public class Themes extends ScreenAdapter {
             @Override
             public void touchUp(InputEvent event, float x, float y, int pointer, int button) {
                 dispose();
-                main.setScreen(new LevelScreen(main));
+                main.setScreen(new LevelScreen(main, textures));
             }
         });
 
@@ -99,7 +102,7 @@ public class Themes extends ScreenAdapter {
         themeLabel.setPosition(screenWidth / 7f, screenHeight / 2 - themeLabel.getHeight() / 2);
         themeLabel.setColor(labelColor);
 
-        Drawable sandThemeDrawable = new TextureRegionDrawable(Textures.themeSand);
+        Drawable sandThemeDrawable = new TextureRegionDrawable(textures.themeSand);
         ImageButton buttonThemeSand = new ImageButton(sandThemeDrawable);
         buttonThemeSand.setSize(themeLabel.getWidth() / 3f, themeLabel.getWidth() / 3f);
         buttonThemeSand.setPosition(themeLabel.getX() + themeLabel.getWidth() / 2f - buttonThemeSand.getWidth(),
@@ -119,7 +122,7 @@ public class Themes extends ScreenAdapter {
             }
         });
 
-        Drawable bushThemeDrawable = new TextureRegionDrawable(Textures.themeBush);
+        Drawable bushThemeDrawable = new TextureRegionDrawable(textures.themeBush);
         ImageButton buttonThemeBush = new ImageButton(bushThemeDrawable);
         buttonThemeBush.setSize(buttonThemeSand.getWidth(), buttonThemeSand.getHeight());
         buttonThemeBush.setPosition(buttonThemeSand.getX(),
@@ -144,7 +147,7 @@ public class Themes extends ScreenAdapter {
         playerLabel.setPosition(screenWidth * 6 / 7 - playerLabel.getWidth(), themeLabel.getY());
         playerLabel.setColor(labelColor);
 
-        Drawable ghostDrawable = new TextureRegionDrawable(Textures.playerGhost);
+        Drawable ghostDrawable = new TextureRegionDrawable(textures.playerGhost);
         ImageButton buttonGhost = new ImageButton(ghostDrawable);
         buttonGhost.setSize(playerLabel.getHeight() / 4f, playerLabel.getHeight() / 4f);
         buttonGhost.setPosition(playerLabel.getX() + playerLabel.getWidth() / 2f - buttonGhost.getWidth(),
@@ -163,7 +166,7 @@ public class Themes extends ScreenAdapter {
             }
         });
 
-        Drawable blueDudeDrawable = new TextureRegionDrawable(Textures.playerBlueDude);
+        Drawable blueDudeDrawable = new TextureRegionDrawable(textures.playerBlueDude);
         ImageButton buttonBlueDude = new ImageButton(blueDudeDrawable);
         buttonBlueDude.setSize(buttonGhost.getWidth(), buttonGhost.getHeight());
         buttonBlueDude.setPosition(buttonGhost.getX(),
@@ -182,7 +185,7 @@ public class Themes extends ScreenAdapter {
             }
         });
 
-        Drawable pigDrawable = new TextureRegionDrawable(Textures.playerPig);
+        Drawable pigDrawable = new TextureRegionDrawable(textures.playerPig);
         ImageButton buttonPig = new ImageButton(pigDrawable);
         buttonPig.setSize(buttonGhost.getWidth(), buttonGhost.getHeight());
         buttonPig.setPosition(buttonGhost.getX(),
@@ -211,7 +214,7 @@ public class Themes extends ScreenAdapter {
         if(GameConfiguration.theme.equals("sand")) {
             themeMarkY = themeMarkSandY;
         }
-        checkMarkTheme = new Image(Textures.checkMark);
+        checkMarkTheme = new Image(textures.checkMark);
         checkMarkTheme.setSize(checkMarkSize, checkMarkSize);
         checkMarkTheme.setPosition(buttonThemeBush.getX() + buttonThemeBush.getWidth() * 1.5f - checkMarkTheme.getWidth() / 2f, themeMarkY);
 
@@ -229,7 +232,7 @@ public class Themes extends ScreenAdapter {
             playerMarkY = playerMarkPigY;
         }
 
-        checkMarkPlayer = new Image(Textures.checkMark);
+        checkMarkPlayer = new Image(textures.checkMark);
         checkMarkPlayer.setSize(playerCheckMarkSize, playerCheckMarkSize);
         checkMarkPlayer.setPosition(buttonGhost.getX() + buttonGhost.getWidth() * 1.5f - checkMarkPlayer.getWidth() / 2f, playerMarkY);
 

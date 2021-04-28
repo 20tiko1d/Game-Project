@@ -75,11 +75,11 @@ public final class GameConfiguration implements HighScoreListener {
      * @param main Main object to pass along.
      * @return Game screen.
      */
-    public static GameScreen createGame(Main main) {
+    public static GameScreen createGame(Main main, Textures textures) {
         World world = new World(new Vector2(0,0), true);
 
-        GameScreen gameScreen= new GameScreen(main, world);
-        MapGenerator generator= new MapGenerator(gameScreen);
+        GameScreen gameScreen= new GameScreen(main, textures, world);
+        MapGenerator generator= new MapGenerator(gameScreen, textures);
         if(tutorialOn) {
             generator.createTutorialMap(world);
         } else {

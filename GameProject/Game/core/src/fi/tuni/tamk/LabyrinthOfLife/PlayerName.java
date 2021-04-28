@@ -32,8 +32,11 @@ public class PlayerName extends ScreenAdapter {
 
     private final Sound buttonPressSound;
 
-    public PlayerName(Main main, boolean firstTime) {
+    private Textures textures;
+
+    public PlayerName(Main main, Textures textures, boolean firstTime) {
         this.main = main;
+        this.textures = textures;
         camera = new OrthographicCamera();
         camera.setToOrtho(false, Main.viewPortWidth, Main.viewPortHeight);
         this.firstTime = firstTime;
@@ -44,7 +47,7 @@ public class PlayerName extends ScreenAdapter {
     public void show() {
         stage = new Stage(new ScreenViewport());
 
-        Skin mySkin = Textures.mySkin;
+        Skin mySkin = textures.mySkin;
 
         Label boxBackground = new Label("", mySkin, "tutorialTest2");
         boxBackground.setSize(screenWidth / 2f, screenHeight / 2f);
@@ -85,9 +88,9 @@ public class PlayerName extends ScreenAdapter {
                 if(checkName()) {
                     dispose();
                     if(firstTime) {
-                        main.setScreen(new MenuScreen(main));
+                        main.setScreen(new MenuScreen(main, textures));
                     } else {
-                        main.setScreen(new HighScores(main));
+                        main.setScreen(new HighScores(main, textures));
                     }
                 }
             }
@@ -112,7 +115,7 @@ public class PlayerName extends ScreenAdapter {
                 @Override
                 public void touchUp(InputEvent event, float x, float y, int pointer, int button) {
                     dispose();
-                    main.setScreen(new HighScores(main));
+                    main.setScreen(new HighScores(main, textures));
                 }
             });
             stage.addActor(buttonCancel);

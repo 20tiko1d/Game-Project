@@ -49,9 +49,11 @@ public class MapGenerator {
     private float oneWidth;
 
     private final GameScreen gameScreen;
+    private Textures textures;
 
-    public MapGenerator(GameScreen gameScreen) {
+    public MapGenerator(GameScreen gameScreen, Textures textures) {
         this.gameScreen = gameScreen;
+        this.textures = textures;
     }
 
     /**
@@ -575,11 +577,11 @@ public class MapGenerator {
      * Method scales map up, inserts textures and creates collision boxes.
      */
     public void putTextures() {
-        ArrayList<Texture> floor1Textures= Textures.getFloor1Textures();
-        ArrayList<Texture> floor2Textures= Textures.getFloor2Textures();
-        ArrayList<Texture> wallTextures= Textures.getWallTextures();
+        ArrayList<Texture> floor1Textures= textures.getFloor1Textures();
+        ArrayList<Texture> floor2Textures= textures.getFloor2Textures();
+        ArrayList<Texture> wallTextures= textures.getWallTextures();
 
-        Texture startTexture = Textures.getStartTexture();
+        Texture startTexture = textures.getStartTexture();
 
         map = new Texture[(size + 24) * 4 + 1][(size + 12) * 4 + 1];
 

@@ -42,8 +42,11 @@ public class SettingsScreen extends ScreenAdapter {
 
     private Label musicVolumeLabel;
 
-    public SettingsScreen(Main main) {
+    private Textures textures;
+
+    public SettingsScreen(Main main, Textures textures) {
         this.main = main;
+        this.textures = textures;
         camera = new OrthographicCamera();
         camera.setToOrtho(false, Main.viewPortWidth, Main.viewPortHeight);
     }
@@ -60,7 +63,7 @@ public class SettingsScreen extends ScreenAdapter {
     public void show() {
         stage = new Stage(new ScreenViewport());
         buttonPressSound = Sounds.buttonPressSound;
-        Skin mySkin = Textures.mySkin;
+        Skin mySkin = textures.mySkin;
 
         TextButton buttonMenu = new TextButton(GameConfiguration.getText("menu"),mySkin,"pixel72");
         buttonMenu.setSize(screenWidth / 10f,screenWidth / 10f);
@@ -81,11 +84,11 @@ public class SettingsScreen extends ScreenAdapter {
                     gameScreen.dispose();
                 }
                 dispose();
-                main.setScreen(new MenuScreen(main));
+                main.setScreen(new MenuScreen(main, textures));
             }
         });
 
-        Image controlsBackground = new Image(Textures.controlsBackground);
+        Image controlsBackground = new Image(textures.controlsBackground);
         controlsBackground.setSize(screenWidth / 3, screenWidth / 6);
         controlsBackground.setPosition(screenWidth / 20, screenWidth / 20);
 
@@ -115,11 +118,11 @@ public class SettingsScreen extends ScreenAdapter {
         leftX = controlsBackground.getX() + controlsBackground.getWidth() / 16;
         rightX = controlsBackground.getX() + controlsBackground.getWidth() * 13 / 16;
 
-        boostImage = new Image(Textures.boostTexture);
+        boostImage = new Image(textures.boostTexture);
         boostImage.setSize(controlSize, controlSize);
         boostImage.setY(controlsBackground.getY() + controlsBackground.getWidth() / 16);
 
-        joystickImage = new Image(Textures.joystickTexture);
+        joystickImage = new Image(textures.joystickTexture);
         joystickImage.setSize(controlSize, controlSize);
         joystickImage.setY(boostImage.getY());
 

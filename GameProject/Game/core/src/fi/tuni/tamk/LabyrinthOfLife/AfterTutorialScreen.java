@@ -28,7 +28,9 @@ public class AfterTutorialScreen extends ScreenAdapter {
     private final Sound buttonPressSound;
     private Music levelCompletedMusic;
 
-    public AfterTutorialScreen(Main main) {
+    private Textures textures;
+
+    public AfterTutorialScreen(Main main, Textures textures) {
         this.main = main;
         GameConfiguration.tutorialOn = false;
         if(GameConfiguration.firstTime) {
@@ -51,7 +53,7 @@ public class AfterTutorialScreen extends ScreenAdapter {
         levelCompletedMusic = Sounds.levelCompletedMusic;
         levelCompletedMusic.play();
 
-        Skin mySkin = Textures.mySkin;
+        Skin mySkin = textures.mySkin;
 
         TextButton buttonPlayAgain = new TextButton(GameConfiguration.getText("playTutorialAgain"), mySkin,"pixel48");
         buttonPlayAgain.setSize(screenWidth / 5f,screenWidth / 8f);
@@ -69,7 +71,7 @@ public class AfterTutorialScreen extends ScreenAdapter {
             public void touchUp(InputEvent event, float x, float y, int pointer, int button) {
                 GameConfiguration.tutorialOn = true;
                 GameConfiguration.gameLevel = 1;
-                GameScreen gameScreen = GameConfiguration.createGame(main);
+                GameScreen gameScreen = GameConfiguration.createGame(main, textures);
                 dispose();
                 main.setScreen(gameScreen);
             }
@@ -90,7 +92,7 @@ public class AfterTutorialScreen extends ScreenAdapter {
             @Override
             public void touchUp(InputEvent event, float x, float y, int pointer, int button) {
                 dispose();
-                main.setScreen(new LevelScreen(main));
+                main.setScreen(new LevelScreen(main, textures));
             }
         });
 

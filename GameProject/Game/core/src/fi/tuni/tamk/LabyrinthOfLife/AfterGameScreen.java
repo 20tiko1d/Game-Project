@@ -31,8 +31,11 @@ public class AfterGameScreen extends ScreenAdapter {
     private final Sound buttonPressSound;
     private Music levelCompletedMusic;
 
-    public AfterGameScreen(Main main, float score) {
+    private Textures textures;
+
+    public AfterGameScreen(Main main, Textures textures, float score) {
         this.main = main;
+        this.textures = textures;
         this.score = score;
         buttonPressSound = Sounds.buttonPressSound;
 
@@ -52,7 +55,7 @@ public class AfterGameScreen extends ScreenAdapter {
         levelCompletedMusic = Sounds.levelCompletedMusic;
         levelCompletedMusic.play();
 
-        Skin mySkin = Textures.mySkin;
+        Skin mySkin = textures.mySkin;
 
         TextButton buttonMenu = new TextButton(GameConfiguration.getText("menu"), mySkin,"pixel72");
         buttonMenu.setSize(screenWidth / 10f,screenWidth / 10f);
@@ -69,7 +72,7 @@ public class AfterGameScreen extends ScreenAdapter {
             @Override
             public void touchUp(InputEvent event, float x, float y, int pointer, int button) {
                 dispose();
-                main.setScreen(new MenuScreen(main));
+                main.setScreen(new MenuScreen(main, textures));
             }
         });
 
@@ -88,7 +91,7 @@ public class AfterGameScreen extends ScreenAdapter {
 
             @Override
             public void touchUp(InputEvent event, float x, float y, int pointer, int button) {
-                GameScreen gameScreen = GameConfiguration.createGame(main);
+                GameScreen gameScreen = GameConfiguration.createGame(main, textures);
                 dispose();
                 main.setScreen(gameScreen);
             }
@@ -109,7 +112,7 @@ public class AfterGameScreen extends ScreenAdapter {
             @Override
             public void touchUp(InputEvent event, float x, float y, int pointer, int button) {
                 dispose();
-                main.setScreen(new LevelScreen(main));
+                main.setScreen(new LevelScreen(main, textures));
             }
         });
 
@@ -129,7 +132,7 @@ public class AfterGameScreen extends ScreenAdapter {
             @Override
             public void touchUp(InputEvent event, float x, float y, int pointer, int button) {
                 dispose();
-                main.setScreen(new Themes(main));
+                main.setScreen(new Themes(main, textures));
             }
         });
 
@@ -150,7 +153,7 @@ public class AfterGameScreen extends ScreenAdapter {
             @Override
             public void touchUp(InputEvent event, float x, float y, int pointer, int button) {
                 dispose();
-                main.setScreen(new HighScores(main));
+                main.setScreen(new HighScores(main, textures));
             }
         });
 

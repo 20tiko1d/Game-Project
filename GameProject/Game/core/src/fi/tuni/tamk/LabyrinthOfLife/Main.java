@@ -21,11 +21,12 @@ public class Main extends Game {
 	public void create () {
 		checkDevice();
 		GameConfiguration.checkFirstTime();
+		Textures textures = new Textures();
 		batch = new SpriteBatch();
 		if(GameConfiguration.open("name").equals(GameConfiguration.noValue)) {
-			setScreen(new PlayerName(this, true));
+			setScreen(new PlayerName(this, textures, true));
 		} else {
-			setScreen(new MenuScreen(this));
+			setScreen(new MenuScreen(this, textures));
 		}
 	}
 

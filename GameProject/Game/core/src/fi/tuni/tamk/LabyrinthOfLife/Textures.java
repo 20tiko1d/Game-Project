@@ -10,47 +10,47 @@ import java.util.ArrayList;
 public final class Textures {
 
     // Skin
-    public static Skin mySkin = new Skin(Gdx.files.internal("skin/gameUI.json"));
+    public Skin mySkin = new Skin(Gdx.files.internal("skin/gameUI.json"));
 
     // Flag textures
-    public static Texture finFlag = new Texture("textures/flags/fin_flag.png");
-    public static Texture engFlag = new Texture("textures/flags/gbr_flag.png");
+    public Texture finFlag = new Texture("textures/flags/fin_flag.png");
+    public Texture engFlag = new Texture("textures/flags/gbr_flag.png");
 
     // Menu screen button background (40px width, 30px Height)
-    public static Texture menuButtonBackground = new Texture("textures/backgrounds/menuButtonBackground.png");
+    public Texture menuButtonBackground = new Texture("textures/backgrounds/menuButtonBackground.png");
 
     // Pause button
-    public static Texture pauseButtonTexture = new Texture("textures/random/pauseButton.png");
+    public Texture pauseButtonTexture = new Texture("textures/random/pauseButton.png");
 
     // Play button in pause screen
-    public static Texture playButtonTexture = new Texture("textures/random/playButton.png");
+    public Texture playButtonTexture = new Texture("textures/random/playButton.png");
 
     // Object shadow
-    public static Texture shadow = new Texture("textures/random/shadow.png");
+    public Texture shadow = new Texture("textures/random/shadow.png");
 
     // Game background "mist"
-    public static Texture background = new Texture("textures/backgrounds/fogBackground.png");
+    public Texture background = new Texture("textures/backgrounds/fogBackground.png");
 
     // Tutorial guidance background
-    public static Texture tutorialTextBackground = new Texture("textures/backgrounds/tutorialTextBackground.png");
+    public Texture tutorialTextBackground = new Texture("textures/backgrounds/tutorialTextBackground.png");
 
     // Theme buttons
-    public static Texture themeBush = new Texture("textures/themeScreenTextures/themeBush.png");
-    public static Texture themeSand = new Texture("textures/themeScreenTextures/themeSand.png");
-    public static Texture checkMark = new Texture("textures/themeScreenTextures/checkMark.png");
-    public static Texture playerGhost = new Texture("textures/themeScreenTextures/ghostTheme.png");
-    public static Texture playerBlueDude = new Texture("textures/themeScreenTextures/blueDudeTheme.png");
-    public static Texture playerPig = new Texture("textures/themeScreenTextures/pigTheme.png");
+    public Texture themeBush = new Texture("textures/themeScreenTextures/themeBush.png");
+    public Texture themeSand = new Texture("textures/themeScreenTextures/themeSand.png");
+    public Texture checkMark = new Texture("textures/themeScreenTextures/checkMark.png");
+    public Texture playerGhost = new Texture("textures/themeScreenTextures/ghostTheme.png");
+    public Texture playerBlueDude = new Texture("textures/themeScreenTextures/blueDudeTheme.png");
+    public Texture playerPig = new Texture("textures/themeScreenTextures/pigTheme.png");
 
     // Controls images in settings
-    public static Texture controlsBackground = new Texture("textures/controlsSetting/backgroundWhite.png");
-    public static Texture boostTexture = new Texture("textures/controlsSetting/boostSettings.png");
-    public static Texture joystickTexture = new Texture("textures/controlsSetting/joystickSettings.png");
+    public Texture controlsBackground = new Texture("textures/controlsSetting/backgroundWhite.png");
+    public Texture boostTexture = new Texture("textures/controlsSetting/boostSettings.png");
+    public Texture joystickTexture = new Texture("textures/controlsSetting/joystickSettings.png");
 
 
-    private Textures() {}
+    public Textures() {}
 
-    public static ArrayList<Texture> getFloor1Textures() {
+    public ArrayList<Texture> getFloor1Textures() {
         ArrayList<Texture> textures = new ArrayList<>();
         if(GameConfiguration.theme.equals("bush")) {
             textures.add(new Texture("textures/floorsInside/Bush/Rockfloor.png"));
@@ -63,7 +63,7 @@ public final class Textures {
         return textures;
     }
 
-    public static ArrayList<Texture> getFloor2Textures() {
+    public ArrayList<Texture> getFloor2Textures() {
         ArrayList<Texture> textures = new ArrayList<>();
 
         if(GameConfiguration.theme.equals("bush")) {
@@ -77,7 +77,7 @@ public final class Textures {
         return textures;
     }
 
-    public static ArrayList<Texture> getWallTextures() {
+    public ArrayList<Texture> getWallTextures() {
         ArrayList<Texture> textures = new ArrayList<>();
       
         if(GameConfiguration.theme.equals("bush")) {
@@ -90,7 +90,7 @@ public final class Textures {
         return textures;
     }
 
-    public static Texture[] getPlayerTexture(String name) {
+    public Texture[] getPlayerTexture(String name) {
         Texture [] playerTextures = new Texture[4];
         // Front
         playerTextures[0] = new Texture("textures/player/" + name + "/" + name + "Front.png");
@@ -103,7 +103,7 @@ public final class Textures {
         return playerTextures;
     }
 
-    public static Texture getObjectTexture() {
+    public Texture getObjectTexture() {
         ArrayList<Texture> textures = new ArrayList<>();
 
         textures.add(new Texture("textures/object/alarmClock.png"));
@@ -128,7 +128,7 @@ public final class Textures {
         return textures.get(random);
     }
 
-    public static Texture getExitCloseTexture(boolean onTop) {
+    public Texture getExitCloseTexture(boolean onTop) {
         if(onTop) {
             return new Texture("textures/walls/exit/wallExitTop_closed.png");
         } else {
@@ -136,28 +136,28 @@ public final class Textures {
         }
     }
 
-    public static Texture getExitOpenTexture(boolean onTop) {
+    public Texture getExitOpenTexture(boolean onTop) {
         if(onTop) {
             return new Texture("textures/walls/exit/wallExitTop_open.png");
         }
         return new Texture("textures/walls/exit/wallExitSide_open.png");
     }
 
-    public static Texture getStartTexture() {
+    public Texture getStartTexture() {
         return new Texture("textures/walls/start/wallStart.png");
     }
 
-    public static Texture getPairLabelBackground() { return new Texture("textures/backgrounds/pairLabelBackground.png");}
+    public Texture getPairLabelBackground() { return new Texture("textures/backgrounds/pairLabelBackground.png");}
 
-    public static Texture getJoystickBack() { return new Texture("textures/joystick/joystickBack.png");}
+    public Texture getJoystickBack() { return new Texture("textures/joystick/joystickBack.png");}
 
-    public static Texture getJoystickKnob() { return new Texture("textures/joystick/joystickKnob.png");}
+    public Texture getJoystickKnob() { return new Texture("textures/joystick/joystickKnob.png");}
 
-    public static Texture getMenuBackground() {
+    public Texture getMenuBackground() {
         return new Texture("textures/backgrounds/menuBackgroundImage.png");
     }
 
-    public static Texture getMedalTexture(String name) {
+    public Texture getMedalTexture(String name) {
         return new Texture("textures/medalColors/" + name + ".png");
     }
 }

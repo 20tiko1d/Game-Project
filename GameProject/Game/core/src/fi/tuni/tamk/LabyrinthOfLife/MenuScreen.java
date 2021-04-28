@@ -48,8 +48,11 @@ public class MenuScreen extends ScreenAdapter {
 
     private final Sound buttonPressSound;
 
-    public MenuScreen(Main main) {
+    private Textures textures;
+
+    public MenuScreen(Main main, Textures textures) {
         this.main = main;
+        this.textures = textures;
         camera = new OrthographicCamera();
         camera.setToOrtho(false, Main.viewPortWidth, Main.viewPortHeight);
         batch = new SpriteBatch();
@@ -60,15 +63,15 @@ public class MenuScreen extends ScreenAdapter {
     public void show() {
         stage = new Stage(new ScreenViewport());
 
-        backgroundImage = Textures.getMenuBackground();
-        buttonBackground = Textures.menuButtonBackground;
+        backgroundImage = textures.getMenuBackground();
+        buttonBackground = textures.menuButtonBackground;
         backgroundHeight = (float) screenWidth * backgroundImage.getHeight() / backgroundImage.getWidth();
 
-        Skin mySkin = Textures.mySkin;
+        Skin mySkin = textures.mySkin;
 
-        Texture flagTexture = Textures.engFlag;
+        Texture flagTexture = textures.engFlag;
         if(GameConfiguration.getLanguage().equals("en_UK")) {
-            flagTexture = Textures.finFlag;
+            flagTexture = textures.finFlag;
         }
         final Drawable drawable = new TextureRegionDrawable(new TextureRegion(flagTexture));
         final Button flagButton = new Button(drawable);
@@ -84,10 +87,10 @@ public class MenuScreen extends ScreenAdapter {
             @Override
             public void touchUp(InputEvent event, float x, float y, int pointer, int button) {
                 if(GameConfiguration.getLanguage().equals("fi_FI")) {
-                    flagButton.getStyle().up = new TextureRegionDrawable(new TextureRegion(Textures.finFlag));
+                    flagButton.getStyle().up = new TextureRegionDrawable(new TextureRegion(textures.finFlag));
                     GameConfiguration.save("language", "en_UK");
                 } else {
-                    flagButton.getStyle().up = new TextureRegionDrawable(new TextureRegion(Textures.engFlag));
+                    flagButton.getStyle().up = new TextureRegionDrawable(new TextureRegion(textures.engFlag));
                     GameConfiguration.save("language", "fi_FI");
                 }
                 updateLanguage();
@@ -117,12 +120,12 @@ public class MenuScreen extends ScreenAdapter {
                 if(GameConfiguration.firstTime) {
                     GameConfiguration.tutorialOn = true;
                     GameConfiguration.gameLevel = 1;
-                    GameScreen gameScreen = GameConfiguration.createGame(main);
+                    GameScreen gameScreen = GameConfiguration.createGame(main, textures);
                     dispose();
                     main.setScreen(gameScreen);
                 } else {
                     dispose();
-                    main.setScreen(new LevelScreen(main));
+                    main.setScreen(new LevelScreen(main, textures));
                 }
             }
         });
@@ -146,7 +149,7 @@ public class MenuScreen extends ScreenAdapter {
             @Override
             public void touchUp(InputEvent event, float x, float y, int pointer, int button) {
                 dispose();
-                main.setScreen(new SettingsScreen(main));
+                main.setScreen(new SettingsScreen(main, textures));
             }
         });
 
@@ -166,7 +169,7 @@ public class MenuScreen extends ScreenAdapter {
             @Override
             public void touchUp(InputEvent event, float x, float y, int pointer, int button) {
                 dispose();
-                main.setScreen(new HighScores(main));
+                main.setScreen(new HighScores(main, textures));
             }
         });
 

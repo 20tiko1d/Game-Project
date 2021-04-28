@@ -37,8 +37,11 @@ public class LevelScreen extends ScreenAdapter {
 
     private final Sound buttonPressSound;
 
-    public LevelScreen(Main main){
+    private  Textures textures;
+
+    public LevelScreen(Main main, Textures textures){
         this.main = main;
+        this.textures = textures;
         calculateAreas();
         batch = new SpriteBatch();
         screenWidth = Gdx.graphics.getWidth();
@@ -50,10 +53,10 @@ public class LevelScreen extends ScreenAdapter {
     public void show() {
         stage = new Stage(new ScreenViewport());
 
-        backgroundImage = Textures.getMenuBackground();
+        backgroundImage = textures.getMenuBackground();
         backgroundHeight = (float) screenWidth * backgroundImage.getHeight() / backgroundImage.getWidth();
 
-        Skin mySkin = Textures.mySkin;
+        Skin mySkin = textures.mySkin;
 
         TextButton buttonEasy = new TextButton(GameConfiguration.getText("easyLevel"), mySkin,"pixel72");
         buttonEasy.setSize(rect.width,rect.height);
@@ -155,7 +158,7 @@ public class LevelScreen extends ScreenAdapter {
             @Override
             public void touchUp(InputEvent event, float x, float y, int pointer, int button) {
                 dispose();
-                main.setScreen(new MenuScreen(main));
+                main.setScreen(new MenuScreen(main, textures));
             }
         });
 
@@ -175,7 +178,7 @@ public class LevelScreen extends ScreenAdapter {
             @Override
             public void touchUp(InputEvent event, float x, float y, int pointer, int button) {
                 dispose();
-                main.setScreen(new Themes(main));
+                main.setScreen(new Themes(main, textures));
             }
         });
 
@@ -196,7 +199,7 @@ public class LevelScreen extends ScreenAdapter {
             @Override
             public void touchUp(InputEvent event, float x, float y, int pointer, int button) {
                 dispose();
-                main.setScreen(new HighScores(main));
+                main.setScreen(new HighScores(main, textures));
             }
         });
 
@@ -234,7 +237,7 @@ public class LevelScreen extends ScreenAdapter {
      * Method starts the creation of the game world.
      */
     public void createGame() {
-        GameScreen gameScreen = GameConfiguration.createGame(main);
+        GameScreen gameScreen = GameConfiguration.createGame(main, textures);
         dispose();
         main.setScreen(gameScreen);
     }

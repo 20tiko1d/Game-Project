@@ -33,9 +33,11 @@ public class PauseScreen extends ScreenAdapter {
     private boolean tutorial = false;
 
     private final Sound buttonPressSound;
+    private Textures textures;
 
-    public PauseScreen(Main main, GameScreen gameScreen) {
+    public PauseScreen(Main main, Textures textures, GameScreen gameScreen) {
         this.main = main;
+        this.textures = textures;
         this.gameScreen = gameScreen;
         this.pauseScreen = this;
         camera = new OrthographicCamera();
@@ -53,7 +55,7 @@ public class PauseScreen extends ScreenAdapter {
     public void show() {
         stage = new Stage(new ScreenViewport());
 
-        Skin mySkin = Textures.mySkin;
+        Skin mySkin = textures.mySkin;
 
         float width = Gdx.graphics.getWidth() / 3f;
         float height = Gdx.graphics.getHeight() / 6f;
@@ -66,7 +68,7 @@ public class PauseScreen extends ScreenAdapter {
         pauseLabel.setAlignment(Align.center);
         pauseLabel.setColor(Color.BLACK);
 
-        final Drawable drawable = new TextureRegionDrawable(new TextureRegion(Textures.playButtonTexture));
+        final Drawable drawable = new TextureRegionDrawable(new TextureRegion(textures.playButtonTexture));
         final Button buttonReturnToGame = new Button(drawable);
         buttonReturnToGame.setSize(screenWidth / 10f,screenWidth / 10f);
         buttonReturnToGame.setPosition(screenWidth * 9 / 10f,screenHeight - screenWidth / 10f);
@@ -120,7 +122,7 @@ public class PauseScreen extends ScreenAdapter {
                 if(!GameConfiguration.firstTime) {
                     gameScreen.dispose();
                     dispose();
-                    main.setScreen(new LevelScreen(main));
+                    main.setScreen(new LevelScreen(main, textures));
                 }
             }
         });
@@ -142,7 +144,7 @@ public class PauseScreen extends ScreenAdapter {
                     GameConfiguration.tutorialOn = true;
                 }
                 gameScreen.dispose();
-                GameScreen gameScreen = GameConfiguration.createGame(main);
+                GameScreen gameScreen = GameConfiguration.createGame(main, textures);
                 main.setScreen(gameScreen);
             }
         });
@@ -163,7 +165,7 @@ public class PauseScreen extends ScreenAdapter {
             public void touchUp(InputEvent event, float x, float y, int pointer, int button) {
                 gameScreen.dispose();
                 dispose();
-                main.setScreen(new MenuScreen(main));
+                main.setScreen(new MenuScreen(main, textures));
             }
         });
 

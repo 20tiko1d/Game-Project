@@ -43,8 +43,11 @@ public class HighScores extends ScreenAdapter {
 
     private final Sound buttonPressSound;
 
-    public HighScores(Main main) {
+    private Textures textures;
+
+    public HighScores(Main main, Textures textures) {
         this.main = main;
+        this.textures = textures;
         camera = new OrthographicCamera();
         camera.setToOrtho(false, Main.viewPortWidth, Main.viewPortHeight);
         buttonPressSound = Sounds.buttonPressSound;
@@ -54,7 +57,7 @@ public class HighScores extends ScreenAdapter {
     public void show() {
         stage = new Stage(new ScreenViewport());
 
-        mySkin = Textures.mySkin;
+        mySkin = textures.mySkin;
 
         TextButton buttonMenu = new TextButton(GameConfiguration.getText("menu"),mySkin,"pixel72");
         buttonMenu.setSize(screenWidth / 10f,screenWidth / 10f);
@@ -71,7 +74,7 @@ public class HighScores extends ScreenAdapter {
             @Override
             public void touchUp(InputEvent event, float x, float y, int pointer, int button) {
                 dispose();
-                main.setScreen(new MenuScreen(main));
+                main.setScreen(new MenuScreen(main, textures));
             }
         });
 
@@ -91,7 +94,7 @@ public class HighScores extends ScreenAdapter {
             public void touchUp(InputEvent event, float x, float y, int pointer, int button) {
                 if(!GameConfiguration.firstTime) {
                     dispose();
-                    main.setScreen(new LevelScreen(main));
+                    main.setScreen(new LevelScreen(main, textures));
                 }
             }
         });
@@ -116,7 +119,7 @@ public class HighScores extends ScreenAdapter {
             @Override
             public void touchUp(InputEvent event, float x, float y, int pointer, int button) {
                 dispose();
-                main.setScreen(new PlayerName(main, false));
+                main.setScreen(new PlayerName(main, textures, false));
             }
         });
 
@@ -267,7 +270,7 @@ public class HighScores extends ScreenAdapter {
                 else if(i == 2) {
                     textureName = "bronze";
                 }
-                Image backgroundImage = new Image(Textures.getMedalTexture(textureName));
+                Image backgroundImage = new Image(textures.getMedalTexture(textureName));
                 backgroundImage.setBounds(x, y, scoreWidth, scoreHeight / 10f);
                 stage.addActor(backgroundImage);
             }

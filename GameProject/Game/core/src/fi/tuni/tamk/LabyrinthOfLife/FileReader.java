@@ -62,7 +62,9 @@ public class FileReader {
     }
 
     public static String getFileName() {
-        if(GameConfiguration.open("language").equals("fi_FI") || new Locale("fi", "FI").equals(Locale.getDefault())) {
+        if(GameConfiguration.open("language").equals("fi_FI") ||
+                ((new Locale("fi", "FI").equals(Locale.getDefault())) &&
+                        GameConfiguration.open("language").equals(GameConfiguration.noValue))) {
             return "Parit.xml";
         } else {
             return "Pairs.xml";

@@ -178,9 +178,12 @@ public class GameScreen extends ScreenAdapter {
     private final Sound connectingSound;
     private final Sound wrongValidationSound;
 
-    public GameScreen(Main main, World world) {
+    private Textures textures;
+
+    public GameScreen(Main main, Textures textures, World world) {
         this.main = main;
         this.world = world;
+        this.textures = textures;
         this.gameScreen = this;
         scoreString = GameConfiguration.getText("score").toUpperCase();
         objectsFoundString = GameConfiguration.getText("pairsFound").toUpperCase();
@@ -198,8 +201,8 @@ public class GameScreen extends ScreenAdapter {
         objectHeight = tileHeight * GameConfiguration.OBJECT_HEIGHT;
         stage = new Stage(new ScreenViewport());
         tutorialOn = GameConfiguration.tutorialOn;
-        mySkin = Textures.mySkin;
-        shadow = Textures.shadow;
+        mySkin = textures.mySkin;
+        shadow = textures.shadow;
         buttonPressSound = Sounds.buttonPressSound;
         activationSound = Sounds.activationSound;
         switchSound = Sounds.switchSound;
@@ -219,7 +222,7 @@ public class GameScreen extends ScreenAdapter {
         pairLabel.setScale(1.3f);
         pairLabel.setColor(Color.WHITE);
 
-        pairLabelBackground = new Image(Textures.getPairLabelBackground());
+        pairLabelBackground = new Image(textures.getPairLabelBackground());
         pairLabelBackground.setBounds(screenWidth / 4f, pairLabel.getY(),
                 screenWidth / 2f, pairLabel.getHeight());
 
@@ -278,7 +281,7 @@ public class GameScreen extends ScreenAdapter {
 
             inputMultiplexer.addProcessor(stage);
 
-            final Drawable drawable = new TextureRegionDrawable(new TextureRegion(Textures.pauseButtonTexture));
+            final Drawable drawable = new TextureRegionDrawable(new TextureRegion(textures.pauseButtonTexture));
             final Button buttonPause = new Button(drawable);
             buttonPause.setSize(screenWidth / 10f,screenWidth / 10f);
             buttonPause.setPosition(screenWidth * 9 / 10f,screenHeight - screenWidth / 10f);
@@ -292,7 +295,7 @@ public class GameScreen extends ScreenAdapter {
                 @Override
                 public void touchUp(InputEvent event, float x, float y, int pointer, int button) {
                     backgroundMusic.pause();
-                    main.setScreen(new PauseScreen(main, gameScreen));
+                    main.setScreen(new PauseScreen(main, textures, gameScreen));
                 }
             });
 
@@ -432,8 +435,8 @@ public class GameScreen extends ScreenAdapter {
             float size = screenWidth / 10f;
 
             Skin touchPadSkin = new Skin();
-            touchPadSkin.add("touchBackground", Textures.getJoystickBack());
-            touchPadSkin.add("touchKnob", Textures.getJoystickKnob());
+            touchPadSkin.add("touchBackground", textures.getJoystickBack());
+            touchPadSkin.add("touchKnob", textures.getJoystickKnob());
             Touchpad.TouchpadStyle touchPadStyle = new Touchpad.TouchpadStyle();
             touchBackground = touchPadSkin.getDrawable("touchBackground");
             touchKnob = touchPadSkin.getDrawable("touchKnob");
@@ -520,9 +523,9 @@ public class GameScreen extends ScreenAdapter {
             if(playerRect.overlaps(exitRectangle)) {
                 dispose();
                 if(GameConfiguration.tutorialOn) {
-                    main.setScreen(new AfterTutorialScreen(main));
+                    main.setScreen(new AfterTutorialScreen(main, textures));
                 } else {
-                    main.setScreen(new AfterGameScreen(main, score));
+                    main.setScreen(new AfterGameScreen(main, textures, score));
                 }
             }
         }
@@ -559,8 +562,8 @@ public class GameScreen extends ScreenAdapter {
     }
 
     public void getTextures() {
-        playerTextures = Textures.getPlayerTexture(GameConfiguration.open("player"));
-        objectTexture = Textures.getObjectTexture();
+        playerTextures = textures.getPlayerTexture(GameConfiguration.open("player"));
+        objectTexture = textures.getObjectTexture();
 
     }
 
@@ -898,8 +901,8 @@ public class GameScreen extends ScreenAdapter {
     public void setExitTop(boolean exitTop, boolean exitLeft) {
         this.exitTop = exitTop;
         this.exitLeft = exitLeft;
-        exitOpenTexture = Textures.getExitOpenTexture(exitTop);
-        exitClosedTexture = Textures.getExitCloseTexture(exitTop);
+        exitOpenTexture = textures.getExitOpenTexture(exitTop);
+        exitClosedTexture = textures.getExitCloseTexture(exitTop);
     }
 
     public void openExit() {
@@ -962,7 +965,7 @@ public class GameScreen extends ScreenAdapter {
         buttonActivate.setDisabled(true);
         touchpad.setVisible(false);
 
-        tutorialTextBackground = new Image(Textures.tutorialTextBackground);
+        tutorialTextBackground = new Image(textures.tutorialTextBackground);
         tutorialTextBackground.setSize(screenWidth / 2f, screenHeight / 2f);
         tutorialTextBackground.setPosition(screenWidth / 2f - tutorialTextBackground.getWidth() / 2f,
                 screenHeight * 4 / 5 - tutorialTextBackground.getHeight());
@@ -997,7 +1000,7 @@ public class GameScreen extends ScreenAdapter {
                 tutorialTextBackground.getY());
         tutorialLabel.setWrap(true);
 
-        objectiveBackground = new Image(Textures.tutorialTextBackground);
+        objectiveBackground = new Image(textures.tutorialTextBackground);
         objectiveBackground.setSize(screenWidth / 4, screenHeight / 4);
         objectiveBackground.setPosition(0, screenHeight / 2);
         objectiveBackground.setVisible(false);
@@ -1150,7 +1153,7 @@ public class GameScreen extends ScreenAdapter {
         if(radius > Gdx.graphics.getHeight() * 9 / 10f) {
             radius = Gdx.graphics.getHeight() * 9 / 10f;
         }
-        Texture wholeBackground = Textures.background;
+        Texture wholeBackground = textures.background;
         int width = (int) (wholeBackground.getWidth() * 3 / 10 * Gdx.graphics.getWidth() / radius);
         int height = (int) (wholeBackground.getHeight() * 3 / 10 * Gdx.graphics.getHeight() / radius);
         int x = wholeBackground.getWidth() / 2 - width / 2;
