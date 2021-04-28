@@ -248,9 +248,10 @@ public class GameScreen extends ScreenAdapter {
         scoreLabel.setColor(Color.BLACK);
 
         scoreChangeLabel = new Label("", mySkin, "pixel72");
-        scoreChangeLabel.setBounds(scoreLabel.getX() + scoreLabel.getWidth() * 1.9f, scoreLabel.getY(),
+        scoreChangeLabel.setBounds(scoreLabel.getX(), scoreLabel.getY(),
                 scoreLabel.getWidth(), scoreLabel.getHeight());
         scoreChangeLabel.setFontScale(0.7f);
+
         objectLabel = new Label("", mySkin, "pixel722");
         objectLabel.setBounds(scoreLabel.getX(), scoreLabel.getY() - scoreLabel.getHeight(),
                 scoreLabel.getWidth(), scoreLabel.getHeight());
@@ -1011,7 +1012,11 @@ public class GameScreen extends ScreenAdapter {
                 indicator = '+';
                 changeColor = Color.GREEN;
             }
-            scoreChangeLabel.setText(indicator + "" + scoreAdd);
+            String scoreLengthString = "";
+            for(int i = 0; i < scoreLabel.getText().length; i++) {
+                scoreLengthString = scoreLengthString + " ";
+            }
+            scoreChangeLabel.setText(scoreLengthString + "  " + indicator + "" + scoreAdd);
             scoreChangeLabel.setColor(changeColor);
             scoreAddTime -= deltaTime;
         } else {
