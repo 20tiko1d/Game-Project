@@ -9,7 +9,6 @@ import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.InputListener;
 import com.badlogic.gdx.scenes.scene2d.Stage;
-import com.badlogic.gdx.scenes.scene2d.ui.Button;
 import com.badlogic.gdx.scenes.scene2d.ui.Image;
 import com.badlogic.gdx.scenes.scene2d.ui.Label;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
@@ -90,11 +89,6 @@ public class SettingsScreen extends ScreenAdapter {
         controlsBackground.setSize(screenWidth / 3, screenWidth / 6);
         controlsBackground.setPosition(screenWidth / 20, screenWidth / 20);
 
-        //Label controlsBackground = new Label("", mySkin, "default");
-        //controlsBackground.setSize(screenWidth / 3, screenWidth / 6);
-        //controlsBackground.setPosition(screenWidth / 20, screenWidth / 20);
-        //controlsBackground.setColor(200 / 255f, 200 / 255f, 200 / 255f, 1);
-
         TextButton buttonInvert = new TextButton(GameConfiguration.getText("switchButton"),mySkin,"pixel72");
         buttonInvert.setSize(screenWidth / 6f,screenWidth / 12f);
         buttonInvert.setPosition(controlsBackground.getX() + controlsBackground.getWidth() / 2 -
@@ -162,9 +156,7 @@ public class SettingsScreen extends ScreenAdapter {
         musicVolumeLabel.setFontScale(0.5f);
         try {
             changeMusicVolume(Integer.parseInt(GameConfiguration.open("musicVolume")));
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
+        } catch (Exception e) {}
 
 
         final Slider musicVolumeSlider = new Slider(0, 1, 0.1f, false, mySkin);
@@ -175,12 +167,9 @@ public class SettingsScreen extends ScreenAdapter {
         musicVolumeSlider.getStyle().knob.setMinWidth(screenWidth / 20);
         musicVolumeSlider.getStyle().knob.setMinHeight(screenWidth / 20);
         musicVolumeSlider.getStyle().background.setMinHeight(screenWidth / 30);
-        //musicVolumeSlider.getStyle().background.setMinWidth(screenWidth / 30);
         try {
             musicVolumeSlider.setValue(Integer.parseInt(GameConfiguration.open("musicVolume")) / 10f);
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
+        } catch (Exception e) {}
 
         musicVolumeSlider.addListener(new InputListener() {
             @Override

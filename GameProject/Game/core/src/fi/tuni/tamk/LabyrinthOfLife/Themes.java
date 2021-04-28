@@ -233,9 +233,6 @@ public class Themes extends ScreenAdapter {
         checkMarkPlayer.setSize(playerCheckMarkSize, playerCheckMarkSize);
         checkMarkPlayer.setPosition(buttonGhost.getX() + buttonGhost.getWidth() * 1.5f - checkMarkPlayer.getWidth() / 2f, playerMarkY);
 
-
-
-
         stage.addActor(buttonMenu);
         stage.addActor(buttonLevels);
         stage.addActor(themeLabel);

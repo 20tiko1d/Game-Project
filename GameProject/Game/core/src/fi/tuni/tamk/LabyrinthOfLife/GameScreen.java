@@ -91,7 +91,6 @@ public class GameScreen extends ScreenAdapter {
     private Texture objectTexture;
     private final Image pairLabelBackground;
     private TextureRegion background;
-
     private final Skin mySkin;
 
     // Map rendering
@@ -164,7 +163,6 @@ public class GameScreen extends ScreenAdapter {
     private int scoreLength;
 
     // Fps counter
-    private int fpsCounter = 0;
     private float second = 1;
 
     // Tutorial
@@ -256,7 +254,6 @@ public class GameScreen extends ScreenAdapter {
         stage.addActor(scoreLabel);
         stage.addActor(scoreChangeLabel);
         stage.addActor(objectLabel);
-        //stage.addActor(pairLabelBackground);
         stage.addActor(pairLabel);
         stage.addActor(activatedLabel);
 
@@ -285,64 +282,6 @@ public class GameScreen extends ScreenAdapter {
             mapY = map.length * tileHeight;
 
             inputMultiplexer.addProcessor(stage);
-            inputMultiplexer.addProcessor(new InputMultiplexer( new InputAdapter() {
-                @Override
-                public boolean keyDown(int keycode) {
-                    if(keycode == Input.Keys.UP && !isUp) {
-                        velY++;
-                        isUp = true;
-                    }
-                    if(keycode == Input.Keys.DOWN && !isDown) {
-                        velY--;
-                        isDown = true;
-                    }
-                    if(keycode == Input.Keys.LEFT && !isLeft) {
-                        velX--;
-                        isLeft = true;
-                    }
-                    if(keycode == Input.Keys.RIGHT && !isRight) {
-                        velX++;
-                        isRight = true;
-                    }
-                    if(keycode == Input.Keys.SPACE && !isSpace) {
-                        ifZoomIn = true;
-                        boost = true;
-                        velMultiplier = 1.5f;
-                        isSpace = true;
-                    }
-                    return true;
-                }
-
-                @Override
-                public boolean keyUp(int keycode) {
-                    if(keycode == Input.Keys.UP) {
-                        velY--;
-                        isUp = false;
-                    }
-                    if(keycode == Input.Keys.DOWN) {
-                        velY++;
-                        isDown = false;
-                    }
-                    if(keycode == Input.Keys.LEFT) {
-                        velX++;
-                        isLeft = false;
-                    }
-                    if(keycode == Input.Keys.RIGHT) {
-                        velX--;
-                        isRight = false;
-                    }
-                    if(keycode == Input.Keys.SPACE && !ifZoomIn) {
-                        ifZoomIn = true;
-                    }
-                    if(keycode == Input.Keys.SPACE) {
-                        ifZoomIn = false;
-                        ifMaxZoom = false;
-                        velMultiplier = 1;
-                        isSpace = false;
-                    }
-                    return true;
-                }
-            }));
 
             final Drawable drawable = new TextureRegionDrawable(new TextureRegion(Textures.pauseButtonTexture));
             final Button buttonPause = new Button(drawable);
@@ -433,9 +372,6 @@ public class GameScreen extends ScreenAdapter {
                             scoreAdd = -objectScore / 2;
                             scoreAddTime = 2;
                         }
-
-                        //currentIndex = closeIndex;
-                        //currentFirst = first;
                     }
                     activateObject();
                     if(tutorialOn) {
@@ -636,7 +572,6 @@ public class GameScreen extends ScreenAdapter {
     }
 
     public void doPhysicsStep(float deltaTime)  {
-        fpsCounter++;
         float frameTime = deltaTime;
 
         if(deltaTime > 1 / 4f) {
@@ -650,8 +585,6 @@ public class GameScreen extends ScreenAdapter {
             accumulator -= TIME_STEP;
             second -= TIME_STEP;
             if(second <= 0) {
-                //Gdx.app.log("", "fps: " + fpsCounter);
-                fpsCounter = 0;
                 second = 1;
             }
         }
@@ -1082,7 +1015,6 @@ public class GameScreen extends ScreenAdapter {
         objectiveText.setWrap(true);
         objectiveText.setVisible(false);
 
-        //stage.addActor(tutorialTextBackground);
         stage.addActor(tutorialLabel);
         stage.addActor(buttonTutorial);
         stage.addActor(objectiveBackground);

@@ -47,9 +47,7 @@ public final class GameConfiguration implements HighScoreListener {
     public static final float OBJECT_HEIGHT = 3;
 
     // Joystick settings
-    //public static float joystickXOffset = Gdx.graphics.getWidth() / 32f;
     public static float joystickLength = Gdx.graphics.getWidth() * 3 / 16f;
-    //public static float joystickX = Gdx.graphics.getWidth() * 3 / 4f + joystickXOffset;
     public static float joystickY = Gdx.graphics.getHeight() / 4f - joystickLength / 2;
 
 
@@ -133,7 +131,7 @@ public final class GameConfiguration implements HighScoreListener {
             save("theme", "sand");
             save("player", "ghost");
             save("controls", "default");
-            save("musicVolume", "50");
+            save("musicVolume", "5");
             firstTime = true;
         } else {
             firstTime = false;
@@ -210,9 +208,7 @@ public final class GameConfiguration implements HighScoreListener {
         try {
             HighScoreServer.readConfig("highscore.config");
             HighScoreServer.fetchHighScores(new GameConfiguration(), mapId);
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
+        } catch (Exception e) {}
     }
 
     public static void sendHighScores(int score) {
@@ -220,9 +216,7 @@ public final class GameConfiguration implements HighScoreListener {
         try {
             HighScoreServer.readConfig("highscore.config");
             HighScoreServer.sendNewHighScore(entry, new GameConfiguration());
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
+        } catch (Exception e) {}
     }
 
     public static float getControlsX(int indicator, float width) {

@@ -106,7 +106,6 @@ public class AfterTutorialScreen extends ScreenAdapter {
         stage.addActor(buttonPlayAgain);
         stage.addActor(tutorialLabel);
 
-
         Gdx.input.setInputProcessor(stage);
     }
 

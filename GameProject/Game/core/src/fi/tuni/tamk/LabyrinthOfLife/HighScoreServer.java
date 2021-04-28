@@ -51,16 +51,13 @@ public class HighScoreServer {
      * @param source source class implementing HighScoreListener
      */
     public static void fetchHighScores(final HighScoreListener source, int mapid) {
-        // Load CAs from an InputStream
         // (could be from a resource or ByteArrayInputStream or ...)
         HttpsURLConnection urlConnection = null;
         try {
 
             URL connectionURL = new URL(url + "?json&mapid=" + mapid);
-            //URL connectionURL = new URL(url + "?json");
 
             urlConnection = (HttpsURLConnection) connectionURL.openConnection();
-            //urlConnection.setSSLSocketFactory(context.getSocketFactory());
 
             if (urlConnection.getResponseCode() == 200) {
                 InputStream in = urlConnection.getInputStream();
@@ -121,7 +118,6 @@ public class HighScoreServer {
             URL connectionURL = new URL(url);
 
             urlConnection = (HttpsURLConnection) connectionURL.openConnection();
-            //urlConnection.setSSLSocketFactory(context.getSocketFactory());
 
             urlConnection.setRequestMethod("POST");
             urlConnection.setDoInput(true);
@@ -145,7 +141,6 @@ public class HighScoreServer {
                 while ((output = br.readLine()) != null) {
                     sb.append(output);
                 }
-                JsonValue jsonObject = (new JsonReader().parse(sb.toString()));
 
                 source.receiveSendReply(response);
             }
