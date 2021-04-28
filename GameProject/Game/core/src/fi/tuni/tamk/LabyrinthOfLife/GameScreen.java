@@ -105,11 +105,6 @@ public class GameScreen extends ScreenAdapter {
 
     // Controls
     private boolean boost = false;
-    private boolean isUp = false;
-    private boolean isDown = false;
-    private boolean isLeft = false;
-    private boolean isRight = false;
-    private boolean isSpace = false;
     private float velX;
     private float velY;
     private float velMultiplier = 1;
