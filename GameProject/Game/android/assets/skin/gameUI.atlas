@@ -108,6 +108,15 @@ pixel72.22
   orig: 512, 512
   offset: 0, 0
   index: -1
+boostButtonDown
+  rotate: false
+  xy: 515, 641
+  size: 300, 300
+  split: 70, 70, 70, 75
+  pad: 50, 50, 70, 75
+  orig: 300, 300
+  offset: 0, 0
+  index: -1
 boostButtonUp
   rotate: false
   xy: 1, 46
@@ -123,6 +132,15 @@ boostButtonUp2
   size: 300, 300
   split: 75, 75, 75, 75
   pad: 35, 35, 75, 75
+  orig: 300, 300
+  offset: 0, 0
+  index: -1
+boostButtonUp3
+  rotate: false
+  xy: 515, 943
+  size: 300, 300
+  split: 70, 70, 70, 75
+  pad: 50, 50, 70, 75
   orig: 300, 300
   offset: 0, 0
   index: -1
@@ -169,7 +187,7 @@ horizontal-scroll-bar
   index: -1
 horizontal-scroll-knob
   rotate: false
-  xy: 515, 920
+  xy: 1029, 1605
   size: 52, 21
   split: 14, 14, 10, 9
   pad: 0, 0, 0, 0
@@ -187,7 +205,7 @@ horizontal-split-pane
   index: -1
 list
   rotate: false
-  xy: 1682, 1873
+  xy: 564, 624
   size: 16, 15
   split: 4, 4, 4, 4
   pad: 4, 4, 2, 2
@@ -203,14 +221,14 @@ minus
   index: -1
 plus
   rotate: false
-  xy: 515, 898
+  xy: 1029, 1583
   size: 25, 20
   orig: 25, 20
   offset: 0, 0
   index: -1
 progress-bar
   rotate: false
-  xy: 1380, 1725
+  xy: 1682, 1856
   size: 22, 32
   split: 7, 6, 6, 6
   pad: 3, 3, 3, 3
@@ -228,7 +246,7 @@ progress-bar-knob
   index: -1
 progress-bar-knob-vertical
   rotate: false
-  xy: 1633, 1853
+  xy: 515, 604
   size: 22, 1
   split: 0, 21, 0, 0
   pad: 0, 0, 0, 0
@@ -246,21 +264,21 @@ progress-bar-vertical
   index: -1
 radio-button
   rotate: false
-  xy: 569, 921
+  xy: 1083, 1606
   size: 25, 20
   orig: 25, 20
   offset: 0, 0
   index: -1
 radio-button-off
   rotate: false
-  xy: 1029, 1554
+  xy: 1331, 1685
   size: 25, 20
   orig: 25, 20
   offset: 0, 0
   index: -1
 select-box
   rotate: false
-  xy: 1331, 1725
+  xy: 1633, 1856
   size: 47, 32
   split: 4, 35, 28, 3
   pad: 7, 36, 3, 3
@@ -269,7 +287,7 @@ select-box
   index: -1
 select-box-down
   rotate: false
-  xy: 1633, 1856
+  xy: 515, 607
   size: 47, 32
   split: 4, 35, 28, 3
   pad: 3, 36, 3, 3
@@ -278,7 +296,7 @@ select-box-down
   index: -1
 slider
   rotate: false
-  xy: 1081, 1594
+  xy: 1383, 1725
   size: 25, 32
   split: 5, 5, 15, 14
   pad: 0, 0, 0, 0
@@ -294,7 +312,7 @@ slider-knob
   index: -1
 slider-vertical
   rotate: false
-  xy: 1331, 1691
+  xy: 1633, 1822
   size: 25, 32
   split: 11, 11, 9, 7
   pad: 0, 0, 1, 0
@@ -303,7 +321,7 @@ slider-vertical
   index: -1
 slider2
   rotate: false
-  xy: 1029, 1576
+  xy: 1331, 1707
   size: 50, 50
   split: 16, 15, 19, 22
   pad: 0, 0, 19, 22

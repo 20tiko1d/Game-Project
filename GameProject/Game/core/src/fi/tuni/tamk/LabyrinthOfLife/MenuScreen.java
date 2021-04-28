@@ -94,24 +94,6 @@ public class MenuScreen extends ScreenAdapter {
             }
         });
 
-        TextButton buttonTest = new TextButton("test", mySkin,"pixel72");
-        buttonTest.setSize(screenWidth / 10f,screenWidth / 10f);
-        buttonTest.setPosition(0,screenHeight - screenWidth / 10f);
-        buttonTest.setColor(Color.YELLOW);
-        buttonTest.getLabel().setFontScale(GameConfiguration.fitText(buttonTest, -1, -1));
-        buttonTest.addListener(new InputListener(){
-            @Override
-            public boolean touchDown(InputEvent event, float x, float y, int pointer, int button) {
-                return true;
-            }
-
-            @Override
-            public void touchUp(InputEvent event, float x, float y, int pointer, int button) {
-                dispose();
-                main.setScreen(new AfterTutorialScreen(main));
-            }
-        });
-
         buttonBackgroundWidth = screenWidth * 2 / 5f;
         buttonBackgroundHeight = screenWidth * 3 / 10f;
         buttonBackgroundX = screenWidth / 2f - buttonBackgroundWidth / 2f;
@@ -192,7 +174,6 @@ public class MenuScreen extends ScreenAdapter {
         stage.addActor(buttonPlay);
         stage.addActor(buttonSettings);
         stage.addActor(buttonHighScores);
-        stage.addActor(buttonTest);
         Gdx.input.setInputProcessor(stage);
     }
 

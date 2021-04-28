@@ -43,8 +43,7 @@ public class AfterGameScreen extends ScreenAdapter {
         screenWidth = Gdx.graphics.getWidth();
         screenHeight = Gdx.graphics.getHeight();
 
-        //GameConfiguration.sendHighScores((int) (score * 100));
-        //GameConfiguration.getHighScores(GameConfiguration.gameLevel);
+        GameConfiguration.sendHighScores((int) (score * 100));
     }
 
     @Override
@@ -156,7 +155,7 @@ public class AfterGameScreen extends ScreenAdapter {
             }
         });
 
-        Label scoreLabel = new Label( GameConfiguration.getText("score") + ": " + MathUtils.round(score * 100) / 100f, mySkin, "pixel100");
+        Label scoreLabel = new Label( GameConfiguration.getText("score") + ": " + ((int) (score * 100)) / 100f, mySkin, "pixel100");
         float scoreLabelWidth = screenWidth / 2f;
         float scoreLabelHeight = screenHeight / 4f;
 

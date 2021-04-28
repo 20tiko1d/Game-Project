@@ -206,8 +206,8 @@ com.badlogic.gdx.scenes.scene2d.ui.TextButton$TextButtonStyle: {
 	boost: {
 		font: pixel48
 		fontColor: black
-		up: boostButtonUp2
-		down: boostButtonUp2
+		up: boostButtonUp3
+		down: boostButtonDown
 	}
 	pixel72: {
 		font: pixel72

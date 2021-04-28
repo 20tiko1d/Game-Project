@@ -17,7 +17,7 @@ public final class Textures {
     public static Texture engFlag = new Texture("textures/flags/gbr_flag.png");
 
     // Menu screen button background (40px width, 30px Height)
-    public static Texture menuButtonBackground = new Texture("textures/random/menuButtonBackground2.png");
+    public static Texture menuButtonBackground = new Texture("textures/backgrounds/menuButtonBackground.png");
 
     // Pause button
     public static Texture pauseButtonTexture = new Texture("textures/random/pauseButton.png");
@@ -26,10 +26,10 @@ public final class Textures {
     public static Texture playButtonTexture = new Texture("textures/random/playButton.png");
 
     // Object shadow
-    public static Texture shadow = new Texture("textures/random/shadow2.png");
+    public static Texture shadow = new Texture("textures/random/shadow.png");
 
     // Game background "mist"
-    public static Texture background = new Texture("textures/random/fog8.png");
+    public static Texture background = new Texture("textures/backgrounds/fogBackground.png");
 
     // Theme buttons
     public static Texture themeBush = new Texture("textures/themeScreenTextures/themeBush.png");
@@ -100,10 +100,6 @@ public final class Textures {
         return playerTextures;
     }
 
-    public static Texture getBackgroundTexture() {
-        return new Texture("textures/backgrounds/fogBackground.png");
-    }
-
     public static Texture getObjectTexture() {
         ArrayList<Texture> textures = new ArrayList<>();
 
@@ -148,21 +144,14 @@ public final class Textures {
         return new Texture("textures/walls/start/wallStart.png");
     }
 
-    //public static Texture getSideTexture() { return new Texture("textures/random/sides.png");}
-
-    public static Texture getPairLabelBackground() { return new Texture("textures/random/pairLabelBackground.png");}
+    public static Texture getPairLabelBackground() { return new Texture("textures/backgrounds/pairLabelBackground.png");}
 
     public static Texture getJoystickBack() { return new Texture("textures/joystick/joystickBack.png");}
 
     public static Texture getJoystickKnob() { return new Texture("textures/joystick/joystickKnob.png");}
 
-    /*
-    public static Texture getTutorialTextBackground() {
-        return new Texture("textures/random/tutorialTextBackground.png");
-    }*/
-
     public static Texture getMenuBackground() {
-        return new Texture("textures/random/backgroundImage5.png");
+        return new Texture("textures/backgrounds/menuBackgroundImage.png");
     }
 
     public static Texture getMedalTexture(String name) {

@@ -161,6 +161,7 @@ public class GameScreen extends ScreenAdapter {
     private float scoreAddTime = 0;
     private int scoreAdd;
     private final String scoreString;
+    private int scoreLength;
 
     // Fps counter
     private int fpsCounter = 0;
@@ -220,11 +221,6 @@ public class GameScreen extends ScreenAdapter {
         //sprintSound = Sounds.sprintSound;
 
         calculateCircle();
-
-        Image roundImage = new Image(Textures.getBackgroundTexture());
-        roundImage.setBounds(screenWidth / 4f,
-                0,
-                screenWidth / 2f, screenHeight);
 
         Image backgroundImage = new Image(background);
         backgroundImage.setBounds(0, 0, screenWidth, screenHeight);
@@ -1013,13 +1009,17 @@ public class GameScreen extends ScreenAdapter {
                 changeColor = Color.GREEN;
             }
             String scoreLengthString = "";
-            for(int i = 0; i < scoreLabel.getText().length; i++) {
+            if(scoreLength < 1) {
+                scoreLength = scoreLabel.getText().length;
+            }
+            for(int i = 0; i < scoreLength; i++) {
                 scoreLengthString = scoreLengthString + " ";
             }
             scoreChangeLabel.setText(scoreLengthString + "  " + indicator + "" + scoreAdd);
             scoreChangeLabel.setColor(changeColor);
             scoreAddTime -= deltaTime;
         } else {
+            scoreLength = 0;
             scoreChangeLabel.setText("");
         }
         scoreLabel.setText(scoreString + ": " + MathUtils.round(score * 100) / 100f);
