@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
     package="fi.tuni.tamk.LabyrinthOfLife" >
 
     <uses-permission android:name="android.permission.INTERNET" />
@@ -9,7 +10,8 @@
         android:isGame="true"
         android:appCategory="game"
         android:label="@string/app_name"
-        android:theme="@style/GdxTheme" >
+        android:theme="@style/GdxTheme"
+        tools:targetApi="o">
         <activity
             android:name="fi.tuni.tamk.LabyrinthOfLife.AndroidLauncher"
             android:label="@string/app_name"
