@@ -86,7 +86,7 @@ task run(type: Exec) {
     }
 
     def adb = path + "/platform-tools/adb"
-    commandLine "$adb", 'shell', 'am', 'start', '-n', 'fi.tuni.tamk/fi.tuni.tamk.LabyrinthOfLife.AndroidLauncher'
+    commandLine "$adb", 'shell', 'am', 'start', '-n', 'fi.tuni.tamk.LabyrinthOfLife/fi.tuni.tamk.LabyrinthOfLife.AndroidLauncher'
 }
 
 eclipse.project.name = appName + "-android"
