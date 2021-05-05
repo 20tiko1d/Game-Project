@@ -924,17 +924,23 @@ public class GameScreen extends ScreenAdapter {
             score -= deltaTime;
         }
         if(scoreAddTime > 0) {
+            int emptyLength = 9;
+            if(GameConfiguration.getLanguage().equals("fi_FI")) {
+                emptyLength = 11;
+            }
             Color changeColor = Color.RED;
+            scoreLength = 5;
+            if(score < 100) {
+                scoreLength = 4;
+            }
             char indicator = ' ';
             if(scoreAdd > 0) {
                 indicator = '+';
+                scoreLength++;
                 changeColor = Color.GREEN;
             }
             String scoreLengthString = "";
-            if(scoreLength < 1) {
-                scoreLength = scoreLabel.getText().length;
-            }
-            for(int i = 0; i < scoreLength; i++) {
+            for(int i = 0; i < emptyLength + scoreLength; i++) {
                 scoreLengthString = scoreLengthString + " ";
             }
             scoreChangeLabel.setText(scoreLengthString + "  " + indicator + "" + scoreAdd);

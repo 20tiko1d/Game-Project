@@ -16,6 +16,7 @@ import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
 import com.badlogic.gdx.utils.Align;
 import com.badlogic.gdx.utils.viewport.ScreenViewport;
+import com.sun.jndi.toolkit.url.Uri;
 
 import java.util.ArrayList;
 
@@ -123,6 +124,28 @@ public class HighScores extends ScreenAdapter {
             }
         });
 
+        TextButton buttonWeb = new TextButton(GameConfiguration.getText("webHighScores"),mySkin,"pixel72");
+        buttonWeb.setSize(buttonLevels.getWidth(),buttonLevels.getHeight());
+        buttonWeb.setPosition(screenWidth - buttonWeb.getWidth(), 0);
+        buttonWeb.setColor(Color.GREEN);
+        buttonWeb.getLabel().setWrap(true);
+        int givenFontSize = 35;
+        if(GameConfiguration.getLanguage().equals("fi_FI")) {
+            givenFontSize = 25;
+        }
+        buttonWeb.getLabel().setFontScale(GameConfiguration.fitText(buttonWeb, givenFontSize, -1));
+        buttonWeb.addListener(new InputListener() {
+            @Override
+            public boolean touchDown (InputEvent event, float x, float y, int pointer, int button) {
+                return true;
+            }
+
+            @Override
+            public void touchUp(InputEvent event, float x, float y, int pointer, int button) {
+                Gdx.net.openURI("https://webpages.tuni.fi/20tiko1d/score/");
+            }
+        });
+
         Label backgroundLabel = new Label("", mySkin, "tutorialTest2");
         backgroundLabel.setSize(screenWidth * 8 / 10f, screenHeight * 8 / 10f);
         backgroundLabel.setPosition(screenWidth / 10f, 0);
@@ -161,6 +184,7 @@ public class HighScores extends ScreenAdapter {
 
         stage.addActor(buttonMenu);
         stage.addActor(buttonLevels);
+        stage.addActor(buttonWeb);
         stage.addActor(nameLabel);
         stage.addActor(buttonRename);
         stage.addActor(backgroundLabel);
