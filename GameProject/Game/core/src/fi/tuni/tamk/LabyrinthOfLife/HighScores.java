@@ -142,7 +142,11 @@ public class HighScores extends ScreenAdapter {
 
             @Override
             public void touchUp(InputEvent event, float x, float y, int pointer, int button) {
-                Gdx.net.openURI("https://webpages.tuni.fi/20tiko1d/score/");
+                String url = "https://webpages.tuni.fi/20tiko1d/score/";
+                if(GameConfiguration.getLanguage().equals("en_UK")) {
+                    url = url + "?eng";
+                }
+                Gdx.net.openURI(url);
             }
         });
 
