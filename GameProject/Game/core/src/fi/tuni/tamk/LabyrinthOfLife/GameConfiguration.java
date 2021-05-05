@@ -10,6 +10,9 @@ import com.badlogic.gdx.utils.I18NBundle;
 import java.util.ArrayList;
 import java.util.Locale;
 
+/**
+ * Static class which contains Game settings and several tools.
+ */
 public final class GameConfiguration implements HighScoreListener {
 
     // Current game level
@@ -61,10 +64,20 @@ public final class GameConfiguration implements HighScoreListener {
 
     private GameConfiguration() {}
 
+    /**
+     * Gets starting score.
+     *
+     * @return Start score.
+     */
     public static int getStartScore() {
         return SCORE * gameLevel;
     }
 
+    /**
+     * Gets object collecting score.
+     *
+     * @return Object collecting score.
+     */
     public static int getObjectScore() {
         return OBJECT_SCORE * gameLevel;
     }
@@ -75,11 +88,11 @@ public final class GameConfiguration implements HighScoreListener {
      * @param main Main object to pass along.
      * @return Game screen.
      */
-    public static GameScreen createGame(Main main, Textures textures) {
+    public static GameScreen createGame(Main main) {
         World world = new World(new Vector2(0,0), true);
 
-        GameScreen gameScreen= new GameScreen(main, textures, world);
-        MapGenerator generator= new MapGenerator(gameScreen, textures);
+        GameScreen gameScreen= new GameScreen(main, world);
+        MapGenerator generator= new MapGenerator(gameScreen, main);
         if(tutorialOn) {
             generator.createTutorialMap(world);
         } else {
@@ -101,6 +114,12 @@ public final class GameConfiguration implements HighScoreListener {
         return gameScreen;
     }
 
+    /**
+     * Gets a certain text depending on given key and used language.
+     *
+     * @param key: Name of the text key.
+     * @return Text string.
+     */
     public static String getText(String key) {
         Locale locale;
         if(open("language").equals("fi_FI")) {
@@ -115,17 +134,32 @@ public final class GameConfiguration implements HighScoreListener {
         return myBundle.get(key);
     }
 
+    /**
+     * Saves data to storage.
+     *
+     * @param key: Name of the key.
+     * @param value: Saved value.
+     */
     public static void save(String key, String value) {
         Preferences prefs = Gdx.app.getPreferences("MyPreferences");
         prefs.putString(key, value);
         prefs.flush();
     }
 
+    /**
+     * Reads data from the storage.
+     *
+     * @param key: Name of the key.
+     * @return Read data as a string.
+     */
     public static String open(String key) {
         Preferences prefs = Gdx.app.getPreferences("MyPreferences");
         return prefs.getString(key, noValue);
     }
 
+    /**
+     * Checks if this is the first time player uses the app.
+     */
     public static void checkFirstTime() {
         if(open("firstTime").equals(noValue)) {
             save("theme", "sand");
@@ -140,6 +174,11 @@ public final class GameConfiguration implements HighScoreListener {
         theme = open("theme");
     }
 
+    /**
+     * Gets the language used.
+     *
+     * @return Language as a string.
+     */
     public static String getLanguage() {
         String language;
         if(open("language").equals(noValue)) {
@@ -154,6 +193,14 @@ public final class GameConfiguration implements HighScoreListener {
         return language;
     }
 
+    /**
+     * Fits text to a button with given arguments.
+     *
+     * @param button: TextButton.
+     * @param givenFontSize: Given font size.
+     * @param givenMaxSize: Maximum font size.
+     * @return Font scaling value.
+     */
     public static float fitText(TextButton button, int givenFontSize, int givenMaxSize) {
         float width = button.getWidth() * 0.8f;
         int length = button.getText().length();
@@ -204,6 +251,11 @@ public final class GameConfiguration implements HighScoreListener {
         Gdx.app.log("", "failedToSendHighScore: " + s);
     }
 
+    /**
+     * Gets the high scores depending on the given difficulty level.
+     *
+     * @param mapId: Difficulty id (1-3).
+     */
     public static void getHighScores(int mapId) {
         try {
             HighScoreServer.readConfig("highscore.config");
@@ -211,6 +263,11 @@ public final class GameConfiguration implements HighScoreListener {
         } catch (Exception e) {}
     }
 
+    /**
+     * Sends high scores to the server.
+     *
+     * @param score: Score to send.
+     */
     public static void sendHighScores(int score) {
         HighScoreEntry entry = new HighScoreEntry(open("name"), score, 1, gameLevel);
         try {
@@ -219,6 +276,13 @@ public final class GameConfiguration implements HighScoreListener {
         } catch (Exception e) {}
     }
 
+    /**
+     * Gets x location for the control component (boost-button or joystick).
+     *
+     * @param indicator: 1 if boost, 2 if joystick.
+     * @param width: Width of the component.
+     * @return X location of the component.
+     */
     public static float getControlsX(int indicator, float width) {
         boolean isDefault = open("controls").equals("default");
         float screenWidth = Gdx.graphics.getWidth();
@@ -229,6 +293,9 @@ public final class GameConfiguration implements HighScoreListener {
         }
     }
 
+    /**
+     * Inverts the components (boost-button and joystick).
+     */
     public static void invert() {
         if(open("controls").equals("default")) {
             save("controls", "inverted");

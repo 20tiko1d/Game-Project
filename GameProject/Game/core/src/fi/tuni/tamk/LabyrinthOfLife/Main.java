@@ -2,10 +2,9 @@ package fi.tuni.tamk.LabyrinthOfLife;
 
 import com.badlogic.gdx.Game;
 import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 
 /**
- * The main class which puts the game running.
+ * The main class.
  */
 public class Main extends Game {
 
@@ -15,18 +14,19 @@ public class Main extends Game {
 	public static float oneWidth = 10f / howMany / 2;
 	public static boolean isPortrait = false;
 
-	SpriteBatch batch;
+	public Sounds sounds;
+	public Textures textures;
 
 	@Override
 	public void create () {
+		this.sounds = new Sounds();
+		this.textures = new Textures();
 		checkDevice();
 		GameConfiguration.checkFirstTime();
-		Textures textures = new Textures();
-		batch = new SpriteBatch();
 		if(GameConfiguration.open("name").equals(GameConfiguration.noValue)) {
-			setScreen(new PlayerName(this, textures, true));
+			setScreen(new PlayerNameScreen(this, true));
 		} else {
-			setScreen(new MenuScreen(this, textures));
+			setScreen(new MenuScreen(this));
 		}
 	}
 
@@ -36,9 +36,11 @@ public class Main extends Game {
 	}
 	
 	@Override
-	public void dispose () {
-	}
+	public void dispose () {}
 
+	/**
+	 * checks the device display portions.
+	 */
 	public void checkDevice() {
 		float radius = Gdx.graphics.getWidth() / 2f;
 		if(radius > Gdx.graphics.getHeight() * 9 / 10f) {

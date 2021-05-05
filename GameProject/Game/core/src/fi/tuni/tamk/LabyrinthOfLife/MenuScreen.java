@@ -5,7 +5,6 @@ import com.badlogic.gdx.ScreenAdapter;
 import com.badlogic.gdx.audio.Sound;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.GL20;
-import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
@@ -27,7 +26,6 @@ public class MenuScreen extends ScreenAdapter {
     private final Main main;
 
     private Stage stage;
-    private OrthographicCamera camera;
     private final SpriteBatch batch;
 
     private TextButton buttonPlay;
@@ -48,15 +46,18 @@ public class MenuScreen extends ScreenAdapter {
 
     private final Sound buttonPressSound;
 
-    private Textures textures;
+    private final Textures textures;
 
-    public MenuScreen(Main main, Textures textures) {
+    /**
+     * Menu screen constructor.
+     *
+     * @param main: Game class object.
+     */
+    public MenuScreen(Main main) {
         this.main = main;
-        this.textures = textures;
-        camera = new OrthographicCamera();
-        camera.setToOrtho(false, Main.viewPortWidth, Main.viewPortHeight);
+        this.textures = main.textures;
         batch = new SpriteBatch();
-        buttonPressSound = Sounds.buttonPressSound;
+        buttonPressSound = main.sounds.buttonPressSound;
     }
 
     @Override
@@ -120,12 +121,12 @@ public class MenuScreen extends ScreenAdapter {
                 if(GameConfiguration.firstTime) {
                     GameConfiguration.tutorialOn = true;
                     GameConfiguration.gameLevel = 1;
-                    GameScreen gameScreen = GameConfiguration.createGame(main, textures);
+                    GameScreen gameScreen = GameConfiguration.createGame(main);
                     dispose();
                     main.setScreen(gameScreen);
                 } else {
                     dispose();
-                    main.setScreen(new LevelScreen(main, textures));
+                    main.setScreen(new LevelScreen(main));
                 }
             }
         });
@@ -149,7 +150,7 @@ public class MenuScreen extends ScreenAdapter {
             @Override
             public void touchUp(InputEvent event, float x, float y, int pointer, int button) {
                 dispose();
-                main.setScreen(new SettingsScreen(main, textures));
+                main.setScreen(new SettingsScreen(main));
             }
         });
 
@@ -169,7 +170,7 @@ public class MenuScreen extends ScreenAdapter {
             @Override
             public void touchUp(InputEvent event, float x, float y, int pointer, int button) {
                 dispose();
-                main.setScreen(new HighScores(main, textures));
+                main.setScreen(new HighScoresScreen(main));
             }
         });
 
@@ -183,7 +184,6 @@ public class MenuScreen extends ScreenAdapter {
 
     @Override
     public void render(float deltaTime) {
-        main.batch.setProjectionMatrix(camera.combined);
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
         batch.begin();
         batch.draw(backgroundImage, 0, 0, screenWidth, backgroundHeight);
@@ -197,10 +197,11 @@ public class MenuScreen extends ScreenAdapter {
     @Override
     public void dispose() {
         stage.dispose();
-        camera = null;
     }
 
-
+    /**
+     * Updates the language of the buttons.
+     */
     public void updateLanguage() {
         buttonPlay.setText(GameConfiguration.getText("playButton"));
         buttonSettings.setText(GameConfiguration.getText("settingsButton"));

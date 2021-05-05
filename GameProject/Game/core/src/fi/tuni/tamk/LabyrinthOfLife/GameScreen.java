@@ -1,8 +1,6 @@
 package fi.tuni.tamk.LabyrinthOfLife;
 
 import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.Input;
-import com.badlogic.gdx.InputAdapter;
 import com.badlogic.gdx.InputMultiplexer;
 import com.badlogic.gdx.ScreenAdapter;
 import com.badlogic.gdx.audio.Music;
@@ -178,12 +176,18 @@ public class GameScreen extends ScreenAdapter {
     private final Sound connectingSound;
     private final Sound wrongValidationSound;
 
-    private Textures textures;
+    private final Textures textures;
 
-    public GameScreen(Main main, Textures textures, World world) {
+    /**
+     * Constructor of game screen.
+     *
+     * @param main: Game class object.
+     * @param world: Box2d world.
+     */
+    public GameScreen(Main main, World world) {
         this.main = main;
         this.world = world;
-        this.textures = textures;
+        this.textures = main.textures;
         this.gameScreen = this;
         scoreString = GameConfiguration.getText("score").toUpperCase();
         objectsFoundString = GameConfiguration.getText("pairsFound").toUpperCase();
@@ -203,11 +207,11 @@ public class GameScreen extends ScreenAdapter {
         tutorialOn = GameConfiguration.tutorialOn;
         mySkin = textures.mySkin;
         shadow = textures.shadow;
-        buttonPressSound = Sounds.buttonPressSound;
-        activationSound = Sounds.activationSound;
-        switchSound = Sounds.switchSound;
-        connectingSound = Sounds.connectingSound;
-        wrongValidationSound = Sounds.wrongValidationSound;
+        buttonPressSound = main.sounds.buttonPressSound;
+        activationSound = main.sounds.activationSound;
+        switchSound = main.sounds.switchSound;
+        connectingSound = main.sounds.connectingSound;
+        wrongValidationSound = main.sounds.wrongValidationSound;
 
         calculateCircle();
 
@@ -222,7 +226,7 @@ public class GameScreen extends ScreenAdapter {
         pairLabel.setScale(1.3f);
         pairLabel.setColor(Color.WHITE);
 
-        pairLabelBackground = new Image(textures.getPairLabelBackground());
+        pairLabelBackground = new Image(textures.getObjectLabelBackground());
         pairLabelBackground.setBounds(screenWidth / 4f, pairLabel.getY(),
                 screenWidth / 2f, pairLabel.getHeight());
 
@@ -266,13 +270,14 @@ public class GameScreen extends ScreenAdapter {
 
         inputMultiplexer = new InputMultiplexer();
 
-        getTextures();
+        playerTextures = textures.getPlayerTexture(GameConfiguration.open("player"));
+        objectTexture = textures.getObjectTexture();
     }
 
     @Override
     public void show() {
         if(!created) {
-            backgroundMusic = Sounds.backgroundMusic;
+            backgroundMusic = main.sounds.backgroundMusic;
             backgroundMusic.setLooping(true);
 
             backgroundMusic.play();
@@ -295,7 +300,7 @@ public class GameScreen extends ScreenAdapter {
                 @Override
                 public void touchUp(InputEvent event, float x, float y, int pointer, int button) {
                     backgroundMusic.pause();
-                    main.setScreen(new PauseScreen(main, textures, gameScreen));
+                    main.setScreen(new PauseScreen(main, gameScreen));
                 }
             });
 
@@ -322,7 +327,6 @@ public class GameScreen extends ScreenAdapter {
                 }
             });
             buttonActivate.setVisible(false);
-            buttonActivate.setDisabled(true);
 
             buttonValidate = new TextButton(GameConfiguration.getText("validate"),mySkin,"pixel72");
             buttonValidate.setSize(screenWidth / 4f,screenWidth / 10f);
@@ -378,7 +382,6 @@ public class GameScreen extends ScreenAdapter {
                 }
             });
             buttonValidate.setVisible(false);
-            buttonValidate.setDisabled(true);
 
             buttonSwitch = new TextButton(GameConfiguration.getText("switchButton"),mySkin,"pixel72");
             buttonSwitch.setSize(screenWidth / 4f,screenWidth / 10f);
@@ -404,7 +407,6 @@ public class GameScreen extends ScreenAdapter {
                 }
             });
             buttonSwitch.setVisible(false);
-            buttonSwitch.setDisabled(true);
 
             buttonBoost = new TextButton(GameConfiguration.getText("boostButton"),mySkin,"boost");
             buttonBoost.setSize(screenWidth * 3 / 18,screenWidth * 3 / 18);
@@ -523,9 +525,9 @@ public class GameScreen extends ScreenAdapter {
             if(playerRect.overlaps(exitRectangle)) {
                 dispose();
                 if(GameConfiguration.tutorialOn) {
-                    main.setScreen(new AfterTutorialScreen(main, textures));
+                    main.setScreen(new AfterTutorialScreen(main));
                 } else {
-                    main.setScreen(new AfterGameScreen(main, textures, score));
+                    main.setScreen(new AfterGameScreen(main, score));
                 }
             }
         }
@@ -561,12 +563,11 @@ public class GameScreen extends ScreenAdapter {
         backgroundMusic = null;
     }
 
-    public void getTextures() {
-        playerTextures = textures.getPlayerTexture(GameConfiguration.open("player"));
-        objectTexture = textures.getObjectTexture();
-
-    }
-
+    /**
+     * Updates the camera position and player's location.
+     *
+     * @param deltaTime: Time passed.
+     */
     public void doPhysicsStep(float deltaTime)  {
         float frameTime = deltaTime;
 
@@ -575,7 +576,6 @@ public class GameScreen extends ScreenAdapter {
         }
         accumulator += frameTime;
 
-        // Fps counter
         while(accumulator >= TIME_STEP && !pauseGame) {
             world.step(TIME_STEP, 8, 3);
             accumulator -= TIME_STEP;
@@ -601,6 +601,11 @@ public class GameScreen extends ScreenAdapter {
         camera.update();
     }
 
+    /**
+     * Moves the player.
+     *
+     * @param time: Time passed.
+     */
     public void move(float time) {
         playerBody.setLinearVelocity(velX * playerSpeed * velMultiplier * time,
                                      velY * playerSpeed * velMultiplier * time);
@@ -732,6 +737,14 @@ public class GameScreen extends ScreenAdapter {
         }
     }
 
+    /**
+     * Draws the player character.
+     *
+     * Chooses the right texture depending on the character's direction.
+     *
+     * @param batch: Spritebatch object.
+     * @param playerY: Player's y location.
+     */
     public void drawPlayer(SpriteBatch batch, float playerY) {
         float playerVelX = playerBody.getLinearVelocity().x;
         float playerVelY = playerBody.getLinearVelocity().y;
@@ -762,20 +775,46 @@ public class GameScreen extends ScreenAdapter {
                 }
             }
         }
-
         batch.draw(playerTexture, playerBody.getPosition().x - tileWidth / 2, playerY,
                 tileWidth, tileWidth * ((float) playerTexture.getHeight() / playerTexture.getWidth()));
     }
 
+    /**
+     * Draws the in game object.
+     *
+     * @param batch: Spritebatch object.
+     * @param locX: In game object's x location.
+     * @param locY: In game object's y location.
+     * @param objectIndex: Index of the object.
+     */
     public void drawObject(SpriteBatch batch, float locX, float locY, int objectIndex) {
         drawShadow(batch, locX, locY, objectIndex);
         batch.draw(objectTexture, locX, locY + Math.round(objectBounciness[objectIndex] * relativeHeight) / relativeHeight + tileHeight / 2, tileWidth, objectHeight);
     }
 
+    /**
+     * Draws floors, walls, start and the exit.
+     *
+     * @param batch: Spritebatch object.
+     * @param texture: Texture to be drawn.
+     * @param locX: Texture's x location.
+     * @param locY: Texture's y location.
+     * @param width: Texture's width.
+     * @param height: Texture's height.
+     * @param flip: Tells if the texture is to be flipped horizontally.
+     */
     public void drawTexture(SpriteBatch batch, Texture texture, float locX, float locY, float width, float height, boolean flip) {
         batch.draw(texture, flip ? locX + width : locX, locY, flip ? - width : width, height);
     }
 
+    /**
+     * Draws the shadow below in game objects.
+     *
+     * @param batch: Spritebatch object.
+     * @param locX: Shadows x location.
+     * @param locY: Shadows y location.
+     * @param objectIndex: Shadows index.
+     */
     public void drawShadow(SpriteBatch batch, float locX, float locY, int objectIndex) {
         float width = tileWidth * 9 / 10 - Math.round(objectBounciness[objectIndex] * relativeHeight) / relativeHeight / 2;
         float height = tileHeight / 2 - Math.round(objectBounciness[objectIndex] * relativeHeight) / relativeHeight / 2;
@@ -784,6 +823,11 @@ public class GameScreen extends ScreenAdapter {
         batch.draw(shadow, shadowLocX, shadowLocY, width, height);
     }
 
+    /**
+     * Handles the boost mechanism.
+     *
+     * @param deltaTime: Time passed.
+     */
     public void handleBoost(float deltaTime) {
         float frameTime = deltaTime;
         while(frameTime >= 1 / 60f) {
@@ -792,6 +836,9 @@ public class GameScreen extends ScreenAdapter {
         }
     }
 
+    /**
+     * Changes the zoom.
+     */
     public void changeRatio() {
         if(ifZoomIn) {
             zoomRatio += zoomSpeed * 2 / 100f;
@@ -809,7 +856,7 @@ public class GameScreen extends ScreenAdapter {
     }
 
     /**
-     * Method is responsible for the player and pair-object encounters.
+     * Responsible for the player and pair-object encounters.
      */
     public int itemCollision() {
         boolean stillClose = false;
@@ -857,10 +904,20 @@ public class GameScreen extends ScreenAdapter {
         return index;
     }
 
+    /**
+     * Puts the right text to the pair label.
+     *
+     * @param index: Index of object sentence.
+     */
     public void createPairLabel(int index) {
         pairLabel.setText(array.get(index));
     }
 
+    /**
+     * Sets the object pair array and sets the starting bounce state to each object.
+     *
+     * @param randomPairs: In game objects array.
+     */
     public void setRandomPairs(int [][] randomPairs) {
         this.randomPairs = randomPairs;
 
@@ -873,31 +930,68 @@ public class GameScreen extends ScreenAdapter {
         }
     }
 
+    /**
+     * Sets the map textures.
+     *
+     * @param map: Map textures array.
+     */
     public void setMap(Texture [][] map) {
         this.map = map;
     }
 
+    /**
+     * Sets the player body.
+     *
+     * @param playerBody: Player body.
+     */
     public void setPlayerBody(Body playerBody) {
         this.playerBody = playerBody;
     }
 
+    /**
+     * Sets the player's starting location.
+     *
+     * @param locX: Player's x location.
+     * @param locY: Player's y location.
+     */
     public void setPlayerLoc(int locX, int locY) {
         this.playerLocX = locX;
         this.playerLocY = locY;
     }
 
+    /**
+     * Sets the exit body.
+     *
+     * @param exitBody: Exit body.
+     */
     public void setExitBody(Body exitBody) {
         this.exitBody = exitBody;
     }
 
+    /**
+     * Sets the exit location.
+     *
+     * @param exitLocations: Exit locations array.
+     */
     public void setExitLocations(int[] exitLocations) {
         this.exitLocations = exitLocations;
     }
 
+    /**
+     * Starting wall locations.
+     *
+     * @param startLocations: Start locations array.
+     */
     public void setStartLocations(int[][] startLocations) {
         this.startLocations = startLocations;
     }
 
+    /**
+     * Sets the exit position.
+     *
+     * @param exitTop: Tells if exit is on top.
+     * @param exitLeft: Tells if exit is on left.
+     */
     public void setExitTop(boolean exitTop, boolean exitLeft) {
         this.exitTop = exitTop;
         this.exitLeft = exitLeft;
@@ -905,6 +999,9 @@ public class GameScreen extends ScreenAdapter {
         exitClosedTexture = textures.getExitCloseTexture(exitTop);
     }
 
+    /**
+     * Opens the exit, so player can get out.
+     */
     public void openExit() {
         world.destroyBody(exitBody);
         playerRect = new Rectangle();
@@ -915,10 +1012,20 @@ public class GameScreen extends ScreenAdapter {
         exitOpen = true;
     }
 
+    /**
+     * Sets the exit's collision rectangle.
+     *
+     * @param exitRectangle: Exit rectangle.
+     */
     public void setExitRectangle(Rectangle exitRectangle) {
         this.exitRectangle = exitRectangle;
     }
 
+    /**
+     * Updates the score and score labels.
+     *
+     * @param deltaTime: Passed time.
+     */
     public void updateScore(float deltaTime) {
         if(score - deltaTime >= 0 && !pairClose) {
             score -= deltaTime;
@@ -953,22 +1060,23 @@ public class GameScreen extends ScreenAdapter {
         scoreLabel.setText(scoreString + ": " + MathUtils.round(score * 100) / 100f);
     }
 
+    /**
+     * Hides the in game object buttons, when object is being chosen.
+     */
     public void activateObject() {
         buttonActivate.setVisible(false);
-        buttonActivate.setDisabled(true);
         buttonSwitch.setVisible(false);
-        buttonSwitch.setDisabled(true);
         buttonValidate.setVisible(false);
-        buttonValidate.setDisabled(true);
         activatedLabel.setVisible(true);
     }
 
+    /**
+     * Configures the tutorial.
+     */
     public void configTutorial() {
         tutorialPhase = 1;
         buttonBoost.setVisible(false);
-        buttonBoost.setDisabled(true);
         buttonActivate.setVisible(false);
-        buttonActivate.setDisabled(true);
         touchpad.setVisible(false);
 
         tutorialTextBackground = new Image(textures.tutorialTextBackground);
@@ -991,7 +1099,6 @@ public class GameScreen extends ScreenAdapter {
             @Override
             public void touchUp(InputEvent event, float x, float y, int pointer, int button) {
                 buttonTutorial.setVisible(false);
-                buttonTutorial.setDisabled(true);
                 tutorialTextBackground.setVisible(false);
                 tutorialLabel.setVisible(false);
                 objectiveBackground.setVisible(true);
@@ -1021,8 +1128,11 @@ public class GameScreen extends ScreenAdapter {
         stage.addActor(buttonTutorial);
         stage.addActor(objectiveBackground);
         stage.addActor(objectiveText);
-        }
+    }
 
+    /**
+     * Handles all of the tutorial phases.
+     */
     public void checkTutorial() {
         switch (tutorialPhase) {
             case 1:
@@ -1083,16 +1193,21 @@ public class GameScreen extends ScreenAdapter {
         }
     }
 
+    /**
+     * Shows the tutorial text.
+     */
     public void showTutorial() {
         pauseGame = true;
         tutorialTextBackground.setVisible(true);
         tutorialLabel.setVisible(true);
         buttonTutorial.setVisible(true);
-        buttonTutorial.setDisabled(false);
         objectiveText.setVisible(false);
         objectiveBackground.setVisible(false);
     }
 
+    /**
+     * Sets the tutorial events.
+     */
     public void tutorialAct() {
         switch (tutorialPhase) {
             case 1:
@@ -1101,7 +1216,6 @@ public class GameScreen extends ScreenAdapter {
                 break;
             case 2:
                 buttonActivate.setVisible(true);
-                buttonActivate.setDisabled(false);
                 break;
             case 3:
                 break;
@@ -1136,6 +1250,11 @@ public class GameScreen extends ScreenAdapter {
         tutorialPhase++;
     }
 
+    /**
+     * Handles the in game object's bounce.
+     *
+     * @param deltaTime: Passed time.
+     */
     public void handleObjectBouncing(float deltaTime) {
         for(int i = 0; i < objectBounciness.length; i++) {
             float bounce = bounciness;
@@ -1154,6 +1273,9 @@ public class GameScreen extends ScreenAdapter {
         }
     }
 
+    /**
+     * Calculates the size and location of the view range circle.
+     */
     public void calculateCircle() {
         float radius = Gdx.graphics.getWidth() / 2f;
         if(radius > Gdx.graphics.getHeight() * 9 / 10f) {

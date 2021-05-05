@@ -16,7 +16,7 @@ import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
 import com.badlogic.gdx.utils.viewport.ScreenViewport;
 
 /**
- * The class contains the level-choosing screen and also game generating functions.
+ * Screen contains difficulty choosing options.
  */
 public class LevelScreen extends ScreenAdapter {
 
@@ -37,16 +37,21 @@ public class LevelScreen extends ScreenAdapter {
 
     private final Sound buttonPressSound;
 
-    private  Textures textures;
+    private final Textures textures;
 
-    public LevelScreen(Main main, Textures textures){
+    /**
+     * Level screen constructor.
+     *
+     * @param main: Game class object.
+     */
+    public LevelScreen(Main main){
         this.main = main;
-        this.textures = textures;
+        this.textures = main.textures;
         calculateAreas();
         batch = new SpriteBatch();
         screenWidth = Gdx.graphics.getWidth();
         screenHeight = Gdx.graphics.getHeight();
-        buttonPressSound = Sounds.buttonPressSound;
+        buttonPressSound = main.sounds.buttonPressSound;
     }
 
     @Override
@@ -158,7 +163,7 @@ public class LevelScreen extends ScreenAdapter {
             @Override
             public void touchUp(InputEvent event, float x, float y, int pointer, int button) {
                 dispose();
-                main.setScreen(new MenuScreen(main, textures));
+                main.setScreen(new MenuScreen(main));
             }
         });
 
@@ -178,7 +183,7 @@ public class LevelScreen extends ScreenAdapter {
             @Override
             public void touchUp(InputEvent event, float x, float y, int pointer, int button) {
                 dispose();
-                main.setScreen(new Themes(main, textures));
+                main.setScreen(new ThemesScreen(main));
             }
         });
 
@@ -199,7 +204,7 @@ public class LevelScreen extends ScreenAdapter {
             @Override
             public void touchUp(InputEvent event, float x, float y, int pointer, int button) {
                 dispose();
-                main.setScreen(new HighScores(main, textures));
+                main.setScreen(new HighScoresScreen(main));
             }
         });
 
@@ -237,7 +242,7 @@ public class LevelScreen extends ScreenAdapter {
      * Method starts the creation of the game world.
      */
     public void createGame() {
-        GameScreen gameScreen = GameConfiguration.createGame(main, textures);
+        GameScreen gameScreen = GameConfiguration.createGame(main);
         dispose();
         main.setScreen(gameScreen);
     }

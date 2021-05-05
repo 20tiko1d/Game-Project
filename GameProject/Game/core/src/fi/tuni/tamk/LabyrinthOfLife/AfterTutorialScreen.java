@@ -20,7 +20,6 @@ public class AfterTutorialScreen extends ScreenAdapter {
     private final Main main;
 
     private Stage stage;
-    private OrthographicCamera camera;
 
     private final float screenWidth;
     private final float screenHeight;
@@ -28,21 +27,17 @@ public class AfterTutorialScreen extends ScreenAdapter {
     private final Sound buttonPressSound;
     private Music levelCompletedMusic;
 
-    private Textures textures;
+    private final Textures textures;
 
-    public AfterTutorialScreen(Main main, Textures textures) {
+    public AfterTutorialScreen(Main main) {
         this.main = main;
-        this.textures = textures;
+        this.textures = main.textures;
         GameConfiguration.tutorialOn = false;
         if(GameConfiguration.firstTime) {
             GameConfiguration.save("firstTime", "false");
             GameConfiguration.firstTime = false;
         }
-        camera = new OrthographicCamera();
-        camera.setToOrtho(false, Main.viewPortWidth, Main.viewPortHeight);
-
-        buttonPressSound = Sounds.buttonPressSound;
-
+        buttonPressSound = main.sounds.buttonPressSound;
         screenWidth = Gdx.graphics.getWidth();
         screenHeight = Gdx.graphics.getHeight();
     }
@@ -51,7 +46,7 @@ public class AfterTutorialScreen extends ScreenAdapter {
     public void show() {
         stage = new Stage(new ScreenViewport());
 
-        levelCompletedMusic = Sounds.levelCompletedMusic;
+        levelCompletedMusic = main.sounds.levelCompletedMusic;
         levelCompletedMusic.play();
 
         Skin mySkin = textures.mySkin;
@@ -72,7 +67,7 @@ public class AfterTutorialScreen extends ScreenAdapter {
             public void touchUp(InputEvent event, float x, float y, int pointer, int button) {
                 GameConfiguration.tutorialOn = true;
                 GameConfiguration.gameLevel = 1;
-                GameScreen gameScreen = GameConfiguration.createGame(main, textures);
+                GameScreen gameScreen = GameConfiguration.createGame(main);
                 dispose();
                 main.setScreen(gameScreen);
             }
@@ -93,7 +88,7 @@ public class AfterTutorialScreen extends ScreenAdapter {
             @Override
             public void touchUp(InputEvent event, float x, float y, int pointer, int button) {
                 dispose();
-                main.setScreen(new LevelScreen(main, textures));
+                main.setScreen(new LevelScreen(main));
             }
         });
 
@@ -115,7 +110,6 @@ public class AfterTutorialScreen extends ScreenAdapter {
 
     @Override
     public void render(float deltaTime) {
-        main.batch.setProjectionMatrix(camera.combined);
         Gdx.gl.glClearColor(56 / 255f, 142 / 255f, 142 / 255f, 1);
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
         stage.draw();
@@ -126,6 +120,5 @@ public class AfterTutorialScreen extends ScreenAdapter {
     public void dispose() {
         levelCompletedMusic.stop();
         stage.dispose();
-        camera = null;
     }
 }

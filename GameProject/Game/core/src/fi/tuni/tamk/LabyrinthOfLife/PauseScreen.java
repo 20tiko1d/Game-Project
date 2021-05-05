@@ -5,7 +5,6 @@ import com.badlogic.gdx.ScreenAdapter;
 import com.badlogic.gdx.audio.Sound;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.GL20;
-import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.InputListener;
@@ -19,6 +18,9 @@ import com.badlogic.gdx.scenes.scene2d.utils.TextureRegionDrawable;
 import com.badlogic.gdx.utils.Align;
 import com.badlogic.gdx.utils.viewport.ScreenViewport;
 
+/**
+ * Screen for pausing the game.
+ */
 public class PauseScreen extends ScreenAdapter {
     private final Main main;
     private final GameScreen gameScreen;
@@ -28,27 +30,30 @@ public class PauseScreen extends ScreenAdapter {
     private final float screenHeight;
 
     private Stage stage;
-    private OrthographicCamera camera;
 
     private boolean tutorial = false;
 
     private final Sound buttonPressSound;
-    private Textures textures;
+    private final Textures textures;
 
-    public PauseScreen(Main main, Textures textures, GameScreen gameScreen) {
+    /**
+     * Pause screen constructor.
+     *
+     * @param main: Game class object.
+     * @param gameScreen: Game screen class object.
+     */
+    public PauseScreen(Main main, GameScreen gameScreen) {
         this.main = main;
-        this.textures = textures;
+        this.textures = main.textures;
         this.gameScreen = gameScreen;
         this.pauseScreen = this;
-        camera = new OrthographicCamera();
-        camera.setToOrtho(false, Main.viewPortWidth, Main.viewPortHeight);
         if(GameConfiguration.tutorialOn) {
             tutorial = true;
             GameConfiguration.tutorialOn = false;
         }
         screenWidth = Gdx.graphics.getWidth();
         screenHeight = Gdx.graphics.getHeight();
-        buttonPressSound = Sounds.buttonPressSound;
+        buttonPressSound = main.sounds.buttonPressSound;
     }
 
     @Override
@@ -122,7 +127,7 @@ public class PauseScreen extends ScreenAdapter {
                 if(!GameConfiguration.firstTime) {
                     gameScreen.dispose();
                     dispose();
-                    main.setScreen(new LevelScreen(main, textures));
+                    main.setScreen(new LevelScreen(main));
                 }
             }
         });
@@ -144,7 +149,7 @@ public class PauseScreen extends ScreenAdapter {
                     GameConfiguration.tutorialOn = true;
                 }
                 gameScreen.dispose();
-                GameScreen gameScreen = GameConfiguration.createGame(main, textures);
+                GameScreen gameScreen = GameConfiguration.createGame(main);
                 main.setScreen(gameScreen);
             }
         });
@@ -165,7 +170,7 @@ public class PauseScreen extends ScreenAdapter {
             public void touchUp(InputEvent event, float x, float y, int pointer, int button) {
                 gameScreen.dispose();
                 dispose();
-                main.setScreen(new MenuScreen(main, textures));
+                main.setScreen(new MenuScreen(main));
             }
         });
 
@@ -179,10 +184,8 @@ public class PauseScreen extends ScreenAdapter {
         Gdx.input.setInputProcessor(stage);
     }
 
-
     @Override
     public void render(float deltaTime) {
-        main.batch.setProjectionMatrix(camera.combined);
         Gdx.gl.glClearColor(56 / 255f, 142 / 255f, 142 / 255f, 1);
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
         stage.draw();
@@ -192,7 +195,5 @@ public class PauseScreen extends ScreenAdapter {
     @Override
     public void dispose() {
         stage.dispose();
-        camera = null;
     }
-
 }

@@ -7,6 +7,9 @@ import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 
 import java.util.ArrayList;
 
+/**
+ * Class for textures.
+ */
 public final class Textures {
 
     // Skin
@@ -50,7 +53,14 @@ public final class Textures {
 
     public Textures() {}
 
-    public ArrayList<Texture> getFloor1Textures() {
+    /**
+     * Get floor textures which are inside of the labyrinth.
+     *
+     * Returned textures depend on the chosen theme.
+     *
+     * @return ArrayList of floor textures.
+     */
+    public ArrayList<Texture> getInsideFloorTextures() {
         ArrayList<Texture> textures = new ArrayList<>();
         if(GameConfiguration.theme.equals("bush")) {
             textures.add(new Texture("textures/floorsInside/Bush/Rockfloor.png"));
@@ -63,7 +73,14 @@ public final class Textures {
         return textures;
     }
 
-    public ArrayList<Texture> getFloor2Textures() {
+    /**
+     * Get floor textures which are outside of the labyrinth.
+     *
+     * Returned textures depend on the chosen theme.
+     *
+     * @return ArrayList of floor textures.
+     */
+    public ArrayList<Texture> getOutsideFloorTextures() {
         ArrayList<Texture> textures = new ArrayList<>();
 
         if(GameConfiguration.theme.equals("bush")) {
@@ -77,6 +94,13 @@ public final class Textures {
         return textures;
     }
 
+    /**
+     * Get wall textures.
+     *
+     * Returned textures depend on the chosen theme.
+     *
+     * @return ArrayList of wall textures.
+     */
     public ArrayList<Texture> getWallTextures() {
         ArrayList<Texture> textures = new ArrayList<>();
       
@@ -90,6 +114,15 @@ public final class Textures {
         return textures;
     }
 
+    /**
+     * Get player textures.
+     *
+     * Returned textures depend on the chosen character. The array contains textures for all 4
+     * directions.
+     *
+     * @param name: Name of the character.
+     * @return Array of the character textures.
+     */
     public Texture[] getPlayerTexture(String name) {
         Texture [] playerTextures = new Texture[4];
         // Front
@@ -103,6 +136,11 @@ public final class Textures {
         return playerTextures;
     }
 
+    /**
+     * Get in game object textures.
+     *
+     * @return ArrayList of all possible in game object textures.
+     */
     public Texture getObjectTexture() {
         ArrayList<Texture> textures = new ArrayList<>();
 
@@ -128,6 +166,12 @@ public final class Textures {
         return textures.get(random);
     }
 
+    /**
+     * Get closed exit texture.
+     *
+     * @param onTop: Tells if the exit is on top of the labyrinth.
+     * @return Closed exit texture.
+     */
     public Texture getExitCloseTexture(boolean onTop) {
         if(onTop) {
             return new Texture("textures/walls/exit/wallExitTop_closed.png");
@@ -136,6 +180,12 @@ public final class Textures {
         }
     }
 
+    /**
+     * Get open exit texture.
+     *
+     * @param onTop: Tells if the exit is on top of the labyrinth.
+     * @return Open exit texture.
+     */
     public Texture getExitOpenTexture(boolean onTop) {
         if(onTop) {
             return new Texture("textures/walls/exit/wallExitTop_open.png");
@@ -143,20 +193,53 @@ public final class Textures {
         return new Texture("textures/walls/exit/wallExitSide_open.png");
     }
 
+    /**
+     * Get start texture.
+     *
+     * @return Start texture.
+     */
     public Texture getStartTexture() {
         return new Texture("textures/walls/start/wallStart.png");
     }
 
-    public Texture getPairLabelBackground() { return new Texture("textures/backgrounds/pairLabelBackground.png");}
+    /**
+     * Gets texture for the in game object sentence backgrounds.
+     *
+     * @return Object background.
+     */
+    public Texture getObjectLabelBackground() { return new Texture("textures/backgrounds/pairLabelBackground.png");}
 
+    /**
+     * Gets the joystick background texture.
+     *
+     * @return Joystick background texture.
+     */
     public Texture getJoystickBack() { return new Texture("textures/joystick/joystickBack.png");}
 
+    /**
+     * Gets the joystick knob texture.
+     *
+     * @return Joystick knob texture.
+     */
     public Texture getJoystickKnob() { return new Texture("textures/joystick/joystickKnob.png");}
 
+    /**
+     * Gets menu background image.
+     *
+     * @return Menu background texture.
+     */
     public Texture getMenuBackground() {
         return new Texture("textures/backgrounds/menuBackgroundImage.png");
     }
 
+    /**
+     * Gets top 3 high scores backgrounds.
+     *
+     * The background depends on the given name.
+     *
+     * @param name: Name of the medal color.
+     * @return High scores medal color texture.
+     */
     public Texture getMedalTexture(String name) {
         return new Texture("textures/medalColors/" + name + ".png");
     }

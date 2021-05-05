@@ -5,7 +5,6 @@ import com.badlogic.gdx.ScreenAdapter;
 import com.badlogic.gdx.audio.Sound;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.GL20;
-import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.InputListener;
 import com.badlogic.gdx.scenes.scene2d.Stage;
@@ -18,11 +17,13 @@ import com.badlogic.gdx.scenes.scene2d.utils.Drawable;
 import com.badlogic.gdx.scenes.scene2d.utils.TextureRegionDrawable;
 import com.badlogic.gdx.utils.viewport.ScreenViewport;
 
-public class Themes extends ScreenAdapter {
+/**
+ * Screen for changing the map textures and character textures.
+ */
+public class ThemesScreen extends ScreenAdapter {
 
     private final Main main;
 
-    private OrthographicCamera camera;
     private Stage stage;
 
     private final float screenWidth = Gdx.graphics.getWidth();
@@ -39,15 +40,17 @@ public class Themes extends ScreenAdapter {
     private float playerMarkPigY;
     private Image checkMarkPlayer;
 
-    private Textures textures;
+    private final Textures textures;
 
-
-    public Themes(Main main, Textures textures) {
+    /**
+     * Constructor of the Themes screen.
+     *
+     * @param main: Game class object.
+     */
+    public ThemesScreen(Main main) {
         this.main = main;
-        this.textures = textures;
-        camera = new OrthographicCamera();
-        camera.setToOrtho(false, Main.viewPortWidth, Main.viewPortHeight);
-        buttonPressSound = Sounds.buttonPressSound;
+        this.textures = main.textures;
+        buttonPressSound = main.sounds.buttonPressSound;
     }
 
     @Override
@@ -71,7 +74,7 @@ public class Themes extends ScreenAdapter {
             @Override
             public void touchUp(InputEvent event, float x, float y, int pointer, int button) {
                 dispose();
-                main.setScreen(new MenuScreen(main, textures));
+                main.setScreen(new MenuScreen(main));
             }
         });
 
@@ -91,7 +94,7 @@ public class Themes extends ScreenAdapter {
             @Override
             public void touchUp(InputEvent event, float x, float y, int pointer, int button) {
                 dispose();
-                main.setScreen(new LevelScreen(main, textures));
+                main.setScreen(new LevelScreen(main));
             }
         });
 
@@ -253,7 +256,6 @@ public class Themes extends ScreenAdapter {
 
     @Override
     public void render(float deltaTime) {
-        main.batch.setProjectionMatrix(camera.combined);
         Gdx.gl.glClearColor(56 / 255f, 142 / 255f, 142 / 255f, 1);
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
         stage.draw();
@@ -263,6 +265,5 @@ public class Themes extends ScreenAdapter {
     @Override
     public void dispose() {
         stage.dispose();
-        camera = null;
     }
 }

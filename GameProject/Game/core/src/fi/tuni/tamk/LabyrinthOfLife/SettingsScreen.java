@@ -5,7 +5,6 @@ import com.badlogic.gdx.ScreenAdapter;
 import com.badlogic.gdx.audio.Sound;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.GL20;
-import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.InputListener;
 import com.badlogic.gdx.scenes.scene2d.Stage;
@@ -18,7 +17,7 @@ import com.badlogic.gdx.utils.Align;
 import com.badlogic.gdx.utils.viewport.ScreenViewport;
 
 /**
- * The class contains the screen and all the features of the Settings.
+ * Screen where the player can change the volume of the music and switch the control's locations.
  */
 public class SettingsScreen extends ScreenAdapter {
 
@@ -26,7 +25,6 @@ public class SettingsScreen extends ScreenAdapter {
     private PauseScreen pauseScreen;
     private GameScreen gameScreen;
 
-    private OrthographicCamera camera;
     private Stage stage;
 
     private final float screenWidth = Gdx.graphics.getWidth();
@@ -42,20 +40,29 @@ public class SettingsScreen extends ScreenAdapter {
 
     private Label musicVolumeLabel;
 
-    private Textures textures;
+    private final Textures textures;
 
-    public SettingsScreen(Main main, Textures textures) {
+    /**
+     * Settings screen constructor.
+     *
+     * @param main: Game class object.
+     */
+    public SettingsScreen(Main main) {
         this.main = main;
-        this.textures = textures;
-        camera = new OrthographicCamera();
-        camera.setToOrtho(false, Main.viewPortWidth, Main.viewPortHeight);
+        this.textures = main.textures;
     }
 
+    /**
+     * Settings screen constructor for the pause screen.
+     *
+     * @param main: Game class object.
+     * @param textures: Textures class object.
+     * @param pauseScreen: Pause screen class object.
+     * @param gameScreen: Game screen class object.
+     */
     public SettingsScreen(Main main, Textures textures, PauseScreen pauseScreen, GameScreen gameScreen) {
         this.main = main;
         this.textures = textures;
-        camera = new OrthographicCamera();
-        camera.setToOrtho(false, Main.viewPortWidth, Main.viewPortHeight);
         this.pauseScreen = pauseScreen;
         this.gameScreen = gameScreen;
     }
@@ -63,7 +70,7 @@ public class SettingsScreen extends ScreenAdapter {
     @Override
     public void show() {
         stage = new Stage(new ScreenViewport());
-        buttonPressSound = Sounds.buttonPressSound;
+        buttonPressSound = main.sounds.buttonPressSound;
         Skin mySkin = textures.mySkin;
 
         TextButton buttonMenu = new TextButton(GameConfiguration.getText("menu"),mySkin,"pixel72");
@@ -85,7 +92,7 @@ public class SettingsScreen extends ScreenAdapter {
                     gameScreen.dispose();
                 }
                 dispose();
-                main.setScreen(new MenuScreen(main, textures));
+                main.setScreen(new MenuScreen(main));
             }
         });
 
@@ -208,7 +215,6 @@ public class SettingsScreen extends ScreenAdapter {
 
     @Override
     public void render(float deltaTime) {
-        main.batch.setProjectionMatrix(camera.combined);
         Gdx.gl.glClearColor(56 / 255f, 142 / 255f, 142 / 255f, 1);
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
         stage.draw();
@@ -218,9 +224,11 @@ public class SettingsScreen extends ScreenAdapter {
     @Override
     public void dispose() {
         stage.dispose();
-        camera = null;
     }
 
+    /**
+     * Sets the control's (joystick and boost-button) locations.
+     */
     public void setControlLocations() {
         if(GameConfiguration.open("controls").equals("default")) {
             boostImage.setX(leftX);
@@ -231,6 +239,11 @@ public class SettingsScreen extends ScreenAdapter {
         }
     }
 
+    /**
+     * Changes the music volume.
+     *
+     * @param volume: Chosen volume.
+     */
     public void changeMusicVolume(int volume) {
         String text = GameConfiguration.getText("musicVolume").toUpperCase();
         String volumeText = ":  " + volume;

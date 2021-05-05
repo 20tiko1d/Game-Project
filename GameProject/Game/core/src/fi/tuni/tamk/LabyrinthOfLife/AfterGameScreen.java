@@ -6,7 +6,6 @@ import com.badlogic.gdx.audio.Music;
 import com.badlogic.gdx.audio.Sound;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.GL20;
-import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.InputListener;
 import com.badlogic.gdx.scenes.scene2d.Stage;
@@ -16,12 +15,14 @@ import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
 import com.badlogic.gdx.utils.Align;
 import com.badlogic.gdx.utils.viewport.ScreenViewport;
 
+/**
+ * Screen of after the game, which shows the score.
+ */
 public class AfterGameScreen extends ScreenAdapter {
 
     private final Main main;
 
     private Stage stage;
-    private OrthographicCamera camera;
 
     private final float score;
 
@@ -31,16 +32,19 @@ public class AfterGameScreen extends ScreenAdapter {
     private final Sound buttonPressSound;
     private Music levelCompletedMusic;
 
-    private Textures textures;
+    private final Textures textures;
 
-    public AfterGameScreen(Main main, Textures textures, float score) {
+    /**
+     * After game screen constructor.
+     *
+     * @param main: Game class object.
+     * @param score: Score from the game.
+     */
+    public AfterGameScreen(Main main, float score) {
         this.main = main;
-        this.textures = textures;
+        this.textures = main.textures;
         this.score = score;
-        buttonPressSound = Sounds.buttonPressSound;
-
-        camera = new OrthographicCamera();
-        camera.setToOrtho(false, Main.viewPortWidth, Main.viewPortHeight);
+        buttonPressSound = main.sounds.buttonPressSound;
 
         screenWidth = Gdx.graphics.getWidth();
         screenHeight = Gdx.graphics.getHeight();
@@ -52,7 +56,7 @@ public class AfterGameScreen extends ScreenAdapter {
     public void show() {
         stage = new Stage(new ScreenViewport());
 
-        levelCompletedMusic = Sounds.levelCompletedMusic;
+        levelCompletedMusic = main.sounds.levelCompletedMusic;
         levelCompletedMusic.play();
 
         Skin mySkin = textures.mySkin;
@@ -72,7 +76,7 @@ public class AfterGameScreen extends ScreenAdapter {
             @Override
             public void touchUp(InputEvent event, float x, float y, int pointer, int button) {
                 dispose();
-                main.setScreen(new MenuScreen(main, textures));
+                main.setScreen(new MenuScreen(main));
             }
         });
 
@@ -91,7 +95,7 @@ public class AfterGameScreen extends ScreenAdapter {
 
             @Override
             public void touchUp(InputEvent event, float x, float y, int pointer, int button) {
-                GameScreen gameScreen = GameConfiguration.createGame(main, textures);
+                GameScreen gameScreen = GameConfiguration.createGame(main);
                 dispose();
                 main.setScreen(gameScreen);
             }
@@ -112,7 +116,7 @@ public class AfterGameScreen extends ScreenAdapter {
             @Override
             public void touchUp(InputEvent event, float x, float y, int pointer, int button) {
                 dispose();
-                main.setScreen(new LevelScreen(main, textures));
+                main.setScreen(new LevelScreen(main));
             }
         });
 
@@ -132,7 +136,7 @@ public class AfterGameScreen extends ScreenAdapter {
             @Override
             public void touchUp(InputEvent event, float x, float y, int pointer, int button) {
                 dispose();
-                main.setScreen(new Themes(main, textures));
+                main.setScreen(new ThemesScreen(main));
             }
         });
 
@@ -153,7 +157,7 @@ public class AfterGameScreen extends ScreenAdapter {
             @Override
             public void touchUp(InputEvent event, float x, float y, int pointer, int button) {
                 dispose();
-                main.setScreen(new HighScores(main, textures));
+                main.setScreen(new HighScoresScreen(main));
             }
         });
 
@@ -177,10 +181,8 @@ public class AfterGameScreen extends ScreenAdapter {
         Gdx.input.setInputProcessor(stage);
     }
 
-
     @Override
     public void render(float deltaTime) {
-        main.batch.setProjectionMatrix(camera.combined);
         Gdx.gl.glClearColor(56 / 255f, 142 / 255f, 142 / 255f, 1);
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
         stage.draw();
@@ -190,7 +192,6 @@ public class AfterGameScreen extends ScreenAdapter {
     @Override
     public void dispose() {
         stage.dispose();
-        camera = null;
         levelCompletedMusic.stop();
     }
 }

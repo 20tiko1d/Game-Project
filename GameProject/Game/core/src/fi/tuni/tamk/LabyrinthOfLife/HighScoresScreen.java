@@ -5,7 +5,6 @@ import com.badlogic.gdx.ScreenAdapter;
 import com.badlogic.gdx.audio.Sound;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.GL20;
-import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.InputListener;
@@ -16,21 +15,19 @@ import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
 import com.badlogic.gdx.utils.Align;
 import com.badlogic.gdx.utils.viewport.ScreenViewport;
-import com.sun.jndi.toolkit.url.Uri;
 
 import java.util.ArrayList;
 
 /**
- * The class contains all of the player's personal achievements and the profile.
+ * Screen contains top 10 high scores, which are fetched from the server.
  */
-public class HighScores extends ScreenAdapter {
+public class HighScoresScreen extends ScreenAdapter {
 
     private final Main main;
 
     private final int screenWidth = Gdx.graphics.getWidth();
     private final int screenHeight = Gdx.graphics.getHeight();
 
-    private OrthographicCamera camera;
     private Stage stage;
 
     private Skin mySkin;
@@ -44,14 +41,17 @@ public class HighScores extends ScreenAdapter {
 
     private final Sound buttonPressSound;
 
-    private Textures textures;
+    private final Textures textures;
 
-    public HighScores(Main main, Textures textures) {
+    /**
+     * High score screen constructor.
+     *
+     * @param main: Game class object.
+     */
+    public HighScoresScreen(Main main) {
         this.main = main;
-        this.textures = textures;
-        camera = new OrthographicCamera();
-        camera.setToOrtho(false, Main.viewPortWidth, Main.viewPortHeight);
-        buttonPressSound = Sounds.buttonPressSound;
+        this.textures = main.textures;
+        buttonPressSound = main.sounds.buttonPressSound;
     }
 
     @Override
@@ -75,7 +75,7 @@ public class HighScores extends ScreenAdapter {
             @Override
             public void touchUp(InputEvent event, float x, float y, int pointer, int button) {
                 dispose();
-                main.setScreen(new MenuScreen(main, textures));
+                main.setScreen(new MenuScreen(main));
             }
         });
 
@@ -95,7 +95,7 @@ public class HighScores extends ScreenAdapter {
             public void touchUp(InputEvent event, float x, float y, int pointer, int button) {
                 if(!GameConfiguration.firstTime) {
                     dispose();
-                    main.setScreen(new LevelScreen(main, textures));
+                    main.setScreen(new LevelScreen(main));
                 }
             }
         });
@@ -120,7 +120,7 @@ public class HighScores extends ScreenAdapter {
             @Override
             public void touchUp(InputEvent event, float x, float y, int pointer, int button) {
                 dispose();
-                main.setScreen(new PlayerName(main, textures, false));
+                main.setScreen(new PlayerNameScreen(main, false));
             }
         });
 
@@ -212,7 +212,6 @@ public class HighScores extends ScreenAdapter {
 
     @Override
     public void render(float deltaTime) {
-        main.batch.setProjectionMatrix(camera.combined);
         Gdx.gl.glClearColor(56 / 255f, 142 / 255f, 142 / 255f, 1);
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
         stage.draw();
@@ -222,9 +221,11 @@ public class HighScores extends ScreenAdapter {
     @Override
     public void dispose() {
         stage.dispose();
-        camera = null;
     }
 
+    /**
+     * Creates the high score labels.
+     */
     public void createHighScoreLabels() {
         GameConfiguration.getHighScores(1);
         ArrayList<HighScoreEntry> highScoresEasy = GameConfiguration.highScores;
@@ -235,9 +236,9 @@ public class HighScores extends ScreenAdapter {
         GameConfiguration.highScores = null;
 
         if(highScoresEasy != null) {
-            createScoreLabel(startX + listWidth / 20f, getTopHighScores(highScoresEasy));
-            createScoreLabel(startX + listWidth * 21 / 20f, getTopHighScores(highScoresMedium));
-            createScoreLabel(startX + listWidth * 41 / 20f, getTopHighScores(highScoresHard));
+            createScoreLabels(startX + listWidth / 20f, getTopHighScores(highScoresEasy));
+            createScoreLabels(startX + listWidth * 21 / 20f, getTopHighScores(highScoresMedium));
+            createScoreLabels(startX + listWidth * 41 / 20f, getTopHighScores(highScoresHard));
         } else {
             Image errorBackground = new Image(new Texture("textures/random/tutorialTextBackground.png"));
             errorBackground.setSize(screenWidth / 2f, screenHeight / 4f);
@@ -251,6 +252,12 @@ public class HighScores extends ScreenAdapter {
         }
     }
 
+    /**
+     * Gets top 10 scores from the given array.
+     *
+     * @param highScores: High score array.
+     * @return Top 10 high scores in order.
+     */
     public ArrayList<HighScoreEntry> getTopHighScores(ArrayList<HighScoreEntry> highScores) {
         ArrayList<HighScoreEntry> topScores = new ArrayList<>();
 
@@ -271,7 +278,13 @@ public class HighScores extends ScreenAdapter {
         return topScores;
     }
 
-    public void createScoreLabel(float x, ArrayList<HighScoreEntry> highScores) {
+    /**
+     * Creates the score labels.
+     *
+     * @param x: X location of the label.
+     * @param highScores: Top 10 high scores.
+     */
+    public void createScoreLabels(float x, ArrayList<HighScoreEntry> highScores) {
         int size = highScores.size();
         for(int i = 0; i < 10; i++) {
             Label label = new Label("", mySkin, "default");

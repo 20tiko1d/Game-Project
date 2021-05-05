@@ -13,7 +13,7 @@ import com.badlogic.gdx.physics.box2d.World;
 import java.util.ArrayList;
 
 /**
- * The class produces a random labyrinth.
+ * The class produces a random labyrinth or the tutorial labyrinth.
  *
  * The labyrinth has a small square in the center. There is only one way out of the labyrinth.
  */
@@ -49,15 +49,20 @@ public class MapGenerator {
     private float oneWidth;
 
     private final GameScreen gameScreen;
-    private Textures textures;
+    private final Textures textures;
 
-    public MapGenerator(GameScreen gameScreen, Textures textures) {
+    /**
+     * Map generator constructor.
+     *
+     * @param gameScreen: Game screen class object.
+     */
+    public MapGenerator(GameScreen gameScreen, Main main) {
         this.gameScreen = gameScreen;
-        this.textures = textures;
+        this.textures = main.textures;
     }
 
     /**
-     * The method controls all of the stages to create a random labyrinth.
+     * Controls all of the stages to create a random labyrinth.
      *
      * @param size: Length of the labyrinth sides.
      * @param preferredLength: Length of the route from the start to the center square.
@@ -91,6 +96,11 @@ public class MapGenerator {
         gameScreen.setMap(map);
     }
 
+    /**
+     * Creates the tutorial labyrinth.
+     *
+     * @param world: Contains all of the collision boxes.
+     */
     public void createTutorialMap(World world) {
         generatingMap = FileReader.getTutorialMap();
         this.size = 10;
@@ -107,6 +117,9 @@ public class MapGenerator {
         gameScreen.setMap(map);
     }
 
+    /**
+     * Disposes some used arrays.
+     */
     public void disposeAll() {
         generatingMap = null;
         path1 = null;
@@ -116,7 +129,7 @@ public class MapGenerator {
     }
 
     /**
-     * Method creates the center square.
+     * Creates the center square.
      */
     public void createMiddle() {
         int x = size / 2 - 1;
@@ -260,6 +273,12 @@ public class MapGenerator {
         }
     }
 
+    /**
+     * Calculates the random possible direction.
+     *
+     * @param direction: Available directions array.
+     * @return Index of the direction.
+     */
     public int randomIndex(int[] direction) {
         int counter = 0;
         for(int i : direction) {
@@ -283,9 +302,10 @@ public class MapGenerator {
     }
 
     /**
-     * Method creates an opening through the walls.
+     * Creates an opening through the walls.
      *
      * It removes the wall inside it's own cell and also breaks the wall of the another cell.
+     *
      * @param tempPath: Not finished main path.
      * @param row: Row of the newest cell under construction.
      * @param column: Column of the newest cell under construction.
@@ -577,8 +597,8 @@ public class MapGenerator {
      * Method scales map up, inserts textures and creates collision boxes.
      */
     public void putTextures() {
-        ArrayList<Texture> floor1Textures= textures.getFloor1Textures();
-        ArrayList<Texture> floor2Textures= textures.getFloor2Textures();
+        ArrayList<Texture> floor1Textures= textures.getInsideFloorTextures();
+        ArrayList<Texture> floor2Textures= textures.getOutsideFloorTextures();
         ArrayList<Texture> wallTextures= textures.getWallTextures();
 
         Texture startTexture = textures.getStartTexture();
@@ -689,11 +709,25 @@ public class MapGenerator {
         }
     }
 
+    /**
+     * Chooses a random texture from a texture array.
+     *
+     * @param textures: Texture array.
+     * @return A random texture from the array.
+     */
     public Texture randomTexture(ArrayList<Texture> textures) {
         int random = MathUtils.random(0, textures.size() - 1);
         return textures.get(random);
     }
 
+    /**
+     * Creates the wall bodies.
+     *
+     * @param x: Body x location.
+     * @param y: Body y location.
+     * @param width: Body width.
+     * @param height: Body height.
+     */
     public void createGround(float x, float y, float width, float height) {
 
         Body groundBody = world.createBody(getGroundBodyDef(x, y));
@@ -716,6 +750,13 @@ public class MapGenerator {
         }
     }
 
+    /**
+     * Gets wall body definition.
+     *
+     * @param x: Body x location.
+     * @param y: Body y location.
+     * @return Body definition.
+     */
     public BodyDef getGroundBodyDef(float x, float y) {
         BodyDef myBodyDef = new BodyDef();
         myBodyDef.type = BodyDef.BodyType.StaticBody;
@@ -723,13 +764,24 @@ public class MapGenerator {
         return myBodyDef;
     }
 
-
+    /**
+     * Gets polygon shape.
+     *
+     * @param width: Body width.
+     * @param height: Body height.
+     * @return Body shape.
+     */
     public PolygonShape getPolygonShape(float width, float height) {
         PolygonShape groundBox = new PolygonShape();
         groundBox.setAsBox(width, height);
         return groundBox;
     }
 
+    /**
+     * Gets player body definition.
+     *
+     * @return Player body definition.
+     */
     public BodyDef getDefinitionOfBody() {
         BodyDef myBodyDef = new BodyDef();
         myBodyDef.type = BodyDef.BodyType.DynamicBody;
@@ -742,6 +794,11 @@ public class MapGenerator {
         return myBodyDef;
     }
 
+    /**
+     * Gets player body fixture definition.
+     *
+     * @return Player body fixture definition.
+     */
     public FixtureDef getFixtureDefinition() {
         FixtureDef playerFixtureDef = new FixtureDef();
         playerFixtureDef.density = 0;
@@ -814,7 +871,7 @@ public class MapGenerator {
     }
 
     /**
-     * Method checks if the randomly chosen locations are in bounds.
+     * Checks if the randomly chosen locations are in bounds.
      *
      * @param R1: Row of the pair 1.
      * @param C1: Column of the pair 1.

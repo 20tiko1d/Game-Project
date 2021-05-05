@@ -15,15 +15,15 @@ import javax.xml.parsers.DocumentBuilderFactory;
 
 
 /**
- * The class is used to read files and also maybe store them in the future.
+ * The class is used to read files.
  */
 public class FileReader {
 
     /**
-     * Method reads the sentences of the pair objects from the XML-file.
-     * @return Returns an array that contains the read sentences.
+     * Method reads the sentences of the objects from the XML-file.
+     *
+     * @return Returns an array that contains the object sentences.
      */
-
     public static Array<String> getPairElements() {
         Array<String> array = new Array<>();
         try {
@@ -59,6 +59,11 @@ public class FileReader {
         return array;
     }
 
+    /**
+     * Gets object sentence file name depending on language.
+     *
+     * @return Object sentence file name.
+     */
     public static String getFileName() {
         if(GameConfiguration.open("language").equals("fi_FI") ||
                 ((new Locale("fi", "FI").equals(Locale.getDefault())) &&
@@ -69,6 +74,11 @@ public class FileReader {
         }
     }
 
+    /**
+     * Gets the tutorial map from a text file.
+     *
+     * @return Tutorial map as an array.
+     */
     public static int[][][] getTutorialMap() {
         int[][][] map = new int[10][10][4];
         FileHandle file = Gdx.files.internal("tutorialMap.txt");
