@@ -12,6 +12,8 @@ import java.util.Locale;
 
 /**
  * Static class which contains Game settings and several tools.
+ *
+ * @author Artur Haavisto
  */
 public final class GameConfiguration implements HighScoreListener {
 
@@ -170,7 +172,6 @@ public final class GameConfiguration implements HighScoreListener {
         } else {
             firstTime = false;
         }
-
         theme = open("theme");
     }
 
@@ -237,19 +238,13 @@ public final class GameConfiguration implements HighScoreListener {
     }
 
     @Override
-    public void failedToRetrieveHighScores(String s) {
-        Gdx.app.log("", "failedToRetrieveHighScores: " + s);
-    }
+    public void failedToRetrieveHighScores(String s) {}
 
     @Override
-    public void receiveSendReply(int httpResponse) {
-        Gdx.app.log("", "receiveSendReply: " + httpResponse);
-    }
+    public void receiveSendReply(int httpResponse) {}
 
     @Override
-    public void failedToSendHighScore(String s) {
-        Gdx.app.log("", "failedToSendHighScore: " + s);
-    }
+    public void failedToSendHighScore(String s) {}
 
     /**
      * Gets the high scores depending on the given difficulty level.
@@ -257,10 +252,8 @@ public final class GameConfiguration implements HighScoreListener {
      * @param mapId: Difficulty id (1-3).
      */
     public static void getHighScores(int mapId) {
-        try {
-            HighScoreServer.readConfig("highscore.config");
-            HighScoreServer.fetchHighScores(new GameConfiguration(), mapId);
-        } catch (Exception e) {}
+        HighScoreServer.readConfig("highscore.config");
+        HighScoreServer.fetchHighScores(new GameConfiguration(), mapId);
     }
 
     /**
@@ -270,10 +263,8 @@ public final class GameConfiguration implements HighScoreListener {
      */
     public static void sendHighScores(int score) {
         HighScoreEntry entry = new HighScoreEntry(open("name"), score, 1, gameLevel);
-        try {
-            HighScoreServer.readConfig("highscore.config");
-            HighScoreServer.sendNewHighScore(entry, new GameConfiguration());
-        } catch (Exception e) {}
+        HighScoreServer.readConfig("highscore.config");
+        HighScoreServer.sendNewHighScore(entry, new GameConfiguration());
     }
 
     /**

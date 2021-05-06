@@ -16,6 +16,8 @@ import javax.xml.parsers.DocumentBuilderFactory;
 
 /**
  * The class is used to read files.
+ *
+ * @author Artur Haavisto
  */
 public class FileReader {
 

@@ -20,6 +20,8 @@ import com.badlogic.gdx.utils.viewport.ScreenViewport;
 
 /**
  * The class contains and controls the Main menu screen.
+ *
+ * @author Artur Haavisto
  */
 public class MenuScreen extends ScreenAdapter {
 

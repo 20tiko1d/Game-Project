@@ -9,6 +9,8 @@ import java.util.ArrayList;
 
 /**
  * Class for textures.
+ *
+ * @author Artur Haavisto
  */
 public final class Textures {
 
@@ -49,9 +51,6 @@ public final class Textures {
     public Texture controlsBackground = new Texture("textures/controlsSetting/backgroundWhite.png");
     public Texture boostTexture = new Texture("textures/controlsSetting/boostSettings.png");
     public Texture joystickTexture = new Texture("textures/controlsSetting/joystickSettings.png");
-
-
-    public Textures() {}
 
     /**
      * Get floor textures which are inside of the labyrinth.

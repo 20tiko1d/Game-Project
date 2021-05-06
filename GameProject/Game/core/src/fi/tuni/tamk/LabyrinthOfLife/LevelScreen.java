@@ -17,13 +17,14 @@ import com.badlogic.gdx.utils.viewport.ScreenViewport;
 
 /**
  * Screen contains difficulty choosing options.
+ *
+ * @author Artur Haavisto
  */
 public class LevelScreen extends ScreenAdapter {
 
     private final Main main;
 
     private Stage stage;
-
     private final SpriteBatch batch;
 
     private Texture backgroundImage;

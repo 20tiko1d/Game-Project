@@ -20,6 +20,8 @@ import java.util.ArrayList;
 
 /**
  * Screen contains top 10 high scores, which are fetched from the server.
+ *
+ * @author Artur Haavisto
  */
 public class HighScoresScreen extends ScreenAdapter {
 
@@ -127,7 +129,7 @@ public class HighScoresScreen extends ScreenAdapter {
         TextButton buttonWeb = new TextButton(GameConfiguration.getText("webHighScores"),mySkin,"pixel72");
         buttonWeb.setSize(buttonLevels.getWidth(),buttonLevels.getHeight());
         buttonWeb.setPosition(screenWidth - buttonWeb.getWidth(), 0);
-        buttonWeb.setColor(Color.GREEN);
+        buttonWeb.setColor(199 / 255f, 71 / 255f, 222 / 255f, 1);
         buttonWeb.getLabel().setWrap(true);
         int givenFontSize = 35;
         if(GameConfiguration.getLanguage().equals("fi_FI")) {
@@ -209,7 +211,6 @@ public class HighScoresScreen extends ScreenAdapter {
         createHighScoreLabels();
     }
 
-
     @Override
     public void render(float deltaTime) {
         Gdx.gl.glClearColor(56 / 255f, 142 / 255f, 142 / 255f, 1);
@@ -240,7 +241,7 @@ public class HighScoresScreen extends ScreenAdapter {
             createScoreLabels(startX + listWidth * 21 / 20f, getTopHighScores(highScoresMedium));
             createScoreLabels(startX + listWidth * 41 / 20f, getTopHighScores(highScoresHard));
         } else {
-            Image errorBackground = new Image(new Texture("textures/random/tutorialTextBackground.png"));
+            Image errorBackground = new Image(textures.tutorialTextBackground);
             errorBackground.setSize(screenWidth / 2f, screenHeight / 4f);
             errorBackground.setPosition(screenWidth / 2f - errorBackground.getWidth() / 2f,
                     screenHeight / 2f - errorBackground.getHeight() / 2f);
@@ -315,7 +316,6 @@ public class HighScoresScreen extends ScreenAdapter {
                 backgroundImage.setBounds(x, y, scoreWidth, scoreHeight / 10f);
                 stage.addActor(backgroundImage);
             }
-
             stage.addActor(label);
         }
     }

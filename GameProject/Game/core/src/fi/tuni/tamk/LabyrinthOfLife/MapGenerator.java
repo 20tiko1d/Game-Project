@@ -16,6 +16,8 @@ import java.util.ArrayList;
  * The class produces a random labyrinth or the tutorial labyrinth.
  *
  * The labyrinth has a small square in the center. There is only one way out of the labyrinth.
+ *
+ * @author Artur Haavisto
  */
 public class MapGenerator {
 
@@ -338,7 +340,7 @@ public class MapGenerator {
     }
 
     /**
-     * Method checks if the next move is under bounds.
+     * Method checks if the next move is in bounds.
      *
      * @param tempPath: Path in progress.
      * @param row: Row of the current working cell.
@@ -353,7 +355,6 @@ public class MapGenerator {
                 }
             }
         } catch (Exception e) {}
-
 
         for (int[] value : middle) {
             if (value[0] == row && value[1] == column) {
@@ -373,7 +374,7 @@ public class MapGenerator {
     }
 
     /**
-     * Method clears the scrubbed path, but keeps the main things.
+     * Method clears the scrubbed path, but keeps the starting locations.
      *
      * @param tempPath: Path that failed to make it through.
      * @return Returns cleared path.

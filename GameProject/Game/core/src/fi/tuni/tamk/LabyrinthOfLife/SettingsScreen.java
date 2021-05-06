@@ -18,6 +18,8 @@ import com.badlogic.gdx.utils.viewport.ScreenViewport;
 
 /**
  * Screen where the player can change the volume of the music and switch the control's locations.
+ *
+ * @author Artur Haavisto
  */
 public class SettingsScreen extends ScreenAdapter {
 
@@ -165,9 +167,7 @@ public class SettingsScreen extends ScreenAdapter {
         musicVolumeLabel.setAlignment(Align.center);
         musicVolumeLabel.setColor(Color.BLACK);
         musicVolumeLabel.setFontScale(0.5f);
-        try {
-            changeMusicVolume(Integer.parseInt(GameConfiguration.open("musicVolume")));
-        } catch (Exception e) {}
+        changeMusicVolume(Integer.parseInt(GameConfiguration.open("musicVolume")));
 
 
         final Slider musicVolumeSlider = new Slider(0, 1, 0.1f, false, mySkin);
@@ -178,9 +178,7 @@ public class SettingsScreen extends ScreenAdapter {
         musicVolumeSlider.getStyle().knob.setMinWidth(screenWidth / 20);
         musicVolumeSlider.getStyle().knob.setMinHeight(screenWidth / 20);
         musicVolumeSlider.getStyle().background.setMinHeight(screenWidth / 30);
-        try {
-            musicVolumeSlider.setValue(Integer.parseInt(GameConfiguration.open("musicVolume")) / 10f);
-        } catch (Exception e) {}
+        musicVolumeSlider.setValue(Integer.parseInt(GameConfiguration.open("musicVolume")) / 10f);
 
         musicVolumeSlider.addListener(new InputListener() {
             @Override
@@ -227,7 +225,7 @@ public class SettingsScreen extends ScreenAdapter {
     }
 
     /**
-     * Sets the control's (joystick and boost-button) locations.
+     * Sets the control (joystick and boost-button) locations.
      */
     public void setControlLocations() {
         if(GameConfiguration.open("controls").equals("default")) {

@@ -5,6 +5,8 @@ import com.badlogic.gdx.Gdx;
 
 /**
  * The main class.
+ *
+ * @author Artur Haavisto
  */
 public class Main extends Game {
 

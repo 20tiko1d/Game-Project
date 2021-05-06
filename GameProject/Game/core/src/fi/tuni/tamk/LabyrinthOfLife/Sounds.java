@@ -5,7 +5,9 @@ import com.badlogic.gdx.audio.Music;
 import com.badlogic.gdx.audio.Sound;
 
 /**
- * Static class which contains the sounds.
+ * Class which contains all of the sounds and music.
+ *
+ * @author Artur Haavisto
  */
 public final class Sounds {
 
@@ -28,7 +30,5 @@ public final class Sounds {
     public Music levelCompletedMusic = Gdx.audio.newMusic(Gdx.files.internal("Sounds and Music/level_complete.wav"));
 
     // Button click sound
-    public Sound buttonPressSound = Gdx.audio.newSound(Gdx.files.internal("Sounds and Music/button_click2.wav"));
-
-    public Sounds() {}
+    public Sound buttonPressSound = Gdx.audio.newSound(Gdx.files.internal("Sounds and Music/button_click.wav"));
 }

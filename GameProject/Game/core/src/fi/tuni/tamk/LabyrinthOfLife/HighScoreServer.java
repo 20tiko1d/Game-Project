@@ -19,7 +19,6 @@ import java.util.Properties;
 
 import javax.net.ssl.HttpsURLConnection;
 
-
 /**
  * To get this work on an android device add following line to
  * AndroidManifest.xml:
@@ -93,7 +92,6 @@ public class HighScoreServer {
             }
 
         } catch (Exception e) {
-            e.printStackTrace();
         } finally {
             if (urlConnection != null) {
                 urlConnection.disconnect();
@@ -149,7 +147,6 @@ public class HighScoreServer {
                 source.failedToSendHighScore("Connection couldn't be established.");
             }
         } catch (Exception e) {
-            e.printStackTrace();
         } finally {
             if (urlConnection != null) {
                 urlConnection.disconnect();
@@ -168,9 +165,7 @@ public class HighScoreServer {
             } else {
                 throw new FileNotFoundException("Config file '" + propFileName + "' not found.");
             }
-        } catch (IOException e) {
-            Gdx.app.log("HighScoreServer", e.getMessage());
-        }
+        } catch (IOException e) {}
 
         user = prop.getProperty("user");
         password = prop.getProperty("password");

@@ -17,6 +17,8 @@ import com.badlogic.gdx.utils.viewport.ScreenViewport;
 
 /**
  * Screen of after the game, which shows the score.
+ *
+ * @author Artur Haavisto
  */
 public class AfterGameScreen extends ScreenAdapter {
 

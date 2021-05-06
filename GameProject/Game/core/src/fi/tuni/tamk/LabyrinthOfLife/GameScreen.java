@@ -36,9 +36,10 @@ import com.badlogic.gdx.utils.viewport.ScreenViewport;
 
 /**
  * The class is responsible for running the game level and tutorial.
+ *
+ * @author Artur Haavisto
  */
 public class GameScreen extends ScreenAdapter {
-
 
     private final Main main;
     private final GameScreen gameScreen;
@@ -477,9 +478,7 @@ public class GameScreen extends ScreenAdapter {
             buttonBoost.setX(GameConfiguration.getControlsX(1, buttonBoost.getWidth()));
             touchpad.setX(GameConfiguration.getControlsX(2, touchpad.getWidth()));
         }
-        try {
-            backgroundMusic.setVolume(Integer.parseInt(GameConfiguration.open("musicVolume")) / 10f);
-        } catch (Exception e) { }
+        backgroundMusic.setVolume(Integer.parseInt(GameConfiguration.open("musicVolume")) / 10f);
         Gdx.input.setInputProcessor(inputMultiplexer);
     }
 
@@ -585,7 +584,6 @@ public class GameScreen extends ScreenAdapter {
             }
         }
 
-        // Moves the camera
         camera.setToOrtho(false, viewPortWidth * minZoom / zoomRatio,
                     viewPortHeight * minZoom / zoomRatio);
 
@@ -612,9 +610,9 @@ public class GameScreen extends ScreenAdapter {
     }
 
     /**
-     * Method draws the labyrinth and all objects on there.
+     * Draws every game textures in the right order.
      *
-     * It also handles that right amount of the map is being rendered.
+     * It also makes sure that the right amount of the map is being rendered.
      *
      * @param batch: Used to render objects.
      */
@@ -837,7 +835,7 @@ public class GameScreen extends ScreenAdapter {
     }
 
     /**
-     * Changes the zoom.
+     * Changes the zoom value.
      */
     public void changeRatio() {
         if(ifZoomIn) {
@@ -900,28 +898,25 @@ public class GameScreen extends ScreenAdapter {
                 }
             }
         }
-
         return index;
     }
 
     /**
      * Puts the right text to the pair label.
      *
-     * @param index: Index of object sentence.
+     * @param index: Index of the object sentence.
      */
     public void createPairLabel(int index) {
         pairLabel.setText(array.get(index));
     }
 
     /**
-     * Sets the object pair array and sets the starting bounce state to each object.
+     * Sets the object pair array and sets random starting bounce state to each object.
      *
      * @param randomPairs: In game objects array.
      */
     public void setRandomPairs(int [][] randomPairs) {
         this.randomPairs = randomPairs;
-
-        // set random bounciness value
         objectBounciness = new float[randomPairs.length * 2];
         objectDirections = new boolean[randomPairs.length * 2];
         for(int i = 0; i < objectBounciness.length; i++) {

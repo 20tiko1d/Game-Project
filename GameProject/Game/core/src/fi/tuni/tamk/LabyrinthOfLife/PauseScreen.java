@@ -20,8 +20,11 @@ import com.badlogic.gdx.utils.viewport.ScreenViewport;
 
 /**
  * Screen for pausing the game.
+ *
+ * @author Artur Haavisto
  */
 public class PauseScreen extends ScreenAdapter {
+
     private final Main main;
     private final GameScreen gameScreen;
     private final PauseScreen pauseScreen;

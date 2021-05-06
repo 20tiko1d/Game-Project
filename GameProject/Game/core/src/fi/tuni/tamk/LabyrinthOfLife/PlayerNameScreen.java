@@ -16,6 +16,8 @@ import com.badlogic.gdx.utils.viewport.ScreenViewport;
 
 /**
  * Screen for changing and setting the username.
+ *
+ * @author Artur Haavisto
  */
 public class PlayerNameScreen extends ScreenAdapter {
 
@@ -36,7 +38,7 @@ public class PlayerNameScreen extends ScreenAdapter {
     private final Textures textures;
 
     /**
-     * Player's name screen's constructor.
+     * Player's name screen constructor.
      *
      * @param main: Game class object.
      * @param firstTime: Tells if this is the first time launching the app.

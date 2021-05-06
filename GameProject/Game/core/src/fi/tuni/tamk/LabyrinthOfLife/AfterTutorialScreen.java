@@ -6,7 +6,6 @@ import com.badlogic.gdx.audio.Music;
 import com.badlogic.gdx.audio.Sound;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.GL20;
-import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.InputListener;
 import com.badlogic.gdx.scenes.scene2d.Stage;
@@ -16,6 +15,11 @@ import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
 import com.badlogic.gdx.utils.Align;
 import com.badlogic.gdx.utils.viewport.ScreenViewport;
 
+/**
+ * Screen for after completing the tutorial.
+ *
+ * @author Artur Haavisto
+ */
 public class AfterTutorialScreen extends ScreenAdapter {
     private final Main main;
 
@@ -29,6 +33,11 @@ public class AfterTutorialScreen extends ScreenAdapter {
 
     private final Textures textures;
 
+    /**
+     * After the tutorial screen constructor.
+     *
+     * @param main: Game class object.
+     */
     public AfterTutorialScreen(Main main) {
         this.main = main;
         this.textures = main.textures;

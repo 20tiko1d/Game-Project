@@ -19,6 +19,8 @@ import com.badlogic.gdx.utils.viewport.ScreenViewport;
 
 /**
  * Screen for changing the map textures and character textures.
+ *
+ * @author Artur Haavisto
  */
 public class ThemesScreen extends ScreenAdapter {
 
