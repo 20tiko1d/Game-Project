@@ -16,12 +16,16 @@
         <item name="GROUP_NODE:origin" type="e8cecc67:BranchNodeDescriptor" />
       </path>
     </expand>
-    <select />
+    <select>
+      <path>
+        <item name="ROOT" type="e8cecc67:BranchNodeDescriptor" />
+        <item name="LOCAL_ROOT" type="e8cecc67:BranchNodeDescriptor" />
+        <item name="BRANCH:Experimental" type="e8cecc67:BranchNodeDescriptor" />
+      </path>
+    </select>
   </component>
   <component name="ChangeListManager">
     <list default="true" id="b953028a-cfe4-44cf-a102-a14b0793fbf8" name="Default Changelist" comment="">
-      <change afterPath="$PROJECT_DIR$/.idea/.gitignore" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/misc.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
@@ -37,6 +41,13 @@
     </option>
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
   </component>
+  <component name="GithubPullRequestsUISettings">
+    <option name="hiddenUrls">
+      <set>
+        <option value="https://github.com/20tiko1d/proj" />
+      </set>
+    </option>
+  </component>
   <component name="ProjectId" id="1osJfv2Ms7hVAmaGE6AtCYnGQUO" />
   <component name="ProjectViewState">
     <option name="hideEmptyMiddlePackages" value="true" />
@@ -45,7 +56,7 @@
   <component name="PropertiesComponent">
     <property name="RunOnceActivity.OpenProjectViewOnStart" value="true" />
     <property name="RunOnceActivity.ShowReadmeOnStart" value="true" />
-    <property name="last_opened_file_path" value="$PROJECT_DIR$/GameProject/Game" />
+    <property name="last_opened_file_path" value="$PROJECT_DIR$" />
     <property name="settings.editor.selected.configurable" value="preferences.lookFeel" />
   </component>
   <component name="SvnConfiguration">
@@ -59,36 +70,80 @@
       <option name="presentableId" value="Default" />
       <updated>1614069470851</updated>
     </task>
+    <task id="LOCAL-00001" summary="Changed directory structure.">
+      <created>1620298511631</created>
+      <option name="number" value="00001" />
+      <option name="presentableId" value="LOCAL-00001" />
+      <option name="project" value="LOCAL" />
+      <updated>1620298511631</updated>
+    </task>
+    <option name="localTasksCounter" value="2" />
     <servers />
+  </component>
+  <component name="Vcs.Log.History.Properties">
+    <option name="COLUMN_ORDER">
+      <list>
+        <option value="0" />
+        <option value="2" />
+        <option value="3" />
+        <option value="1" />
+      </list>
+    </option>
   </component>
   <component name="Vcs.Log.Tabs.Properties">
     <option name="TAB_STATES">
       <map>
         <entry key="MAIN">
           <value>
-            <State />
+            <State>
+              <option name="FILTERS">
+                <map>
+                  <entry key="branch">
+                    <value>
+                      <list>
+                        <option value="Experimental" />
+                      </list>
+                    </value>
+                  </entry>
+                </map>
+              </option>
+            </State>
           </value>
         </entry>
       </map>
     </option>
     <option name="oldMeFiltersMigrated" value="true" />
   </component>
+  <component name="VcsManagerConfiguration">
+    <MESSAGE value="Changed directory structure." />
+    <option name="LAST_COMMIT_MESSAGE" value="Changed directory structure." />
+  </component>
   <component name="WindowStateProjectService">
-    <state x="414" y="175" key="#com.intellij.execution.impl.EditConfigurationsDialog" timestamp="1614069983113">
-      <screen x="0" y="0" width="1920" height="1040" />
+    <state x="1104" y="236" key="#com.intellij.execution.impl.EditConfigurationsDialog" timestamp="1620298754002">
+      <screen x="0" y="0" width="5120" height="1400" />
     </state>
     <state x="414" y="175" key="#com.intellij.execution.impl.EditConfigurationsDialog/0.0.1920.1040@0.0.1920.1040" timestamp="1614069983113" />
+    <state x="1104" y="236" key="#com.intellij.execution.impl.EditConfigurationsDialog/0.0.5120.1400@0.0.5120.1400" timestamp="1620298754002" />
     <state x="689" y="310" key="#com.intellij.ide.util.TreeClassChooserDialog" timestamp="1614069980960">
       <screen x="0" y="0" width="1920" height="1040" />
     </state>
     <state x="689" y="310" key="#com.intellij.ide.util.TreeClassChooserDialog/0.0.1920.1040@0.0.1920.1040" timestamp="1614069980960" />
-    <state x="788" y="257" key="FileChooserDialogImpl" timestamp="1614070010270">
-      <screen x="0" y="0" width="1920" height="1040" />
+    <state x="2101" y="346" key="FileChooserDialogImpl" timestamp="1620298925925">
+      <screen x="0" y="0" width="5120" height="1400" />
     </state>
     <state x="788" y="257" key="FileChooserDialogImpl/0.0.1920.1040@0.0.1920.1040" timestamp="1614070010270" />
+    <state x="2101" y="346" key="FileChooserDialogImpl/0.0.5120.1400@0.0.5120.1400" timestamp="1620298925925" />
     <state x="508" y="156" key="SettingsEditor" timestamp="1614069843799">
       <screen x="0" y="0" width="1920" height="1040" />
     </state>
     <state x="508" y="156" key="SettingsEditor/0.0.1920.1040@0.0.1920.1040" timestamp="1614069843799" />
+    <state x="2152" y="433" key="Vcs.Push.Dialog.v2" timestamp="1620298519809">
+      <screen x="0" y="0" width="5120" height="1400" />
+    </state>
+    <state x="2152" y="433" key="Vcs.Push.Dialog.v2/0.0.5120.1400@0.0.5120.1400" timestamp="1620298519809" />
+    <state x="2310" y="492" key="git4idea.merge.GitPullDialog" timestamp="1620298933286">
+      <screen x="0" y="0" width="5120" height="1400" />
+    </state>
+    <state x="2310" y="492" key="git4idea.merge.GitPullDialog/0.0.5120.1400@0.0.5120.1400" timestamp="1620298933286" />
   </component>
 </project>
