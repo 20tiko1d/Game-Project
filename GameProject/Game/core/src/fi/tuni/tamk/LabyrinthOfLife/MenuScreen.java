@@ -183,7 +183,6 @@ public class MenuScreen extends ScreenAdapter {
         Gdx.input.setInputProcessor(stage);
     }
 
-
     @Override
     public void render(float deltaTime) {
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);

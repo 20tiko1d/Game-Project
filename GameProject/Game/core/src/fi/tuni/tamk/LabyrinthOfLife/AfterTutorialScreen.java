@@ -103,7 +103,6 @@ public class AfterTutorialScreen extends ScreenAdapter {
 
         Label tutorialLabel = new Label(GameConfiguration.getText("tutorialFinished"), mySkin, "pixel100");
         tutorialLabel.setSize(screenWidth / 2f, screenWidth / 8);
-
         tutorialLabel.setPosition(screenWidth / 2 - tutorialLabel.getWidth() / 2,
                 screenHeight * 3 / 4);
         tutorialLabel.setColor(Color.BLACK);
