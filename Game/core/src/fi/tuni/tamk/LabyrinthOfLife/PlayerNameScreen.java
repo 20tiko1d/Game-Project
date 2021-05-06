@@ -77,7 +77,7 @@ public class PlayerNameScreen extends ScreenAdapter {
         errorLabel.setPosition(label.getX(), textField.getY() - errorLabel.getHeight());
         errorLabel.setColor(Color.RED);
 
-        TextButton buttonSave = new TextButton("save",mySkin,"pixel72");
+        TextButton buttonSave = new TextButton(GameConfiguration.getText("save"),mySkin,"pixel72");
         buttonSave.setSize(label.getWidth() / 2f,label.getHeight());
         buttonSave.setPosition(boxBackground.getX() + boxBackground.getWidth() -
                 buttonSave.getWidth(), boxBackground.getY());
@@ -110,7 +110,7 @@ public class PlayerNameScreen extends ScreenAdapter {
             buttonSave.setPosition(screenWidth / 2f - buttonSave.getWidth() / 2f, buttonSave.getY());
             textField.setText("");
         } else {
-            TextButton buttonCancel = new TextButton("Cancel", mySkin,"pixel72");
+            TextButton buttonCancel = new TextButton(GameConfiguration.getText("cancel"), mySkin,"pixel72");
             buttonCancel.setSize(buttonSave.getWidth(), buttonSave.getHeight());
             buttonCancel.setPosition(boxBackground.getX(), boxBackground.getY());
             buttonCancel.setColor(Color.RED);
